@@ -1,0 +1,45 @@
+@import "./styles/main.scss";
+
+.App {
+  @include center;
+  @include v-stack-c;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg3);
+  .app-banner {
+    @include v-pad($gap-xxl);
+    @include v-stack-c;
+    @include center;
+    border-top: solid $border-sm var(--bord);
+    border-bottom: solid $border-sm var(--bord);
+    background-color: var(--bg1);
+    width: 100%;
+    .app-header {
+      @include h-stack-c;
+      gap: $gap-lg;
+      .app-logo {
+        max-height: 50px;
+        width: auto;
+      }
+    }
+    .app-subheader {
+      @include h-stack-c;
+      @include h-center;
+      font-style: italic;
+      font-size: $txt-md;
+      color: var(--txt);
+    }
+  }
+  .uvp {
+    @include v-pad($gap-xxl);
+    display: inline-block;
+    gap: $gap-md;
+    width: 300px;
+    text-align: center;
+    vertical-align: middle;
+    *,
+    & {
+      font-size: $txt-ml;
+    }
+  }
+}
