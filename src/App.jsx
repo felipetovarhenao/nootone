@@ -12,9 +12,12 @@ export default function App() {
         </div>
         <h2 className="app-subheader">spark your creativity</h2>
       </div>
-      <span className="uvp">
-        <AppName /> is a smart music sketchbook that helps you record and develop musical ideas in seconds.
-      </span>
+      <div className="app-info">
+        <span id="uvp">
+          <AppName /> is a smart music sketchbook that helps you record and develop musical ideas in seconds.
+        </span>
+        <span id="coming-soon">If you're interested, stay tuned. More coming soon!</span>
+      </div>
     </div>
   );
 }
