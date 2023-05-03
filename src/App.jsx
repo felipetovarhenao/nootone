@@ -18,6 +18,11 @@ export default function App() {
         </span>
         <span id="coming-soon">If you're interested, stay tuned. More coming soon!</span>
       </div>
+      <footer className="footer">
+        <a href="https://www.flaticon.com/free-icons/sound" title="sound icons">
+          Sound icons created by Freepik - Flaticon
+        </a>
+      </footer>
     </div>
   );
 }
