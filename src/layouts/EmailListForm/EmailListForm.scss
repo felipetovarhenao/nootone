@@ -1,0 +1,22 @@
+@use "../../styles/main.scss" as m;
+
+.EmailListForm {
+  @include m.v-stack;
+  @include m.t-mar(m.$gap-xxl);
+  gap: m.$gap-lg;
+  input {
+    @include m.vh-pad(m.$gap-ms, m.$gap-ml);
+    font-size: m.$txt-ml;
+  }
+  label {
+    color: var(--txt);
+    font-size: m.$txt-ml;
+  }
+  .error {
+    color: var(--danger-4);
+  }
+  .Button {
+    font-size: m.$txt-ml;
+    align-self: center;
+  }
+}

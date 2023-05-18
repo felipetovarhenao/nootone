@@ -1,11 +1,9 @@
-@import "../../styles/main.scss";
-
 .AppName {
-  #noo {
-    color: var(--primary);
+  &#noo {
+    color: var(--primary-4);
     font-weight: bold;
   }
-  #tone {
-    color: var(--secondary);
+  &#tone {
+    color: var(--secondary-4);
   }
 }

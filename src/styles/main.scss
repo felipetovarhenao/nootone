@@ -1,4 +1,7 @@
-@import "./elements.scss";
-@import "./variables.scss";
-@import "./animations.scss";
-@import "./mixins.scss";
+@forward "animations";
+@forward "colors";
+@forward "elements";
+@forward "fonts";
+@forward "media-query";
+@forward "mixins";
+@forward "sizes";

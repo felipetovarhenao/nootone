@@ -1,0 +1,9 @@
+@use "../../styles/main.scss" as m;
+
+.Icon {
+  @include m.v-center;
+  font-size: m.$txt-xl;
+  * {
+    color: var(--txt-light);
+  }
+}

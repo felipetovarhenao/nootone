@@ -1,0 +1,37 @@
+@use "../../../styles/main.scss" as m;
+
+#team {
+  clip-path: polygon(0 0, 100% m.$gap-xxl, 100% calc(100% - m.$gap-xxl), 0 100%);
+  .body {
+    .team-profiles {
+      @include m.t-mar(m.$gap-xxl);
+      @include m.h-stack-c;
+      @include m.mobile-down {
+        @include m.v-stack-c;
+      }
+      justify-content: center;
+      gap: m.$gap-xxl;
+      .profile {
+        .profile-name,
+        .profile-role {
+          font-size: m.$txt-lg;
+          text-align: center;
+        }
+        .profile-name {
+          color: var(--primary-5);
+        }
+        .profile-role {
+          color: var(--txt-light);
+        }
+        .profile-photo {
+          @include m.round(100%);
+          width: 300px;
+          max-width: 100%;
+          @include m.mobile-down {
+            max-width: 220px;
+          }
+        }
+      }
+    }
+  }
+}

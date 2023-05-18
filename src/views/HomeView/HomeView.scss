@@ -1,0 +1,76 @@
+@use "../../styles/main" as m;
+
+.HomeView {
+  position: relative;
+  $section-gap: 100px;
+  @include m.mobile-up {
+    &:not(.scrolled) {
+      .navbar {
+        .navbar-link {
+          font-size: m.$txt-ml;
+        }
+        .brand {
+          .name {
+            font-size: calc(m.$txt-xl * 1.25);
+          }
+          .logo {
+            max-height: m.$navbar-height;
+          }
+        }
+      }
+    }
+  }
+  .navbar {
+    @include m.mobile-up {
+      @include m.h-pad(300px);
+    }
+    @include m.v-pad(m.$gap-lg);
+
+    & * {
+      @include m.trans;
+    }
+    .brand {
+      @include m.to-left;
+      @include m.h-stack-c;
+      .name {
+        font-size: m.$txt-xl;
+      }
+      .logo {
+        @include m.clickable;
+        @include m.r-pad(m.$gap-ml);
+        max-height: calc(m.$navbar-height * 0.65);
+        width: auto;
+      }
+    }
+  }
+  .content {
+    @include m.v-stack;
+    background: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
+    $clip-size: 10%;
+    width: 100%;
+    position: absolute;
+    top: calc(m.$navbar-height);
+    gap: $section-gap;
+    .anchor {
+      @include m.v-stack;
+      @include m.v-pad(calc(3 * m.$gap-xxl));
+      .body {
+        @include m.v-mar(auto);
+        align-self: center;
+        &,
+        & > * {
+          color: var(--txt);
+          font-size: m.$txt-lg;
+          @include m.mobile-down {
+            font-size: m.$txt-ml;
+          }
+        }
+      }
+    }
+    .footer {
+      @include m.pad(m.$gap-xxl);
+      color: var(--txt-light);
+      text-align: center;
+    }
+  }
+}

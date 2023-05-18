@@ -1,0 +1,19 @@
+@use "../../styles/main.scss" as m;
+
+.AnchorNavbar {
+  @include m.h-stack-c;
+  @include m.h-pad(m.$gap-xxl);
+  z-index: 10;
+  position: fixed;
+  width: 100%;
+  min-height: m.$navbar-height;
+  gap: m.$gap-xxl;
+  background-color: var(--bg-2);
+  justify-content: end;
+  box-shadow: 0px 3px 4px #00000011;
+  .navbar-link {
+    @include m.hyperlink;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}

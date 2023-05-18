@@ -1,0 +1,5 @@
+@use "../../../styles/main.scss" as m;
+
+#contact {
+  clip-path: polygon(0 0, 100% m.$gap-xxl, 100% 100%, 0 100%);
+}

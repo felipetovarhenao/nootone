@@ -1,0 +1,39 @@
+@use "../../styles/main.scss" as m;
+
+.switch {
+  @include m.h-stack-c;
+  @include m.pad(m.$gap-xs);
+  @include m.clickable;
+  $switch-width: 25px;
+  $switch-height: calc($switch-width * 0.5);
+  height: $switch-height;
+  gap: m.$gap-sm;
+  .pin-outer {
+    @include m.round;
+    @include m.h-stack-c;
+    background-color: var(--bg-4);
+    width: $switch-width;
+    height: 100%;
+    .pin-inner {
+      // @include m.border;
+      display: block;
+      transition: all 0.2s linear;
+      background-color: var(--disabled-3);
+      border-radius: 100%;
+      height: $switch-height;
+      width: $switch-height;
+    }
+  }
+  &.active {
+    .pin-inner {
+      background-color: var(--primary-3);
+    }
+  }
+  .on-icon,
+  .off-icon {
+    * {
+      color: var(--primary-3);
+    }
+    font-size: m.$txt-ml;
+  }
+}

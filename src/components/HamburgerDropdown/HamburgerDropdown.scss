@@ -1,0 +1,27 @@
+@use "../../styles/main.scss" as m;
+
+.HamburgerDropdown {
+  position: relative;
+  width: fit-content;
+  .Icon {
+    @include m.clickable;
+    & > * {
+      color: var(--txt) !important;
+    }
+  }
+  .menu-items {
+    @include m.v-stack-c;
+    @include m.round;
+    @include m.pad(m.$gap-lg);
+    @include m.shadow;
+    right: 0;
+    position: absolute;
+    min-width: 120px;
+    background-color: var(--bg-3);
+    gap: m.$gap-xl;
+    * {
+      color: var(--primary-3);
+      text-transform: uppercase;
+    }
+  }
+}

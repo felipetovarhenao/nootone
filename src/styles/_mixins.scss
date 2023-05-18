@@ -1,6 +1,6 @@
-@import "./variables.scss";
-@import "./animations.scss";
+@use "sizes";
 
+/* flex orientations and centerings */
 @mixin stack {
   display: flex;
 }
@@ -26,7 +26,6 @@
 }
 
 @mixin center {
-  @include stack;
   @include h-center;
   @include v-center;
 }
@@ -34,15 +33,14 @@
 @mixin h-stack-c {
   @include h-stack;
   @include v-center;
-  align-items: center;
 }
 
 @mixin v-stack-c {
   @include v-stack;
   @include h-center;
-  justify-content: center;
 }
 
+/* margin-based positioning */
 @mixin to-right {
   @include stack;
   margin-left: auto;
@@ -62,90 +60,83 @@
   @include stack;
   margin-top: auto;
 }
+
+/* flex wrapping */
 @mixin wrap {
   flex-wrap: wrap;
 }
 
-@mixin l-pad($gap: $gap-md) {
+/* padding */
+@mixin l-pad($gap: sizes.$gap-md) {
   padding-left: $gap;
 }
 
-@mixin r-pad($gap: $gap-md) {
+@mixin r-pad($gap: sizes.$gap-md) {
   padding-right: $gap;
 }
 
-@mixin t-pad($gap: $gap-md) {
+@mixin t-pad($gap: sizes.$gap-md) {
   padding-top: $gap;
 }
 
-@mixin b-pad($gap: $gap-md) {
+@mixin b-pad($gap: sizes.$gap-md) {
   padding-bottom: $gap;
 }
 
-@mixin h-pad($gap: $gap-md) {
+@mixin h-pad($gap: sizes.$gap-md) {
   @include l-pad($gap);
   @include r-pad($gap);
 }
 
-@mixin v-pad($gap: $gap-md) {
+@mixin v-pad($gap: sizes.$gap-md) {
   @include t-pad($gap);
   @include b-pad($gap);
 }
 
-@mixin pad($gap: $gap-md) {
+@mixin vh-pad($v: sizes.$gap-md, $h: sizes.$gap-md) {
+  @include v-pad($v);
+  @include h-pad($h);
+}
+
+@mixin pad($gap: sizes.$gap-md) {
   padding: $gap;
 }
 
-@mixin h-pad($gap: $gap-md) {
-  @include l-pad($gap);
-  @include r-pad($gap);
-}
+/* margins */
 
-@mixin v-pad($gap: $gap-md) {
-  @include t-pad($gap);
-  @include b-pad($gap);
-}
-
-@mixin vh-pad($v-gap: $gap-md, $h-gap: $gap-md) {
-  @include v-pad($v-gap);
-  @include h-pad($h-gap);
-}
-
-@mixin l-mar($gap: $gap-md) {
+@mixin l-mar($gap: sizes.$gap-md) {
   margin-left: $gap;
 }
 
-@mixin r-mar($gap: $gap-md) {
+@mixin r-mar($gap: sizes.$gap-md) {
   margin-right: $gap;
 }
 
-@mixin t-mar($gap: $gap-md) {
+@mixin t-mar($gap: sizes.$gap-md) {
   margin-top: $gap;
 }
 
-@mixin b-mar($gap: $gap-md) {
+@mixin b-mar($gap: sizes.$gap-md) {
   margin-bottom: $gap;
 }
 
-@mixin h-mar($gap: $gap-md) {
+@mixin h-mar($gap: sizes.$gap-md) {
   @include l-mar($gap);
   @include r-mar($gap);
 }
 
-@mixin v-mar($gap: $gap-md) {
+@mixin v-mar($gap: sizes.$gap-md) {
   @include t-mar($gap);
   @include b-mar($gap);
 }
 
-@mixin mar($gap: $gap-md) {
-  margin: $gap;
+@mixin vh-mar($v-gap: sizes.$gap-md, $h-gap: sizes.$gap-md) {
+  @include h-mar($h-gap);
+  @include v-mar($v-gap);
 }
 
-@mixin vh-mar($v-gap: $gap-md, $h-gap: $gap-md) {
-  @include l-mar($h-gap);
-  @include r-mar($h-gap);
-  @include t-mar($v-gap);
-  @include b-mar($v-gap);
+@mixin mar($gap: sizes.$gap-md) {
+  margin: $gap;
 }
 
 @mixin col-grid($sizes...) {
@@ -158,7 +149,7 @@
   grid-template-rows: $sizes;
 }
 
-@mixin trans($time: 0.5s) {
+@mixin trans($time: 0.2s) {
   transition: $time ease-in-out;
   &:hover {
     transition: $time ease-in-out;
@@ -172,29 +163,26 @@
   }
 }
 
-@mixin link-color {
+@mixin hyperlink($col: var(--primary-3), $col-hl: var(--primary-4)) {
   &,
   * {
     @include trans;
-    color: var(--primary);
+    @include clickable;
+    color: $col;
   }
   &:hover,
   &:hover * {
     @include trans;
-    color: var(--secondary);
+    color: $col-hl;
   }
 }
-@mixin link {
-  @include link-color;
-  @include clickable;
+
+@mixin border($col: var(--fg-1), $size: sizes.$border-sm) {
+  border: $size solid $col;
 }
 
-@mixin border($color: var(--bord), $size: $border-md) {
-  border: $size solid $color;
-}
-
-@mixin round {
-  border-radius: $radius-md;
+@mixin round($radius: sizes.$radius-md) {
+  border-radius: $radius;
 }
 
 @mixin round-border($args...) {
@@ -202,30 +190,21 @@
   @include round;
 }
 
-@mixin btn {
+@mixin btn($bg-col: var(--primary-3), $bg-col-hl: var(--primary-4), $fg-col: var(--txt-light)) {
   @include clickable;
   @include round-border;
-  @include vh-pad($gap-md, $gap-lg);
+  @include vh-pad(sizes.$gap-ms, sizes.$gap-xl);
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  background-color: $bg-col;
+  color: $fg-col;
   &:not([disabled]):hover {
-    background-color: var(--bg-hl);
+    background-color: $bg-col-hl;
   }
 }
 
-@mixin btn-primary {
-  @include btn;
-  @include t-mar($gap-lg);
-  &:not([disabled]) {
-    color: var(--primary);
-    &:hover {
-      outline: $border-md solid var(--bord);
-    }
-  }
-}
-
-@mixin grow($grow: 1.25) {
+@mixin grow($grow: 1.125) {
   &:hover {
     scale: $grow;
   }
@@ -244,17 +223,29 @@
   white-space: nowrap;
 }
 
-@mixin container {
-  @include round-border;
-  @include pad($gap-lg);
-  background-color: var(--bg2);
-}
-
-@mixin indent($size: 1) {
-  @include l-mar(calc($gap-lg * $size));
-}
-
-@mixin onload-animation($name, $dur: 1s) {
+@mixin on-load-animation($name, $dur: 0.2s) {
   -webkit-animation: $name $dur ease-in-out 0s 1 normal forwards;
   animation: $name $dur ease-in-out 0s 1 normal forwards;
+}
+
+@mixin range-thumb {
+  -webkit-appearance: none;
+  touch-action: none;
+  border: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--primary-3);
+  margin-top: -7px;
+}
+
+@mixin range-track {
+  height: 3px;
+  background: var(--bg-5);
+  border: none;
+  border-radius: 3px;
+}
+
+@mixin shadow($x: 0px, $y: 5px, $blur: 5px, $col: #00000055) {
+  box-shadow: $x $y $blur $col;
 }

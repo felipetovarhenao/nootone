@@ -1,0 +1,5 @@
+@use "../../../styles/main.scss" as m;
+
+#about {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - m.$gap-xxl), 0 100%);
+}

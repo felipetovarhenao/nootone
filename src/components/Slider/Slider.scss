@@ -1,0 +1,48 @@
+@use "../../styles/main.scss" as m;
+
+.slider-container {
+  @include m.col-grid(auto 55px);
+  width: 100%;
+  align-items: center;
+  gap: m.$gap-lg;
+
+  .slider {
+    @include m.clickable;
+    background-color: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    text-decoration: none;
+
+    /* track */
+    &::-webkit-slider-runnable-track {
+      @include m.range-track;
+    }
+    &::-moz-range-track {
+      @include m.range-track;
+    }
+    &::-ms-track {
+      @include m.range-track;
+    }
+    /* thumb */
+    &::-webkit-slider-thumb {
+      @include m.range-thumb;
+    }
+    &::-moz-range-thumb {
+      @include m.range-thumb;
+    }
+    &::-ms-thumb {
+      @include m.range-thumb;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  .value-display {
+    @include m.round;
+    background-color: var(--disabled-3);
+    color: var(--fg-5);
+    font-weight: bold;
+    font-size: m.$txt-sm;
+    text-align: center;
+  }
+}

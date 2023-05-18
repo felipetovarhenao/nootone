@@ -1,0 +1,91 @@
+@use "../../styles/main.scss" as m;
+
+.toggle-bar {
+  @include m.v-stack;
+  @include m.pad;
+  gap: m.$gap-md;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: fit-content;
+  background-color: var(--bg-3);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  @include m.mobile-down {
+    @include m.h-stack-c;
+    @include m.h-center;
+    width: 100%;
+    bottom: unset;
+    top: 0;
+    right: 0;
+    flex-direction: row;
+  }
+  .toggle-container {
+    @include m.v-stack-c;
+    position: relative;
+    &.selected {
+      @include m.round;
+      background-color: var(--primary-3);
+    }
+    .toggle {
+      // @include m.v-stack-c;
+      @include m.pad;
+      @include m.clickable;
+      @include m.grow;
+
+      font-size: m.$txt-xxl;
+    }
+    .toggle-name {
+      $tail-size: 6px;
+      $v-offset: 130%;
+      $h-offset: 12%;
+      $bg-col: var(--bg-3);
+      $fg-col: var(--txt-light);
+      @include m.pad;
+      @include m.round;
+      @include m.on-load-animation(slide-right);
+      top: $h-offset;
+      left: $v-offset;
+      @include m.mobile-down {
+        @include m.on-load-animation(slide-down);
+        top: $v-offset;
+        left: -$h-offset;
+      }
+      position: absolute;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+      background-color: $bg-col;
+      color: $fg-col;
+      font-size: m.$txt-xs;
+      text-transform: uppercase;
+      font-weight: bold;
+      min-width: 50px;
+      display: none;
+      text-align: center;
+      white-space: nowrap;
+      &::after {
+        position: absolute;
+        content: "";
+        border: $tail-size solid transparent;
+
+        @include m.mobile-down {
+          border-bottom-color: $bg-col;
+          top: -50%;
+          left: calc(50% - $tail-size);
+        }
+        @include m.mobile-up {
+          border-right-color: $bg-col;
+          border-left: 0;
+          left: -$tail-size;
+          top: 25%;
+          margin-top: 0px;
+        }
+      }
+    }
+    &:hover {
+      .toggle-name {
+        display: block;
+      }
+    }
+  }
+}
