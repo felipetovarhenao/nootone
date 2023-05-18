@@ -39,7 +39,7 @@ export const EmailListForm: React.FC = () => {
   return (
     <Formik initialValues={{ from_name: "", reply_to: "" }} validationSchema={schema} onSubmit={sendEmail}>
       <Form className="EmailListForm" ref={form}>
-        <label htmlFor="from_name">First name</label>
+        <label htmlFor="from_name">Full name</label>
         <Field type="text" name="from_name" />
         <ErrorMessage className="error" name="from_name" component="p" />
 
