@@ -8,7 +8,7 @@ import AppName from "../../../components/AppName/AppName";
 const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   return (
     <AnchorSection id="about" className="anchor" header={"About"} ref={ref}>
-      <AppName /> is a <b>smart music sketchbook</b> that helps you capture and develop their ideas in <b>seconds</b>.
+      <AppName /> is a <b>smart music sketchbook</b> that helps you capture and develop your ideas in <b>seconds</b>.
       <br />
       <br />
       If you're interested, stay tuned. <b>More coming soon!</b>
