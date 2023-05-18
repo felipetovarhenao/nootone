@@ -18,18 +18,21 @@
           text-align: center;
         }
         .profile-name {
-          color: var(--primary-5);
+          &:hover {
+            color: var(--primary-5);
+          }
+          color: var(--primary-4);
         }
         .profile-role {
           color: var(--txt);
         }
         .profile-photo {
           @include m.round(100%);
-          width: 300px;
-          max-width: 100%;
           @include m.mobile-down {
             max-width: 220px;
           }
+          width: 300px;
+          max-width: 100%;
         }
       }
     }

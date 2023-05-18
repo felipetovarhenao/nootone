@@ -12,7 +12,9 @@ const TeamAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
         {teamProfiles.map((info) => (
           <div key={info.name} className="profile">
             <img className="profile-photo" src={info.image} alt={`${info.name}-headshot`} />
-            <h2 className="profile-name">{info.name}</h2>
+            <a target="_blank" rel="noreferrer" href={info.url} className="profile-network">
+              <h2 className="profile-name">{info.name}</h2>
+            </a>
             <h3 className="profile-role">{info.role}</h3>
           </div>
         ))}
