@@ -1,59 +1,56 @@
 import "./AudioRecorder.scss";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../components/Icon/Icon";
 import cn from "classnames";
 import useAudioRecorder from "../../hooks/useAudioRecorder";
-import { PitchDetector } from "pitchy";
 import blobUrlToAudioBuffer from "../../utils/blobUrlToAudioBuffer";
+import detectPitch from "../../utils/detectPitch";
+import pitchToFrequency from "../../utils/PitchToFrequency";
 
-function playFrequencies(context: AudioContext, frequencies: Float32Array, amplitudes: Float32Array): void {
-  const sampleRate = context.sampleRate;
-  const duration = 256 / sampleRate; // Duration in seconds
-
-  const oscillator = context.createOscillator();
-  const gainNode = context.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(context.destination);
-  frequencies.forEach((frequency, index) => {
-    const marker = duration * index + context.currentTime;
-    if (amplitudes[index] > 0.96) {
-      oscillator.frequency.linearRampToValueAtTime(frequency, marker);
-      gainNode.gain.linearRampToValueAtTime(amplitudes[index], marker);
-    }
-  });
-  oscillator.start(context.currentTime);
-  oscillator.stop(0.1 + context.currentTime + frequencies.length * duration);
+interface Note {
+  pitch: number;
+  onset: number;
+  duration: number;
 }
 
-const detectPitch = (audioData: Float32Array, sampleRate: number) => {
-  const hopSize = 256;
-  const frameLength = 1024;
-  const detector = PitchDetector.forFloat32Array(frameLength);
-  const numFrames = Math.floor((audioData.length - frameLength) / hopSize);
-  const frequencies = new Float32Array(numFrames);
-  const confidence = new Float32Array(numFrames);
-  for (let i = 0; i < numFrames; i++) {
-    const st = i * hopSize;
-    const frame = audioData.slice(st, st + frameLength);
-    const [pitch, clarity] = detector.findPitch(frame, sampleRate);
-    frequencies[i] = pitch;
-    confidence[i] = clarity;
-  }
-  return [frequencies, confidence];
-};
+function playNotes(notes: Note[]) {
+  const audioContext = new AudioContext();
+
+  notes.forEach((note) => {
+    const oscillator = audioContext.createOscillator();
+    oscillator.frequency.value = pitchToFrequency(note.pitch);
+
+    const startTime = audioContext.currentTime + note.onset;
+    const duration = Math.max(0.25, note.duration * 2);
+    const attack = duration * 0.1;
+    const release = duration * 0.5;
+    const endTime = startTime + duration;
+
+    const gainNode = audioContext.createGain();
+    const maxGain = 0.5; // Adjust the maximum volume here
+
+    gainNode.gain.setValueAtTime(0, startTime);
+    gainNode.gain.linearRampToValueAtTime(maxGain, startTime + attack); // Attack time
+    gainNode.gain.setValueAtTime(maxGain, startTime + release); // Release time
+    gainNode.gain.linearRampToValueAtTime(0, endTime);
+
+    oscillator.connect(gainNode).connect(audioContext.destination);
+    oscillator.start(startTime);
+    oscillator.stop(endTime);
+  });
+}
 
 const AudioRecorder: React.FC = () => {
   const [audioURL, setAudioURL] = useState("");
-  const audioContext = useRef(new AudioContext());
   const { isRecording, stopRecording, startRecording, audioBlob } = useAudioRecorder();
 
   useEffect(() => {
     if (audioBlob) {
       const url = URL.createObjectURL(audioBlob);
       blobUrlToAudioBuffer(url, (audioData, sampleRate) => {
-        const [frequencies, amplitudes] = detectPitch(audioData, sampleRate);
-        playFrequencies(audioContext.current, frequencies, amplitudes);
+        const notes = detectPitch(audioData, sampleRate);
+        playNotes(notes);
+        console.log(notes);
         setAudioURL(url);
       });
     } else {
@@ -66,6 +63,7 @@ const AudioRecorder: React.FC = () => {
 
   return (
     <>
+      <h1>Pitch detection demo</h1>
       <Icon
         className={cn("AudioRecorder", { recording: isRecording })}
         onClick={isRecording ? stopRecording : startRecording}
