@@ -30,6 +30,8 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
       .getUserMedia({ audio: true, video: false })
       .then((stream) => {
         setIsRecording(true);
+        setAudioBlob(null);
+        audioChunksRef.current = [];
         const mediaRecorder = new MediaRecorder(stream);
         mediaRecorderRef.current = mediaRecorder;
         mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
@@ -47,9 +49,6 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
       const blob = new Blob(audioChunksRef.current, { type: "audio/webm; codecs=opus" });
       setAudioBlob(blob);
       setIsRecording(false);
-
-      /* reset recorded audio chunks */
-      audioChunksRef.current = [];
     }
   };
 
