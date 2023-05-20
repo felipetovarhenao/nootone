@@ -1,0 +1,26 @@
+@use "../../styles/main.scss" as m;
+
+@keyframes rec {
+  from {
+    filter: drop-shadow(0px 0px 0px var(--danger-5));
+  }
+  to {
+    filter: drop-shadow(0px 0px 3px var(--danger-5));
+  }
+}
+
+.AudioRecorder {
+  @include m.clickable;
+  * {
+    color: var(--danger-3);
+    animation: rec 0.5s ease-in-out 0s infinite alternate;
+    animation-play-state: paused;
+    &:hover {
+      color: var(--danger-5);
+    }
+  }
+  &.recording * {
+    animation-play-state: running;
+    color: var(--danger-4);
+  }
+}
