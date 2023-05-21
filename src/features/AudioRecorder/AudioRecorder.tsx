@@ -15,13 +15,13 @@ interface Note {
 
 function playNotes(notes: Note[]) {
   const audioContext = new AudioContext();
-
+  console.log(notes.length);
   notes.forEach((note) => {
     const oscillator = audioContext.createOscillator();
     oscillator.frequency.value = pitchToFrequency(note.pitch);
 
     const startTime = audioContext.currentTime + note.onset;
-    const duration = Math.max(0.25, note.duration * 2);
+    const duration = note.duration * 2;
     const attack = duration * 0.1;
     const release = duration * 0.5;
     const endTime = startTime + duration;
@@ -50,7 +50,6 @@ const AudioRecorder: React.FC = () => {
       blobUrlToAudioBuffer(url, (audioData, sampleRate) => {
         const notes = detectPitch(audioData, sampleRate);
         playNotes(notes);
-        console.log(notes);
         setAudioURL(url);
       });
     } else {
