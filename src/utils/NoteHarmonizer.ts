@@ -270,6 +270,7 @@ export default class NoteHarmonizer {
 
     this.chordChromaVectors = this.getChordChromaVectors(chordCollection, keySignatureEmbedding);
     this.chordChromaTree = new KDTree(this.chordChromaVectors[0].length);
+    this.chordChromaTree.fit(this.chordChromaVectors);
   }
 
   private predictChordFromChromaVector(chroma: number[], activationThreshold: number = 0.25): number[] {
@@ -333,9 +334,10 @@ export default class NoteHarmonizer {
 
       // convert chord to note array and append to harmonic array
       const chordNoteArray = this.chordToNoteArray(chord, seg.onset, segSize, 0.4);
+
       harmonicArray.push(...chordNoteArray);
 
-      // keep track of previous chroma
+      //   // keep track of previous chroma
       lastChroma = chroma;
     }
     return harmonicArray;

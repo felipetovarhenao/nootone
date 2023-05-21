@@ -5,7 +5,7 @@ import cn from "classnames";
 import useAudioRecorder from "../../hooks/useAudioRecorder";
 import blobUrlToAudioBuffer from "../../utils/blobUrlToAudioBuffer";
 import detectPitch from "../../utils/detectPitch";
-import pitchToFrequency from "../../utils/PitchToFrequency";
+import pitchToFrequency from "../../utils/pitchToFrequency";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 
 interface Note {
