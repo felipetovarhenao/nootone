@@ -177,7 +177,7 @@
   }
 }
 
-@mixin border($col: var(--fg-1), $size: sizes.$border-sm) {
+@mixin border($col: var(--bg-5), $size: sizes.$border-sm) {
   border: $size solid $col;
 }
 

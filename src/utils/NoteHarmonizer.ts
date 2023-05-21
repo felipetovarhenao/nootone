@@ -7,7 +7,7 @@ export default class NoteHarmonizer {
   private chordChromaTree: KDTree | null;
   private chordCollection: number[][] | string | null;
 
-  private static CHORD_COLLECTIONS: { [key: string]: number[][] } = {
+  static CHORD_COLLECTIONS: { [key: string]: number[][] } = {
     traditional: [
       [0, 7, 3], // m
       [0, 7, 4], // M
@@ -190,6 +190,7 @@ export default class NoteHarmonizer {
     const maxChroma = Math.max(...chroma);
     return chroma.map((value) => value / maxChroma);
   }
+
   private estimateKeyFromSegments(segments: Segment[], segSize: number): number[] {
     const noteArray: NoteEvent[] = [];
 
@@ -224,6 +225,7 @@ export default class NoteHarmonizer {
   private getChordChromaVectors(chordCollection: number[][], keySignatureEmbedding: number = 0.1): number[][] {
     const maxChordSize = Math.max(...chordCollection.map((c) => c.length));
     const weights = Array.from({ length: maxChordSize }, (_, i) => 1 / 1.125 ** i);
+    console.log(weights);
     const weightsMatrix = weights.map((weight) => [weight]);
     const onsets = Array.from({ length: maxChordSize }, () => [0]);
 
@@ -261,7 +263,6 @@ export default class NoteHarmonizer {
   private setChordCollection(chordCollection: number[][] | string, keySignatureEmbedding: number = 0.1): void {
     if (typeof chordCollection === "string") {
       chordCollection = this.getChordCollection(chordCollection);
-      this.chordCollection = chordCollection;
     } else if (Array.isArray(chordCollection)) {
       this.chordCollection = "custom";
     } else {
@@ -333,11 +334,11 @@ export default class NoteHarmonizer {
       const chord = this.predictChordFromChromaVector(weightedChordChroma, harmonicConsonance);
 
       // convert chord to note array and append to harmonic array
-      const chordNoteArray = this.chordToNoteArray(chord, seg.onset, segSize, 0.4);
+      const chordNoteArray = this.chordToNoteArray(chord, seg.onset, segSize, 0.25);
 
       harmonicArray.push(...chordNoteArray);
 
-      //   // keep track of previous chroma
+      // keep track of previous chroma
       lastChroma = chroma;
     }
     return harmonicArray;

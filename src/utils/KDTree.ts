@@ -11,6 +11,32 @@ export default class KDTree {
     this.root = null;
   }
 
+  getLeafCount(): number {
+    return this.countLeaves(this.root);
+  }
+
+  private countLeaves(node: KDNode | null): number {
+    if (node === null) {
+      return 0;
+    }
+
+    if (node.left === null && node.right === null && node.point !== null) {
+      return 1;
+    }
+
+    let leafCount = 0;
+
+    if (node.left !== null) {
+      leafCount += this.countLeaves(node.left);
+    }
+
+    if (node.right !== null) {
+      leafCount += this.countLeaves(node.right);
+    }
+
+    return leafCount;
+  }
+
   /**
    * Constructs the KDTree from the given points.
    * @param X An array of points, where each point is an array of numbers.
@@ -50,7 +76,7 @@ export default class KDTree {
    * @param k The number of nearest neighbors to find.
    * @returns An array of the k nearest neighbors to the query point.
    */
-  query(x: number[], k: number = 3): number[][] {
+  query(x: number[], k: number = 1): number[][] {
     const nearestPoints: number[][] = [];
 
     const search = (node: KDNode | null): void => {

@@ -39,7 +39,7 @@
   }
   .value-display {
     @include m.round;
-    background-color: var(--disabled-3);
+    background-color: var(--bg-5);
     color: var(--fg-5);
     font-weight: bold;
     font-size: m.$txt-sm;
