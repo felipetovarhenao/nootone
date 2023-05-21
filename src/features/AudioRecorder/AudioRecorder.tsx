@@ -6,6 +6,7 @@ import useAudioRecorder from "../../hooks/useAudioRecorder";
 import blobUrlToAudioBuffer from "../../utils/blobUrlToAudioBuffer";
 import detectPitch from "../../utils/detectPitch";
 import pitchToFrequency from "../../utils/PitchToFrequency";
+import NoteHarmonizer from "../../utils/NoteHarmonizer";
 
 interface Note {
   pitch: number;
@@ -45,6 +46,8 @@ const AudioRecorder: React.FC = () => {
   const { isRecording, stopRecording, startRecording, audioBlob } = useAudioRecorder();
 
   useEffect(() => {
+    const n = new NoteHarmonizer();
+    console.log(n);
     if (audioBlob) {
       const url = URL.createObjectURL(audioBlob);
       blobUrlToAudioBuffer(url, (audioData, sampleRate) => {

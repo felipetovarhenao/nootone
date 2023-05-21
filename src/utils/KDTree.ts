@@ -50,7 +50,7 @@ export default class KDTree {
    * @param k The number of nearest neighbors to find.
    * @returns An array of the k nearest neighbors to the query point.
    */
-  query(x: number[], k: number): number[][] {
+  query(x: number[], k: number = 3): number[][] {
     const nearestPoints: number[][] = [];
 
     const search = (node: KDNode | null): void => {
