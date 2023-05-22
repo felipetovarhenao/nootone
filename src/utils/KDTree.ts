@@ -1,138 +1,99 @@
-export default class KDTree {
-  private k: number;
-  private root: KDNode | null;
-
-  /**
-   * Initializes a KDTree with the specified number of dimensions.
-   * @param k The number of dimensions for the points in the KDTree.
-   */
-  constructor(k: number) {
-    this.k = k;
-    this.root = null;
-  }
-
-  getLeafCount(): number {
-    return this.countLeaves(this.root);
-  }
-
-  private countLeaves(node: KDNode | null): number {
-    if (node === null) {
-      return 0;
-    }
-
-    if (node.left === null && node.right === null && node.point !== null) {
-      return 1;
-    }
-
-    let leafCount = 0;
-
-    if (node.left !== null) {
-      leafCount += this.countLeaves(node.left);
-    }
-
-    if (node.right !== null) {
-      leafCount += this.countLeaves(node.right);
-    }
-
-    return leafCount;
-  }
-
-  /**
-   * Constructs the KDTree from the given points.
-   * @param X An array of points, where each point is an array of numbers.
-   */
-  fit(X: number[][]): void {
-    this.root = this.buildTree(X, 0);
-  }
-
-  /**
-   * Recursively builds the KDTree by dividing the points based on the current depth.
-   * @param X An array of points, where each point is an array of numbers.
-   * @param depth The current depth in the KDTree.
-   * @returns The root node of the constructed KDTree.
-   */
-  private buildTree(X: number[][], depth: number): KDNode | null {
-    if (X.length === 0) {
-      return null;
-    }
-
-    const axis = depth % this.k;
-    const sortedX = X.sort((a, b) => a[axis] - b[axis]);
-    const medianIdx = Math.floor(sortedX.length / 2);
-    const medianPoint = sortedX[medianIdx];
-
-    const node: KDNode = {
-      point: medianPoint,
-      left: this.buildTree(sortedX.slice(0, medianIdx), depth + 1),
-      right: this.buildTree(sortedX.slice(medianIdx + 1), depth + 1),
-    };
-
-    return node;
-  }
-
-  /**
-   * Queries the KDTree to find the k nearest neighbors to the given point.
-   * @param x The query point, represented as an array of numbers.
-   * @param k The number of nearest neighbors to find.
-   * @returns An array of the k nearest neighbors to the query point.
-   */
-  query(x: number[], k: number = 1): number[][] {
-    const nearestPoints: number[][] = [];
-
-    const search = (node: KDNode | null): void => {
-      if (node === null) {
-        return;
-      }
-
-      nearestPoints.push(node.point);
-
-      const axis = nearestPoints.length % this.k;
-      const axisDiff = x[axis] - node.point[axis];
-      const dist = this.distance(x, node.point);
-
-      const closerNode = axisDiff < 0 ? node.left : node.right;
-      const furtherNode = axisDiff < 0 ? node.right : node.left;
-
-      search(closerNode);
-
-      // If we haven't found k nearest neighbors or the current node is closer than the furthest neighbor,
-      // continue searching in the further node.
-      if (nearestPoints.length < k || dist < this.distance(x, nearestPoints[0])) {
-        search(furtherNode);
-      }
-
-      // If we have found more than k nearest neighbors, keep only the k nearest ones.
-      if (nearestPoints.length > k) {
-        nearestPoints.sort((a, b) => this.distance(x, a) - this.distance(x, b));
-        nearestPoints.length = k;
-      }
-    };
-
-    search(this.root);
-
-    return nearestPoints;
-  }
-
-  /**
-   * Computes the Euclidean distance between two points.
-   * @param a The first point, represented as an array of numbers.
-   * @param b The second point, represented as an array of numbers.
-   * @returns The Euclidean distance between the two points.
-   */
-  private distance(a: number[], b: number[]): number {
-    let sum = 0;
-    for (let i = 0; i < this.k; i++) {
-      sum += Math.pow(a[i] - b[i], 2);
-    }
-    return Math.sqrt(sum);
-  }
+/**
+ * Represents a node in a k-dimensional tree.
+ */
+interface KDNode {
+  point: number[];
+  left: KDNode | null;
+  right: KDNode | null;
 }
 
 /**
- * Represents a node in the KDTree.
+ * Represents a k-dimensional tree.
  */
-interface KDNode {
-  point: number[]; // The point associated with the node
-  left: KDNode | null; // The left child node
-  right: KDNode | null; // The right child node
+export default class KDTree {
+  private root: KDNode | null;
+
+  /**
+   * Constructs a KDTree object and builds the tree from the given points.
+   * @param points - An array of points in the k-dimensional space.
+   */
+  constructor(points: number[][]) {
+    this.root = this.buildTree(points, 0);
+  }
+
+  /**
+   * Recursively builds the KDTree using the given points and depth.
+   * @param points - An array of points in the k-dimensional space.
+   * @param depth - The current depth in the tree.
+   * @returns The root node of the constructed KDTree.
+   */
+  private buildTree(points: number[][], depth: number): KDNode | null {
+    if (points.length === 0) {
+      return null;
+    }
+
+    const axis = depth % points[0].length;
+    const sortedPoints = points.slice().sort((a, b) => a[axis] - b[axis]);
+    const medianIndex = Math.floor(sortedPoints.length / 2);
+
+    return {
+      point: sortedPoints[medianIndex],
+      left: this.buildTree(sortedPoints.slice(0, medianIndex), depth + 1),
+      right: this.buildTree(sortedPoints.slice(medianIndex + 1), depth + 1),
+    };
+  }
+
+  /**
+   * Calculates the Euclidean distance between two points.
+   * @param point1 - The first point.
+   * @param point2 - The second point.
+   * @returns The Euclidean distance between the two points.
+   */
+  private euclideanDistance(point1: number[], point2: number[]): number {
+    return Math.sqrt(point1.reduce((sum, coord, index) => sum + Math.pow(coord - point2[index], 2), 0));
+  }
+
+  /**
+   * Finds the closest point to the target point in the KDTree.
+   * @param target - The target point.
+   * @param current - The current node being visited.
+   * @param depth - The current depth in the tree.
+   * @param best - The best point found so far.
+   * @returns The closest point to the target point.
+   */
+  private closestPoint(target: number[], current: KDNode | null, depth: number, best: KDNode | null): KDNode | null {
+    if (current === null) {
+      return best;
+    }
+
+    const axis = depth % target.length;
+    const isLeftSubtree = target[axis] < current.point[axis];
+    const nextNode = isLeftSubtree ? current.left : current.right;
+    const alternateNode = isLeftSubtree ? current.right : current.left;
+    const bestDistance = best ? this.euclideanDistance(target, best.point) : Infinity;
+    const currentDistance = this.euclideanDistance(target, current.point);
+
+    let nextBest = best;
+    if (currentDistance < bestDistance) {
+      nextBest = current;
+    }
+
+    nextBest = this.closestPoint(target, nextNode, depth + 1, nextBest);
+
+    if (this.euclideanDistance(target, current.point) < bestDistance) {
+      nextBest = this.closestPoint(target, alternateNode, depth + 1, nextBest);
+    }
+
+    return nextBest;
+  }
+
+  /**
+   * Finds the nearest neighbor to the target point in the KDTree.
+   * @param target - The target point.
+   * @returns The nearest neighbor point to the target point, or null if the tree is empty.
+   */
+  public nearestNeighbor(target: number[]): number[] | null {
+    const closestNode = this.closestPoint(target, this.root, 0, null);
+    return closestNode ? closestNode.point : null;
+  }
 }

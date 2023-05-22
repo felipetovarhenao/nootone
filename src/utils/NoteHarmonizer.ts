@@ -117,8 +117,7 @@ export default class NoteHarmonizer {
 
   constructor() {
     this.keySignatureChromaVectors = this.getKeySignatureChromaVectors();
-    this.keySignatureTree = new KDTree(this.keySignatureChromaVectors[0].length);
-    this.keySignatureTree.fit(this.keySignatureChromaVectors);
+    this.keySignatureTree = new KDTree(this.keySignatureChromaVectors);
 
     this.chordChromaVectors = null;
     this.chordChromaTree = null;
@@ -203,7 +202,8 @@ export default class NoteHarmonizer {
     const segmentChromaVector = this.noteArrayToChroma(noteArray, segSize);
 
     // get most similar key signature vector
-    return this.keySignatureTree.query(segmentChromaVector)[0];
+    const detectedKey = this.keySignatureTree.nearestNeighbor(segmentChromaVector) || [];
+    return detectedKey;
   }
 
   private chromaVectorToChord(vector: number[], activationThreshold: number, offset: number = 60): number[] {
@@ -214,7 +214,6 @@ export default class NoteHarmonizer {
         chord.push(index + offset);
       }
     });
-
     // append root to chord
     const root = vector.indexOf(Math.max(...vector));
     chord.push(root + offset - 12);
@@ -225,30 +224,27 @@ export default class NoteHarmonizer {
   private getChordChromaVectors(chordCollection: number[][], keySignatureEmbedding: number = 0.1): number[][] {
     const maxChordSize = Math.max(...chordCollection.map((c) => c.length));
     const weights = Array.from({ length: maxChordSize }, (_, i) => 1 / 1.125 ** i);
-    console.log(weights);
     const weightsMatrix = weights.map((weight) => [weight]);
     const onsets = Array.from({ length: maxChordSize }, () => [0]);
 
     const chordChromaVectors: number[][] = [];
-
     for (let root = 0; root < 12; root++) {
       for (const chordType of chordCollection) {
+        const chord = chordType.map((note) => (note + root) % 12);
+        const notes: NoteEvent[] = chord.map((pitch, i) => ({
+          onset: onsets[i][0],
+          duration: weightsMatrix[i][0],
+          velocity: weightsMatrix[i][0],
+          pitch,
+        }));
+
+        const chroma = this.noteArrayToChroma(notes, 1);
         for (const keySig of this.keySignatureChromaVectors) {
-          const chord = chordType.map((note) => (note + root) % 12);
-          const notes: NoteEvent[] = chord.map((pitch, i) => ({
-            onset: onsets[i][0],
-            duration: weightsMatrix[i][0],
-            pitch,
-          }));
-
-          const chroma = this.noteArrayToChroma(notes, 1);
           const embeddedChroma = chroma.map((value, index) => value * (1 - keySignatureEmbedding) + keySig[index] * keySignatureEmbedding);
-
           chordChromaVectors.push(embeddedChroma);
         }
       }
     }
-
     return chordChromaVectors;
   }
 
@@ -270,15 +266,15 @@ export default class NoteHarmonizer {
     }
 
     this.chordChromaVectors = this.getChordChromaVectors(chordCollection, keySignatureEmbedding);
-    this.chordChromaTree = new KDTree(this.chordChromaVectors[0].length);
-    this.chordChromaTree.fit(this.chordChromaVectors);
+    this.chordChromaTree = new KDTree(this.chordChromaVectors);
   }
 
   private predictChordFromChromaVector(chroma: number[], activationThreshold: number = 0.25): number[] {
     if (!this.chordChromaTree) {
       throw new Error("chordChromaTree is null");
     }
-    const vector = this.chordChromaTree.query(chroma)[0];
+    const vector = this.chordChromaTree.nearestNeighbor(chroma) || [];
+
     return this.chromaVectorToChord(vector, activationThreshold);
   }
 
@@ -293,7 +289,7 @@ export default class NoteHarmonizer {
 
   harmonize(
     noteArray: NoteEvent[],
-    chordCollection: number[][] | string = "classical",
+    chordCollection: number[][] | string = "traditional",
     segSize: number = 2,
     harmonicMemory: number = 0.125,
     keySignatureWeight: number = 0.25,
@@ -332,6 +328,7 @@ export default class NoteHarmonizer {
 
       // make chord prediction
       const chord = this.predictChordFromChromaVector(weightedChordChroma, harmonicConsonance);
+      chord.sort();
 
       // convert chord to note array and append to harmonic array
       const chordNoteArray = this.chordToNoteArray(chord, seg.onset, segSize, 0.25);
@@ -341,6 +338,7 @@ export default class NoteHarmonizer {
       // keep track of previous chroma
       lastChroma = chroma;
     }
+
     return harmonicArray;
   }
 }

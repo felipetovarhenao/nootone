@@ -9,11 +9,12 @@ import detectPitch from "../../../utils/detectPitch";
 import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
+
 const HarmonizerDemo = () => {
   const [harmonyStyle, setHarmonyStyle] = useState(harmonyStyles[0]);
   const [segSize, setSegSize] = useState(2);
   const [harmonicMemory, setHarmonicMemory] = useState(0.125);
-  const [keySigWeight, setKeySigWeight] = useState(0.1);
+  const [keySigWeight, setKeySigWeight] = useState(0.25);
   const [lookAhead, setLookAhead] = useState(2);
   const [audioURL, setAudioURL] = useState("");
   const [melody, setMelody] = useState<NoteEvent[]>([]);
@@ -31,8 +32,7 @@ const HarmonizerDemo = () => {
     }
     if (melody?.length > 0) {
       const harmonizer = new NoteHarmonizer();
-      console.log(harmonyStyle, segSize, harmonicMemory, lookAhead);
-      const harmony = harmonizer.harmonize(melody, harmonyStyle, segSize, harmonicMemory, lookAhead);
+      const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
       playNoteEvents(harmony);
     }
   }
