@@ -26,20 +26,25 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
   };
 
   const startRecording = () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true, video: false })
-      .then((stream) => {
-        setIsRecording(true);
-        setAudioBlob(null);
-        audioChunksRef.current = [];
-        const mediaRecorder = new MediaRecorder(stream);
-        mediaRecorderRef.current = mediaRecorder;
-        mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
-        mediaRecorder.start(50);
-      })
-      .catch((error) => {
-        setRecordingError(error);
-      });
+    if (navigator.mediaDevices?.getUserMedia) {
+      setRecordingError("");
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: false })
+        .then((stream) => {
+          setIsRecording(true);
+          setAudioBlob(null);
+          audioChunksRef.current = [];
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorderRef.current = mediaRecorder;
+          mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
+          mediaRecorder.start(50);
+        })
+        .catch((error) => {
+          setRecordingError(error);
+        });
+    } else {
+      setRecordingError("Audio input is not supported by this browser.");
+    }
   };
 
   const stopRecording = () => {
@@ -49,6 +54,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
       const blob = new Blob(audioChunksRef.current, { type: "audio/webm; codecs=opus" });
       setAudioBlob(blob);
       setIsRecording(false);
+      setRecordingError("");
     }
   };
 
