@@ -1,8 +1,13 @@
 @use "../../../styles/main.scss" as *;
 .HarmonizerDemo {
   @include v-stack;
-  @include pad;
+  @include round;
+  @include pad($gap-lg);
   max-width: 600px;
+  background-color: var(--bg-2);
+  * {
+    color: var(--txt);
+  }
   .header {
     font-size: $txt-lg;
     font-weight: bold;
@@ -22,7 +27,8 @@
     @include round-border;
     @include pad($gap-xxl);
     gap: $gap-lg;
-    &.settings, &.audio-ctrl {
+    &.settings,
+    &.audio-ctrl {
       @include col-grid(150px auto);
     }
     .legend {
@@ -35,6 +41,9 @@
       @include l-mar;
       width: $txt-ml;
       height: $txt-ml;
+    }
+    .processing {
+      color: var(--primary-4);
     }
   }
 }

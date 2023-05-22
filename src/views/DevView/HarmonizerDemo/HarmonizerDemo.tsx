@@ -20,6 +20,7 @@ const HarmonizerDemo = () => {
   const [melody, setMelody] = useState<NoteEvent[]>([]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [withMelody, setWithMelody] = useState(false);
 
@@ -38,6 +39,7 @@ const HarmonizerDemo = () => {
   }
 
   function handleBlob(blob: Blob) {
+    setIsProcessing(true);
     if (audioURL) {
       setAudioURL("");
       URL.revokeObjectURL(audioURL);
@@ -47,6 +49,7 @@ const HarmonizerDemo = () => {
       const notes = detectPitch(audioData, sampleRate);
       setMelody(notes);
       setAudioURL(url);
+      setIsProcessing(false);
     });
   }
 
@@ -59,11 +62,11 @@ const HarmonizerDemo = () => {
           This is a dev demo of <AppName />
           's auto-harmonizer feature.
         </p>
-        <p>As such, the UI exposes all settings, many of which might not be available for a real-life user.</p>
+        <p>As such, the UI exposes all settings, many of which will likely be unavailable for a real-life user.</p>
         <p>Similarly, the playback quality is well below what it's planned to be for the actual release.</p>
         <p>
-          To use it, press record, and sing a tune. An audio playback compoenent will show up once it's been analyzed. When pressing play, you can hear the
-          melody and the harmonization
+          To use it, press the record button, and sing a tune. An audio playback compoenent will show up once it's been analyzed. When pressing play,
+          you can hear the melody and the harmonization.
         </p>
       </fieldset>
 
@@ -85,8 +88,8 @@ const HarmonizerDemo = () => {
           value={harmonicMemory}
           setValue={setHarmonicMemory}
           inMin={0}
-          inMax={0.25}
-          step={0.001}
+          inMax={1}
+          step={0.01}
           outMin={0}
           outMax={100}
           unit={"%"}
@@ -97,7 +100,7 @@ const HarmonizerDemo = () => {
           value={keySigWeight}
           setValue={setKeySigWeight}
           inMin={0}
-          inMax={0.25}
+          inMax={1}
           step={0.01}
           outMin={0}
           outMax={100}
@@ -120,6 +123,12 @@ const HarmonizerDemo = () => {
             <audio ref={audioRef} onPlay={handlePlay} controls>
               <source src={audioURL} type="audio/webm" />
             </audio>
+          </>
+        )}
+        {isProcessing && (
+          <>
+            <div></div>
+            <span className="processing">processing audio...</span>
           </>
         )}
       </fieldset>
