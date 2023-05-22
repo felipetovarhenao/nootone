@@ -12,7 +12,7 @@ const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
 const HarmonizerDemo = () => {
   const [harmonyStyle, setHarmonyStyle] = useState(harmonyStyles[0]);
-  const [segSize, setSegSize] = useState(2);
+  const [segSize, setSegSize] = useState(1);
   const [harmonicMemory, setHarmonicMemory] = useState(0.125);
   const [keySigWeight, setKeySigWeight] = useState(0.25);
   const [lookAhead, setLookAhead] = useState(2);
