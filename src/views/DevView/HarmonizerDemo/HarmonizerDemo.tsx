@@ -61,7 +61,10 @@ const HarmonizerDemo = () => {
         </p>
         <p>As such, the UI exposes all settings, many of which might not be available for a real-life user.</p>
         <p>Similarly, the playback quality is well below what it's planned to be for the actual release.</p>
-        <p></p>
+        <p>
+          To use it, press record, and sing a tune. An audio playback compoenent will show up once it's been analyzed. When pressing play, you can hear the
+          melody and the harmonization
+        </p>
       </fieldset>
 
       <fieldset className="fieldset settings">
