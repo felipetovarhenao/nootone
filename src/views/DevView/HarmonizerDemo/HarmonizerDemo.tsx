@@ -6,7 +6,7 @@ import AppName from "../../../components/AppName/AppName";
 import AudioRecorder from "../../../features/AudioRecorder/AudioRecorder";
 import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
 import audioToNoteEvents from "../../../utils/audioToNoteEvents";
-import blobUrlToAudioBuffer from "../../../utils/blobUrlToAudioBuffer";
+import audioArrayFromURL from "../../../utils/audioArrayFromURL";
 import detectPitch from "../../../utils/detectPitch";
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
@@ -53,20 +53,26 @@ const HarmonizerDemo = () => {
       URL.revokeObjectURL(audioURL);
     }
     const url = URL.createObjectURL(blob);
-    if (!pitchy) {
-      audioToNoteEvents(url, (noteEvents) => {
-        setMelody(noteEvents);
-        setAudioURL(url);
-        setIsProcessing(false);
-      });
-    } else {
-      blobUrlToAudioBuffer(url, (audioData, sampleRate) => {
-        const notes = detectPitch(audioData, sampleRate);
-        setMelody(notes);
-        setAudioURL(url);
-        setIsProcessing(false);
-      });
-    }
+    audioArrayFromURL(
+      url,
+      (audioData, sampleRate) => {
+        console.log(sampleRate);
+        if (!pitchy) {
+          audioToNoteEvents(audioData, (noteEvents) => {
+            setMelody(noteEvents);
+            setAudioURL(url);
+            setIsProcessing(false);
+          });
+        } else {
+          const notes = detectPitch(audioData, sampleRate);
+          setMelody(notes);
+          setAudioURL(url);
+          setIsProcessing(false);
+        }
+      },
+      undefined,
+      22050
+    );
   }
 
   return (

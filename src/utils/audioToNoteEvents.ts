@@ -4,37 +4,31 @@ import { NoteEvent } from "./playNoteEvents";
 /**
  * Converts audio to note events using the BasicPitch library.
  *
- * @param audioURL - The URL of the audio file.
+ * @param audioArray - Audio data as a Float32Array.
  * @param onSuccess - A callback function called when the conversion is successful. It receives an array of note events.
  * @param onError - An optional callback function called if an error occurs during the conversion.
  * @param onProgress - An optional callback function called to get progress percentage value.
- * @param options - Optional detection options.
+ * @param options - Optional detection settings.
  * @returns A promise that resolves when the conversion is complete.
  */
 export default async function audioToNoteEvents(
-  audioURL: string,
+  audioArray: Float32Array,
   onSuccess: onSuccessCallback,
   onError?: onErrorCallback,
   onProgress?: onProgressCallback,
-  options?: detectionOptions
+  options?: detectionSettings
 ): Promise<void> {
-  const audioContext = new AudioContext({ sampleRate: 22050 });
-
   const frames: number[][] = [];
   const onsets: number[][] = [];
   const contours: number[][] = [];
 
   try {
-    const response = await fetch(audioURL);
-    const arrayBuffer = await response.arrayBuffer();
-    const decodedData = await audioContext.decodeAudioData(arrayBuffer);
-
     // Instantiate the BasicPitch model
     const basicPitch = new BasicPitch("https://raw.githubusercontent.com/spotify/basic-pitch-ts/main/model/model.json");
 
     // Evaluate the model on the decoded audio data
     await basicPitch.evaluateModel(
-      decodedData,
+      audioArray,
       (frame: number[][], onset: number[][], contour: number[][]) => {
         // Collect the frame, onset, and contour data
         frames.push(...frame);
@@ -88,7 +82,7 @@ export default async function audioToNoteEvents(
 }
 
 // Define audio detection options type
-type detectionOptions = {
+type detectionSettings = {
   onsetThresh?: number;
   frameThresh?: number;
   minNoteLen?: number;

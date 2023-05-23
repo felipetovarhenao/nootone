@@ -1,5 +1,5 @@
 import pitchToFrequency from "./pitchToFrequency";
-
+import createNewAudioContext from "./createNewAudioContext";
 export interface NoteEvent {
   pitch: number;
   onset: number;
@@ -13,7 +13,7 @@ export interface NoteEvent {
  * @param notes - An array of note events.
  */
 export default function playNoteEvents(notes: NoteEvent[]): void {
-  const audioContext = new AudioContext();
+  const audioContext = createNewAudioContext();
 
   notes.forEach((note) => {
     const carrierOsc = audioContext.createOscillator();
