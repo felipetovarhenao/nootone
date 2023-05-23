@@ -3,7 +3,7 @@
   @include v-stack;
   @include round;
   @include pad($gap-lg);
-  max-width: 600px;
+  max-width: 800px;
   background-color: var(--bg-2);
   * {
     color: var(--txt);
@@ -44,6 +44,11 @@
     }
     .processing {
       color: var(--primary-4);
+    }
+    .algorithm-options {
+      @include to-left;
+      @include l-mar($gap-ml);
+      gap: $gap-lg;
     }
   }
 }
