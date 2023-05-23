@@ -4,9 +4,10 @@ import NoteHarmonizer from "../../../utils/NoteHarmonizer";
 import Slider from "../../../components/Slider/Slider";
 import AppName from "../../../components/AppName/AppName";
 import AudioRecorder from "../../../features/AudioRecorder/AudioRecorder";
-import blobUrlToAudioBuffer from "../../../utils/blobUrlToAudioBuffer";
-import detectPitch from "../../../utils/detectPitch";
+// import blobUrlToAudioBuffer from "../../../utils/blobUrlToAudioBuffer";
+// import detectPitch from "../../../utils/detectPitch";
 import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
+import audioToNoteEvents from "../../../utils/audioToNoteEvents";
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -25,16 +26,16 @@ const HarmonizerDemo = () => {
   const [withMelody, setWithMelody] = useState(false);
 
   function handlePlay() {
+    if (melody?.length > 0) {
+      const harmonizer = new NoteHarmonizer();
+      const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
+      playNoteEvents(harmony);
+    }
     if (withMelody) {
       playNoteEvents(melody);
       audioRef.current?.pause();
     } else {
       audioRef.current?.play();
-    }
-    if (melody?.length > 0) {
-      const harmonizer = new NoteHarmonizer();
-      const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
-      playNoteEvents(harmony);
     }
   }
 
@@ -45,9 +46,9 @@ const HarmonizerDemo = () => {
       URL.revokeObjectURL(audioURL);
     }
     const url = URL.createObjectURL(blob);
-    blobUrlToAudioBuffer(url, (audioData, sampleRate) => {
-      const notes = detectPitch(audioData, sampleRate);
-      setMelody(notes);
+    audioToNoteEvents(url, (noteEvents) => {
+      noteEvents.sort((a, b) => a.onset - b.onset || a.pitch - b.pitch);
+      setMelody(noteEvents);
       setAudioURL(url);
       setIsProcessing(false);
     });
