@@ -4,8 +4,6 @@ import NoteHarmonizer from "../../../utils/NoteHarmonizer";
 import Slider from "../../../components/Slider/Slider";
 import AppName from "../../../components/AppName/AppName";
 import AudioRecorder from "../../../features/AudioRecorder/AudioRecorder";
-// import blobUrlToAudioBuffer from "../../../utils/blobUrlToAudioBuffer";
-// import detectPitch from "../../../utils/detectPitch";
 import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
 import audioToNoteEvents from "../../../utils/audioToNoteEvents";
 

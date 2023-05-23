@@ -1,47 +1,105 @@
 import { BasicPitch, noteFramesToTime, addPitchBendsToNoteEvents, outputToNotesPoly } from "@spotify/basic-pitch";
 import { NoteEvent } from "./playNoteEvents";
 
-type onSuccessType = (notes: NoteEvent[]) => void;
-type onFailType = (error: any) => void;
-
-export default async function audioToNoteEvents(audioURL: string, onSuccess: onSuccessType, onFail?: onFailType): Promise<void> {
+/**
+ * Converts audio to note events using the BasicPitch library.
+ *
+ * @param audioURL - The URL of the audio file.
+ * @param onSuccess - A callback function called when the conversion is successful. It receives an array of note events.
+ * @param onError - An optional callback function called if an error occurs during the conversion.
+ * @param onProgress - An optional callback function called to get progress percentage value.
+ * @param options - Optional detection options.
+ * @returns A promise that resolves when the conversion is complete.
+ */
+export default async function audioToNoteEvents(
+  audioURL: string,
+  onSuccess: onSuccessCallback,
+  onError?: onErrorCallback,
+  onProgress?: onProgressCallback,
+  options?: detectionOptions
+): Promise<void> {
   const audioContext = new AudioContext({ sampleRate: 22050 });
 
   const frames: number[][] = [];
   const onsets: number[][] = [];
   const contours: number[][] = [];
-  let percent: number;
 
   try {
     const response = await fetch(audioURL);
     const arrayBuffer = await response.arrayBuffer();
     const decodedData = await audioContext.decodeAudioData(arrayBuffer);
 
+    // Instantiate the BasicPitch model
     const basicPitch = new BasicPitch("https://raw.githubusercontent.com/spotify/basic-pitch-ts/main/model/model.json");
+
+    // Evaluate the model on the decoded audio data
     await basicPitch.evaluateModel(
       decodedData,
-      (f: number[][], o: number[][], c: number[][]) => {
-        frames.push(...f);
-        onsets.push(...o);
-        contours.push(...c);
+      (frame: number[][], onset: number[][], contour: number[][]) => {
+        // Collect the frame, onset, and contour data
+        frames.push(...frame);
+        onsets.push(...onset);
+        contours.push(...contour);
       },
-      (p: number) => {
-        percent = p;
+      (pct: number) => {
+        if (onProgress) {
+          onProgress(pct);
+        }
       }
     );
-    const notes = noteFramesToTime(addPitchBendsToNoteEvents(contours, outputToNotesPoly(frames, onsets, 1, 0.5)));
+
+    // Destructure the options with default values
+    const {
+      onsetThresh = 0.5,
+      frameThresh = 0.3,
+      minNoteLen = 5,
+      inferOnsets = true,
+      maxFreq = null,
+      minFreq = null,
+      melodiaTrick = true,
+      energyTolerance = 11,
+    } = options || {};
+
+    // Convert the collected data to note events
+    const notes = noteFramesToTime(
+      addPitchBendsToNoteEvents(
+        contours,
+        outputToNotesPoly(frames, onsets, onsetThresh, frameThresh, minNoteLen, inferOnsets, maxFreq, minFreq, melodiaTrick, energyTolerance)
+      )
+    );
     const noteEvents = notes.map((n) => ({
       pitch: n.pitchMidi,
       duration: n.durationSeconds,
       onset: n.startTimeSeconds,
       velocity: n.amplitude,
     }));
+
+    // Sort the note events by onset time and pitch
     noteEvents.sort((a, b) => a.onset - b.onset || a.pitch - b.pitch);
 
+    // Call the success callback with the resulting note events
     onSuccess(noteEvents);
   } catch (error) {
-    if (onFail) {
-      onFail(error);
+    // Call the error callback if provided
+    if (onError) {
+      onError(error);
     }
   }
 }
+
+// Define audio detection options type
+type detectionOptions = {
+  onsetThresh?: number;
+  frameThresh?: number;
+  minNoteLen?: number;
+  inferOnsets?: boolean;
+  maxFreq?: number | null;
+  minFreq?: number | null;
+  melodiaTrick?: boolean;
+  energyTolerance?: number;
+};
+
+// Define the callback types
+type onSuccessCallback = (notes: NoteEvent[]) => void;
+type onErrorCallback = (error: any) => void;
+type onProgressCallback = (percent: number) => void;
