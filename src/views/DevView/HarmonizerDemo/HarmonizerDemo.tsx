@@ -93,7 +93,7 @@ const HarmonizerDemo = () => {
 
   return (
     <div className="HarmonizerDemo">
-      <h1 className="header">Harmonizer demo</h1>
+      <h1 className="header">Harmonizer demo v2</h1>
       <fieldset className="fieldset">
         <legend className="legend">description</legend>
         <p>
