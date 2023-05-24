@@ -1,5 +1,8 @@
 import KDTree from "./KDTree";
 
+/**
+ * NoteHarmonizer class that harmonizes a given note array based on chord collections and key signatures.
+ */
 export default class NoteHarmonizer {
   private keySignatureChromaVectors: number[][];
   private keySignatureTree: KDTree;
@@ -115,6 +118,9 @@ export default class NoteHarmonizer {
     ],
   };
 
+  /**
+   * Constructs a new instance of NoteHarmonizer.
+   */
   constructor() {
     this.keySignatureChromaVectors = this.getKeySignatureChromaVectors();
     this.keySignatureTree = new KDTree(this.keySignatureChromaVectors);
@@ -124,6 +130,10 @@ export default class NoteHarmonizer {
     this.chordCollection = null;
   }
 
+  /**
+   * Returns the chroma vectors for all possible major and minor keys.
+   * @returns {number[][]} An array of chroma vectors.
+   */
   private getKeySignatureChromaVectors(): number[][] {
     /* Returns a chroma vector for all possible major and minor keys */
     const majorKeySignature: number[] = [7, 0, 2, 0, 5, 3, 0.5, 6, 0, 1, 0, 4].map((value) => value / 7);
@@ -139,6 +149,12 @@ export default class NoteHarmonizer {
     return keySignaturesChromas;
   }
 
+  /**
+   * Converts a note array into segments of specified size.
+   * @param {NoteEvent[]} notes - The input note array.
+   * @param {number} segSize - The size of segments.
+   * @returns {Segment[]} An array of segments.
+   */
   private noteArrayToSegments(notes: NoteEvent[], segSize: number): Segment[] {
     const segments: Segment[] = [];
     let segment: NoteEvent[] = [];
@@ -163,6 +179,12 @@ export default class NoteHarmonizer {
     return segments;
   }
 
+  /**
+   * Computes the weight for a note given its onset within the meter (it assumes the segment size is indicative of the time signature).
+   * @param {number} onset - The onset of a note.
+   * @param {number} segSize - The size of segments.
+   * @returns {number} The weight for the metric.
+   */
   private getMetricWeight(onset: number, segSize: number): number {
     const w = (t: number, s: number, i: number): number => {
       const theta = t * 2 ** i * Math.PI * (4 / s);
@@ -178,6 +200,12 @@ export default class NoteHarmonizer {
     return Math.sqrt(weight);
   }
 
+  /**
+   * Converts a note array into a chroma vector.
+   * @param {NoteEvent[]} notes - The input note array.
+   * @param {number} segSize - The size of segments.
+   * @returns {number[]} The chroma vector.
+   */
   private noteArrayToChroma(notes: NoteEvent[], segSize: number): number[] {
     const chroma: number[] = new Array(12).fill(0);
 
@@ -190,6 +218,12 @@ export default class NoteHarmonizer {
     return chroma.map((value) => value / maxChroma);
   }
 
+  /**
+   * Estimates the key signature from a given array of segments.
+   * @param {Segment[]} segments - The array of segments.
+   * @param {number} segSize - The size of segments.
+   * @returns {number[]} The estimated key signature vector.
+   */
   private estimateKeyFromSegments(segments: Segment[], segSize: number): number[] {
     const noteArray: NoteEvent[] = [];
 
@@ -206,6 +240,13 @@ export default class NoteHarmonizer {
     return detectedKey;
   }
 
+  /**
+   * Converts a chroma vector into a chord based on an activation threshold.
+   * @param {number[]} vector - The input chroma vector.
+   * @param {number} activationThreshold - The activation threshold.
+   * @param {number} offset - The offset for pitch conversion.
+   * @returns {number[]} The resulting chord as an array of pitches.
+   */
   private chromaVectorToChord(vector: number[], activationThreshold: number, offset: number = 60): number[] {
     // get pitch classes above activation threshold
     const chord: number[] = [];
@@ -221,6 +262,12 @@ export default class NoteHarmonizer {
     return Array.from(new Set(chord));
   }
 
+  /**
+   * Computes the chord chroma vectors based on a given chord collection and key signature embedding.
+   * @param {number[][]} chordCollection - The chord collection.
+   * @param {number} keySignatureEmbedding - The key signature embedding value.
+   * @returns {number[][]} The chord chroma vectors.
+   */
   private getChordChromaVectors(chordCollection: number[][], keySignatureEmbedding: number = 0.1): number[][] {
     const maxChordSize = Math.max(...chordCollection.map((c) => c.length));
     const weights = Array.from({ length: maxChordSize }, (_, i) => 1 / 1.125 ** i);
@@ -248,6 +295,12 @@ export default class NoteHarmonizer {
     return chordChromaVectors;
   }
 
+  /**
+   * Retrieves the chord collection based on the given collection name.
+   * @param {string} collection - The name of the collection.
+   * @returns {number[][]} The chord collection.
+   * @throws {Error} If an invalid collection name is provided.
+   */
   private getChordCollection(collection: string): number[][] {
     const collectionName = collection.toLowerCase();
     if (!(collectionName in NoteHarmonizer.CHORD_COLLECTIONS)) {
@@ -256,6 +309,12 @@ export default class NoteHarmonizer {
     return NoteHarmonizer.CHORD_COLLECTIONS[collectionName];
   }
 
+  /**
+   * Sets the chord collection and updates the chord chroma vectors.
+   * @param {number[][] | string} chordCollection - The chord collection or its name.
+   * @param {number} keySignatureEmbedding - The key signature embedding value.
+   * @throws {Error} If an invalid chord collection type is provided.
+   */
   private setChordCollection(chordCollection: number[][] | string, keySignatureEmbedding: number = 0.1): void {
     if (typeof chordCollection === "string") {
       chordCollection = this.getChordCollection(chordCollection);
@@ -269,6 +328,12 @@ export default class NoteHarmonizer {
     this.chordChromaTree = new KDTree(this.chordChromaVectors);
   }
 
+  /**
+   * Predicts the chord based on the given chroma vector and activation threshold.
+   * @param {number[]} chroma - The input chroma vector.
+   * @param {number} activationThreshold - The activation threshold.
+   * @returns {number[]} The predicted chord as an array of pitches.
+   */
   private predictChordFromChromaVector(chroma: number[], activationThreshold: number = 0.25): number[] {
     if (!this.chordChromaTree) {
       throw new Error("chordChromaTree is null");
@@ -278,6 +343,15 @@ export default class NoteHarmonizer {
     return this.chromaVectorToChord(vector, activationThreshold);
   }
 
+  /**
+   * Converts a chord into an array of NoteEvent objects.
+   *
+   * @param chord - The chord represented as an array of pitches.
+   * @param onset - The onset time for the notes in the chord.
+   * @param duration - The duration of the notes in the chord.
+   * @param velocity - The velocity (loudness) of the notes in the chord.
+   * @returns An array of NoteEvent objects representing the individual notes of the chord.
+   */
   private chordToNoteArray(chord: number[], onset: number, duration: number, velocity: number): NoteEvent[] {
     return chord.map((pitch) => ({
       onset: onset,
@@ -287,6 +361,16 @@ export default class NoteHarmonizer {
     }));
   }
 
+  /**
+   * Harmonizes the given note array using the specified chord collection and key signature embedding.
+   * @param {NoteEvent[]} noteArray - The input note array.
+   * @param {string | number[][]} chordCollection - The chord collection or its name.
+   * @param {number} segSize - The size of harmonic segments.
+   * @param {number} keySignatureWeight - The key signature embedding value.
+   * @param {number} lookAhead - Number of segments to consider for key detection.
+   * @param {number} harmonicConsonance - The note activation threshold for every chord prediction.
+   * @returns {NoteEvent[]} The harmonized note array.
+   */
   harmonize(
     noteArray: NoteEvent[],
     chordCollection: number[][] | string = "traditional",
@@ -295,12 +379,12 @@ export default class NoteHarmonizer {
     keySignatureWeight: number = 0.25,
     lookAhead: number = 2,
     harmonicConsonance: number = 0.5
-  ): NoteEvent[] {
+  ): NoteEvent[][] {
     if (this.chordCollection !== chordCollection) {
       this.setChordCollection(chordCollection, keySignatureWeight);
     }
 
-    const harmonicArray: NoteEvent[] = [];
+    const harmonicArray: NoteEvent[][] = [];
     const chordSegments = this.noteArrayToSegments(noteArray, segSize);
     let lastChroma: number[] | null = null;
 
@@ -333,7 +417,7 @@ export default class NoteHarmonizer {
       // convert chord to note array and append to harmonic array
       const chordNoteArray = this.chordToNoteArray(chord, seg.onset, segSize, 0.25);
 
-      harmonicArray.push(...chordNoteArray);
+      harmonicArray.push(chordNoteArray);
 
       // keep track of previous chroma
       lastChroma = chroma;

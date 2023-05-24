@@ -8,6 +8,7 @@ import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
 import audioToNoteEvents from "../../../utils/audioToNoteEvents";
 import audioArrayFromURL from "../../../utils/audioArrayFromURL";
 import detectPitch from "../../../utils/detectPitch";
+import applyVoiceLeading from "../../../utils/applyVoiceLeading";
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -30,7 +31,16 @@ const HarmonizerDemo = () => {
     if (melody?.length > 0) {
       const harmonizer = new NoteHarmonizer();
       const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
-      playNoteEvents(harmony);
+      const chords = harmony.map((chord) => chord.map((note) => note.pitch));
+
+      const notes: NoteEvent[] = [];
+      const progression = applyVoiceLeading(chords);
+      console.log(progression);
+      progression.forEach((chord: number[], i) =>
+        chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize }))
+      );
+
+      playNoteEvents(notes);
     }
     if (withMelody) {
       playNoteEvents(melody);
@@ -56,7 +66,6 @@ const HarmonizerDemo = () => {
     audioArrayFromURL(
       url,
       (audioData, sampleRate) => {
-        console.log(sampleRate);
         if (!pitchy) {
           audioToNoteEvents(audioData, (noteEvents) => {
             setMelody(noteEvents);
@@ -74,6 +83,13 @@ const HarmonizerDemo = () => {
       22050
     );
   }
+
+  // useEffect(() => {
+  //   console.log(connectChords([60, 64, 67], [62, 65, 69])); // Output: [57, 62, 65]
+  //   console.log(connectChords([60, 64, 67], [59, 62, 65, 67])); // Output: [59, 62, 65, 67]
+  //   console.log(connectChords([60, 64, 67], [67, 71, 74, 77])); // Output: [59, 62, 65, 67]
+  //   console.log(connectChords([60, 64, 67, 70], [65, 69, 72, 77])); // Output: [60, 65, 69]
+  // }, []);
 
   return (
     <div className="HarmonizerDemo">
