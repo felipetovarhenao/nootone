@@ -4,13 +4,20 @@ import NoteHarmonizer from "../../../utils/NoteHarmonizer";
 import Slider from "../../../components/Slider/Slider";
 import AppName from "../../../components/AppName/AppName";
 import AudioRecorder from "../../../features/AudioRecorder/AudioRecorder";
-import playNoteEvents, { NoteEvent } from "../../../utils/playNoteEvents";
+import { NoteEvent } from "../../../utils/playNoteEvents";
 import audioToNoteEvents from "../../../utils/audioToNoteEvents";
 import audioArrayFromURL from "../../../utils/audioArrayFromURL";
 import detectPitch from "../../../utils/detectPitch";
 import applyVoiceLeading from "../../../utils/applyVoiceLeading";
+import AudioSampler from "../../../utils/AudioSampler";
+import guitarSamples from "../../../data/guitarSamples.json";
+import AudioPlayer from "../../../utils/AudioPlayer";
+import createNewAudioContext from "../../../utils/createNewAudioContext";
+import Icon from "../../../components/Icon/Icon";
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
+
+var audioContext = createNewAudioContext();
 
 const HarmonizerDemo = () => {
   const [harmonyStyle, setHarmonyStyle] = useState(harmonyStyles[0]);
@@ -18,16 +25,19 @@ const HarmonizerDemo = () => {
   const [harmonicMemory, setHarmonicMemory] = useState(0.125);
   const [keySigWeight, setKeySigWeight] = useState(0.25);
   const [lookAhead, setLookAhead] = useState(2);
-  const [audioURL, setAudioURL] = useState("");
+  const audioPlayer = useRef(new AudioPlayer(audioContext));
+  const audioSampler = useRef(new AudioSampler(audioContext));
   const [melody, setMelody] = useState<NoteEvent[]>([]);
   const [pitchy, setPitchy] = useState(false);
-
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const [withMelody, setWithMelody] = useState(false);
+  const activeNodes = useRef<AudioBufferSourceNode[]>([]);
 
   function handlePlay() {
+    if (activeNodes.current.length > 0) {
+      handleStop();
+    }
     if (melody?.length > 0) {
       const harmonizer = new NoteHarmonizer();
       const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
@@ -35,47 +45,64 @@ const HarmonizerDemo = () => {
 
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords);
-      console.log(progression);
       progression.forEach((chord: number[], i) =>
         chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize }))
       );
-
-      playNoteEvents(notes);
+      notes.forEach((note) => {
+        const velocity = Math.random() > 0.75 ? 0.8 : 0.7;
+        const node = audioSampler.current.playNote(note.onset, note.pitch, note.velocity || velocity);
+        if (node) {
+          activeNodes.current.push(node);
+        }
+      });
     }
     if (withMelody) {
-      playNoteEvents(melody);
-      audioRef.current?.pause();
+      melody.forEach((note) => {
+        const velocity = Math.random();
+        const node = audioSampler.current.playNote(note.onset, note.pitch, velocity);
+        if (node) {
+          activeNodes.current.push(node);
+        }
+      });
     } else {
-      audioRef.current?.play();
+      const node = audioPlayer.current.play();
+      activeNodes.current.push(node);
+    }
+  }
+
+  function handleStop() {
+    while (activeNodes.current.length > 0) {
+      activeNodes.current.pop()?.stop();
     }
   }
 
   useEffect(() => {
-    setAudioURL("");
     setMelody([]);
     setIsProcessing(false);
   }, [pitchy]);
 
+  useEffect(() => {
+    audioSampler.current.loadSamples(guitarSamples);
+  }, []);
+
   function handleBlob(blob: Blob) {
     setIsProcessing(true);
-    if (audioURL) {
-      setAudioURL("");
-      URL.revokeObjectURL(audioURL);
+    if (melody) {
+      setMelody([]);
     }
     const url = URL.createObjectURL(blob);
     audioArrayFromURL(
       url,
       (audioData, sampleRate) => {
+        audioPlayer.current.loadSample(url);
         if (!pitchy) {
           audioToNoteEvents(audioData, (noteEvents) => {
             setMelody(noteEvents);
-            setAudioURL(url);
             setIsProcessing(false);
           });
         } else {
           const notes = detectPitch(audioData, sampleRate);
           setMelody(notes);
-          setAudioURL(url);
           setIsProcessing(false);
         }
       },
@@ -83,13 +110,6 @@ const HarmonizerDemo = () => {
       22050
     );
   }
-
-  // useEffect(() => {
-  //   console.log(connectChords([60, 64, 67], [62, 65, 69])); // Output: [57, 62, 65]
-  //   console.log(connectChords([60, 64, 67], [59, 62, 65, 67])); // Output: [59, 62, 65, 67]
-  //   console.log(connectChords([60, 64, 67], [67, 71, 74, 77])); // Output: [59, 62, 65, 67]
-  //   console.log(connectChords([60, 64, 67, 70], [65, 69, 72, 77])); // Output: [60, 65, 69]
-  // }, []);
 
   return (
     <div className="HarmonizerDemo">
@@ -170,14 +190,15 @@ const HarmonizerDemo = () => {
         <div>
           <AudioRecorder handleBlob={handleBlob} />
         </div>
-        {audioURL && (
+        {melody.length > 0 && (
           <>
             <label htmlFor="">use recording</label>
             <input className="checkbox" type="checkbox" checked={!withMelody} onChange={() => setWithMelody((x) => !x)} />
             <label htmlFor="">play/listen</label>
-            <audio ref={audioRef} onPlay={handlePlay} controls>
-              <source src={audioURL} type="audio/webm" />
-            </audio>
+            <div className="playback-controls">
+              <Icon onClick={handlePlay} icon="ph:play-fill" />
+              <Icon onClick={handleStop} icon="ion:stop" />
+            </div>
           </>
         )}
         {isProcessing && (

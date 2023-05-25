@@ -51,4 +51,11 @@
       gap: $gap-lg;
     }
   }
+  .playback-controls {
+    gap: $gap-lg;
+    @include h-stack-c;
+    & > * {
+      @include hyperlink;
+    }
+  }
 }
