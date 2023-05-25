@@ -40,9 +40,7 @@ export default class AudioSampler extends AudioSource {
   public async loadSamples(samples: string[]): Promise<void> {
     const promises = samples.map((sampleURL) => {
       return new Promise<void>((resolve, reject) => {
-        const fileName = sampleURL.split("/").pop()!.split(".")[0];
-        const [pitchString, dynamic] = fileName.split("-");
-        const pitch = parseInt(pitchString, 10);
+        const [pitch, dynamic] = parseFileName(sampleURL);
         const velocity = dynamic == "f" ? 1.0 : 0.5;
 
         audioArrayFromURL(
@@ -156,4 +154,18 @@ export default class AudioSampler extends AudioSource {
 
     return closest;
   }
+}
+
+function parseFileName(filePath: string): [number, string] {
+  // Extract the file name from the full path
+  const fileName = filePath.split("/").pop()!;
+
+  // Extract the initial number using a regular expression
+  const numberMatch = fileName.match(/^(\d+)-/);
+  const initialNumber = parseInt(numberMatch![1]);
+
+  // Extract the letter following the number
+  const letter = fileName.charAt(numberMatch![0].length);
+
+  return [initialNumber, letter];
 }

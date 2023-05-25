@@ -10,10 +10,28 @@ import audioArrayFromURL from "../../../utils/audioArrayFromURL";
 import detectPitch from "../../../utils/detectPitch";
 import applyVoiceLeading from "../../../utils/applyVoiceLeading";
 import AudioSampler from "../../../utils/AudioSampler";
-import guitarSamples from "../../../data/guitarSamples.json";
 import AudioPlayer from "../../../utils/AudioPlayer";
 import createNewAudioContext from "../../../utils/createNewAudioContext";
 import Icon from "../../../components/Icon/Icon";
+
+/* Guitar Samples */
+
+import note1 from "../../../assets/audio/guitar/48-p.ogg";
+import note2 from "../../../assets/audio/guitar/48-f.ogg";
+import note3 from "../../../assets/audio/guitar/54-p.ogg";
+import note4 from "../../../assets/audio/guitar/54-f.ogg";
+import note5 from "../../../assets/audio/guitar/72-p.ogg";
+import note6 from "../../../assets/audio/guitar/72-f.ogg";
+import note7 from "../../../assets/audio/guitar/78-f.ogg";
+import note9 from "../../../assets/audio/guitar/78-p.ogg";
+import note10 from "../../../assets/audio/guitar/60-p.ogg";
+import note11 from "../../../assets/audio/guitar/60-f.ogg";
+import note12 from "../../../assets/audio/guitar/42-f.ogg";
+import note13 from "../../../assets/audio/guitar/66-p.ogg";
+import note14 from "../../../assets/audio/guitar/66-f.ogg";
+import note15 from "../../../assets/audio/guitar/42-p.ogg";
+
+const GUITAR_NOTES = [note1, note2, note3, note4, note5, note6, note7, note9, note10, note11, note12, note13, note14, note15];
 
 const harmonyStyles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -82,7 +100,7 @@ const HarmonizerDemo = () => {
   }, [pitchy]);
 
   useEffect(() => {
-    audioSampler.current.loadSamples(guitarSamples);
+    audioSampler.current.loadSamples(GUITAR_NOTES);
   }, []);
 
   function handleBlob(blob: Blob) {
