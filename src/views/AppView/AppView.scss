@@ -1,0 +1,38 @@
+@use "../../styles/main.scss" as *;
+
+.AppView {
+  @include v-stack-c;
+  background-color: var(--bg-2);
+  height: 100vh;
+  .header {
+    @include h-stack-c;
+    @include vh-pad($gap-md, $gap-lg);
+    gap: $gap-lg;
+    .logo {
+      height: $txt-lg;
+    }
+    .view-name {
+      text-transform: uppercase;
+      letter-spacing: $gap-sm;
+      color: var(--fg-5);
+    }
+  }
+  .content {
+    top: 0;
+    bottom: 0;
+    height: 100%;
+  }
+  .nav-toolbar {
+    @include h-stack-c;
+    @include pad;
+    height: min-content;
+    justify-content: space-around;
+    background-color: var(--bg-1);
+    .icon {
+      @include clickable;
+      &:hover * {
+        color: var(--primary-4);
+      }
+    }
+  }
+}
