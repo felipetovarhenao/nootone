@@ -4,6 +4,9 @@
   @include v-stack-c;
   background-color: var(--bg-2);
   height: 100vh;
+  @include mobile-down {
+    height: calc(100vh - 40px);
+  }
   .header {
     @include h-stack-c;
     @include vh-pad($gap-md, $gap-lg);
