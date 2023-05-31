@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export default function RecordView() {
   const [isRecording, setIsRecording] = useState(false);
   const [inputRecording, setInputRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const processingOptions = [
     {
@@ -25,6 +26,18 @@ export default function RecordView() {
     },
   ];
 
+  const playbackOptions = [
+    {
+      icon: "solar:play-bold",
+    },
+    {
+      icon: "solar:pause-bold",
+    },
+    {
+      icon: "solar:stop-bold",
+    },
+  ];
+
   useEffect(() => {
     if (isRecording) {
       setTimeout(() => {
@@ -33,6 +46,15 @@ export default function RecordView() {
       }, 2000);
     }
   }, [isRecording]);
+
+  function handleProcessing() {
+    setIsProcessing(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+      setInputRecording(false);
+      setIsRecording(false);
+    }, 2000);
+  }
   return (
     <div className="RecordView">
       {!inputRecording ? (
@@ -46,26 +68,40 @@ export default function RecordView() {
         )
       ) : (
         <div className="post-recording-subview">
-          <div className="input-recording">
-            <div className="waveform">
-              {[...Array(20).keys()].map((key) => (
-                <div key={key}>
-                  <Icon className="icon" icon="ph:waveform-bold" />
+          {!isProcessing ? (
+            <>
+              <div className="input-recording">
+                <div className="waveform">
+                  {[...Array(20).keys()].map((key) => (
+                    <div key={key}>
+                      <Icon className="icon" icon="ph:waveform-bold" />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="menu">
-            <div className="description">What would you like to do with your recording?</div>
-            <div className="options">
-              {processingOptions.map((opt) => (
-                <div className="option" key={opt.name}>
-                  <Icon className="icon" icon={opt.icon} />
-                  <span className="text">{opt.name}</span>
+                <div className="playback-toolbar">
+                  {playbackOptions.map((opt) => (
+                    <Icon className="icon" key={opt.icon} icon={opt.icon} />
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="menu">
+                <div className="description">What would you like to do with your recording?</div>
+                <div className="options">
+                  {processingOptions.map((opt) => (
+                    <div className="option" key={opt.name} onClick={handleProcessing}>
+                      <Icon className="icon" icon={opt.icon} />
+                      <span className="text">{opt.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="processing-wheel">
+              <Icon className="icon" icon="eos-icons:bubble-loading" />
+              <span className="text">processing</span>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

@@ -1,3 +1,3 @@
 export default function SettingsView() {
-  return <div>SettingsView</div>;
+  return <div>SETTINGS VIEW PENDING</div>;
 }

@@ -9,9 +9,9 @@
     @include center;
     .input-recording {
       @include v-stack;
-      background-color: var(--bg-3);
       width: 100%;
       .waveform {
+        background-color: var(--bg-3);
         @include h-stack-c;
         @include v-pad($gap-lg);
         @include border;
@@ -23,6 +23,22 @@
           vertical-align: middle;
           * {
             color: var(--primary-3);
+          }
+        }
+      }
+      .playback-toolbar {
+        @include h-stack-c;
+        @include pad;
+        @include h-center;
+        gap: $gap-lg;
+        .icon {
+          @include clickable;
+          font-size: $txt-lg;
+          * {
+            color: var(--primary-3);
+          }
+          &:hover {
+            filter: drop-shadow(0px 0px 5px var(--primary-3));
           }
         }
       }
@@ -51,7 +67,7 @@
           @include pad($gap-xl);
           @include round;
           @include clickable;
-          @include h-stack-c; 
+          @include h-stack-c;
           gap: $gap-lg;
           background-color: var(--bg-3);
           &:hover {
@@ -99,5 +115,21 @@
   .recording-animation {
     text-align: center;
     color: var(--caution-3);
+  }
+  .processing-wheel {
+    @include v-stack-c;
+    @include center;
+    gap: $gap-lg;
+    .icon {
+      font-size: 80px;
+      * {
+        color: var(--primary-3);
+      }
+    }
+    .text {
+      font-size: $txt-ml;
+      color: var(--fg-5);
+      letter-spacing: $gap-xs;
+    }
   }
 }
