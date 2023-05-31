@@ -1,0 +1,103 @@
+@use "../../../styles/main.scss" as *;
+
+.RecordView {
+  @include v-stack-c;
+  height: 100%;
+  width: 100%;
+  .post-recording-subview {
+    @include v-stack-c;
+    @include center;
+    .input-recording {
+      @include v-stack;
+      background-color: var(--bg-3);
+      width: 100%;
+      .waveform {
+        @include h-stack-c;
+        @include v-pad($gap-lg);
+        @include border;
+        border-left: none;
+        border-right: none;
+        overflow: auto;
+        .icon {
+          font-size: 100px;
+          vertical-align: middle;
+          * {
+            color: var(--primary-3);
+          }
+        }
+      }
+    }
+    .menu {
+      @include pad($gap-xl);
+      width: 100%;
+      .description,
+      .option {
+        font-size: $txt-md;
+      }
+      .description {
+        @include b-pad($gap-xl);
+        text-align: center;
+        font-size: $txt-ml;
+        background: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+      .options {
+        @include v-stack-c;
+        gap: $gap-lg;
+        .option {
+          @include pad($gap-xl);
+          @include round;
+          @include clickable;
+          @include h-stack-c; 
+          gap: $gap-lg;
+          background-color: var(--bg-3);
+          &:hover {
+            background-color: var(--secondary-3);
+            box-shadow: 0px 0px 10px var(--secondary-2);
+          }
+          .text,
+          .icon * {
+            vertical-align: middle;
+            font-weight: bold;
+            letter-spacing: $gap-xs;
+            text-transform: uppercase;
+            color: var(--txt);
+          }
+          .icon {
+            font-size: $txt-lg;
+          }
+        }
+      }
+    }
+  }
+  .record-button {
+    @include v-stack-c;
+    @include center;
+    .text {
+      color: var(--fg-5);
+    }
+    .icon {
+      @include clickable;
+      font-size: 180px;
+      * {
+        @include trans;
+        text-align: center;
+        filter: drop-shadow(0px 0px 0.4px var(--danger-2));
+        color: var(--danger-2);
+      }
+      &:hover {
+        * {
+          filter: drop-shadow(0px 0px 1px var(--danger-3));
+          color: var(--danger-3);
+        }
+      }
+    }
+  }
+  .recording-animation {
+    text-align: center;
+    color: var(--caution-3);
+  }
+}
