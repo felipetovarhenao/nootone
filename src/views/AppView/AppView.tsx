@@ -2,15 +2,14 @@ import Icon from "../../components/Icon/Icon";
 import "./AppView.scss";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import cn from "classnames";
-import useDeviceDims from "../../hooks/useDeviceDims";
+import useViewportInfo from "../../hooks/useViewportInfo";
 
 const AppView = () => {
-  const deviceDims = useDeviceDims();
-  useEffect(() => {
-    console.log(deviceDims);
-  });
+  useViewportInfo();
+
+  const [useDarkTheme, setUseDarkTheme] = useState(true);
   const [viewName, setViewName] = useState("record");
   const navigate = useNavigate();
 
@@ -19,16 +18,19 @@ const AppView = () => {
     navigate(route);
   }
   return (
-    <div className="AppView dark">
+    <div className={cn("AppView", { dark: useDarkTheme })}>
       <h1 className="header">
-        <img className="logo" src={logo} alt="nootone-logo" />
+        <img onClick={() => setUseDarkTheme((x) => !x)} className="logo" src={logo} alt="nootone-logo" />
         <span className="view-name">{`${viewName}`}</span>
       </h1>
+      <div className="content">
+        <Outlet />
+      </div>
       <nav className="nav-toolbar">
         <Icon
-          onClick={() => handleRouteChange("/app/settings/", "settings")}
-          className={cn({ "--selected": viewName === "settings" }, "icon")}
-          icon="ic:baseline-plus"
+          onClick={() => handleRouteChange("/app/profile/", "profile")}
+          className={cn({ "--selected": viewName === "profile" }, "icon")}
+          icon="carbon:user-avatar-filled-alt"
         />
         <Icon
           onClick={() => handleRouteChange("/app/", "record")}
@@ -36,14 +38,16 @@ const AppView = () => {
           icon="material-symbols:mic"
         />
         <Icon
+          onClick={() => handleRouteChange("/app/settings/", "settings")}
+          className={cn({ "--selected": viewName === "settings" }, "icon")}
+          icon="mingcute:settings-6-line"
+        />
+        <Icon
           onClick={() => handleRouteChange("/app/export/", "export")}
           className={cn({ "--selected": viewName === "export" }, "icon")}
-          icon="entypo:export"
+          icon="mdi:export"
         />
       </nav>
-      <div className="content">
-        <Outlet />
-      </div>
     </div>
   );
 };

@@ -17,13 +17,14 @@
     .logo {
       @include round(100%);
       @include pad;
+      @include clickable;
       height: $txt-xxl;
       background-color: var(--bg-2);
     }
     .view-name {
       text-transform: uppercase;
       letter-spacing: $gap-sm;
-      color: var(--fg-5);
+      color: var(--txt-light);
     }
   }
   .content {
@@ -36,10 +37,10 @@
   }
   .nav-toolbar {
     @include h-stack-c;
-    @include vh-pad($gap-ms, $gap-xxl);
+    @include vh-pad($gap-lg, $gap-xxl);
     height: min-content;
     justify-content: space-between;
-    background-color: var(--bg-1);
+    background-color: var(--fg-3);
     .logo {
       height: $txt-lg;
     }
@@ -59,5 +60,8 @@
       @include h-stack-c;
       gap: $gap-xxl;
     }
+  }
+  &.dark .nav-toolbar {
+    background-color: var(--bg-3);
   }
 }

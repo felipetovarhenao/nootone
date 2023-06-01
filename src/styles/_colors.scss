@@ -46,11 +46,11 @@
   --success-5: hsl(150, 60%, 75%);
 
   // danger
-  --danger-1: hsl(350, 60%, 25%);
-  --danger-2: hsl(350, 60%, 37%);
-  --danger-3: hsl(350, 60%, 50%);
-  --danger-4: hsl(350, 60%, 62%);
-  --danger-5: hsl(350, 60%, 75%);
+  --danger-1: hsl(350, 60%, 37%);
+  --danger-2: hsl(350, 60%, 50%);
+  --danger-3: hsl(350, 60%, 62%);
+  --danger-4: hsl(350, 60%, 75%);
+  --danger-5: hsl(350, 60%, 90%);
 
   // caution
   --caution-1: hsl(50, 70%, 25%);
@@ -83,4 +83,11 @@
 
   --txt: var(--fg-1);
   --txt-negative: var(--bg-5);
+
+  // danger
+  --danger-1: hsl(350, 60%, 25%);
+  --danger-2: hsl(350, 60%, 37%);
+  --danger-3: hsl(350, 60%, 50%);
+  --danger-4: hsl(350, 60%, 62%);
+  --danger-5: hsl(350, 60%, 75%);
 }

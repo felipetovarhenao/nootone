@@ -5,6 +5,7 @@ import DevView from "./views/DevView/DevView";
 import RecordView from "./views/AppView/RecordView/RecordView";
 import ExportView from "./views/AppView/ExportView/ExportView";
 import SettingsView from "./views/AppView/SettingsView/SettingsView";
+import ProfileView from "./views/AppView/ProfileView/ProfileView";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route index element={<RecordView />} />
           <Route path="export" element={<ExportView />} />
           <Route path="settings" element={<SettingsView />} />
+          <Route path="profile" element={<ProfileView />} />
         </Route>
       </Routes>
     </div>

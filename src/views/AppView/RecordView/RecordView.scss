@@ -74,6 +74,9 @@
           &:hover {
             background-color: var(--secondary-3);
             box-shadow: 0px 0px 10px var(--secondary-2);
+            .text, .icon * {
+              color: var(--txt-light);
+            }
           }
           .text,
           .icon * {

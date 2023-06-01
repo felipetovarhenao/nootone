@@ -17,7 +17,7 @@ export default function RecordView() {
       icon: "emojione-monotone:musical-notes",
     },
     {
-      name: "turn it into drums",
+      name: "drumify it",
       icon: "fa6-solid:drum",
     },
     {
