@@ -3,16 +3,21 @@
 .AppView {
   @include v-stack-c;
   background-color: var(--bg-2);
-  height: 100vh;
-  @include mobile-down {
-    height: calc(100vh - 40px);
-  }
+  justify-content: start;
+  min-height: 100vh;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
   .header {
     @include h-stack-c;
-    @include vh-pad($gap-md, $gap-lg);
-    gap: $gap-lg;
+    @include vh-pad($gap-sm, $gap-lg);
+    background: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
+    justify-content: space-between;
     .logo {
-      height: $txt-lg;
+      @include round(100%);
+      @include pad;
+      height: $txt-xxl;
+      background-color: var(--bg-2);
     }
     .view-name {
       text-transform: uppercase;
@@ -21,20 +26,37 @@
     }
   }
   .content {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
     height: 100%;
     width: 100%;
   }
   .nav-toolbar {
     @include h-stack-c;
-    @include pad;
+    @include vh-pad($gap-ms, $gap-xxl);
     height: min-content;
-    justify-content: space-around;
+    justify-content: space-between;
     background-color: var(--bg-1);
+    .logo {
+      height: $txt-lg;
+    }
     .icon {
       @include clickable;
       &:hover * {
         color: var(--primary-4);
       }
+      &:not(:hover).--selected {
+        * {
+          color: var(--primary-4);
+        }
+      }
+    }
+    .options {
+      @include r-pad;
+      @include h-stack-c;
+      gap: $gap-xxl;
     }
   }
 }
