@@ -46,6 +46,7 @@
     .menu {
       @include pad($gap-xl);
       width: 100%;
+      max-width: 500px;
       .description,
       .option {
         font-size: $txt-md;

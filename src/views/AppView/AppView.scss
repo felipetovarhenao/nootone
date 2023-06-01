@@ -4,10 +4,11 @@
   @include v-stack-c;
   background-color: var(--bg-2);
   justify-content: start;
-  min-height: 100vh;
-  max-width: 600px;
+  min-height: 80vh;
   margin-left: auto;
   margin-right: auto;
+  height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
   .header {
     @include h-stack-c;
     @include vh-pad($gap-sm, $gap-lg);

@@ -2,10 +2,15 @@ import Icon from "../../components/Icon/Icon";
 import "./AppView.scss";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "classnames";
+import useDeviceDims from "../../hooks/useDeviceDims";
 
 const AppView = () => {
+  const deviceDims = useDeviceDims();
+  useEffect(() => {
+    console.log(deviceDims);
+  });
   const [viewName, setViewName] = useState("record");
   const navigate = useNavigate();
 
