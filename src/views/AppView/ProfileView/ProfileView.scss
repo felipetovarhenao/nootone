@@ -1,0 +1,28 @@
+@use "../../../styles/main.scss" as *;
+.ProfileView {
+  @include v-stack;
+  @include pad;
+  align-items: center;
+  justify-content: center;
+  .auth-form {
+    @include pad;
+    @include v-stack;
+    @include center;
+    @include t-pad(5vh);
+    max-width: 275px;
+    width: 100%;
+    input {
+      @include pad;
+      @include round;
+      width: 100%;
+    }
+    gap: $gap-lg;
+  }
+  .bottom-text {
+		@include pad;
+    color: var(--txt);
+    .click-link {
+      @include hyperlink;
+    }
+  }
+}
