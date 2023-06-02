@@ -35,33 +35,12 @@
     height: 100%;
     width: 100%;
   }
-  .nav-toolbar {
-    @include h-stack-c;
-    @include vh-pad($gap-lg, $gap-xxl);
-    height: min-content;
-    justify-content: space-between;
-    background-color: var(--fg-3);
-    .logo {
-      height: $txt-lg;
-    }
-    .icon {
-      @include clickable;
-      &:hover * {
-        color: var(--primary-4);
-      }
-      &:not(:hover).--selected {
-        * {
-          color: var(--primary-4);
-        }
-      }
-    }
-    .options {
-      @include r-pad;
+  .navbar {
+    .links {
       @include h-stack-c;
-      gap: $gap-xxl;
+      @include vh-pad($gap-lg, $gap-xxl);
+      justify-content: space-between;
+      background-color: var(--txt-dark);
     }
-  }
-  &.dark .nav-toolbar {
-    background-color: var(--bg-3);
   }
 }

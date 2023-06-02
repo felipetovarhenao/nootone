@@ -1,22 +1,25 @@
-import Icon from "../../components/Icon/Icon";
 import "./AppView.scss";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cn from "classnames";
 import useViewportInfo from "../../hooks/useViewportInfo";
+import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 
 const AppView = () => {
   useViewportInfo();
-
+  
   const [useDarkTheme, setUseDarkTheme] = useState(true);
   const [viewName, setViewName] = useState("record");
-  const navigate = useNavigate();
 
-  function handleRouteChange(route: string, viewName: string) {
-    setViewName(viewName);
-    navigate(route);
-  }
+  const location = useLocation();
+
+  useEffect(() => {
+    let breadCrumbs = location.pathname.split("/").slice(2);
+    breadCrumbs.sort(() => -1);
+    setViewName(breadCrumbs.join(" / "));
+  }, [location]);
+
   return (
     <div className={cn("AppView", { dark: useDarkTheme })}>
       <h1 className="header">
@@ -26,30 +29,16 @@ const AppView = () => {
       <div className="content">
         <Outlet />
       </div>
-      <nav className="nav-toolbar">
-        <Icon
-          onClick={() => handleRouteChange("/app/profile/", "profile")}
-          className={cn({ "--selected": viewName === "profile" }, "icon")}
-          icon="carbon:user-avatar-filled-alt"
-        />
-        <Icon
-          onClick={() => handleRouteChange("/app/", "record")}
-          className={cn({ "--selected": viewName === "record" }, "icon")}
-          icon="material-symbols:mic"
-        />
-        <Icon
-          onClick={() => handleRouteChange("/app/settings/", "settings")}
-          className={cn({ "--selected": viewName === "settings" }, "icon")}
-          icon="mingcute:settings-6-line"
-        />
-        <Icon
-          onClick={() => handleRouteChange("/app/export/", "export")}
-          className={cn({ "--selected": viewName === "export" }, "icon")}
-          icon="mdi:export"
-        />
-      </nav>
+      <MobileNavbar defaultSelection={1} className="navbar" links={navbarLinks} />
     </div>
   );
 };
 
 export default AppView;
+
+const navbarLinks = [
+  { icon: "carbon:user-avatar-filled-alt", path: "/app/profile/" },
+  { icon: "material-symbols:mic", path: "/app/" },
+  { icon: "mingcute:settings-6-line", path: "/app/settings/" },
+  { icon: "mdi:export", path: "/app/export/" },
+];

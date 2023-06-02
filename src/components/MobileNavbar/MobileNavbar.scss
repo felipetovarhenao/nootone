@@ -1,0 +1,20 @@
+@use "../../styles/main.scss" as *;
+
+.MobileNavbar {
+  .links {
+    .link {
+      @include clickable;
+      .icon {
+        * {
+          color: var(--txt-light);
+        }
+        &.--selected * {
+          color: var(--primary-4);
+        }
+        &:hover:not(.--selected) * {
+          color: var(--primary-5);
+        }
+      }
+    }
+  }
+}

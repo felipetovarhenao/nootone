@@ -40,3 +40,7 @@ hr {
   border-radius: sizes.$radius-md;
   height: sizes.$gap-xs;
 }
+
+li {
+  list-style-type: none;
+}
