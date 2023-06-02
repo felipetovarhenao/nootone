@@ -1,5 +1,6 @@
 import cn from "classnames";
-import { useState } from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import Button from "../Button/Button";
 
 type LoginForm = {
@@ -20,30 +21,48 @@ type UserFormProps = {
 };
 
 const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}, isRegistration = false }: UserFormProps) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [confirmation, setConfirmation] = useState("");
+  const initialValues: RegistrationForm = {
+    username: "",
+    password: "",
+    email: "",
+    confirmation: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().required("username is required").matches(/^\S*$/, "username cannot contain spaces"),
+    password: Yup.string().required("password is required"),
+    email: isRegistration ? Yup.string().email("invalid email").required("email is required") : Yup.string().email("invalid email"),
+    confirmation: isRegistration
+      ? Yup.string()
+          .oneOf([Yup.ref("password")], "passwords must match")
+          .required("confirmation password is required")
+      : Yup.string(),
+  });
+
+  const handleSubmit = (values: RegistrationForm, helpers: any) => {
+    if (isRegistration) {
+      onRegistration(values);
+    } else {
+      const { username, password } = values;
+      onLogin({ username, password });
+    }
+    helpers.resetForm();
+  };
 
   return (
-    <form className={cn(className, "UserAuthForm")} onSubmit={(e) => e.preventDefault()}>
-      <input value={username} onChange={(e) => setUsername(e.target.value)} id="username" name="username" type="text" placeholder="username" />
-      {isRegistration && <input value={email} onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" placeholder="email" />}
-      <input value={password} onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" placeholder="password" />
-      {isRegistration && (
-        <input
-          value={confirmation}
-          onChange={(e) => setConfirmation(e.target.value)}
-          id="confirmation"
-          name="confirmation"
-          type="password"
-          placeholder="confirmation password"
-        />
-      )}
-      <Button onClick={() => (isRegistration ? onRegistration({ username, password, email, confirmation }) : onLogin({ username, password }))}>
-        {isRegistration ? "register" : "log in"}
-      </Button>
-    </form>
+    <Formik validateOnBlur={false} validateOnChange={false} initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Form className={cn(className, "UserAuthForm")}>
+        <Field autoFocus name="username" type="text" placeholder="username" />
+        {isRegistration && <Field name="email" type="email" placeholder="email" />}
+        <Field name="password" type="password" placeholder="password" />
+        {isRegistration && <Field name="confirmation" type="password" placeholder="confirmation password" />}
+        <ErrorMessage className="error" name="username" component="div" />
+        <ErrorMessage className="error" name="email" component="div" />
+        <ErrorMessage className="error" name="password" component="div" />
+        <ErrorMessage className="error" name="confirmation" component="div" />
+        <Button type="submit">{isRegistration ? "register" : "log in"}</Button>
+      </Form>
+    </Formik>
   );
 };
 

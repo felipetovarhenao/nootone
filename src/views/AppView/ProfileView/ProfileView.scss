@@ -4,11 +4,21 @@
   @include pad;
   align-items: center;
   justify-content: center;
+  .brand {
+    @include pad($gap-lg);
+    @include h-stack-c;
+    .name {
+      font-size: $txt-lg;
+    }
+    .logo {
+      @include r-pad;
+      height: 40px;
+    }
+  }
   .auth-form {
     @include pad;
     @include v-stack;
     @include center;
-    @include t-pad(5vh);
     max-width: 275px;
     width: 100%;
     input {
@@ -17,9 +27,12 @@
       width: 100%;
     }
     gap: $gap-lg;
+    .error {
+      color: var(--danger-3);
+    }
   }
   .bottom-text {
-		@include pad;
+    @include pad;
     color: var(--txt);
     .click-link {
       @include hyperlink;
