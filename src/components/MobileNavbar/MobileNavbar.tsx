@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
@@ -6,22 +6,15 @@ import "./MobileNavbar.scss";
 
 interface MobileNavbarProps {
   className?: string;
-  defaultSelection?: number;
+  selected?: number;
   links: {
     icon: string;
     path: string;
   }[];
 }
 
-const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, defaultSelection }) => {
-  const [selected, setSelected] = useState(-1);
+const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected }) => {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (defaultSelection) {
-      setSelected(defaultSelection);
-      navigate(links[defaultSelection].path);
-    }
-  }, []);
 
   return (
     <nav className={cn(className, "MobileNavbar")}>
@@ -31,7 +24,6 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, defaultSe
             className="link"
             key={index}
             onClick={() => {
-              setSelected(index);
               navigate(link.path);
             }}
           >

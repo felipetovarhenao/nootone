@@ -8,28 +8,39 @@ import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 
 const AppView = () => {
   useViewportInfo();
-  
+
   const [useDarkTheme, setUseDarkTheme] = useState(true);
-  const [viewName, setViewName] = useState("record");
+  const [currentViewIndex, setCurrentViewIndex] = useState(1);
+  const [viewHeader, setViewHeader] = useState("");
 
   const location = useLocation();
 
-  useEffect(() => {
-    let breadCrumbs = location.pathname.split("/").slice(2);
+  function pathToBreadcrumbs(path: string) {
+    let breadCrumbs = path.split("/").slice(2);
     breadCrumbs.sort(() => -1);
-    setViewName(breadCrumbs.join(" / "));
+    return breadCrumbs.join(" / ");
+  }
+
+  useEffect(() => {
+    console.log(location.pathname);
+    navbarLinks.forEach((link, i) => {
+      if (location.pathname === link.path) {
+        setCurrentViewIndex(i);
+        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ capture");
+      }
+    });
   }, [location]);
 
   return (
     <div className={cn("AppView", { dark: useDarkTheme })}>
       <h1 className="header">
         <img onClick={() => setUseDarkTheme((x) => !x)} className="logo" src={logo} alt="nootone-logo" />
-        <span className="view-name">{`${viewName}`}</span>
+        <span className="view-name">{`${viewHeader}`}</span>
       </h1>
       <div className="content">
         <Outlet />
       </div>
-      <MobileNavbar defaultSelection={1} className="navbar" links={navbarLinks} />
+      <MobileNavbar selected={currentViewIndex} className="navbar" links={navbarLinks} />
     </div>
   );
 };
