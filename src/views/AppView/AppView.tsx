@@ -8,12 +8,14 @@ import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 import { useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
 
+const DEFAULT_VIEWNAME = "/ capture";
+
 const AppView = () => {
   useViewportInfo();
 
   const [useDarkTheme, setUseDarkTheme] = useState(true);
   const [currentViewIndex, setCurrentViewIndex] = useState(1);
-  const [viewHeader, setViewHeader] = useState("");
+  const [viewHeader, setViewHeader] = useState(DEFAULT_VIEWNAME);
 
   const location = useLocation();
   const username = useAppSelector((state) => state.user.username);
@@ -22,7 +24,7 @@ const AppView = () => {
     for (let i = 0; i < navbarLinks.length; i++) {
       if (location.pathname === navbarLinks[i].path) {
         setCurrentViewIndex(i);
-        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ capture");
+        setViewHeader(pathToBreadcrumbs(location.pathname) || DEFAULT_VIEWNAME);
         break;
       }
     }

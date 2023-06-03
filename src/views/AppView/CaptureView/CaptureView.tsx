@@ -1,8 +1,8 @@
 import { Icon } from "@iconify/react";
-import "./RecordView.scss";
+import "./CaptureView.scss";
 import { useEffect, useState } from "react";
 
-export default function RecordView() {
+export default function CaptureView() {
   const [isRecording, setIsRecording] = useState(false);
   const [inputRecording, setInputRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -60,7 +60,7 @@ export default function RecordView() {
     }, 2000);
   }
   return (
-    <div className="RecordView">
+    <div className="CaptureView">
       {!inputRecording ? (
         !isRecording ? (
           <div className="record-button" onClick={() => setIsRecording((x) => !x)}>
