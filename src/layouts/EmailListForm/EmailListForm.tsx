@@ -29,7 +29,6 @@ export const EmailListForm: React.FC = () => {
 
       resetForm();
     } catch (error) {
-      console.log("Error sending email:", error);
       setSubmitError("Failed to send email. Please try again later.");
     } finally {
       setSubmitting(false);

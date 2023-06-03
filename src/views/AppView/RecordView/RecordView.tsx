@@ -21,6 +21,10 @@ export default function RecordView() {
       icon: "fa6-solid:drum",
     },
     {
+      name: "transcribe",
+      icon: "ph:music-notes-fill",
+    },
+    {
       name: "keep it as is",
       icon: "bx:cool",
     },

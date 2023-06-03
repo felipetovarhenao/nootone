@@ -14,8 +14,8 @@ type RegistrationForm = LoginForm & {
 };
 
 type UserFormProps = {
-  onLogin?: (formData: LoginForm) => void;
-  onRegistration?: (formData: RegistrationForm) => void;
+  onLogin?: (formData: LoginForm) => Promise<any> | void;
+  onRegistration?: (formData: RegistrationForm) => Promise<any> | void;
   className?: string;
   isRegistration?: boolean;
 };
@@ -41,12 +41,11 @@ const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}
 
   const handleSubmit = (values: RegistrationForm, helpers: any) => {
     if (isRegistration) {
-      onRegistration(values);
+      onRegistration(values)?.then(() => helpers.resetForm());
     } else {
       const { username, password } = values;
-      onLogin({ username, password });
+      onLogin({ username, password })?.then(() => helpers.resetForm());
     }
-    helpers.resetForm();
   };
 
   return (

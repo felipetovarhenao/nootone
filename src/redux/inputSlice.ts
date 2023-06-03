@@ -1,18 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type InitialState = {
-  buffer: Float32Array;
+  buffer: number[];
 };
 
 const initialState: InitialState = {
-  buffer: new Float32Array(),
+  buffer: [],
 };
 
 const input = createSlice({
   name: "input",
   initialState: initialState,
   reducers: {
-    setBuffer: (state, action: PayloadAction<Float32Array>) => {
+    setBuffer: (state, action: PayloadAction<number[]>) => {
       state.buffer = action.payload;
     },
   },

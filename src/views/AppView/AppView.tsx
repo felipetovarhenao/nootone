@@ -22,20 +22,20 @@ const AppView = () => {
   }
 
   useEffect(() => {
-    console.log(location.pathname);
-    navbarLinks.forEach((link, i) => {
-      if (location.pathname === link.path) {
+    for (let i = 0; i < navbarLinks.length; i++) {
+      if (location.pathname === navbarLinks[i].path) {
         setCurrentViewIndex(i);
-        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ capture");
+        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ playground");
+        break;
       }
-    });
+    }
   }, [location]);
 
   return (
     <div className={cn("AppView", { dark: useDarkTheme })}>
       <h1 className="header">
         <img onClick={() => setUseDarkTheme((x) => !x)} className="logo" src={logo} alt="nootone-logo" />
-        <span className="view-name">{`${viewHeader}`}</span>
+        <span className="view-name">{viewHeader}</span>
       </h1>
       <div className="content">
         <Outlet />
@@ -50,6 +50,6 @@ export default AppView;
 const navbarLinks = [
   { icon: "carbon:user-avatar-filled-alt", path: "/app/profile/" },
   { icon: "material-symbols:mic", path: "/app/" },
-  { icon: "mingcute:settings-6-line", path: "/app/settings/" },
-  { icon: "mdi:export", path: "/app/export/" },
+  { icon: "carbon:workspace", path: "/app/settings/" },
+  // { icon: "material-symbols:menu", path: "/app/export/" },
 ];
