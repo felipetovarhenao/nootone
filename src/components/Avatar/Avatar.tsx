@@ -5,7 +5,7 @@ import cn from "classnames";
 type AvatarProps = {
   username: string;
   className?: string;
-  size?: number;
+  size?: number | string;
   onClick?: () => void;
 };
 

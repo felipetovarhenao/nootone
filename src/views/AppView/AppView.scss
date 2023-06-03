@@ -14,17 +14,22 @@
     @include vh-pad($gap-sm, $gap-lg);
     background: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
     justify-content: space-between;
-    .AppView__header__logo {
-      @include round(100%);
-      @include pad;
+    .AppView__header__avatar {
       @include clickable;
-      &.--is-authenticated {
-        @include pad($gap-sm);
-        @include border(var(--success-4), $gap-ms);
-        box-shadow: 0px 0px 5px var(--success-1);
-      }
-      height: $txt-xxl;
+      @include border(var(--bg-1), $gap-ms);
+      @include round(100%);
       background-color: var(--bg-2);
+      box-sizing: content-box;
+      &:not(.--is-authenticated) {
+        height: 32px;
+      }
+      &.--is-authenticated {
+        border-color: var(--success-4);
+        box-shadow: 0px 0px 5px var(--success-1);
+        svg {
+          box-sizing: content-box;
+        }
+      }
     }
     .AppView__header__text {
       text-transform: uppercase;

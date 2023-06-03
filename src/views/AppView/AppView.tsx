@@ -32,16 +32,12 @@ const AppView = () => {
     <div className={cn("AppView", { dark: useDarkTheme })}>
       <h1 className="AppView__header">
         {!username ? (
-          <img
-            className={cn("AppView__header__logo", { "--is-authenticated": username })}
-            onClick={() => setUseDarkTheme((x) => !x)}
-            src={logo}
-            alt="nootone-logo"
-          />
+          <img className="AppView__header__avatar" onClick={() => setUseDarkTheme((x) => !x)} src={logo} alt="nootone-logo" />
         ) : (
           <Avatar
+            size={"32px"}
             onClick={() => setUseDarkTheme((x) => !x)}
-            className={cn("AppView__header__logo", { "--is-authenticated": username })}
+            className="AppView__header__avatar --is-authenticated"
             username={username}
           />
         )}
@@ -64,7 +60,6 @@ const navbarLinks = [
 ];
 
 function pathToBreadcrumbs(path: string) {
-  console.log(path);
   let breadCrumbs = path.split("/").slice(2);
   breadCrumbs.sort(() => -1);
   return breadCrumbs.join(" / ");
