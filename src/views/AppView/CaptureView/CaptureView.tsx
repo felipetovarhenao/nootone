@@ -64,8 +64,12 @@ export default function CaptureView() {
       {!inputRecording ? (
         !isRecording ? (
           <div className="record-button" onClick={() => setIsRecording((x) => !x)}>
-            <Icon className="icon" icon="fluent:record-24-regular" />
-            <span className="text">press to record!</span>
+            <span className="text">Feeling inspired?</span>
+            <Icon className="icon" icon="fluent:record-48-regular" />
+            <span className="text">
+              press to record your idea
+              <Icon icon="fluent:music-note-1-20-filled" />
+            </span>
           </div>
         ) : (
           <span className="recording-animation">[placeholder for recording animation]</span>

@@ -74,7 +74,8 @@
           &:hover {
             background-color: var(--secondary-3);
             box-shadow: 0px 0px 10px var(--secondary-2);
-            .text, .icon * {
+            .text,
+            .icon * {
               color: var(--txt-light);
             }
           }
@@ -97,16 +98,19 @@
     @include v-stack-c;
     @include center;
     .text {
+      @include v-mar($gap-lg);
+      font-size: $txt-ml;
+      text-transform: lowercase;
       color: var(--fg-5);
     }
     .icon {
       @include clickable;
-      font-size: 180px;
+      font-size: 130px;
       * {
         @include trans;
         text-align: center;
-        filter: drop-shadow(0px 0px 0.4px var(--danger-2));
-        color: var(--danger-2);
+        filter: drop-shadow(0px 0px 1px var(--primary-4));
+        color: var(--primary-4);
       }
       &:hover {
         * {
