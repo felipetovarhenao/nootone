@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Button from "../Button/Button";
 
@@ -39,28 +39,41 @@ const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}
       : Yup.string(),
   });
 
-  const handleSubmit = (values: RegistrationForm, helpers: any) => {
+  const handleSubmit = (values: RegistrationForm, helpers: FormikHelpers<RegistrationForm>) => {
+    helpers.setSubmitting(true);
     if (isRegistration) {
-      onRegistration(values)?.then(() => helpers.resetForm());
+      onRegistration(values)?.then(() => {
+        helpers.resetForm();
+        helpers.setSubmitting(false);
+      });
     } else {
       const { username, password } = values;
-      onLogin({ username, password })?.then(() => helpers.resetForm());
+      onLogin({ username, password })?.then(() => {
+        helpers.resetForm();
+        helpers.setSubmitting(false);
+      });
     }
   };
 
   return (
     <Formik validateOnBlur={false} validateOnChange={false} initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-      <Form className={cn(className, "UserAuthForm")}>
-        <Field autoFocus name="username" type="text" placeholder="username" />
-        {isRegistration && <Field name="email" type="email" placeholder="email" />}
-        <Field name="password" type="password" placeholder="password" />
-        {isRegistration && <Field name="confirmation" type="password" placeholder="confirmation password" />}
-        <ErrorMessage className="error" name="username" component="div" />
-        <ErrorMessage className="error" name="email" component="div" />
-        <ErrorMessage className="error" name="password" component="div" />
-        <ErrorMessage className="error" name="confirmation" component="div" />
-        <Button type="submit">{isRegistration ? "register" : "log in"}</Button>
-      </Form>
+      {(formik) => {
+        return (
+          <Form className={cn(className, "UserAuthForm")}>
+            <Field autoFocus name="username" type="text" placeholder="username" />
+            {isRegistration && <Field name="email" type="email" placeholder="email" />}
+            <Field name="password" type="password" placeholder="password" />
+            {isRegistration && <Field name="confirmation" type="password" placeholder="confirmation password" />}
+            <ErrorMessage className="error" name="username" component="div" />
+            <ErrorMessage className="error" name="email" component="div" />
+            <ErrorMessage className="error" name="password" component="div" />
+            <ErrorMessage className="error" name="confirmation" component="div" />
+            <Button disabled={formik.isSubmitting} type="submit">
+              {isRegistration ? "register" : "log in"}
+            </Button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };

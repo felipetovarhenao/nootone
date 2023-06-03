@@ -9,7 +9,7 @@ import Button from "../../../components/Button/Button";
 
 export default function ProfileView() {
   const [isRegistration, setIsRegistration] = useState(false);
-  const username = useAppSelector((state) => state.user.username);
+  const { username, loading } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
   return (
@@ -17,7 +17,9 @@ export default function ProfileView() {
       {username ? (
         <>
           <div>Hello {username}!</div>
-          <Button onClick={() => dispatch(logout())}>logout</Button>
+          <Button disabled={loading} onClick={() => dispatch(logout())}>
+            logout
+          </Button>
         </>
       ) : (
         <>
