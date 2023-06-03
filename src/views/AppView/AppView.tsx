@@ -22,7 +22,7 @@ const AppView = () => {
     for (let i = 0; i < navbarLinks.length; i++) {
       if (location.pathname === navbarLinks[i].path) {
         setCurrentViewIndex(i);
-        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ playground");
+        setViewHeader(pathToBreadcrumbs(location.pathname) || "/ capture");
         break;
       }
     }
@@ -60,8 +60,7 @@ export default AppView;
 const navbarLinks = [
   { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
   { icon: "material-symbols:mic", path: "/app/" },
-  { icon: "carbon:workspace", path: "/app/settings/" },
-  // { icon: "material-symbols:menu", path: "/app/export/" },
+  { icon: "carbon:workspace", path: "/app/playground/" },
 ];
 
 function pathToBreadcrumbs(path: string) {

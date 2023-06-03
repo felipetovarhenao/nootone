@@ -56,6 +56,7 @@ export const register = createAsyncThunk("user/register", registrationCallback);
 type InitialState = {
   loading: boolean;
   username: string;
+  plan: "free" | "pro";
   error: string;
 };
 
@@ -63,6 +64,7 @@ const initialState: InitialState = {
   loading: false,
   username: "",
   error: "",
+  plan: "free",
 };
 
 const user = createSlice({

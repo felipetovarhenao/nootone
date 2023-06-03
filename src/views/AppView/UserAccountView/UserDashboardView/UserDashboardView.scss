@@ -4,15 +4,56 @@
   @include v-stack;
   @include h-pad($gap-lg);
   width: 100%;
+  gap: $gap-lg;
   .UserDashboardView__header {
-    text-transform: lowercase;
-    color: var(--txt);
-    &,
-    * {
-      font-size: $txt-ml;
+    @include h-stack-c;
+    gap: $gap-lg;
+    .UserDashboardView__header__avatar {
+      @include border(var(--bg-5), $gap-sm);
     }
-    .UserDashboardView__header__username {
-      color: var(--primary-4);
+    .UserDashboardView__header__text {
+      @include v-stack;
+      gap: $gap-sm;
+      text-transform: lowercase;
+      &,
+      * {
+        color: var(--txt);
+        font-size: $txt-ml;
+      }
+      .UserDashboardView__header__text__plan {
+        @include vh-pad($gap-sm, $gap-md);
+        @include round;
+        width: fit-content;
+        background-color: var(--success-3);
+        font-size: $txt-sm;
+        text-transform: uppercase;
+        color: var(--txt-light);
+      }
+    }
+  }
+  .UserDashboardView__sections {
+    @include v-stack;
+    gap: calc($gap-xxl * 1.5);
+    .UserDashboardView__sections__section {
+      @include v-stack;
+      gap: $gap-lg;
+      .UserDashboardView__sections__section__header {
+        font-weight: bold;
+        font-size: $txt-md;
+        text-transform: uppercase;
+        color: var(--fg-5);
+      }
+      .UserDashboardView__sections__section__options {
+        @include v-stack;
+        gap: $gap-lg;
+        .UserDashboardView__sections__section__options__option {
+          @include hyperlink;
+          font-size: $txt-ml;
+          &.--danger {
+            @include hyperlink(var(--danger-3), var(--danger-4));
+          }
+        }
+      }
     }
   }
   .UserDashboardView__logout-btn {
