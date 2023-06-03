@@ -1,21 +1,20 @@
-@use "../../../styles/main.scss" as *;
-.ProfileView {
+@use "../../../../styles/main.scss" as *;
+
+.AuthenticationView {
   @include v-stack;
-  @include pad;
-  align-items: center;
-  justify-content: center;
-  .brand {
+  @include center;
+  .AuthenticationView__brand {
     @include pad($gap-lg);
     @include h-stack-c;
-    .name {
+    .AuthenticationView__brand__name {
       font-size: $txt-lg;
     }
-    .logo {
+    .AuthenticationView__brand__logo {
       @include r-pad;
       height: 40px;
     }
   }
-  .auth-form {
+  .AuthenticationView__auth-form {
     @include pad;
     @include v-stack;
     @include center;
@@ -31,10 +30,10 @@
       color: var(--danger-3);
     }
   }
-  .bottom-text {
+  .AuthenticationView__footer {
     @include pad;
     color: var(--txt);
-    .click-link {
+    .AuthenticationView__footer__click-link {
       @include hyperlink;
     }
   }

@@ -38,6 +38,8 @@
   --secondary-4: hsl(var(--secondary-hue), 40%, 62%);
   --secondary-5: hsl(var(--secondary-hue), 40%, 75%);
 
+  --main-gradient: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
+
   // success
   --success-1: hsl(150, 60%, 25%);
   --success-2: hsl(150, 60%, 37%);

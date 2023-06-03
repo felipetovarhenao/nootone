@@ -1,0 +1,22 @@
+@use "../../../../styles/main.scss" as *;
+
+.UserDashboardView {
+  @include v-stack;
+  @include h-pad($gap-lg);
+  width: 100%;
+  .UserDashboardView__header {
+    text-transform: lowercase;
+    color: var(--txt);
+    &,
+    * {
+      font-size: $txt-ml;
+    }
+    .UserDashboardView__header__username {
+      color: var(--primary-4);
+    }
+  }
+  .UserDashboardView__logout-btn {
+    @include t-mar($gap-lg);
+    align-self: center;
+  }
+}
