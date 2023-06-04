@@ -73,9 +73,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
       <div className="AudioPlayer__bar">
-        <audio controls>
-          <source src={src} type="audio/webm" />
-        </audio>
         <h1 className="AudioPlayer__bar__title">{title}</h1>
         <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
           <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
