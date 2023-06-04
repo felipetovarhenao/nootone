@@ -7,6 +7,7 @@ export default function getFormattedTimestamp(): string {
 
   let hours = now.getHours();
   const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
   const ampm = hours >= 12 ? "pm" : "am";
 
   if (hours > 12) {
@@ -15,6 +16,6 @@ export default function getFormattedTimestamp(): string {
     hours = 12;
   }
 
-  const formattedTimestamp = `${year}-${month}-${day} @ ${hours}:${minutes} ${ampm}`;
+  const formattedTimestamp = `${year}-${month}-${day} @ ${hours}:${minutes}:${seconds} ${ampm}`;
   return formattedTimestamp;
 }
