@@ -5,17 +5,15 @@ import cn from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { push } from "../../../../redux/recordingsSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const recs = useAppSelector((state) => state.recordings);
 
   useEffect(() => {
     if (!isRecording && audioBlob) {
-      console.log(recs);
       const rec = { name: getTimestamp(), url: URL.createObjectURL(audioBlob) };
       dispatch(push(rec));
       navigate("/app/playground/");

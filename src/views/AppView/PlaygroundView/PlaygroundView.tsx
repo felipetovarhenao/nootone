@@ -1,8 +1,11 @@
 import "./PlaygroundView.scss";
 import Icon from "../../../components/Icon/Icon";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AudioPlayer from "../../../components/AudioPlayer/AudioPlayer";
+import Hr from "../../../components/Hr/Hr";
+import icons from "../../../utils/icons";
+import { discard, Recording, write } from "../../../redux/recordingsSlice";
 
 export default function PlaygroundView() {
   const { saved: savedRecordings, unsaved: unsavedRecordings } = useAppSelector((state) => state.recordings);
@@ -16,19 +19,19 @@ const TracksView = () => {
     <div className="TracksView">
       {unsavedRecordings.length > 0 && (
         <>
-          <h1>unsaved</h1>
+          <h1 className="TracksView__header">pending review</h1>
           {unsavedRecordings.map((rec, i) => (
-            // <audio key={i} controls src={rec.url} />
-            <AudioPlayer title={rec.name} key={i} src={rec.url} />
+            <RecordingLayout key={i} rec={rec} />
           ))}
           <hr />
         </>
       )}
+      {savedRecordings.length > 0 && unsavedRecordings.length > 0 && <Hr />}
       {savedRecordings.length > 0 && (
         <>
-          <h1>saved</h1>
+          <h1 className="TracksView__header">my ideas</h1>
           {savedRecordings.map((rec, i) => (
-            <audio key={i} controls src={rec.url} />
+            <RecordingLayout saved={true} key={i} rec={rec} />
           ))}
         </>
       )}
@@ -51,6 +54,35 @@ const NoTracksView = () => {
           <Icon className="NoTracksView__text__icon" icon="fluent:music-note-1-20-filled" />
         </p>
       </div>
+    </div>
+  );
+};
+
+const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recording }) => {
+  const dispatch = useAppDispatch();
+  return (
+    <div className="RecordingLayout">
+      {!saved && (
+        <div className="RecordingLayout__options">
+          <Icon
+            className="RecordingLayout__options__option"
+            id="check"
+            icon={icons.check}
+            onClick={() => {
+              dispatch(write(rec));
+            }}
+          />
+          <Icon
+            className="RecordingLayout__options__option"
+            id="trash"
+            icon={icons.trash}
+            onClick={() => {
+              dispatch(discard(rec));
+            }}
+          />
+        </div>
+      )}
+      <AudioPlayer className="RecordingLayout__player" title={rec.name} src={rec.url} />
     </div>
   );
 };

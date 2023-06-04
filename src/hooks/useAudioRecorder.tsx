@@ -29,7 +29,14 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
     if (navigator.mediaDevices?.getUserMedia) {
       setRecordingError("");
       navigator.mediaDevices
-        .getUserMedia({ audio: true, video: false })
+        .getUserMedia({
+          audio: {
+            echoCancellation: false,
+            autoGainControl: false,
+            noiseSuppression: false,
+          },
+          video: false,
+        })
         .then((stream) => {
           setIsRecording(true);
           setAudioBlob(null);

@@ -6,6 +6,8 @@ const icons = {
   volumeMid: "ph:speaker-simple-low-fill",
   volumeLow: "ph:speaker-simple-none-fill",
   volumeMute: "ph:speaker-simple-none-fill",
+  check: "fa-solid:check",
+  trash: "fluent:delete-16-filled",
 };
 
 export default icons;

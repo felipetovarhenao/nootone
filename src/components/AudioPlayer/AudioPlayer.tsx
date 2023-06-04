@@ -2,13 +2,15 @@ import React, { useState, useRef } from "react";
 import icons from "../../utils/icons";
 import "./AudioPlayer.scss";
 import Icon from "../Icon/Icon";
+import cn from "classnames";
 
 type AudioPlayerProps = {
+  className?: string;
   title?: string;
   src: string;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.707);
@@ -30,10 +32,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title }) => {
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = 0;
-      if (!isPlaying) {
-        setIsPlaying(true);
-        audio.play();
-      }
     }
   };
 
@@ -57,7 +55,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title }) => {
   };
 
   return (
-    <div className="AudioPlayer">
+    <div className={cn(className, "AudioPlayer")}>
       <audio ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
       <div className="AudioPlayer__playback">
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />

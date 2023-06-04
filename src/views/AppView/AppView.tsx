@@ -1,12 +1,13 @@
 import "./AppView.scss";
 import { Outlet, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import useViewportInfo from "../../hooks/useViewportInfo";
 import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
+import { pushFromCache } from "../../redux/recordingsSlice";
 
 const DEFAULT_VIEWNAME = "/ capture";
 
@@ -19,6 +20,16 @@ const AppView = () => {
 
   const location = useLocation();
   const username = useAppSelector((state) => state.user.username);
+
+  const dispatch = useAppDispatch();
+  const cacheCheck = useRef(false);
+
+  useEffect(() => {
+    if (!cacheCheck.current) {
+      dispatch(pushFromCache());
+      cacheCheck.current = true;
+    }
+  }, []);
 
   useEffect(() => {
     for (let i = 0; i < navbarLinks.length; i++) {
