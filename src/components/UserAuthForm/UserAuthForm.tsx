@@ -62,7 +62,7 @@ const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}
           <Form className={cn(className, "UserAuthForm")}>
             <Field autoFocus name="username" type="text" placeholder="username" />
             {isRegistration && <Field name="email" type="email" placeholder="email" />}
-            <Field name="password" type="password" placeholder="password" />
+            <Field autoComplete="nootone" name="password" type="password" placeholder="password" />
             {isRegistration && <Field name="confirmation" type="password" placeholder="confirmation password" />}
             <ErrorMessage className="error" name="username" component="div" />
             <ErrorMessage className="error" name="email" component="div" />

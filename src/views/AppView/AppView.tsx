@@ -58,7 +58,7 @@ export default AppView;
 const navbarLinks = [
   { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
   { icon: "material-symbols:mic", path: "/app/" },
-  { icon: "carbon:workspace", path: "/app/playground/" },
+  { icon: "lucide:codesandbox", path: "/app/playground/" },
 ];
 
 function pathToBreadcrumbs(path: string) {
