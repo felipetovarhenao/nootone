@@ -24,7 +24,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
       } else {
         audio.play();
       }
-      setIsPlaying(!isPlaying);
+      setIsPlaying(!audio.paused);
     }
   };
 
@@ -67,7 +67,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
 
   return (
     <div className={cn(className, "AudioPlayer")}>
-      <audio preload="auto" ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
+      <audio ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
       <div className="AudioPlayer__playback">
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
