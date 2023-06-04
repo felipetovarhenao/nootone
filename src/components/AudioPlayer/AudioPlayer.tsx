@@ -54,16 +54,27 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
     }
   };
 
+  const handleProgressBarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const progressBar = e.currentTarget;
+    const clickedPosition = e.clientX - progressBar.getBoundingClientRect().left;
+    const progressBarWidth = progressBar.clientWidth;
+    const clickedTime = (clickedPosition / progressBarWidth) * ((audioRef.current?.duration !== Infinity && audioRef.current?.duration) || 0);
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = clickedTime;
+    }
+  };
+
   return (
     <div className={cn(className, "AudioPlayer")}>
-      <audio ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
+      <audio preload="auto" ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
       <div className="AudioPlayer__playback">
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
       <div className="AudioPlayer__bar">
         <h1 className="AudioPlayer__bar__title">{title}</h1>
-        <div className="AudioPlayer__bar__progress">
+        <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
           <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
         </div>
         <div className="AudioPlayer__bar__volume">

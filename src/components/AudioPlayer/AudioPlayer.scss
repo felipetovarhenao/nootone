@@ -31,6 +31,7 @@
       color: var(--txt);
     }
     .AudioPlayer__bar__progress {
+      @include clickable;
       @include stack;
       @include round-border;
       width: 100%;

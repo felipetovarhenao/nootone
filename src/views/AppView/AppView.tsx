@@ -26,8 +26,8 @@ const AppView = () => {
 
   useEffect(() => {
     if (!cacheCheck.current) {
-      dispatch(pushFromCache());
       cacheCheck.current = true;
+      dispatch(pushFromCache());
     }
   }, []);
 

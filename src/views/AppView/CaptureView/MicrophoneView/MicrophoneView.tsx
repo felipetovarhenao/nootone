@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { push } from "../../../../redux/recordingsSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
+import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
@@ -14,7 +15,7 @@ const MicrophoneView = () => {
 
   useEffect(() => {
     if (!isRecording && audioBlob) {
-      const rec = { name: getTimestamp(), url: URL.createObjectURL(audioBlob) };
+      const rec = { name: `Untitled ${getFormattedTimestamp()}`, date: JSON.stringify(new Date()), url: URL.createObjectURL(audioBlob) };
       dispatch(push(rec));
       navigate("/app/playground/");
     }
@@ -36,12 +37,5 @@ const MicrophoneView = () => {
     </div>
   );
 };
-
-function getTimestamp() {
-  let date = new Date();
-  const offset = date.getTimezoneOffset();
-  date = new Date(date.getTime() - offset * 60 * 1000);
-  return date.toISOString();
-}
 
 export default MicrophoneView;

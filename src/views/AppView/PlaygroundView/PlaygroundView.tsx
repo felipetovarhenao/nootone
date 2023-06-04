@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import AudioPlayer from "../../../components/AudioPlayer/AudioPlayer";
 import Hr from "../../../components/Hr/Hr";
 import icons from "../../../utils/icons";
-import { discard, Recording, write } from "../../../redux/recordingsSlice";
+import { discard, erase, Recording, write } from "../../../redux/recordingsSlice";
 
 export default function PlaygroundView() {
   const { saved: savedRecordings, unsaved: unsavedRecordings } = useAppSelector((state) => state.recordings);
@@ -20,9 +20,11 @@ const TracksView = () => {
       {unsavedRecordings.length > 0 && (
         <>
           <h1 className="TracksView__header">pending review</h1>
-          {unsavedRecordings.map((rec, i) => (
-            <RecordingLayout key={i} rec={rec} />
-          ))}
+          {[...unsavedRecordings]
+            .sort((a, b) => b.date?.localeCompare(a.date || "0"))
+            .map((rec, i) => (
+              <RecordingLayout key={i} rec={rec} />
+            ))}
           <hr />
         </>
       )}
@@ -30,9 +32,11 @@ const TracksView = () => {
       {savedRecordings.length > 0 && (
         <>
           <h1 className="TracksView__header">my ideas</h1>
-          {savedRecordings.map((rec, i) => (
-            <RecordingLayout saved={true} key={i} rec={rec} />
-          ))}
+          {[...savedRecordings]
+            .sort((a, b) => b.date?.localeCompare(a.date || "0"))
+            .map((rec, i) => (
+              <RecordingLayout saved={true} key={i} rec={rec} />
+            ))}
         </>
       )}
     </div>
@@ -62,8 +66,8 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
   const dispatch = useAppDispatch();
   return (
     <div className="RecordingLayout">
-      {!saved && (
-        <div className="RecordingLayout__options">
+      <div className="RecordingLayout__options">
+        {!saved && (
           <Icon
             className="RecordingLayout__options__option"
             id="check"
@@ -72,16 +76,21 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
               dispatch(write(rec));
             }}
           />
-          <Icon
-            className="RecordingLayout__options__option"
-            id="trash"
-            icon={icons.trash}
-            onClick={() => {
+        )}
+        <Icon
+          className="RecordingLayout__options__option"
+          id="trash"
+          icon={icons.trash}
+          onClick={() => {
+            if (saved) {
+              dispatch(erase(rec));
+            } else {
               dispatch(discard(rec));
-            }}
-          />
-        </div>
-      )}
+            }
+          }}
+        />
+      </div>
+
       <AudioPlayer className="RecordingLayout__player" title={rec.name} src={rec.url} />
     </div>
   );

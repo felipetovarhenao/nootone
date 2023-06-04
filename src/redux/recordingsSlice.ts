@@ -1,9 +1,18 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { set, setMany, entries, delMany } from "idb-keyval";
+import { set, setMany, entries, delMany, del } from "idb-keyval";
 
 export type Recording = {
   name: string;
+  date: string;
   url: string;
+};
+
+type CachedRecording = {
+  blob: Blob;
+  metadata: {
+    name: string;
+    date: string;
+  };
 };
 
 type InitialState = {
@@ -17,10 +26,10 @@ const initialState: InitialState = {
 };
 
 const writeRecording = async (recording: Recording): Promise<Recording | string> => {
-  const { url } = recording;
+  const { url, ...metadata } = recording;
   const blob = await fetch(url).then((r) => r.blob());
   return new Promise<Recording | string>((resolve, reject) => {
-    set(recording.url, blob)
+    set(url, { blob: blob, metadata: metadata })
       .then(() => resolve(recording))
       .catch(reject);
   });
@@ -31,15 +40,24 @@ export const write = createAsyncThunk("recordings/write", writeRecording);
 const retrieveCache = async () => {
   return entries().then(async (entries) => {
     const recs: Recording[] = [];
-    const updatedEntries: [string, Blob][] = [];
+    if (entries.length === 0) {
+      return recs;
+    }
+    const updatedEntries: [string, CachedRecording][] = [];
     for (let i = 0; i < entries.length; i++) {
       const [key, value] = entries[i];
       URL.revokeObjectURL(key as string);
       recs.push({
-        url: URL.createObjectURL(value),
-        name: `${i}`,
+        url: URL.createObjectURL(value.blob),
+        ...value.metadata,
       });
-      updatedEntries.push([key as string, value]);
+      updatedEntries.push([
+        key as string,
+        {
+          blob: value.blob as Blob,
+          metadata: { ...value.metadata },
+        },
+      ]);
     }
     delMany(entries.map((e) => e[0]));
     setMany(updatedEntries);
@@ -69,6 +87,17 @@ const recordings = createSlice({
       for (let i = 0; i < state.unsaved.length; i++) {
         if (state.unsaved[i].url === action.payload.url) {
           state.unsaved.splice(i, 1);
+          break;
+        }
+      }
+    },
+    erase: (state, action: PayloadAction<Recording>) => {
+      for (let i = 0; i < state.saved.length; i++) {
+        console.log(state.saved[i].url);
+        if (state.saved[i].url === action.payload.url) {
+          del(state.saved[i].url);
+          state.saved.splice(i, 1);
+          break;
         }
       }
     },
@@ -102,8 +131,11 @@ const recordings = createSlice({
         }
       }
     });
+    builder.addCase(pushFromCache.rejected, () => {
+      console.log("no entries to load");
+    });
   },
 });
 
 export default recordings.reducer;
-export const { push, discard } = recordings.actions;
+export const { push, discard, erase } = recordings.actions;
