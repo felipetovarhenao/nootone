@@ -34,3 +34,11 @@
     }
   }
 }
+
+.TracksView {
+  @include v-stack;
+  @include vh-pad($gap-sm, $gap-xxl);
+  width: 100%;
+  max-width: 500px;
+  gap: $gap-xxl;
+}
