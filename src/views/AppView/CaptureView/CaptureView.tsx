@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import "./CaptureView.scss";
 import { useEffect, useState } from "react";
+import MicrophoneView from "./MicrophoneView/MicrophoneView";
 
 export default function CaptureView() {
   const [isRecording, setIsRecording] = useState(false);
@@ -62,18 +63,7 @@ export default function CaptureView() {
   return (
     <div className="CaptureView">
       {!inputRecording ? (
-        !isRecording ? (
-          <div className="record-button" onClick={() => setIsRecording((x) => !x)}>
-            <span className="text">Feeling inspired?</span>
-            <Icon className="icon" icon="fluent:record-48-regular" />
-            <span className="text">
-              press to record your idea
-              <Icon icon="fluent:music-note-1-20-filled" />
-            </span>
-          </div>
-        ) : (
-          <span className="recording-animation">[placeholder for recording animation]</span>
-        )
+        <MicrophoneView />
       ) : (
         <div className="post-recording-subview">
           {!isProcessing ? (
