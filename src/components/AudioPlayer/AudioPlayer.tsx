@@ -74,7 +74,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
       </div>
       <div className="AudioPlayer__bar">
         <audio controls>
-          <source src={src} />
+          <source src={src} type="audio/webm" />
         </audio>
         <h1 className="AudioPlayer__bar__title">{title}</h1>
         <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
