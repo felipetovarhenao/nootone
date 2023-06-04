@@ -57,7 +57,7 @@ const accountMenu: { [section: string]: AccountMenuOption[] } = {
   ],
   "tech support": [
     {
-      label: "Report a bug",
+      label: "Report a problem",
       onClick: () => {},
     },
   ],
