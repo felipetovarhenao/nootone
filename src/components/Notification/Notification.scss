@@ -1,0 +1,83 @@
+@use "../../styles/main.scss" as *;
+
+$notification-width: 350px;
+$slide-time: 0.4s;
+#notifications {
+  z-index: 9999;
+  position: fixed;
+  top: $gap-xl;
+  right: $gap-xl;
+  width: $notification-width;
+  pointer-events: none;
+  .Notification {
+    pointer-events: all;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    background-color: var(--bg-3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    animation: SlideLeft $slide-time;
+    animation-fill-mode: forwards;
+    width: $notification-width;
+    &.exit {
+      animation: SlideRight $slide-time;
+      animation-fill-mode: forwards;
+    }
+    .Notification__message {
+      @include pad;
+      @include col-grid(2fr 9fr 1fr);
+      align-items: center;
+      min-height: 50px;
+      .Notification__message__icon {
+        @include r-mar;
+        font-size: calc($txt-lg * 2);
+      }
+      .Notification__message__text {
+        font-size: $txt-ms;
+        color: var(--txt);
+      }
+      .Notification__message__close {
+        @include to-right;
+        @include r-mar;
+        @include clickable;
+        font-size: $txt-ml;
+        * {
+          color: var(--disabled-5);
+        }
+      }
+    }
+
+    &.success .Notification__message .Notification__message__icon * {
+      color: var(--primary-4);
+    }
+
+    &.error .Notification__message .Notification__message__icon * {
+      color: var(--danger-3);
+    }
+
+    .Notification__bar {
+      height: $gap-md;
+      background-color: var(--secondary-4);
+    }
+  }
+}
+
+@keyframes SlideLeft {
+  0% {
+    margin-left: 120%;
+  }
+
+  100% {
+    margin-left: 0;
+  }
+}
+
+@keyframes SlideRight {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: 120%;
+  }
+}

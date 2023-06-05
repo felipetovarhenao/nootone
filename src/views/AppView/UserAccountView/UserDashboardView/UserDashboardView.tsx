@@ -5,10 +5,12 @@ import Hr from "../../../../components/Hr/Hr";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { logout } from "../../../../redux/userSlice";
 import "./UserDashboardView.scss";
+import { useNotification } from "../../../../components/Notification/NotificationProvider";
 
 const UserDashboardView = () => {
   const { username, plan, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const notification = useNotification();
   return (
     <div className="UserDashboardView">
       <div className="UserDashboardView__header">
@@ -33,7 +35,19 @@ const UserDashboardView = () => {
           </div>
         ))}
       </div>
-      <Button className="UserDashboardView__logout-btn" color="danger" disabled={loading} onClick={() => dispatch(logout())}>
+      <Button
+        className="UserDashboardView__logout-btn"
+        color="danger"
+        disabled={loading}
+        onClick={async () => {
+          await dispatch(logout());
+          notification({
+            type: "ERROR",
+            icon: "mdi:user",
+            message: "logout successful!",
+          });
+        }}
+      >
         log out
       </Button>
     </div>

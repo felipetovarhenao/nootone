@@ -6,10 +6,12 @@ import { login, register } from "../../../../redux/userSlice";
 import UserAuthForm from "../../../../components/UserAuthForm/UserAuthForm";
 import AppName from "../../../../components/AppName/AppName";
 import logo from "../../../../assets/logo.png";
+import { useNotification } from "../../../../components/Notification/NotificationProvider";
 
 const AuthenticationView = () => {
   const dispatch = useAppDispatch();
   const [isRegistration, setIsRegistration] = useState(false);
+  const notification = useNotification();
   return (
     <div className="AuthenticationView">
       <div className="AuthenticationView__brand">
@@ -18,7 +20,14 @@ const AuthenticationView = () => {
       </div>
       <UserAuthForm
         className="AuthenticationView__auth-form"
-        onLogin={(data) => dispatch(login(data))}
+        onLogin={async (data) => {
+          await dispatch(login(data));
+          notification({
+            message: "user login successful!",
+            icon: "mdi:user",
+            type: "SUCCESS",
+          });
+        }}
         onRegistration={(data) => dispatch(register(data))}
         isRegistration={isRegistration}
       />
