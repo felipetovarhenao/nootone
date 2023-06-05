@@ -19,7 +19,7 @@ const TracksView = () => {
     <div className="TracksView">
       {unsavedRecordings.length > 0 && (
         <>
-          <h1 className="TracksView__header">pending review</h1>
+          <h1 className="TracksView__header">unsaved drafts</h1>
           {[...unsavedRecordings]
             .sort((a, b) => b.date?.localeCompare(a.date || "0"))
             .map((rec, i) => (
