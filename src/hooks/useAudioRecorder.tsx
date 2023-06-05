@@ -58,7 +58,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
     if (mediaRecorderRef.current?.state === "recording") {
       mediaRecorderRef.current.removeEventListener("dataavailable", handleDataAvailable);
       mediaRecorderRef.current.stop();
-      const blob = new Blob(audioChunksRef.current, { type: "audio/webm; codecs=opus" });
+      const blob = new Blob(audioChunksRef.current, { type: "audio/mp3" });
       setAudioBlob(blob);
       setIsRecording(false);
       setRecordingError("");
