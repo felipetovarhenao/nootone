@@ -26,26 +26,19 @@ const initialState: InitialState = {
 };
 
 const writeRecording = async (recording: Recording): Promise<Recording | string> => {
-  // const { url, ...metadata } = recording;
-  // const blob = await fetch(url).then((r) => r.blob());
-  // return new Promise<Recording | string>((resolve, reject) => {
-  //   set(url, { blob: blob, metadata: metadata })
-  //     .then(() => resolve(recording))
-  //     .catch(reject);
-  // });
+  const { url, ...metadata } = recording;
+  const blob = await fetch(url).then((r) => r.blob());
   return new Promise<Recording | string>((resolve, reject) => {
-    if (true) {
-      resolve(recording);
-    } else {
-      reject();
-    }
+    set(url, { blob: blob, metadata: metadata })
+      .then(() => resolve(recording))
+      .catch(reject);
   });
 };
 
 export const write = createAsyncThunk("recordings/write", writeRecording);
 
 const retrieveCache = async () => {
-  return entries().then(async (entries) => {
+  return entries().then((entries) => {
     const recs: Recording[] = [];
     if (entries.length === 0) {
       return recs;
@@ -54,12 +47,13 @@ const retrieveCache = async () => {
     for (let i = 0; i < entries.length; i++) {
       const [key, value] = entries[i];
       URL.revokeObjectURL(key as string);
+      const url = URL.createObjectURL(value.blob);
       recs.push({
-        url: URL.createObjectURL(value.blob),
+        url: url,
         ...value.metadata,
       });
       updatedEntries.push([
-        key as string,
+        url,
         {
           blob: value.blob as Blob,
           metadata: { ...value.metadata },
@@ -100,7 +94,6 @@ const recordings = createSlice({
     },
     erase: (state, action: PayloadAction<Recording>) => {
       for (let i = 0; i < state.saved.length; i++) {
-        console.log(state.saved[i].url);
         if (state.saved[i].url === action.payload.url) {
           del(state.saved[i].url);
           state.saved.splice(i, 1);
@@ -112,10 +105,10 @@ const recordings = createSlice({
   extraReducers: (builder) => {
     builder.addCase(write.fulfilled, (state, action: PayloadAction<Recording | string>) => {
       const rec = action.payload as Recording;
-      state.saved.push(rec);
       for (let i = 0; i < state.unsaved.length; i++) {
         if (state.unsaved[i].url === rec.url) {
           state.unsaved.splice(i, 1);
+          state.saved.push({ ...rec });
           break;
         }
       }
@@ -134,7 +127,7 @@ const recordings = createSlice({
           }
         }
         if (!exists) {
-          state.saved.push(rec);
+          state.saved.push({ ...rec });
         }
       }
     });
