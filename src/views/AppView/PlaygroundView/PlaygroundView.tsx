@@ -6,6 +6,7 @@ import AudioPlayer from "../../../components/AudioPlayer/AudioPlayer";
 import Hr from "../../../components/Hr/Hr";
 import icons from "../../../utils/icons";
 import { discard, erase, Recording, write } from "../../../redux/recordingsSlice";
+import Dropdown from "../../../components/Dropdown/Dropdown";
 
 export default function PlaygroundView() {
   const { saved: savedRecordings, unsaved: unsavedRecordings } = useAppSelector((state) => state.recordings);
@@ -62,6 +63,30 @@ const NoTracksView = () => {
   );
 };
 
+type ProcessingOption = {
+  icon: string;
+  name: string;
+  onClick: () => void;
+};
+
+const processingOptions: ProcessingOption[] = [
+  {
+    name: "retune it",
+    icon: "fluent:wand-16-filled",
+    onClick: () => {},
+  },
+  {
+    name: "add accompaniment",
+    icon: "emojione-monotone:musical-notes",
+    onClick: () => {},
+  },
+  {
+    name: "drumify it",
+    icon: "fa6-solid:drum",
+    onClick: () => {},
+  },
+];
+
 const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recording }) => {
   const dispatch = useAppDispatch();
   return (
@@ -92,6 +117,16 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
       </div>
 
       <AudioPlayer className="RecordingLayout__player" title={rec.name} src={rec.url} />
+      <Dropdown legendOpen="hide options" legendClosed="show options">
+        <div className="RecordingLayout__operations">
+          {processingOptions.map((opt) => (
+            <div className="RecordingLayout__operations__operation" key={opt.name} onClick={opt.onClick}>
+              <Icon className="RecordingLayout__operations__operation__icon" icon={opt.icon} />
+              <span className="RecordingLayout__operations__operation__text">{opt.name}</span>
+            </div>
+          ))}
+        </div>
+      </Dropdown>
     </div>
   );
 };

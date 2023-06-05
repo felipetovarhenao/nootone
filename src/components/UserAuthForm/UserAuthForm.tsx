@@ -60,7 +60,7 @@ const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}
       {(formik) => {
         return (
           <Form className={cn(className, "UserAuthForm")}>
-            <Field autoFocus name="username" type="text" placeholder="username" />
+            <Field name="username" type="text" placeholder="username" />
             {isRegistration && <Field name="email" type="email" placeholder="email" />}
             <Field autoComplete="off" name="password" type="password" placeholder="password" />
             {isRegistration && <Field autoComplete="off" name="confirmation" type="password" placeholder="confirmation password" />}

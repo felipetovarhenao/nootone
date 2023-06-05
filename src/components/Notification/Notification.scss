@@ -33,7 +33,8 @@ $slide-time: 0.4s;
         font-size: calc($txt-lg * 2);
       }
       .Notification__message__text {
-        font-size: $txt-ms;
+        font-size: $txt-md;
+        letter-spacing: $gap-xxs;
         color: var(--txt);
       }
       .Notification__message__close {
