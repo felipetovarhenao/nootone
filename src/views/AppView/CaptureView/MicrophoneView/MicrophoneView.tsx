@@ -8,6 +8,7 @@ import { push } from "../../../../redux/recordingsSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
+import { toggle } from "../../../../redux/micSlice";
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
@@ -29,6 +30,7 @@ const MicrophoneView = () => {
         className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
         icon={isRecording ? "svg-spinners:pulse-2" : "fluent:record-48-regular"}
         onClick={() => {
+          dispatch(toggle());
           if (isRecording) {
             stopRecording();
           } else {
