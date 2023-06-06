@@ -1,0 +1,31 @@
+@use "../../../../styles/main.scss" as *;
+
+.NoTracksView {
+  @include v-stack-c;
+  @include pad($gap-xxl);
+  @include v-mar(auto);
+  width: 90%;
+  max-width: 400px;
+  height: fit-content;
+  .NoTracksView__icon {
+    align-self: center;
+    font-size: 90px;
+    * {
+      color: var(--disabled-3);
+    }
+  }
+  .NoTracksView__text * {
+    text-align: center;
+    color: var(--disabled-3);
+    font-size: $txt-ml;
+    .NoTracksView__text__link {
+      @include hyperlink;
+    }
+    .NoTracksView__text__icon {
+      @include l-mar;
+      vertical-align: middle;
+      display: inline;
+      font-size: $txt-lg;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@use "../../../../styles/main.scss" as *;
+
+.MostRecentTracksView {
+  @include v-stack;
+  @include vh-pad($gap-lg, $gap-xxl);
+  width: 100%;
+  max-width: 500px;
+  gap: calc($gap-xxl * 1.5);
+  .TracksView__header {
+    @include vh-pad($gap-sm, $gap-lg);
+    @include round;
+    @include stack;
+    align-self: self-end;
+    font-size: $txt-ms;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: var(--main-gradient);
+    color: var(--txt-light);
+    width: fit-content;
+  }
+}

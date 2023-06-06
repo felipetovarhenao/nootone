@@ -1,0 +1,63 @@
+@use "../../styles/main.scss" as *;
+
+.RecordingLayout {
+  @include v-stack;
+  gap: $gap-md;
+  .RecordingLayout__options {
+    @include h-stack-c;
+    @include to-right;
+    gap: $gap-lg;
+    .RecordingLayout__options__option {
+      @include round;
+      @include pad;
+      @include clickable;
+      font-size: $txt-xl;
+      * {
+        color: var(--txt-light);
+      }
+      &#trash {
+        background-color: var(--danger-3);
+        &:hover {
+          background-color: var(--danger-4);
+        }
+      }
+      &#check {
+        background-color: var(--success-3);
+        &:hover {
+          background-color: var(--success-4);
+        }
+      }
+    }
+  }
+  .RecordingLayout__operations {
+    @include v-stack-c;
+    gap: $gap-lg;
+    .RecordingLayout__operations__operation {
+      @include pad($gap-xl);
+      @include round;
+      @include clickable;
+      @include h-stack-c;
+      gap: $gap-lg;
+      background-color: var(--bg-3);
+      &:hover {
+        background-color: var(--secondary-3);
+        box-shadow: 0px 0px 10px var(--secondary-2);
+        .RecordingLayout__operations__operation__text,
+        .RecordingLayout__operations__operation__icon * {
+          color: var(--txt-light);
+        }
+      }
+      .RecordingLayout__operations__operation__text,
+      .RecordingLayout__operations__operation__icon * {
+        vertical-align: middle;
+        font-weight: bold;
+        letter-spacing: $gap-xs;
+        text-transform: uppercase;
+        color: var(--txt);
+      }
+      .RecordingLayout__operations__operation__icon {
+        font-size: $txt-lg;
+      }
+    }
+  }
+}
