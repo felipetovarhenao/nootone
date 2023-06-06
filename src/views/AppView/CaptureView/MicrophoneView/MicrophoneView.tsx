@@ -10,6 +10,7 @@ import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
 import { toggle } from "../../../../redux/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
+import getAudioDuration from "../../../../utils/getAudioDuration";
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
@@ -20,9 +21,15 @@ const MicrophoneView = () => {
 
   useEffect(() => {
     if (!isRecording && audioBlob) {
-      const rec = { name: recTitle || getFormattedTimestamp(), date: JSON.stringify(new Date()), url: URL.createObjectURL(audioBlob) };
-      dispatch(recordingActions.addNew(rec));
-      navigate("/app/playground/");
+      getAudioDuration(audioBlob).then((duration) => {
+        const rec = {
+          url: URL.createObjectURL(audioBlob),
+          name: recTitle || getFormattedTimestamp(),
+          duration: duration,
+        };
+        dispatch(recordingActions.addNew(rec));
+        navigate("/app/playground/");
+      });
     }
   }, [isRecording]);
 

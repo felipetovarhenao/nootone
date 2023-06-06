@@ -6,7 +6,7 @@ import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import icons from "../../utils/icons";
 
-const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recording }) => {
+const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
   const dispatch = useAppDispatch();
   const processingOptions: ProcessingOption[] = [
     {
@@ -17,8 +17,8 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
     {
       name: "add accompaniment",
       icon: "emojione-monotone:musical-notes",
-      onClick: (rec: any) => {
-        dispatch(recordingActions.harmonize(rec));
+      onClick: (_: any) => {
+        // dispatch(recordingActions.harmonize(rec));
       },
     },
     {
@@ -31,7 +31,7 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
   return (
     <div className="RecordingLayout">
       <div className="RecordingLayout__options">
-        {!saved && (
+        {false && (
           <Icon
             className="RecordingLayout__options__option"
             id="check"
@@ -46,16 +46,12 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
           id="trash"
           icon={icons.trash}
           onClick={() => {
-            if (saved) {
-              dispatch(recordingActions.erase(rec));
-            } else {
-              dispatch(recordingActions.discard(rec));
-            }
+            dispatch(recordingActions.discard(rec));
           }}
         />
       </div>
 
-      <AudioPlayer className="RecordingLayout__player" title={rec.name} src={rec.url} />
+      <AudioPlayer className="RecordingLayout__player" rec={rec} />
       <Dropdown legendOpen="hide options" legendClosed="show options">
         <div className="RecordingLayout__operations">
           {processingOptions.map((opt) => (

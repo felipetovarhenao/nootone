@@ -3,14 +3,15 @@ import icons from "../../utils/icons";
 import "./AudioPlayer.scss";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
+import { Recording } from "../../redux/recordingsSlice";
+import formatTime from "../../utils/formatTime";
 
 type AudioPlayerProps = {
   className?: string;
-  title?: string;
-  src: string;
+  rec: Recording;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.707);
@@ -67,13 +68,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
 
   return (
     <div className={cn(className, "AudioPlayer")}>
-      <audio ref={audioRef} src={src} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
+      <audio ref={audioRef} src={rec.url} onTimeUpdate={handleTimeUpdate} onEnded={() => setIsPlaying(false)} />
       <div className="AudioPlayer__playback">
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
       <div className="AudioPlayer__bar">
-        <h1 className="AudioPlayer__bar__title">{title}</h1>
+        <h1 className="AudioPlayer__bar__title">{rec.name}</h1>
         <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
           <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
         </div>
@@ -94,6 +95,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, title, className }) => {
           />
         </div>
       </div>
+      <div className="AudioPlayer__duration">{formatTime(rec.duration)}</div>
     </div>
   );
 };

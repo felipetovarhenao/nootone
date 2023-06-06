@@ -8,9 +8,10 @@
   height: 100%;
   .MicrophoneView__title {
     @include stack;
-    @include round-border(var(--bg-5));
+    @include round(30px);
     @include pad;
     @include t-mar($gap-xxl);
+    box-sizing: border-box;
     height: fit-content;
     font-size: $txt-ml;
     color: var(--txt);

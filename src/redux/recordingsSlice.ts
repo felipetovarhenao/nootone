@@ -7,6 +7,8 @@ import audioToNoteEvents from "../utils/audioToNoteEvents";
 type RecordingMetadata = {
   name: string;
   date: string;
+  duration: number;
+  tags: string[];
   features?: any;
 };
 
@@ -68,7 +70,6 @@ const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
 
 const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<any | void> => {
   try {
-    console.log(recording);
     const { array } = await audioArrayFromURL(recording.url);
     const notes = await audioToNoteEvents(array);
     return notes;
@@ -82,8 +83,14 @@ const recordings = createSlice({
   name: "recordings",
   initialState: initialState,
   reducers: {
-    addNew: (state, action: PayloadAction<Recording>) => {
-      state.saved.unshift(action.payload);
+    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "features" | "date">>) => {
+      action.payload.url
+      state.saved.unshift({
+        tags: [],
+        features: {},
+        date: JSON.stringify(new Date()),
+        ...action.payload,
+      });
     },
     discard: (state, action: PayloadAction<Recording>) => {
       for (let i = 0; i < state.saved.length; i++) {
