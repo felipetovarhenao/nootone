@@ -4,7 +4,7 @@ import Icon from "../../../../components/Icon/Icon";
 import cn from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { push } from "../../../../redux/recordingsSlice";
+import { recordingActions } from "../../../../redux/recordingsSlice";
 import { useAppDispatch } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
@@ -21,7 +21,7 @@ const MicrophoneView = () => {
   useEffect(() => {
     if (!isRecording && audioBlob) {
       const rec = { name: recTitle || getFormattedTimestamp(), date: JSON.stringify(new Date()), url: URL.createObjectURL(audioBlob) };
-      dispatch(push(rec));
+      dispatch(recordingActions.addNew(rec));
       navigate("/app/playground/");
     }
   }, [isRecording]);

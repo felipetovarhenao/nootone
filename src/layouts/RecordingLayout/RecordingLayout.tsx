@@ -1,6 +1,6 @@
 import "./RecordingLayout.scss";
 import { useAppDispatch } from "../../redux/hooks";
-import { Recording, write, discard, erase, harmonizeRecording } from "../../redux/recordingsSlice";
+import { Recording, recordingActions } from "../../redux/recordingsSlice";
 import AudioPlayer from "../../components/AudioPlayer/AudioPlayer";
 import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
@@ -18,7 +18,7 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
       name: "add accompaniment",
       icon: "emojione-monotone:musical-notes",
       onClick: (rec: any) => {
-        dispatch(harmonizeRecording(rec));
+        dispatch(recordingActions.harmonize(rec));
       },
     },
     {
@@ -37,7 +37,7 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
             id="check"
             icon={icons.check}
             onClick={() => {
-              dispatch(write(rec));
+              dispatch(recordingActions.write(rec));
             }}
           />
         )}
@@ -47,9 +47,9 @@ const RecordingLayout = ({ saved = false, rec }: { saved?: boolean; rec: Recordi
           icon={icons.trash}
           onClick={() => {
             if (saved) {
-              dispatch(erase(rec));
+              dispatch(recordingActions.erase(rec));
             } else {
-              dispatch(discard(rec));
+              dispatch(recordingActions.discard(rec));
             }
           }}
         />

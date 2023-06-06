@@ -21,15 +21,13 @@ type CachedRecording = {
 
 type InitialState = {
   saved: Recording[];
-  unsaved: Recording[];
 };
 
 const initialState: InitialState = {
   saved: [],
-  unsaved: [],
 };
 
-export const write = createAsyncThunk("recordings/write", async (recording: Recording): Promise<Recording | string> => {
+const write = createAsyncThunk("recordings/write", async (recording: Recording): Promise<Recording | string> => {
   const { url, ...metadata } = recording;
   const blob = await fetch(url).then((r) => r.blob());
   return new Promise<Recording | string>((resolve, reject) => {
@@ -39,7 +37,7 @@ export const write = createAsyncThunk("recordings/write", async (recording: Reco
   });
 });
 
-export const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
+const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
   return entries().then((entries) => {
     const recs: Recording[] = [];
     if (entries.length === 0) {
@@ -68,7 +66,7 @@ export const retrieveCache = createAsyncThunk("recordings/retrieveCache", async 
   });
 });
 
-export const harmonizeRecording = createAsyncThunk("recordings/harmonizeRecording", async (recording: Recording): Promise<any | void> => {
+const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<any | void> => {
   try {
     console.log(recording);
     const { array } = await audioArrayFromURL(recording.url);
@@ -84,22 +82,13 @@ const recordings = createSlice({
   name: "recordings",
   initialState: initialState,
   reducers: {
-    push: (state, action: PayloadAction<Recording>) => {
-      let exists = false;
-      for (let i = 0; i < state.unsaved.length; i++) {
-        if (state.unsaved[i].url === action.payload.url) {
-          exists = true;
-          break;
-        }
-      }
-      if (!exists) {
-        state.unsaved.unshift(action.payload);
-      }
+    addNew: (state, action: PayloadAction<Recording>) => {
+      state.saved.unshift(action.payload);
     },
     discard: (state, action: PayloadAction<Recording>) => {
-      for (let i = 0; i < state.unsaved.length; i++) {
-        if (state.unsaved[i].url === action.payload.url) {
-          state.unsaved.splice(i, 1);
+      for (let i = 0; i < state.saved.length; i++) {
+        if (state.saved[i].url === action.payload.url) {
+          state.saved.splice(i, 1);
           break;
         }
       }
@@ -117,9 +106,9 @@ const recordings = createSlice({
   extraReducers: (builder) => {
     builder.addCase(write.fulfilled, (state, action: PayloadAction<Recording | string>) => {
       const rec = action.payload as Recording;
-      for (let i = 0; i < state.unsaved.length; i++) {
-        if (state.unsaved[i].url === rec.url) {
-          state.unsaved.splice(i, 1);
+      for (let i = 0; i < state.saved.length; i++) {
+        if (state.saved[i].url === rec.url) {
+          state.saved.splice(i, 1);
           state.saved.push({ ...rec });
           break;
         }
@@ -148,11 +137,16 @@ const recordings = createSlice({
     });
 
     /* harmonizer */
-    builder.addCase(harmonizeRecording.pending, () => {});
-    builder.addCase(harmonizeRecording.fulfilled, () => {});
-    builder.addCase(harmonizeRecording.rejected, () => {});
+    builder.addCase(harmonize.pending, () => {});
+    builder.addCase(harmonize.fulfilled, () => {});
+    builder.addCase(harmonize.rejected, () => {});
   },
 });
 
 export default recordings.reducer;
-export const { push, discard, erase } = recordings.actions;
+export const recordingActions = {
+  harmonize: harmonize,
+  write: write,
+  retrieveCache: retrieveCache,
+  ...recordings.actions,
+};
