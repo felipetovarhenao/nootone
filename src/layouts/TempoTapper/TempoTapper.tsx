@@ -18,10 +18,6 @@ const TempoTapper = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn(className, "TempoTapper")}>
-      <span className="TempoTapper__text">tap tempo</span>
-      <div onClick={tapTempo} className="TempoTapper__tempo">
-        {tapperTempo}
-      </div>
       <div
         className={"TempoTapper__blinker"}
         style={{
@@ -29,6 +25,10 @@ const TempoTapper = ({ className }: { className?: string }) => {
           animationPlayState: isRecording ? "running" : "paused",
         }}
       />
+      <div onClick={tapTempo} className="TempoTapper__tempo">
+        {tapperTempo}
+      </div>
+      <span className="TempoTapper__text">tap tempo</span>
     </div>
   );
 };

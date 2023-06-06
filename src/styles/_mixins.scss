@@ -168,6 +168,7 @@
   * {
     @include trans;
     @include clickable;
+    @include no-select;
     color: $col;
   }
   &:hover,
@@ -248,4 +249,13 @@
 
 @mixin shadow($x: 0px, $y: 5px, $blur: 5px, $col: #00000055) {
   box-shadow: $x $y $blur $col;
+}
+
+@mixin no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }

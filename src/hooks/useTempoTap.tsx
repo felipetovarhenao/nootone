@@ -43,7 +43,7 @@ const useTempoTap = (initialTempo: number = 120, bufferSize: number = 4, sensiti
     }
 
     // Calculate the new tempo based on sensitivity and previous tempo
-    let newTempo = sensitivity * (60000 / (deltaSum / bufferSize)) + (1 - sensitivity) * tempo;
+    let newTempo = sensitivity * (60000 / (deltaSum / (bufferSize - 1))) + (1 - sensitivity) * tempo;
 
     // Round the tempo to the nearest integer
     newTempo = Math.round(newTempo);

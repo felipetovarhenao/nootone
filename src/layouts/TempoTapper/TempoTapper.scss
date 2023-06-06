@@ -12,6 +12,7 @@
     color: var(--txt);
   }
   .TempoTapper__tempo {
+    @include no-select;
     @include vh-pad($gap-sm, $gap-lg);
     @include round;
     @include clickable;
@@ -27,7 +28,7 @@
   }
   .TempoTapper__blinker {
     @include round(100%);
-    @include v-mar($gap-lg);
+    @include v-mar($gap-xxl);
     align-self: center;
     height: $txt-lg;
     width: $txt-lg;
