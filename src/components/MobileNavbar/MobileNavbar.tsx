@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
 import "./MobileNavbar.scss";
+import { useAppSelector } from "../../redux/hooks";
 
 interface MobileNavbarProps {
   className?: string;
@@ -15,6 +16,7 @@ interface MobileNavbarProps {
 
 const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected }) => {
   const navigate = useNavigate();
+  const isRecording = useAppSelector((state) => state.mic.isRecording);
 
   return (
     <nav className={cn(className, "MobileNavbar")}>
@@ -24,7 +26,9 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
             className="link"
             key={index}
             onClick={() => {
-              navigate(link.path);
+              if (!isRecording) {
+                navigate(link.path);
+              }
             }}
           >
             <Icon className={cn("icon", { "--selected": selected === index })} icon={link.icon} />
