@@ -8,13 +8,13 @@ import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
 import { retrieveCache } from "../../redux/recordingsSlice";
+import { useDarkTheme } from "../../hooks/useDarkTheme";
 
 const DEFAULT_VIEWNAME = "/ capture";
 
 const AppView = () => {
   useViewportInfo();
 
-  const [useDarkTheme, setUseDarkTheme] = useState(true);
   const [currentViewIndex, setCurrentViewIndex] = useState(1);
   const [viewHeader, setViewHeader] = useState(DEFAULT_VIEWNAME);
 
@@ -23,6 +23,7 @@ const AppView = () => {
 
   const dispatch = useAppDispatch();
   const cacheCheck = useRef(false);
+  const { darkTheme } = useDarkTheme();
 
   useEffect(() => {
     if (!cacheCheck.current) {
@@ -42,17 +43,12 @@ const AppView = () => {
   }, [location]);
 
   return (
-    <div className={cn("AppView", { dark: useDarkTheme })}>
+    <div className={cn("AppView", { dark: darkTheme })}>
       <h1 className="AppView__header">
         {!username ? (
-          <img className="AppView__header__avatar" onClick={() => setUseDarkTheme((x) => !x)} src={logo} alt="nootone-logo" />
+          <img className="AppView__header__avatar" src={logo} alt="nootone-logo" />
         ) : (
-          <Avatar
-            size={"32px"}
-            onClick={() => setUseDarkTheme((x) => !x)}
-            className="AppView__header__avatar --is-authenticated"
-            username={username}
-          />
+          <Avatar size={"32px"} className="AppView__header__avatar --is-authenticated" username={username} />
         )}
         <span className="AppView__header__text">{viewHeader}</span>
       </h1>

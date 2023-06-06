@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useCallback, /*  useContext, */ useEffect, useState } from "react";
 import "./Notification.scss";
 import Icon from "../Icon/Icon";
+import { useDarkTheme } from "../../hooks/useDarkTheme";
 // import { ThemeContext } from "../../utils/contexts";
 
 interface NotificationProps {
@@ -16,7 +17,7 @@ export default function Notification(props: NotificationProps) {
   const [exit, setExit] = useState<boolean>(false);
   const [width, setWidth] = useState<number>(0);
   const [intervalID, setIntervalID] = useState<NodeJS.Timeout | null>(null);
-  //   const { theme } = useContext(ThemeContext);
+  const { darkTheme } = useDarkTheme();
 
   const handleStartTimer = () => {
     const id = setInterval(() => {
@@ -62,7 +63,7 @@ export default function Notification(props: NotificationProps) {
     return type === "SUCCESS" ? "success" : "error";
   }
   return (
-    <div className={classNames("Notification", getNotificationStyle(props.type), { exit: exit }, { dark: true })}>
+    <div className={classNames("Notification", getNotificationStyle(props.type), { exit: exit }, { dark: darkTheme })}>
       <div className="Notification__message">
         <Icon className="Notification__message__icon" icon={props.icon} />
         <span className="Notification__message__text">{props.message}</span>

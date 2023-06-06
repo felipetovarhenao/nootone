@@ -2,6 +2,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { set, setMany, entries, delMany, del } from "idb-keyval";
 import audioArrayFromURL from "../utils/audioArrayFromURL";
 import audioToNoteEvents from "../utils/audioToNoteEvents";
+// import NoteHarmonizer from "../utils/NoteHarmonizer";
 
 type RecordingMetadata = {
   name: string;
@@ -69,8 +70,11 @@ export const retrieveCache = createAsyncThunk("recordings/retrieveCache", async 
 
 export const harmonizeRecording = createAsyncThunk("recordings/harmonizeRecording", async (recording: Recording): Promise<any | void> => {
   try {
+    console.log(recording);
     const { array } = await audioArrayFromURL(recording.url);
-    return audioToNoteEvents(array);
+    const notes = await audioToNoteEvents(array);
+    return notes;
+    // NoteHarmonizer()
   } catch (error) {
     return error;
   }
@@ -142,10 +146,11 @@ const recordings = createSlice({
     builder.addCase(retrieveCache.rejected, () => {
       console.log("no entries to load");
     });
-    builder.addCase(harmonizeRecording.fulfilled, (_, action) => {
-      console.log("harmonization ready");
-      console.log(action.payload);
-    });
+
+    /* harmonizer */
+    builder.addCase(harmonizeRecording.pending, () => {});
+    builder.addCase(harmonizeRecording.fulfilled, () => {});
+    builder.addCase(harmonizeRecording.rejected, () => {});
   },
 });
 

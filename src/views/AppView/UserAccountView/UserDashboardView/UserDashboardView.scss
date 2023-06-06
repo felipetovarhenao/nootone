@@ -56,6 +56,9 @@
       }
     }
   }
+  .UserDashboardView__theme-switch {
+    @include b-mar($gap-xxl);
+  }
   .UserDashboardView__logout-btn {
     @include t-mar($gap-lg);
     align-self: center;

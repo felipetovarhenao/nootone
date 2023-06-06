@@ -6,11 +6,14 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { logout } from "../../../../redux/userSlice";
 import "./UserDashboardView.scss";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
+import Switch from "../../../../components/Switch/Switch";
+import { useDarkTheme } from "../../../../hooks/useDarkTheme";
 
 const UserDashboardView = () => {
   const { username, plan, loading } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const notification = useNotification();
+  const { toggleDarkTheme } = useDarkTheme();
   return (
     <div className="UserDashboardView">
       <div className="UserDashboardView__header">
@@ -35,6 +38,7 @@ const UserDashboardView = () => {
           </div>
         ))}
       </div>
+      <Switch className="UserDashboardView__theme-switch" onSwitch={() => toggleDarkTheme()} offIcon="ic:sharp-dark-mode" onIcon="entypo:light-up" />
       <Button
         className="UserDashboardView__logout-btn"
         color="danger"
@@ -86,4 +90,5 @@ const accountMenu: { [section: string]: AccountMenuOption[] } = {
       danger: true,
     },
   ],
+  appearance: [],
 };

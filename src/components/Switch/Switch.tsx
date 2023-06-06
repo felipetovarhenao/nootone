@@ -21,11 +21,11 @@ export default function Switch({ className, defaultState = false, onSwitch, offI
       }}
       {...rest}
     >
-      {onIcon && <Icon className="on-icon" icon={onIcon} />}
+      {offIcon && <Icon className="off-icon" icon={offIcon} />}
       <div className="pin-outer">
         <div className="pin-inner" style={isActive ? { marginLeft: "50%", marginRight: "0%" } : { marginRight: "50%", marginLeft: "0%" }} />
       </div>
-      {offIcon && <Icon className="off-icon" icon={offIcon} />}
+      {onIcon && <Icon className="on-icon" icon={onIcon} />}
     </div>
   );
 }
