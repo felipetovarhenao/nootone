@@ -9,23 +9,24 @@ import createNewAudioContext from "./createNewAudioContext";
  *                  It receives the error object.
  * @param sampleRate - An optional parameter specifying the sample rate of the audio file.
  */
-export default function audioArrayFromURL(
-  url: string,
-  onSuccess: (audioData: Float32Array, sampleRate: number) => void,
-  onError?: (error: any) => void,
-  sampleRate?: number
-): void {
+export default async function audioArrayFromURL(url: string, sampleRate?: number): Promise<BufferObject> {
   const audioContext = createNewAudioContext(sampleRate);
-  fetch(url)
+  return fetch(url)
     .then((response) => response.arrayBuffer())
     .then((buffer) => audioContext.decodeAudioData(buffer))
     .then((audioBuffer) => {
-      onSuccess(audioBuffer.getChannelData(0), audioContext.sampleRate);
+      return {
+        array: audioBuffer.getChannelData(0),
+        sampleRate: audioContext.sampleRate,
+      };
     })
     .catch((error) => {
-      if (onError) {
-        onError(error);
-      }
+      return error;
     })
     .finally(() => audioContext.close());
 }
+
+type BufferObject = {
+  array: Float32Array;
+  sampleRate: number;
+};

@@ -7,7 +7,7 @@ import useViewportInfo from "../../hooks/useViewportInfo";
 import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
-import { pushFromCache } from "../../redux/recordingsSlice";
+import { retrieveCache } from "../../redux/recordingsSlice";
 
 const DEFAULT_VIEWNAME = "/ capture";
 
@@ -27,7 +27,7 @@ const AppView = () => {
   useEffect(() => {
     if (!cacheCheck.current) {
       cacheCheck.current = true;
-      dispatch(pushFromCache());
+      dispatch(retrieveCache());
     }
   }, []);
 

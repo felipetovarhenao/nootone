@@ -5,19 +5,10 @@ import { NoteEvent } from "./playNoteEvents";
  * Converts audio to note events using the BasicPitch library.
  *
  * @param audioArray - Audio data as a Float32Array.
- * @param onSuccess - A callback function called when the conversion is successful. It receives an array of note events.
- * @param onError - An optional callback function called if an error occurs during the conversion.
- * @param onProgress - An optional callback function called to get progress percentage value.
  * @param options - Optional detection settings.
  * @returns A promise that resolves when the conversion is complete.
  */
-export default async function audioToNoteEvents(
-  audioArray: Float32Array,
-  onSuccess: onSuccessCallback,
-  onError?: onErrorCallback,
-  onProgress?: onProgressCallback,
-  options?: detectionSettings
-): Promise<void> {
+export default async function audioToNoteEvents(audioArray: Float32Array, options?: detectionSettings): Promise<NoteEvent[] | string> {
   const frames: number[][] = [];
   const onsets: number[][] = [];
   const contours: number[][] = [];
@@ -35,11 +26,7 @@ export default async function audioToNoteEvents(
         onsets.push(...onset);
         contours.push(...contour);
       },
-      (pct: number) => {
-        if (onProgress) {
-          onProgress(pct);
-        }
-      }
+      () => {}
     );
 
     // Destructure the options with default values
@@ -71,13 +58,9 @@ export default async function audioToNoteEvents(
     // Sort the note events by onset time and pitch
     noteEvents.sort((a, b) => a.onset - b.onset || a.pitch - b.pitch);
 
-    // Call the success callback with the resulting note events
-    onSuccess(noteEvents);
+    return noteEvents;
   } catch (error) {
-    // Call the error callback if provided
-    if (onError) {
-      onError(error);
-    }
+    return error as string;
   }
 }
 
@@ -92,8 +75,3 @@ type detectionSettings = {
   melodiaTrick?: boolean;
   energyTolerance?: number;
 };
-
-// Define the callback types
-type onSuccessCallback = (notes: NoteEvent[]) => void;
-type onErrorCallback = (error: any) => void;
-type onProgressCallback = (percent: number) => void;

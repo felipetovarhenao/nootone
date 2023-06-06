@@ -1,18 +1,21 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { set, setMany, entries, delMany, del } from "idb-keyval";
+import audioArrayFromURL from "../utils/audioArrayFromURL";
+import audioToNoteEvents from "../utils/audioToNoteEvents";
 
-export type Recording = {
+type RecordingMetadata = {
   name: string;
   date: string;
+  features?: any;
+};
+
+export type Recording = RecordingMetadata & {
   url: string;
 };
 
 type CachedRecording = {
   blob: Blob;
-  metadata: {
-    name: string;
-    date: string;
-  };
+  metadata: RecordingMetadata;
 };
 
 type InitialState = {
@@ -25,7 +28,7 @@ const initialState: InitialState = {
   unsaved: [],
 };
 
-const writeRecording = async (recording: Recording): Promise<Recording | string> => {
+export const write = createAsyncThunk("recordings/write", async (recording: Recording): Promise<Recording | string> => {
   const { url, ...metadata } = recording;
   const blob = await fetch(url).then((r) => r.blob());
   return new Promise<Recording | string>((resolve, reject) => {
@@ -33,11 +36,9 @@ const writeRecording = async (recording: Recording): Promise<Recording | string>
       .then(() => resolve(recording))
       .catch(reject);
   });
-};
+});
 
-export const write = createAsyncThunk("recordings/write", writeRecording);
-
-const retrieveCache = async () => {
+export const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
   return entries().then((entries) => {
     const recs: Recording[] = [];
     if (entries.length === 0) {
@@ -64,9 +65,16 @@ const retrieveCache = async () => {
     setMany(updatedEntries);
     return recs;
   });
-};
+});
 
-export const pushFromCache = createAsyncThunk("recordings/pushFroCache", retrieveCache);
+export const harmonizeRecording = createAsyncThunk("recordings/harmonizeRecording", async (recording: Recording): Promise<any | void> => {
+  try {
+    const { array } = await audioArrayFromURL(recording.url);
+    return audioToNoteEvents(array);
+  } catch (error) {
+    return error;
+  }
+});
 
 const recordings = createSlice({
   name: "recordings",
@@ -116,7 +124,7 @@ const recordings = createSlice({
     builder.addCase(write.rejected, (_, action) => {
       console.log("Error writing file", action.payload);
     });
-    builder.addCase(pushFromCache.fulfilled, (state, action: PayloadAction<Recording[]>) => {
+    builder.addCase(retrieveCache.fulfilled, (state, action: PayloadAction<Recording[]>) => {
       for (let i = 0; i < action.payload.length; i++) {
         const rec = action.payload[i];
         let exists = false;
@@ -131,8 +139,12 @@ const recordings = createSlice({
         }
       }
     });
-    builder.addCase(pushFromCache.rejected, () => {
+    builder.addCase(retrieveCache.rejected, () => {
       console.log("no entries to load");
+    });
+    builder.addCase(harmonizeRecording.fulfilled, (_, action) => {
+      console.log("harmonization ready");
+      console.log(action.payload);
     });
   },
 });
