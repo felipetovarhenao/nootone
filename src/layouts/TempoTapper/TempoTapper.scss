@@ -1,0 +1,27 @@
+@use "../../styles/main.scss" as *;
+
+.TempoTapper {
+  @include v-stack-c;
+  @include center;
+  height: min-content;
+  .TempoTapper__text {
+    @include v-pad;
+    align-self: center;
+    font-size: $txt-ms;
+    text-transform: uppercase;
+    color: var(--txt);
+  }
+  .TempoTapper__tempo {
+    @include vh-pad($gap-sm, $gap-lg);
+    @include round;
+    @include clickable;
+    align-self: center;
+    background: var(--main-gradient);
+    font-weight: bold;
+    font-size: $txt-lg;
+    color: var(--txt-light);
+    &:hover {
+      filter: brightness(120%);
+    }
+  }
+}
