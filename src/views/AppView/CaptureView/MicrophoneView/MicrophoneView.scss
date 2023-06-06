@@ -6,17 +6,32 @@
   display: grid;
   grid-template-rows: 1fr auto 1fr;
   height: 100%;
-  // width: 100%;
+  .MicrophoneView__title {
+    @include stack;
+    @include round-border(var(--secondary-3));
+    @include pad;
+    @include t-mar($gap-xxl);
+    height: fit-content;
+    font-size: $txt-ml;
+    color: var(--txt);
+    background-color: var(--bg-1);
+    outline-color: var(--secondary-4);
+    text-align: center;
+    &::placeholder {
+      color: var(--disabled-3);
+    }
+  }
   .MicrophoneView__tapper {
     @include stack;
     @include t-mar($gap-xxl);
     @include h-center;
     align-items: flex-start;
-    //   justify-self: flex-start;
   }
+
   .MicrophoneView__icon {
     @include clickable;
     @include center;
+    @include h-mar(auto);
     font-size: 130px;
     * {
       @include trans;
