@@ -103,30 +103,23 @@ const HarmonizerDemo = () => {
     audioSampler.current.loadSamples(GUITAR_NOTES);
   }, []);
 
-  function handleBlob(blob: Blob) {
+  async function handleBlob(blob: Blob) {
     setIsProcessing(true);
     if (melody) {
       setMelody([]);
     }
     const url = URL.createObjectURL(blob);
-    audioArrayFromURL(
-      url,
-      (audioData, sampleRate) => {
-        audioPlayer.current.loadSample(url);
-        if (!pitchy) {
-          audioToNoteEvents(audioData, (noteEvents) => {
-            setMelody(noteEvents);
-            setIsProcessing(false);
-          });
-        } else {
-          const notes = detectPitch(audioData, sampleRate);
-          setMelody(notes);
-          setIsProcessing(false);
-        }
-      },
-      undefined,
-      22050
-    );
+    const { array, sampleRate } = await audioArrayFromURL(url);
+    audioPlayer.current.loadSample(url);
+    if (!pitchy) {
+      const notes = await audioToNoteEvents(array);
+      setMelody(notes as any);
+      setIsProcessing(false);
+    } else {
+      const notes = detectPitch(array, sampleRate);
+      setMelody(notes);
+      setIsProcessing(false);
+    }
   }
 
   return (

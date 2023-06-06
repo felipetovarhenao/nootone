@@ -22,8 +22,8 @@ export default class AudioSampler extends AudioSource {
 
     // Create and connect the reverb effect node
     this.reverb = this.context.createConvolver();
-    audioArrayFromURL(reverbURL, (audioData, _) => {
-      this.reverb.buffer = this.arrayToBuffer(audioData);
+    audioArrayFromURL(reverbURL).then(({ array }) => {
+      this.reverb.buffer = this.arrayToBuffer(array);
     });
 
     // Create and connect the master gain node
@@ -43,10 +43,9 @@ export default class AudioSampler extends AudioSource {
         const [pitch, dynamic] = parseFileName(sampleURL);
         const velocity = dynamic == "f" ? 1.0 : 0.5;
 
-        audioArrayFromURL(
-          sampleURL,
-          (audioData, _) => {
-            const sample = this.arrayToBuffer(audioData);
+        audioArrayFromURL(sampleURL).then(
+          ({ array }) => {
+            const sample = this.arrayToBuffer(array);
             if (!this.samples[pitch]) {
               this.samples[pitch] = { [velocity]: sample };
             } else {
@@ -56,8 +55,7 @@ export default class AudioSampler extends AudioSource {
           },
           (error) => {
             reject(error); // Reject the promise if there's an error
-          },
-          this.context.sampleRate
+          }
         );
       });
     });

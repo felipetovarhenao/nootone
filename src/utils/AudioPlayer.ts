@@ -29,15 +29,9 @@ export default class AudioPlayer extends AudioSource {
    * Loads an audio sample from the specified URL.
    * @param url The URL of the audio sample.
    */
-  public loadSample(url: string): void {
-    audioArrayFromURL(
-      url,
-      (audioData, _) => {
-        this.buffer = this.arrayToBuffer(audioData);
-      },
-      undefined,
-      this.context.sampleRate
-    );
+  public async loadSample(url: string): Promise<void> {
+    const { array } = await audioArrayFromURL(url);
+    this.buffer = this.arrayToBuffer(array);
   }
 
   /**
