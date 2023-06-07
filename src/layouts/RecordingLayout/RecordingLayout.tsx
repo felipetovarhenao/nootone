@@ -28,7 +28,6 @@ const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
     //   onClick: () => {},
     // },
   ];
-  console.log(rec);
   return (
     <div className="RecordingLayout">
       <div className="RecordingLayout__options">

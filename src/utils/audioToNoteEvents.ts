@@ -8,7 +8,7 @@ import { NoteEvent } from "../types/music";
  * @param options - Optional detection settings.
  * @returns A promise that resolves when the conversion is complete.
  */
-export default async function audioToNoteEvents(audioArray: Float32Array, options?: detectionSettings): Promise<NoteEvent[] | string> {
+export default async function audioToNoteEvents(audioArray: Float32Array, options?: detectionSettings): Promise<NoteEvent[]> {
   const frames: number[][] = [];
   const onsets: number[][] = [];
   const contours: number[][] = [];
@@ -59,8 +59,8 @@ export default async function audioToNoteEvents(audioArray: Float32Array, option
     noteEvents.sort((a, b) => a.onset - b.onset || a.pitch - b.pitch);
 
     return noteEvents;
-  } catch (error) {
-    return error as string;
+  } catch (error: unknown) {
+    throw error;
   }
 }
 

@@ -86,7 +86,6 @@ const recordings = createSlice({
     });
     builder.addCase(harmonize.fulfilled, (state, action) => {
       state.isProcessing = false;
-      console.log(action.payload);
       if (action.payload) {
         for (let i = 0; i < state.saved.length; i++) {
           if (state.saved[i].url === action.payload.url) {

@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import audioArrayFromURL from "../../utils/audioArrayFromURL";
-import detectPitch from "../../utils/detectPitch";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/groupNoteEventsByOnset";
@@ -10,6 +9,7 @@ import getAudioDuration from "../../utils/getAudioDuration";
 import SamplerRenderer from "../../utils/SamplerRenderer";
 import { NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
+import detectPitch from "../../utils/detectPitch";
 
 const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<void | Recording> => {
   try {
@@ -20,22 +20,26 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
     if (detectedNotes.length === 0) {
       return;
     }
+
     const segSize = (60 / recording.features.tempo! || 60) * 2;
-    const chords = new NoteHarmonizer().harmonize(
-      detectedNotes.map((n) => ({ velocity: 0.5, ...n })),
+    const harmonicBlocks = new NoteHarmonizer().harmonize(
+      detectedNotes.map((n) => ({ ...n, velocity: 1 })),
       style,
       segSize
     );
-    let onsetOffset = Math.min(...chords.map((chord) => chord.onset));
 
     const notes: NoteEvent[] = [];
-    const progression = applyVoiceLeading(chords.map((chord) => chord.notes.map((note) => note.pitch)));
+    const chordProgression = applyVoiceLeading(harmonicBlocks.map((chord) => chord.notes.map((note) => note.pitch)));
 
-    progression.forEach((chord: number[], i) =>
-      chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: onsetOffset + i * segSize, duration: segSize, velocity: 1 }))
+    chordProgression.forEach((chord: number[], i) =>
+      chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: harmonicBlocks[i].onset, duration: segSize, velocity: 1 }))
     );
-    const chords2 = noteEventsToChordEvents(notes);
-    const arpeggios = arpeggiateChords(chords2);
+    const chords = noteEventsToChordEvents(notes);
+    const arpeggios = arpeggiateChords(chords);
+    const features = {
+      ...recording.features,
+      noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
+    };
 
     return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)
       .then((audioBuffer) => audioBufferToBlob(audioBuffer))
@@ -43,6 +47,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
         const recDuration = await getAudioDuration(blob);
         return {
           ...recording,
+          features: features,
           variations: [
             ...(recording.variations || []),
             {
@@ -51,15 +56,12 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
               date: JSON.stringify(new Date()),
               url: URL.createObjectURL(blob),
               tags: [...recording.tags, style],
-              features: {
-                ...recording.features,
-                noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
-              },
+              features: { ...features, chordEvents: harmonicBlocks },
             },
           ],
         };
       });
-  } catch (error) {
+  } catch (error: unknown) {
     console.log(error);
   }
 });
