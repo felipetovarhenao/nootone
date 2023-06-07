@@ -8,7 +8,7 @@ import { Recording } from "../../types/audio";
 
 type AudioPlayerProps = {
   className?: string;
-  rec: Recording;
+  rec: Recording | Omit<Recording, "variations">;
 };
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec }) => {

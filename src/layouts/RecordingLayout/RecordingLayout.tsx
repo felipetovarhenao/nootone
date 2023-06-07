@@ -28,7 +28,7 @@ const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
     //   onClick: () => {},
     // },
   ];
-
+  console.log(rec);
   return (
     <div className="RecordingLayout">
       <div className="RecordingLayout__options">
@@ -63,6 +63,13 @@ const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
           ))}
         </div>
       </Dropdown>
+      {rec.variations?.length > 0 && (
+        <Dropdown legendClosed="show variations" legendOpen="hide variations">
+          {rec.variations?.map((variation, i) => (
+            <AudioPlayer key={i} rec={variation} />
+          ))}
+        </Dropdown>
+      )}
     </div>
   );
 };

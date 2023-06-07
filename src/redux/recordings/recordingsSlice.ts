@@ -5,18 +5,6 @@ import retrieveCache from "./retrieveCacheThunk";
 import write from "./writeThunk";
 import { Recording } from "../../types/audio";
 
-// export type RecordingMetadata = {
-//   name: string;
-//   date: string;
-//   duration: number;
-//   tags: string[];
-//   features?: any;
-// };
-
-// export type Recording = RecordingMetadata & {
-//   url: string;
-// };
-
 type InitialState = {
   isProcessing: boolean;
   saved: Recording[];
@@ -31,10 +19,12 @@ const recordings = createSlice({
   name: "recordings",
   initialState: initialState,
   reducers: {
-    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "features" | "date">>) => {
+    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "features" | "date" | "variations">>) => {
       action.payload.url;
       state.saved.unshift({
         tags: [],
+        features: {},
+        variations: [],
         date: JSON.stringify(new Date()),
         ...action.payload,
       });
@@ -96,13 +86,13 @@ const recordings = createSlice({
     });
     builder.addCase(harmonize.fulfilled, (state, action) => {
       state.isProcessing = false;
+      console.log(action.payload);
       if (action.payload) {
-        const recording: Recording = {
-          date: JSON.stringify(new Date()),
-          tags: [],
-          ...action.payload,
-        };
-        state.saved.unshift(recording);
+        for (let i = 0; i < state.saved.length; i++) {
+          if (state.saved[i].url === action.payload.url) {
+            state.saved[i] = action.payload;
+          }
+        }
       }
     });
     builder.addCase(harmonize.rejected, (state) => {
