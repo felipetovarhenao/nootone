@@ -4,7 +4,7 @@ import { ChordEvent } from "../types/music";
 import { NoteEvent } from "../types/music";
 import { NoteEventSegment } from "../types/music";
 
-export default function groupedNoteEventsByOnset(noteEvents: NoteEvent[]): ChordEvent[] {
+export default function noteEventsToChordEvents(noteEvents: NoteEvent[]): ChordEvent[] {
   // Sort the note events by onset
   const sortedNoteEvents = noteEvents.sort((a, b) => a.onset - b.onset);
 

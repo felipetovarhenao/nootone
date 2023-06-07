@@ -3,7 +3,7 @@ import audioArrayFromURL from "../../utils/audioArrayFromURL";
 import detectPitch from "../../utils/detectPitch";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
-import groupedNoteEventsByOnset from "../../utils/groupNoteEventsByOnset";
+import noteEventsToChordEvents from "../../utils/groupNoteEventsByOnset";
 import arpeggiateChords from "../../utils/arpeggiateChords";
 import audioBufferToBlob from "../../utils/audioBufferToBlob";
 import getAudioDuration from "../../utils/getAudioDuration";
@@ -32,10 +32,11 @@ const harmonize = createAsyncThunk(
 
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords.map((chord) => chord.notes.map((note) => note.pitch)));
+
       progression.forEach((chord: number[], i) =>
         chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: onsetOffset + i * segSize, duration: segSize, velocity: 1 }))
       );
-      const chords2 = groupedNoteEventsByOnset(notes);
+      const chords2 = noteEventsToChordEvents(notes);
       const arpeggios = arpeggiateChords(chords2);
 
       return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)

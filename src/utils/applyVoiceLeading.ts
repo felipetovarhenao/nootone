@@ -1,4 +1,5 @@
 import connectChords from "./connectChords";
+import removeDuplicates from "./removeDuplicates";
 
 /**
  * Applies voice leading to a sequence of chords.
@@ -21,7 +22,7 @@ export default function applyVoiceLeading(chordSequence: number[][]): number[][]
     const upperVoices = connectChords(outputChordSequence[i - 1].slice(1), chord.slice(1));
 
     // Combine the base line and upper voices to form the new chord in the output sequence
-    outputChordSequence[i] = [...baseLine, ...upperVoices];
+    outputChordSequence[i] = removeDuplicates([...baseLine, ...upperVoices]);
   }
 
   return outputChordSequence; // Return the chord sequence with voice leading applied

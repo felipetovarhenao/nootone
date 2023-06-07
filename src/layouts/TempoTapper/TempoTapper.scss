@@ -6,6 +6,7 @@
   height: min-content;
   .TempoTapper__text {
     @include v-pad;
+    @include no-select;
     align-self: center;
     font-size: $txt-ms;
     text-transform: uppercase;
