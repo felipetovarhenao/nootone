@@ -78,7 +78,7 @@ export default class AudioSampler extends AudioSource {
    * @param velocity The velocity value of the note.
    */
   public playNote(onset: number, pitch: number, velocity: number, duration: number): AudioBufferSourceNode | undefined {
-    const { buffer, sourcePitch } = this.findBuffer(pitch, velocity);
+    const { buffer, sourcePitch } = this.findBuffer(pitch, 0.5);
     const playbackRate = 2 ** ((pitch - sourcePitch) / 12);
     if (playbackRate > 2 || playbackRate < 0.5) {
       return undefined;

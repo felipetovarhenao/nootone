@@ -14,6 +14,7 @@ import note12 from "../assets/audio/guitar/42-f.ogg";
 import note13 from "../assets/audio/guitar/66-p.ogg";
 import note14 from "../assets/audio/guitar/66-f.ogg";
 import note15 from "../assets/audio/guitar/42-p.ogg";
+
 import { NoteEvent } from "./playNoteEvents";
 import renderAudioOffline from "./renderAudioOffline";
 import createNewAudioContext from "./createNewAudioContext";
@@ -40,7 +41,7 @@ export default class SamplerRenderer {
       lastNoteOutset = Math.max(lastNoteOutset, note.onset + note.duration);
     });
 
-    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + 2 * ctx.sampleRate;
+    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + 5 * ctx.sampleRate;
     return renderAudioOffline(
       async (audioContext) => {
         const audioBuffer = audioContext.createBuffer(1, array.length, audioContext.sampleRate);

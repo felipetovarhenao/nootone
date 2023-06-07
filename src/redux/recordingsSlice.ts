@@ -74,38 +74,43 @@ const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
   });
 });
 
-const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<void | Pick<Recording, "url" | "duration">> => {
-  try {
-    const { array, sampleRate } = await audioArrayFromURL(recording.url);
-    const detectedNotes = detectPitch(array, sampleRate);
+const harmonize = createAsyncThunk(
+  "recordings/harmonize",
+  async (recording: Recording): Promise<void | Pick<Recording, "url" | "duration" | "name">> => {
+    try {
+      const { array, sampleRate } = await audioArrayFromURL(recording.url);
+      const detectedNotes = detectPitch(array, sampleRate);
+      const styleList = ["classical", "pop", "ethereal", "jazz", "bittersweet", "upbeat", "dramatic"];
+      const style = styleList[Math.floor(Math.random() * styleList.length)];
+      if (detectedNotes.length === 0) {
+        return;
+      }
+      const segSize = (60 / recording.features!.tempo) * 2;
+      const chords = new NoteHarmonizer().harmonize(detectedNotes, style, segSize);
 
-    if (detectedNotes.length === 0) {
-      return;
+      const notes: NoteEvent[] = [];
+      const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
+      progression.forEach((chord: number[], i) =>
+        chord
+          .sort()
+          .forEach((pitch: number, j: number) => notes.push({ pitch: pitch, onset: i * segSize + j * 0.05, duration: segSize, velocity: 1 }))
+      );
+
+      return SamplerRenderer.renderNoteEvents(notes, recording.url)
+        .then((audioBuffer) => audioBufferToBlob(audioBuffer))
+        .then(async (blob) => {
+          const recDuration = await getAudioDuration(blob);
+          return {
+            name: `${recording.name} (${style})`,
+            duration: recDuration,
+            url: URL.createObjectURL(blob),
+          };
+        });
+    } catch (error) {
+      console.log(error);
     }
-    const segSize = (60 / recording.features!.tempo) * 2;
-    const chords = new NoteHarmonizer().harmonize(detectedNotes, "classical", segSize);
-
-    const notes: NoteEvent[] = [];
-    const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
-    progression.forEach((chord: number[], i) =>
-      chord
-        .sort()
-        .forEach((pitch: number, j: number) => notes.push({ pitch: pitch, onset: i * segSize + j * 0.05, duration: segSize, velocity: 0.9 }))
-    );
-
-    return SamplerRenderer.renderNoteEvents(notes, recording.url)
-      .then((audioBuffer) => audioBufferToBlob(audioBuffer))
-      .then(async (blob) => {
-        const recDuration = await getAudioDuration(blob);
-        return {
-          duration: recDuration,
-          url: URL.createObjectURL(blob),
-        };
-      });
-  } catch (error) {
-    console.log(error);
   }
-});
+);
 
 const recordings = createSlice({
   name: "recordings",
@@ -175,7 +180,6 @@ const recordings = createSlice({
     builder.addCase(harmonize.fulfilled, (state, action) => {
       if (action.payload) {
         const recording: Recording = {
-          name: "test",
           date: JSON.stringify(new Date()),
           tags: [],
           ...action.payload,
