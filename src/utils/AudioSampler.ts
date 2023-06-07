@@ -26,7 +26,7 @@ export default class AudioSampler extends AudioSource {
     audioArrayFromURL(reverbURL).then(({ array }) => {
       this.reverb.buffer = this.arrayToBuffer(array);
     });
-    this.envelope = new Float32Array([0, ...[...Array(12).keys()].map(() => 1), 0.5, 0.25, 0]);
+    this.envelope = new Float32Array([...[...Array(12).keys()].map(() => 1), 0.5, 0.25, 0]);
     // Create and connect the master gain node
     this.masterGain = this.context.createGain();
     this.reverb.connect(this.masterGain);
@@ -78,7 +78,7 @@ export default class AudioSampler extends AudioSource {
    * @param velocity The velocity value of the note.
    */
   public playNote(onset: number, pitch: number, velocity: number, duration: number): AudioBufferSourceNode | undefined {
-    const { buffer, sourcePitch } = this.findBuffer(pitch, 0.5);
+    const { buffer, sourcePitch } = this.findBuffer(pitch, velocity);
     const playbackRate = 2 ** ((pitch - sourcePitch) / 12);
     if (playbackRate > 2 || playbackRate < 0.5) {
       return undefined;
@@ -93,10 +93,10 @@ export default class AudioSampler extends AudioSource {
     source.playbackRate.value = playbackRate;
 
     const dryMix = this.context.createGain();
-    dryMix.gain.value = velocity;
+    dryMix.gain.value = 1;
 
     const wetMix = this.context.createGain();
-    wetMix.gain.value = 0.125 * velocity;
+    wetMix.gain.value = 0.125;
 
     const panner = this.context.createStereoPanner();
     panner.pan.value = Math.min(1, Math.max(0, (pitch / 127) * 2 - 1));

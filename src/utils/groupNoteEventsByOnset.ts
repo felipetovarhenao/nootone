@@ -1,30 +1,37 @@
+// import { NoteEvent } from "./playNoteEvents";
+
+import { ChordEvent } from "../types/music";
 import { NoteEvent } from "../types/music";
+import { NoteEventSegment } from "../types/music";
 
-/**
- * Groups an array of note events by their onset times.
- *
- * @param noteEvents - The array of note events to be grouped.
- * @returns An array of note event arrays, where each inner array contains note events with the same onset time.
- */
-export default function groupNoteEventsByOnset(noteEvents: NoteEvent[]): NoteEvent[][] {
+export default function groupedNoteEventsByOnset(noteEvents: NoteEvent[]): ChordEvent[] {
+  // Sort the note events by onset
+  const sortedNoteEvents = noteEvents.sort((a, b) => a.onset - b.onset);
+
   // Group note events by onset
-  const groupedNoteEvents: { [onset: number]: NoteEvent[] } = {};
-
-  // Iterate over each note event
-  for (const noteEvent of noteEvents) {
-    const { onset } = noteEvent;
-    if (groupedNoteEvents[onset]) {
-      groupedNoteEvents[onset].push(noteEvent); // Add the note event to the existing group
-    } else {
-      groupedNoteEvents[onset] = [noteEvent]; // Create a new group with the note event
+  const noteEventSegments: NoteEventSegment[] = [];
+  let currentSegment: NoteEventSegment | null = null;
+  for (const noteEvent of sortedNoteEvents) {
+    if (!currentSegment || noteEvent.onset !== currentSegment.onset) {
+      currentSegment = {
+        onset: noteEvent.onset,
+        notes: [],
+      };
+      noteEventSegments.push(currentSegment);
     }
+    currentSegment.notes.push(noteEvent);
   }
 
-  // Sort note events by onsets
-  const sortedOnsets = Object.keys(groupedNoteEvents)
-    .map(Number)
-    .sort((a, b) => a - b); // Get the sorted onset times
-  const sortedNoteEvents: NoteEvent[][] = sortedOnsets.map((onset) => groupedNoteEvents[onset]); // Retrieve the note events for each onset time
+  // Convert note event segments to chord events
+  const chordEvents: ChordEvent[] = noteEventSegments.map((segment) => {
+    return {
+      onset: segment.onset,
+      notes: segment.notes.map((note) => {
+        const { onset, ...rest } = note;
+        return rest;
+      }),
+    };
+  });
 
-  return sortedNoteEvents; // Return the grouped and sorted note events
+  return chordEvents;
 }

@@ -9,6 +9,8 @@ import { NoteEvent } from "../types/music";
 import SamplerRenderer from "../utils/SamplerRenderer";
 import audioBufferToBlob from "../utils/audioBufferToBlob";
 import getAudioDuration from "../utils/getAudioDuration";
+import groupedNoteEventsByOnset from "../utils/groupNoteEventsByOnset";
+import arpeggiateChords from "../utils/arpeggiateChords";
 
 type RecordingMetadata = {
   name: string;
@@ -98,14 +100,12 @@ const harmonize = createAsyncThunk(
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords.map((chord) => chord.notes.map((note) => note.pitch)));
       progression.forEach((chord: number[], i) =>
-        chord
-          .sort()
-          .forEach((pitch: number, j: number) =>
-            notes.push({ pitch: pitch, onset: onsetOffset + (i * segSize + j * 0.05), duration: segSize, velocity: 1 })
-          )
+        chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: onsetOffset + i * segSize, duration: segSize, velocity: 1 }))
       );
+      const chords2 = groupedNoteEventsByOnset(notes);
+      const arpeggios = arpeggiateChords(chords2);
 
-      return SamplerRenderer.renderNoteEvents(notes, recording.url)
+      return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)
         .then((audioBuffer) => audioBufferToBlob(audioBuffer))
         .then(async (blob) => {
           const recDuration = await getAudioDuration(blob);

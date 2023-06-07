@@ -159,10 +159,12 @@ export default class NoteHarmonizer {
   private noteArrayToSegments(notes: NoteEvent[], segSize: number): NoteEventSegment[] {
     const segments: NoteEventSegment[] = [];
     let segment: NoteEvent[] = [];
-    let lastSegmentIndex = Math.floor(notes[0].onset / segSize);
+    notes.sort((a, b) => a.onset - b.onset);
+    const margin = 0.01;
+    let lastSegmentIndex = Math.floor(notes[0].onset / segSize + margin);
 
     for (const note of notes) {
-      const segmentIndex = Math.floor(note.onset / segSize);
+      const segmentIndex = Math.floor(note.onset / segSize + margin);
 
       if (segmentIndex > lastSegmentIndex) {
         segments.push({ notes: segment, onset: lastSegmentIndex * segSize });

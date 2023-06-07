@@ -28,7 +28,7 @@ export default class SamplerRenderer {
     const sampler = new AudioSampler(audioContext);
     return sampler.loadSamples(GUITAR_NOTES).then(() => {
       noteEvents.forEach((note) => {
-        sampler.playNote(note.onset, note.pitch, note.velocity || 0.5, note.duration);
+        sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration);
       });
     });
   }
