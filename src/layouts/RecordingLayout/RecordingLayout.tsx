@@ -9,23 +9,23 @@ import icons from "../../utils/icons";
 const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
   const dispatch = useAppDispatch();
   const processingOptions: ProcessingOption[] = [
-    {
-      name: "retune it",
-      icon: "fluent:wand-16-filled",
-      onClick: () => {},
-    },
+    // {
+    //   name: "retune it",
+    //   icon: "fluent:wand-16-filled",
+    //   onClick: () => {},
+    // },
     {
       name: "add accompaniment",
       icon: "emojione-monotone:musical-notes",
-      onClick: (_: any) => {
-        // dispatch(recordingActions.harmonize(rec));
+      onClick: () => {
+        dispatch(recordingActions.harmonize(rec));
       },
     },
-    {
-      name: "drumify it",
-      icon: "fa6-solid:drum",
-      onClick: () => {},
-    },
+    // {
+    //   name: "drumify it",
+    //   icon: "fa6-solid:drum",
+    //   onClick: () => {},
+    // },
   ];
 
   return (
@@ -55,7 +55,7 @@ const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
       <Dropdown legendOpen="hide options" legendClosed="show options">
         <div className="RecordingLayout__operations">
           {processingOptions.map((opt) => (
-            <div className="RecordingLayout__operations__operation" key={opt.name} onClick={() => opt.onClick(rec)}>
+            <div className="RecordingLayout__operations__operation" key={opt.name} onClick={opt.onClick}>
               <Icon className="RecordingLayout__operations__operation__icon" icon={opt.icon} />
               <span className="RecordingLayout__operations__operation__text">{opt.name}</span>
             </div>

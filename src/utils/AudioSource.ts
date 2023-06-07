@@ -1,9 +1,9 @@
 import createNewAudioContext from "./createNewAudioContext";
 
 export default abstract class AudioSource {
-  protected context: AudioContext;
+  protected context: AudioContext | OfflineAudioContext;
   protected gain: GainNode;
-  constructor(context?: AudioContext, preconnect: boolean = true) {
+  constructor(context?: AudioContext | OfflineAudioContext, preconnect: boolean = true) {
     this.context = context || createNewAudioContext();
     this.gain = this.context.createGain();
     if (preconnect) {

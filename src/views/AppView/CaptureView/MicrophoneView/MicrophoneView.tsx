@@ -5,7 +5,7 @@ import cn from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { recordingActions } from "../../../../redux/recordingsSlice";
-import { useAppDispatch } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
 import { toggle } from "../../../../redux/micSlice";
@@ -18,6 +18,7 @@ const MicrophoneView = () => {
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const [recTitle, setRecTitle] = useState("");
+  const tempo = useAppSelector((state) => state.mic.tempo);
 
   useEffect(() => {
     if (!isRecording && audioBlob) {
@@ -26,6 +27,9 @@ const MicrophoneView = () => {
           url: URL.createObjectURL(audioBlob),
           name: recTitle || getFormattedTimestamp(),
           duration: duration,
+          features: {
+            tempo: tempo,
+          },
         };
         dispatch(recordingActions.addNew(rec));
         navigate("/app/playground/");

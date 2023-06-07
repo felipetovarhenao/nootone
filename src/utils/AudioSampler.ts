@@ -16,7 +16,7 @@ export default class AudioSampler extends AudioSource {
    * Creates an instance of the AudioSampler class.
    * @param context The AudioContext used for audio processing.
    */
-  constructor(context?: AudioContext, preconnect: boolean = true) {
+  constructor(context?: AudioContext | OfflineAudioContext, preconnect: boolean = true) {
     super(context, preconnect);
     this.samples = {};
 

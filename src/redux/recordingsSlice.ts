@@ -1,8 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { set, setMany, entries, delMany, del } from "idb-keyval";
 import audioArrayFromURL from "../utils/audioArrayFromURL";
-import audioToNoteEvents from "../utils/audioToNoteEvents";
-// import NoteHarmonizer from "../utils/NoteHarmonizer";
+// import audioToNoteEvents from "../utils/audioToNoteEvents";
+import detectPitch from "../utils/detectPitch";
+import NoteHarmonizer from "../utils/NoteHarmonizer";
+import applyVoiceLeading from "../utils/applyVoiceLeading";
+import { NoteEvent } from "../utils/playNoteEvents";
+import SamplerRenderer from "../utils/SamplerRenderer";
+import audioBufferToBlob from "../utils/audioBufferToBlob";
+import getAudioDuration from "../utils/getAudioDuration";
 
 type RecordingMetadata = {
   name: string;
@@ -68,14 +74,34 @@ const retrieveCache = createAsyncThunk("recordings/retrieveCache", async () => {
   });
 });
 
-const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<any | void> => {
+const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<void | Pick<Recording, "url" | "duration">> => {
   try {
-    const { array } = await audioArrayFromURL(recording.url);
-    const notes = await audioToNoteEvents(array);
-    return notes;
-    // NoteHarmonizer()
+    const { array, sampleRate } = await audioArrayFromURL(recording.url);
+    const detectedNotes = detectPitch(array, sampleRate);
+
+    if (detectedNotes.length === 0) {
+      return;
+    }
+    const segSize = (60 / recording.features!.tempo) * 4;
+    const chords = new NoteHarmonizer().harmonize(detectedNotes, "classical", segSize);
+
+    const notes: NoteEvent[] = [];
+    const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
+    progression.forEach((chord: number[], i) =>
+      chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize }))
+    );
+
+    return SamplerRenderer.renderNoteEvents(notes, recording.url)
+      .then((audioBuffer) => audioBufferToBlob(audioBuffer))
+      .then(async (blob) => {
+        const recDuration = await getAudioDuration(blob);
+        return {
+          duration: recDuration,
+          url: URL.createObjectURL(blob),
+        };
+      });
   } catch (error) {
-    return error;
+    console.log(error);
   }
 });
 
@@ -84,10 +110,9 @@ const recordings = createSlice({
   initialState: initialState,
   reducers: {
     addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "features" | "date">>) => {
-      action.payload.url
+      action.payload.url;
       state.saved.unshift({
         tags: [],
-        features: {},
         date: JSON.stringify(new Date()),
         ...action.payload,
       });
@@ -143,9 +168,19 @@ const recordings = createSlice({
       console.log("no entries to load");
     });
 
-    /* harmonizer */
+    /* HARMONIZER */
     builder.addCase(harmonize.pending, () => {});
-    builder.addCase(harmonize.fulfilled, () => {});
+    builder.addCase(harmonize.fulfilled, (state, action) => {
+      if (action.payload) {
+        const recording: Recording = {
+          name: "test",
+          date: JSON.stringify(new Date()),
+          tags: [],
+          ...action.payload,
+        };
+        state.saved.unshift(recording);
+      }
+    });
     builder.addCase(harmonize.rejected, () => {});
   },
 });
