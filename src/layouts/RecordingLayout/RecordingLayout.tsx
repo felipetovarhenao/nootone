@@ -1,10 +1,11 @@
 import "./RecordingLayout.scss";
 import { useAppDispatch } from "../../redux/hooks";
-import { Recording, recordingActions } from "../../redux/recordingsSlice";
+import { recordingActions } from "../../redux/recordings/recordingsSlice";
 import AudioPlayer from "../../components/AudioPlayer/AudioPlayer";
 import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import icons from "../../utils/icons";
+import { Recording } from "../../types/audio";
 
 const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
   const dispatch = useAppDispatch();

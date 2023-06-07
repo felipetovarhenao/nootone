@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import inputReducer from "./inputSlice";
 import userReducer from "./userSlice";
-import recordingsSlice from "./recordingsSlice";
+import recordingsSlice from "./recordings/recordingsSlice";
 import micSlice from "./micSlice";
 
 const store = configureStore({

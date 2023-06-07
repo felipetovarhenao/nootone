@@ -3,8 +3,8 @@ import icons from "../../utils/icons";
 import "./AudioPlayer.scss";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
-import { Recording } from "../../redux/recordingsSlice";
 import formatTime from "../../utils/formatTime";
+import { Recording } from "../../types/audio";
 
 type AudioPlayerProps = {
   className?: string;

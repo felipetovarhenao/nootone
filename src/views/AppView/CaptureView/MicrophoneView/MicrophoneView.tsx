@@ -4,7 +4,7 @@ import Icon from "../../../../components/Icon/Icon";
 import cn from "classnames";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { recordingActions } from "../../../../redux/recordingsSlice";
+import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";

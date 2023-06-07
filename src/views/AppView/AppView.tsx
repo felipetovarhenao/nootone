@@ -7,7 +7,7 @@ import useViewportInfo from "../../hooks/useViewportInfo";
 import MobileNavbar from "../../components/MobileNavbar/MobileNavbar";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
-import { recordingActions } from "../../redux/recordingsSlice";
+import { recordingActions } from "../../redux/recordings/recordingsSlice";
 import { useDarkTheme } from "../../hooks/useDarkTheme";
 
 const DEFAULT_VIEWNAME = "/ capture";
