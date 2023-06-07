@@ -18,4 +18,24 @@
     color: var(--txt-light);
     width: fit-content;
   }
+  .MostRecentTracksView__processing {
+    @include v-stack;
+    @include center;
+    gap: $gap-xxl;
+    height: 100%;
+    .MostRecentTracksView__processing__text {
+      font-size: $txt-ml;
+      letter-spacing: $gap-xs;
+      color: var(--txt);
+    }
+    .MostRecentTracksView__processing__spinner {
+      @include stack;
+      @include center;
+      align-self: center;
+      font-size: calc($txt-xxl * 2);
+      * {
+        color: var(--primary-3);
+      }
+    }
+  }
 }

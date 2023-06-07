@@ -25,3 +25,4 @@ const mic = createSlice({
 
 export default mic.reducer;
 export const { toggle, setTempo } = mic.actions;
+export const micActions = mic.actions;

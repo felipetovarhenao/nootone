@@ -8,7 +8,7 @@ import { recordingActions } from "../../../../redux/recordingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
-import { toggle } from "../../../../redux/micSlice";
+import { micActions } from "../../../../redux/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import getAudioDuration from "../../../../utils/getAudioDuration";
 
@@ -52,7 +52,7 @@ const MicrophoneView = () => {
         icon={isRecording ? "svg-spinners:pulse-2" : "fluent:record-48-regular"}
         onClick={() => {
           if (navigator.mediaDevices?.getUserMedia!) {
-            dispatch(toggle());
+            dispatch(micActions.toggle());
             if (isRecording) {
               stopRecording();
             } else {

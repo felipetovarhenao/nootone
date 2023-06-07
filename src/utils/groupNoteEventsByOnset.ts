@@ -1,4 +1,4 @@
-import { NoteEvent } from "./playNoteEvents";
+import { NoteEvent } from "../types/music";
 
 /**
  * Groups an array of note events by their onset times.

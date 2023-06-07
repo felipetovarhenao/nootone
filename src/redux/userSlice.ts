@@ -49,9 +49,9 @@ const logoutCallback = async (): Promise<void> => {
   });
 };
 
-export const login = createAsyncThunk("user/login", loginCallback);
-export const logout = createAsyncThunk("user/logout", logoutCallback);
-export const register = createAsyncThunk("user/register", registrationCallback);
+const login = createAsyncThunk("user/login", loginCallback);
+const logout = createAsyncThunk("user/logout", logoutCallback);
+const register = createAsyncThunk("user/register", registrationCallback);
 
 type InitialState = {
   loading: boolean;
@@ -117,3 +117,9 @@ const user = createSlice({
 });
 
 export default user.reducer;
+export const userActions = {
+  login: login,
+  logout: logout,
+  register: register,
+  ...user.actions,
+};

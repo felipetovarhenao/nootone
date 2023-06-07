@@ -1,5 +1,5 @@
 import { BasicPitch, noteFramesToTime, addPitchBendsToNoteEvents, outputToNotesPoly } from "@spotify/basic-pitch";
-import { NoteEvent } from "./playNoteEvents";
+import { NoteEvent } from "../types/music";
 
 /**
  * Converts audio to note events using the BasicPitch library.

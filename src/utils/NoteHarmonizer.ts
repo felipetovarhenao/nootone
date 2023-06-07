@@ -1,4 +1,5 @@
 import KDTree from "./KDTree";
+import { NoteEvent, NoteEventSegment } from "../types/music";
 
 /**
  * NoteHarmonizer class that harmonizes a given note array based on chord collections and key signatures.
@@ -153,10 +154,10 @@ export default class NoteHarmonizer {
    * Converts a note array into segments of specified size.
    * @param {NoteEvent[]} notes - The input note array.
    * @param {number} segSize - The size of segments.
-   * @returns {Segment[]} An array of segments.
+   * @returns {NoteEventSegment[]} An array of segments.
    */
-  private noteArrayToSegments(notes: NoteEvent[], segSize: number): Segment[] {
-    const segments: Segment[] = [];
+  private noteArrayToSegments(notes: NoteEvent[], segSize: number): NoteEventSegment[] {
+    const segments: NoteEventSegment[] = [];
     let segment: NoteEvent[] = [];
     let lastSegmentIndex = Math.floor(notes[0].onset / segSize);
 
@@ -220,11 +221,11 @@ export default class NoteHarmonizer {
 
   /**
    * Estimates the key signature from a given array of segments.
-   * @param {Segment[]} segments - The array of segments.
+   * @param {NoteEventSegment[]} segments - The array of segments.
    * @param {number} segSize - The size of segments.
    * @returns {number[]} The estimated key signature vector.
    */
-  private estimateKeyFromSegments(segments: Segment[], segSize: number): number[] {
+  private estimateKeyFromSegments(segments: NoteEventSegment[], segSize: number): number[] {
     const noteArray: NoteEvent[] = [];
 
     // create note array from segments
@@ -425,16 +426,4 @@ export default class NoteHarmonizer {
 
     return harmonicArray;
   }
-}
-
-interface NoteEvent {
-  pitch: number;
-  onset: number;
-  duration: number;
-  velocity?: number;
-}
-
-interface Segment {
-  onset: number;
-  notes: NoteEvent[];
 }

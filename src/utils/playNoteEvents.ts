@@ -1,11 +1,6 @@
 import pitchToFrequency from "./pitchToFrequency";
 import createNewAudioContext from "./createNewAudioContext";
-export interface NoteEvent {
-  pitch: number;
-  onset: number;
-  duration: number;
-  velocity?: number;
-}
+import { NoteEvent } from "../types/music";
 
 /**
  * Plays a sequence of note events.

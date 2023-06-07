@@ -15,7 +15,7 @@ import note13 from "../assets/audio/guitar/66-p.ogg";
 import note14 from "../assets/audio/guitar/66-f.ogg";
 import note15 from "../assets/audio/guitar/42-p.ogg";
 
-import { NoteEvent } from "./playNoteEvents";
+import { NoteEvent } from "../types/music";
 import renderAudioOffline from "./renderAudioOffline";
 import createNewAudioContext from "./createNewAudioContext";
 import audioArrayFromURL from "./audioArrayFromURL";

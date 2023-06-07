@@ -4,7 +4,7 @@ import NoteHarmonizer from "../../../utils/NoteHarmonizer";
 import Slider from "../../../components/Slider/Slider";
 import AppName from "../../../components/AppName/AppName";
 import AudioRecorder from "../../../features/AudioRecorder/AudioRecorder";
-import { NoteEvent } from "../../../utils/playNoteEvents";
+import { NoteEvent } from "../../../types/music";
 import audioToNoteEvents from "../../../utils/audioToNoteEvents";
 import audioArrayFromURL from "../../../utils/audioArrayFromURL";
 import detectPitch from "../../../utils/detectPitch";
@@ -64,11 +64,10 @@ const HarmonizerDemo = () => {
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords);
       progression.forEach((chord: number[], i) =>
-        chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize }))
+        chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize, velocity: 0.5 }))
       );
       notes.forEach((note) => {
-        const velocity = Math.random() > 0.75 ? 0.8 : 0.7;
-        const node = audioSampler.current.playNote(note.onset, note.pitch, note.velocity || velocity, note.duration);
+        const node = audioSampler.current.playNote(note.onset, note.pitch, note.velocity, note.duration);
         if (node) {
           activeNodes.current.push(node);
         }
@@ -117,7 +116,12 @@ const HarmonizerDemo = () => {
       setIsProcessing(false);
     } else {
       const notes = detectPitch(array, sampleRate);
-      setMelody(notes);
+      setMelody(
+        notes.map((n) => ({
+          velocity: 0.5,
+          ...n,
+        }))
+      );
       setIsProcessing(false);
     }
   }

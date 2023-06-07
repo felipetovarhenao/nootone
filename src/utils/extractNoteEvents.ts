@@ -1,8 +1,6 @@
-interface NoteEvent {
-  pitch: number;
-  duration: number;
-  onset: number;
-}
+import { NoteEvent as FullNoteEvent } from "../types/music";
+
+type NoteEvent = Omit<FullNoteEvent, "velocity">;
 
 /**
  * Extracts note events from pitch and confidence arrays.

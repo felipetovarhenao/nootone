@@ -2,7 +2,7 @@ import "./AuthenticationView.scss";
 
 import { useState } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { login, register } from "../../../../redux/userSlice";
+import { userActions } from "../../../../redux/userSlice";
 import UserAuthForm from "../../../../components/UserAuthForm/UserAuthForm";
 import AppName from "../../../../components/AppName/AppName";
 import logo from "../../../../assets/logo.png";
@@ -21,14 +21,14 @@ const AuthenticationView = () => {
       <UserAuthForm
         className="AuthenticationView__auth-form"
         onLogin={async (data) => {
-          await dispatch(login(data));
+          await dispatch(userActions.login(data));
           notification({
             message: "user login successful!",
             icon: "mdi:user",
             type: "SUCCESS",
           });
         }}
-        onRegistration={(data) => dispatch(register(data))}
+        onRegistration={(data) => dispatch(userActions.register(data))}
         isRegistration={isRegistration}
       />
       <span className="AuthenticationView__footer">

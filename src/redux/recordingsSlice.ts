@@ -5,7 +5,7 @@ import audioArrayFromURL from "../utils/audioArrayFromURL";
 import detectPitch from "../utils/detectPitch";
 import NoteHarmonizer from "../utils/NoteHarmonizer";
 import applyVoiceLeading from "../utils/applyVoiceLeading";
-import { NoteEvent } from "../utils/playNoteEvents";
+import { NoteEvent } from "../types/music";
 import SamplerRenderer from "../utils/SamplerRenderer";
 import audioBufferToBlob from "../utils/audioBufferToBlob";
 import getAudioDuration from "../utils/getAudioDuration";
@@ -28,10 +28,12 @@ type CachedRecording = {
 };
 
 type InitialState = {
+  isProcessing: boolean;
   saved: Recording[];
 };
 
 const initialState: InitialState = {
+  isProcessing: false,
   saved: [],
 };
 
@@ -80,13 +82,17 @@ const harmonize = createAsyncThunk(
     try {
       const { array, sampleRate } = await audioArrayFromURL(recording.url);
       const detectedNotes = detectPitch(array, sampleRate);
-      const styleList = ["classical", "pop", "ethereal", "jazz", "bittersweet", "upbeat", "dramatic"];
+      const styleList = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
       const style = styleList[Math.floor(Math.random() * styleList.length)];
       if (detectedNotes.length === 0) {
         return;
       }
       const segSize = (60 / recording.features!.tempo) * 2;
-      const chords = new NoteHarmonizer().harmonize(detectedNotes, style, segSize);
+      const chords = new NoteHarmonizer().harmonize(
+        detectedNotes.map((n) => ({ velocity: 0.5, ...n })),
+        style,
+        segSize
+      );
 
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
@@ -101,6 +107,7 @@ const harmonize = createAsyncThunk(
         .then(async (blob) => {
           const recDuration = await getAudioDuration(blob);
           return {
+            ...recording,
             name: `${recording.name} (${style})`,
             duration: recDuration,
             url: URL.createObjectURL(blob),
@@ -176,8 +183,11 @@ const recordings = createSlice({
     });
 
     /* HARMONIZER */
-    builder.addCase(harmonize.pending, () => {});
+    builder.addCase(harmonize.pending, (state) => {
+      state.isProcessing = true;
+    });
     builder.addCase(harmonize.fulfilled, (state, action) => {
+      state.isProcessing = false;
       if (action.payload) {
         const recording: Recording = {
           date: JSON.stringify(new Date()),
@@ -187,7 +197,9 @@ const recordings = createSlice({
         state.saved.unshift(recording);
       }
     });
-    builder.addCase(harmonize.rejected, () => {});
+    builder.addCase(harmonize.rejected, (state) => {
+      state.isProcessing = false;
+    });
   },
 });
 

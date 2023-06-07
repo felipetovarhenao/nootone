@@ -2,7 +2,7 @@ import "./TempoTapper.scss";
 import useTempoTap from "../../hooks/useTempoTap";
 import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setTempo as setMicTempo } from "../../redux/micSlice";
+import { micActions } from "../../redux/micSlice";
 import { useEffect } from "react";
 
 const TempoTapper = ({ className }: { className?: string }) => {
@@ -12,7 +12,7 @@ const TempoTapper = ({ className }: { className?: string }) => {
 
   useEffect(() => {
     if (tapperTempo !== tempo) {
-      dispatch(setMicTempo(tapperTempo));
+      dispatch(micActions.setTempo(tapperTempo));
     }
   }, [tapperTempo]);
 
