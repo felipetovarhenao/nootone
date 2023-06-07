@@ -11,6 +11,7 @@ export default class AudioSampler extends AudioSource {
   private samples: MultiSample;
   private reverb: ConvolverNode;
   private masterGain: GainNode;
+  private envelope: Float32Array;
 
   /**
    * Creates an instance of the AudioSampler class.
@@ -25,7 +26,7 @@ export default class AudioSampler extends AudioSource {
     audioArrayFromURL(reverbURL).then(({ array }) => {
       this.reverb.buffer = this.arrayToBuffer(array);
     });
-
+    this.envelope = new Float32Array([0, ...[...Array(12).keys()].map(() => 1), 0.5, 0.25, 0]);
     // Create and connect the master gain node
     this.masterGain = this.context.createGain();
     this.reverb.connect(this.masterGain);
@@ -76,12 +77,16 @@ export default class AudioSampler extends AudioSource {
    * @param pitch The pitch value of the note.
    * @param velocity The velocity value of the note.
    */
-  public playNote(onset: number, pitch: number, velocity: number): AudioBufferSourceNode | undefined {
+  public playNote(onset: number, pitch: number, velocity: number, duration: number): AudioBufferSourceNode | undefined {
     const { buffer, sourcePitch } = this.findBuffer(pitch, velocity);
     const playbackRate = 2 ** ((pitch - sourcePitch) / 12);
     if (playbackRate > 2 || playbackRate < 0.5) {
       return undefined;
     }
+    const env = this.context.createGain();
+
+    const startTime = this.context.currentTime + onset;
+    env.gain.setValueCurveAtTime(this.envelope, startTime, duration);
 
     const source = this.context.createBufferSource();
     source.buffer = buffer;
@@ -95,13 +100,15 @@ export default class AudioSampler extends AudioSource {
 
     const panner = this.context.createStereoPanner();
     panner.pan.value = Math.min(1, Math.max(0, (pitch / 127) * 2 - 1));
-    source.connect(panner);
+    source.connect(env);
+    env.connect(panner);
 
     panner.connect(wetMix);
     panner.connect(dryMix);
     dryMix.connect(this.masterGain);
     wetMix.connect(this.reverb);
-    source.start(this.context.currentTime + onset);
+    source.start(startTime);
+    source.stop(startTime + duration + 0.1);
     return source;
   }
 

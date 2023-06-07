@@ -68,7 +68,7 @@ const HarmonizerDemo = () => {
       );
       notes.forEach((note) => {
         const velocity = Math.random() > 0.75 ? 0.8 : 0.7;
-        const node = audioSampler.current.playNote(note.onset, note.pitch, note.velocity || velocity);
+        const node = audioSampler.current.playNote(note.onset, note.pitch, note.velocity || velocity, note.duration);
         if (node) {
           activeNodes.current.push(node);
         }
@@ -77,7 +77,7 @@ const HarmonizerDemo = () => {
     if (withMelody) {
       melody.forEach((note) => {
         const velocity = Math.random();
-        const node = audioSampler.current.playNote(note.onset, note.pitch, velocity);
+        const node = audioSampler.current.playNote(note.onset, note.pitch, velocity, note.duration);
         if (node) {
           activeNodes.current.push(node);
         }

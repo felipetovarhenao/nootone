@@ -82,13 +82,15 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
     if (detectedNotes.length === 0) {
       return;
     }
-    const segSize = (60 / recording.features!.tempo) * 4;
+    const segSize = (60 / recording.features!.tempo) * 2;
     const chords = new NoteHarmonizer().harmonize(detectedNotes, "classical", segSize);
 
     const notes: NoteEvent[] = [];
     const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
     progression.forEach((chord: number[], i) =>
-      chord.forEach((pitch: number) => notes.push({ pitch: pitch, onset: i * segSize, duration: segSize }))
+      chord
+        .sort()
+        .forEach((pitch: number, j: number) => notes.push({ pitch: pitch, onset: i * segSize + j * 0.05, duration: segSize, velocity: 0.9 }))
     );
 
     return SamplerRenderer.renderNoteEvents(notes, recording.url)
