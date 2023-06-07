@@ -62,5 +62,6 @@
   .UserDashboardView__logout-btn {
     @include t-mar($gap-lg);
     align-self: center;
+    font-size: $txt-md;
   }
 }

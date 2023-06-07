@@ -29,6 +29,9 @@
     .error {
       color: var(--danger-3);
     }
+    .Button {
+      font-size: $txt-md;
+    }
   }
   .AuthenticationView__footer {
     @include pad;
