@@ -59,7 +59,7 @@ const HarmonizerDemo = () => {
     if (melody?.length > 0) {
       const harmonizer = new NoteHarmonizer();
       const harmony = harmonizer.harmonize(melody, harmonyStyle, Number(segSize), Number(harmonicMemory), Number(keySigWeight), Number(lookAhead));
-      const chords = harmony.map((chord) => chord.map((note) => note.pitch));
+      const chords = harmony.map((chord) => chord.notes.map((note) => note.pitch));
 
       const notes: NoteEvent[] = [];
       const progression = applyVoiceLeading(chords);

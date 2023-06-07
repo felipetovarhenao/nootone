@@ -1,5 +1,5 @@
 import KDTree from "./KDTree";
-import { NoteEvent, NoteEventSegment } from "../types/music";
+import { ChordEvent, NoteEvent, NoteEventSegment } from "../types/music";
 
 /**
  * NoteHarmonizer class that harmonizes a given note array based on chord collections and key signatures.
@@ -353,13 +353,15 @@ export default class NoteHarmonizer {
    * @param velocity - The velocity (loudness) of the notes in the chord.
    * @returns An array of NoteEvent objects representing the individual notes of the chord.
    */
-  private chordToNoteArray(chord: number[], onset: number, duration: number, velocity: number): NoteEvent[] {
-    return chord.map((pitch) => ({
+  private chordToNoteArray(chord: number[], onset: number, duration: number, velocity: number): ChordEvent {
+    return {
       onset: onset,
-      pitch: pitch,
-      duration: duration,
-      velocity: velocity,
-    }));
+      notes: chord.map((pitch) => ({
+        duration: duration,
+        velocity: velocity,
+        pitch: pitch,
+      })),
+    };
   }
 
   /**
@@ -380,12 +382,12 @@ export default class NoteHarmonizer {
     keySignatureWeight: number = 0.25,
     lookAhead: number = 2,
     harmonicConsonance: number = 0.5
-  ): NoteEvent[][] {
+  ): ChordEvent[] {
     if (this.chordCollection !== chordCollection) {
       this.setChordCollection(chordCollection, keySignatureWeight);
     }
 
-    const harmonicArray: NoteEvent[][] = [];
+    const harmonicArray: ChordEvent[] = [];
     const chordSegments = this.noteArrayToSegments(noteArray, segSize);
     let lastChroma: number[] | null = null;
 

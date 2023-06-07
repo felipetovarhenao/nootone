@@ -93,13 +93,16 @@ const harmonize = createAsyncThunk(
         style,
         segSize
       );
+      let onsetOffset = Math.min(...chords.map((chord) => chord.onset));
 
       const notes: NoteEvent[] = [];
-      const progression = applyVoiceLeading(chords.map((chord) => chord.map((note) => note.pitch)));
+      const progression = applyVoiceLeading(chords.map((chord) => chord.notes.map((note) => note.pitch)));
       progression.forEach((chord: number[], i) =>
         chord
           .sort()
-          .forEach((pitch: number, j: number) => notes.push({ pitch: pitch, onset: i * segSize + j * 0.05, duration: segSize, velocity: 1 }))
+          .forEach((pitch: number, j: number) =>
+            notes.push({ pitch: pitch, onset: onsetOffset + (i * segSize + j * 0.05), duration: segSize, velocity: 1 })
+          )
       );
 
       return SamplerRenderer.renderNoteEvents(notes, recording.url)
