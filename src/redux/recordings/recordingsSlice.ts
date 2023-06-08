@@ -104,8 +104,8 @@ const recordings = createSlice({
     builder.addCase(harmonize.fulfilled, (state, action: PayloadAction<HarmonizerReturnType | void>) => {
       state.isProcessing = false;
       if (action.payload) {
-        if (state.selectedRecordingIndex) {
-          state.recordings[state.selectedRecordingIndex].features["noteEvents"] = action.payload.noteEvents;
+        if (state.selectedRecordingIndex !== null) {
+          state.recordings[state.selectedRecordingIndex].features.noteEvents = action.payload.noteEvents;
         }
         state.variationBuffer = action.payload.variation;
       }
