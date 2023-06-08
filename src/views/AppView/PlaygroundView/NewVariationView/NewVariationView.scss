@@ -1,33 +1,46 @@
 @use "../../../../styles/main.scss" as *;
 
 .NewVariationView {
-  @include v-stack-c;
-  @include v-center;
-  max-width: 600px;
-  align-items: center;
-  .NewVariationView__back-button {
-    @include hyperlink;
-    * {
-      color: var(--txt);
-    }
-  }
+  // @include v-stack-c;
+  // @include v-center;
+  // max-width: 600px;
+  @include v-stack;
+
+  justify-content: center;
+
+  // justify-content: center;
+  gap: $gap-xxl;
+
   .NewVariationView__header {
     @include v-pad($gap-lg);
+    text-align: center;
     font-size: $txt-ml;
     font-weight: bold;
     letter-spacing: $gap-xs;
     color: var(--primary-3);
   }
+  .NewVariationView__player {
+    @include h-mar(auto);
+    @include vh-pad($gap-xxl, $gap-xxl);
+    max-width: 500px;
+  }
   .RecordingLayout__operations {
+    @include h-mar(auto);
     @include v-stack-c;
     @include h-center;
+    @include vh-pad($gap-md, $gap-xxl);
+
     gap: $gap-lg;
+    max-width: 600px;
+    width: 100%;
+    @include v-center;
 
     .RecordingLayout__operations__operation {
       @include pad($gap-xl);
       @include round;
       @include clickable;
       @include h-stack-c;
+      width: 100%;
       gap: $gap-lg;
       background-color: var(--bg-3);
       &:hover {

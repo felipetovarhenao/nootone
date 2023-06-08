@@ -9,9 +9,10 @@ import { Recording } from "../../types/audio";
 type AudioPlayerProps = {
   className?: string;
   rec: Recording | Omit<Recording, "variations">;
+  showTitle?: boolean;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec, showTitle = true }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.707);
@@ -74,7 +75,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec }) => {
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
       <div className="AudioPlayer__bar">
-        <h1 className="AudioPlayer__bar__title">{rec.name}</h1>
+        {showTitle && <h1 className="AudioPlayer__bar__title">{rec.name}</h1>}
         <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
           <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
         </div>

@@ -9,6 +9,7 @@ import icons from "../../../../utils/icons";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import "./NewVariationView.scss";
 import AudioPlayer from "../../../../components/AudioPlayer/AudioPlayer";
+import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 
 const NewVariationView = () => {
   const location = useLocation();
@@ -59,27 +60,27 @@ const NewVariationView = () => {
   ];
 
   return (
-    selectedRecordingIndex !== null && (
-      <div className="NewVariationView">
-        <Icon
-          onClick={() => {
-            navigate("/app/playground");
-          }}
-          className="NewVariationView__back-button"
-          icon="eva:arrow-back-fill"
-        />
-        <h1 className="NewVariationView__header">{recordings[selectedRecordingIndex].name}</h1>
-        <AudioPlayer rec={recordings[selectedRecordingIndex]} />
-        <div className="RecordingLayout__operations">
-          {processingOptions.map((opt) => (
-            <div className="RecordingLayout__operations__operation" key={opt.name} onClick={opt.onClick}>
-              <Icon className="RecordingLayout__operations__operation__icon" icon={opt.icon} />
-              <span className="RecordingLayout__operations__operation__text">{opt.name}</span>
+    <ViewContainer viewName="new variation">
+      {selectedRecordingIndex !== null && (
+        <div className="NewVariationView">
+          <div className="NewVariationView__header">
+            <div className="">
+              <h1 className="NewVariationView__header">{recordings[selectedRecordingIndex].name}</h1>
             </div>
-          ))}
+            <div></div>
+          </div>
+          <AudioPlayer className="NewVariationView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
+          <div className="RecordingLayout__operations">
+            {processingOptions.map((opt) => (
+              <div className="RecordingLayout__operations__operation" key={opt.name} onClick={opt.onClick}>
+                <Icon className="RecordingLayout__operations__operation__icon" icon={opt.icon} />
+                <span className="RecordingLayout__operations__operation__text">{opt.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    )
+      )}
+    </ViewContainer>
   );
 };
 

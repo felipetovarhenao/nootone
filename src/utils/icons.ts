@@ -8,6 +8,7 @@ const icons = {
   volumeMute: "ph:speaker-simple-none-fill",
   check: "fa-solid:check",
   trash: "mdi:trash",
+  back: "ion:arrow-back-circle",
 };
 
 export default icons;
