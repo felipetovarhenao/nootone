@@ -1,4 +1,4 @@
-export default function audioBufferToBlob(audioBuffer: AudioBuffer) {
+export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number) {
   // Float32Array samples
   const [left, right] = [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)];
 
@@ -13,7 +13,7 @@ export default function audioBufferToBlob(audioBuffer: AudioBuffer) {
   const wavBytes = getWavBytes(interleaved.buffer, {
     isFloat: true, // floating point or 16-bit integer
     numChannels: 2,
-    sampleRate: 48000,
+    sampleRate: sampleRate,
   });
   return new Blob([wavBytes], { type: "audio/wav" });
 }
