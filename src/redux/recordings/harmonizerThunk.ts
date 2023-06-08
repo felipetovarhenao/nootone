@@ -11,45 +11,68 @@ import { NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
 
+/**
+ * Harmonizes a recording by applying various musical transformations and generating harmonized variations.
+ *
+ * @param recording - The recording to harmonize.
+ * @returns A Promise that resolves to the harmonized recording.
+ */
 const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<void | Recording> => {
   try {
+    // Retrieve the audio array and sample rate from the recording URL
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
+
+    // Detect the pitches of the recorded notes or use the pre-computed note events
     const detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
+
+    // Select a random style for harmonization
     const styleList = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
     const style = styleList[Math.floor(Math.random() * styleList.length)];
+
     if (detectedNotes.length === 0) {
       return;
     }
 
+    // Calculate the segment size based on the tempo (default to 60 BPM if not provided)
     const segSize = (60 / recording.features.tempo! || 60) * 2;
+
+    // Harmonize the detected notes using the NoteHarmonizer class
     const harmonicBlocks = new NoteHarmonizer().harmonize(
       detectedNotes.map((n) => ({ ...n, velocity: 1 })),
       style,
       segSize
     );
 
+    // Generate the individual note events from the harmonic blocks and apply voice leading
     const notes: NoteEvent[] = [];
     const chordProgression = applyVoiceLeading(harmonicBlocks.map((chord) => chord.notes.map((note) => note.pitch)));
 
     chordProgression.forEach((chord: number[], i) =>
       chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: harmonicBlocks[i].onset, duration: segSize, velocity: 1 }))
     );
+
+    // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
-    const arpeggios = arpeggiateChords(chords);
+    const arpeggios = arpeggiateChords(chords, recording.features.tempo!);
+
+    // Update the features of the recording
     const features = {
       ...recording.features,
       noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
     };
 
+    // Render the arpeggios as audio and convert the resulting audio buffer to a Blob
     return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)
       .then((audioBuffer) => audioBufferToBlob(audioBuffer))
       .then(async (blob) => {
+        // Calculate the duration of the harmonized recording
         const recDuration = await getAudioDuration(blob);
+
+        // Create a new harmonized variation of the recording
         return {
           ...recording,
           features: features,
           variations: [
-            ...(recording.variations || []),
             {
               name: `${recording.name} (${style})`,
               duration: recDuration,
@@ -58,6 +81,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
               tags: [...recording.tags, style],
               features: { ...features, chordEvents: harmonicBlocks },
             },
+            ...(recording.variations || []),
           ],
         };
       });
