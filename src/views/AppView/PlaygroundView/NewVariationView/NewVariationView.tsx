@@ -62,13 +62,12 @@ const NewVariationView = () => {
     }
   }
 
+  useEffect(() => {
+    dispatch(recordingActions.clearVariationBuffer());
+  }, []);
+
   return (
-    <ViewContainer
-      onGoBack={() => {
-        dispatch(recordingActions.clearVariationBuffer());
-      }}
-      viewName="new variation"
-    >
+    <ViewContainer viewName="new variation">
       {selectedRecordingIndex !== null && (
         <div className="NewVariationView">
           <div className="NewVariationView__header">
@@ -107,7 +106,7 @@ const NewVariationView = () => {
             )}
             {isProcessing && <Icon className="NewVariationView__suspense" icon={icons.processing} />}
             <div className="NewVariationView__buttons">
-              <Button id="generate" className="NewVariationView__button" onClick={() => handleGenerate(process, settings)}>
+              <Button disabled={isProcessing} id="generate" className="NewVariationView__button" onClick={() => handleGenerate(process, settings)}>
                 <Icon icon={icons.lab} />
                 Generate
               </Button>

@@ -99,7 +99,8 @@
   }
   .NewVariationView__suspense {
     @include v-mar($gap-xl);
-    font-size: $txt-xxl;
+    height: 68px;
+    font-size: calc($txt-xxl * 1.6);
     * {
       color: var(--primary-3);
     }
@@ -110,8 +111,15 @@
     width: 100%;
     justify-content: space-between;
     .NewVariationView__button {
+      @include trans(0s);
+      color: var(--txt-light);
       &#generate {
-        background: var(--main-gradient);
+        &:disabled {
+          background: var(--disabled-4);
+        }
+        &:not(:disabled) {
+          background: var(--main-gradient);
+        }
       }
       &#save {
         background-color: var(--primary-2);
