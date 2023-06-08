@@ -9,13 +9,23 @@ type ViewContainerProps = {
   className?: string;
   viewName: string | ReactNode;
   children: ReactNode;
+  onGoBack?: () => void;
 };
-const ViewContainer = ({ className, viewName, children }: ViewContainerProps) => {
+const ViewContainer = ({ onGoBack, className, viewName, children }: ViewContainerProps) => {
   const navigate = useNavigate();
   return (
     <div className={cn(className, "ViewContainer")}>
       <div className="ViewContainer__header">
-        <Icon className="ViewContainer__header__back-button" onClick={() => navigate(-1)} icon={icons.back} />
+        <Icon
+          className="ViewContainer__header__back-button"
+          onClick={() => {
+            if (onGoBack) {
+              onGoBack();
+            }
+            navigate(-1);
+          }}
+          icon={icons.back}
+        />
         <header className="ViewContainer__header__text">{viewName}</header>
         <div></div>
       </div>

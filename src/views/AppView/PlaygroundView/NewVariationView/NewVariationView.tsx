@@ -14,10 +14,9 @@ import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
 
 const NewVariationView = () => {
   const location = useLocation();
-  const [selectedRecordingIndex, setSelectedRecordingIndex] = useState<number | null>(null);
   const [settings, setSettings] = useState({});
   const [process, setProcess] = useState("");
-  const { recordings } = useAppSelector((state) => state.recordings);
+  const { selectedRecordingIndex, recordings, variationBuffer, isProcessing } = useAppSelector((state) => state.recordings);
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ const NewVariationView = () => {
     const pathArray = location.pathname.split("/");
     const id = parseInt(pathArray.at(-1) as string);
     if (id >= 0 && id < recordings.length) {
-      setSelectedRecordingIndex(id);
+      dispatch(recordingActions.selectRecording(id));
     } else {
       notification({
         type: "ERROR",
@@ -43,14 +42,14 @@ const NewVariationView = () => {
       icon: "emojione-monotone:musical-notes",
       component: <HarmonizerSettings name={"harmonizer"} setProcess={setProcess} setSettings={setSettings} />,
     },
-    {
-      name: "retune it",
-      icon: "fluent:wand-16-filled",
-    },
-    {
-      name: "drumify it",
-      icon: "fa6-solid:drum",
-    },
+    // {
+    //   name: "retune it",
+    //   icon: "fluent:wand-16-filled",
+    // },
+    // {
+    //   name: "drumify it",
+    //   icon: "fa6-solid:drum",
+    // },
   ];
 
   function handleGenerate(process: string, settings: any) {
@@ -59,14 +58,17 @@ const NewVariationView = () => {
     }
     switch (process) {
       case "harmonizer":
-        dispatch(recordingActions.harmonize({ recording: recordings[selectedRecordingIndex], settings: settings })).then(() => {
-          navigate("/app/playground/");
-        });
+        dispatch(recordingActions.harmonize({ recording: recordings[selectedRecordingIndex], settings: settings }));
     }
   }
 
   return (
-    <ViewContainer viewName="new variation">
+    <ViewContainer
+      onGoBack={() => {
+        dispatch(recordingActions.clearVariationBuffer());
+      }}
+      viewName="new variation"
+    >
       {selectedRecordingIndex !== null && (
         <div className="NewVariationView">
           <div className="NewVariationView__header">
@@ -97,10 +99,35 @@ const NewVariationView = () => {
                 </AccordionItem>
               ))}
             </Accordion>
-            <Button className="NewVariationView__button" onClick={() => handleGenerate(process, settings)}>
-              <Icon icon={icons.lab} />
-              Generate
-            </Button>
+            {variationBuffer && (
+              <>
+                <h1 className="NewVariationView__preview__label">preview</h1>
+                <AudioPlayer rec={variationBuffer} />
+              </>
+            )}
+            {isProcessing && <Icon className="NewVariationView__suspense" icon={icons.processing} />}
+            <div className="NewVariationView__buttons">
+              <Button id="generate" className="NewVariationView__button" onClick={() => handleGenerate(process, settings)}>
+                <Icon icon={icons.lab} />
+                Generate
+              </Button>
+              {variationBuffer ? (
+                <Button
+                  disabled={!variationBuffer}
+                  id="save"
+                  className="NewVariationView__button"
+                  onClick={() => {
+                    dispatch(recordingActions.keepVariation());
+                    navigate("/app/playground/");
+                  }}
+                >
+                  <Icon icon={icons.save} />
+                  Keep
+                </Button>
+              ) : (
+                <div />
+              )}
+            </div>
           </div>
         </div>
       )}

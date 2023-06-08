@@ -18,13 +18,18 @@ type HarmonizerPayload = {
   };
 };
 
+export type HarmonizerReturnType = {
+  variation: Omit<Recording, "variations">;
+  noteEvents: NoteEvent[];
+};
+
 /**
  * Harmonizes a recording by applying various musical transformations and generating harmonized variations.
  *
  * @param recording - The recording to harmonize.
  * @returns A Promise that resolves to the harmonized recording.
  */
-const harmonize = createAsyncThunk("recordings/harmonize", async (payload: HarmonizerPayload): Promise<void | Recording> => {
+const harmonize = createAsyncThunk("recordings/harmonize", async (payload: HarmonizerPayload): Promise<void | HarmonizerReturnType> => {
   const { recording, settings } = payload;
   try {
     // Retrieve the audio array and sample rate from the recording URL
@@ -74,19 +79,15 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
         // Create a new harmonized variation of the recording
         return {
-          ...recording,
-          features: features,
-          variations: [
-            {
-              name: `🎹 ${settings.style} accompaniment`,
-              duration: recDuration,
-              date: JSON.stringify(new Date()),
-              url: URL.createObjectURL(blob),
-              tags: [...recording.tags, settings.style],
-              features: { ...features, chordEvents: harmonicBlocks },
-            },
-            ...(recording.variations || []),
-          ],
+          noteEvents: features.noteEvents,
+          variation: {
+            name: `🎹 ${settings.style} accompaniment`,
+            duration: recDuration,
+            date: JSON.stringify(new Date()),
+            url: URL.createObjectURL(blob),
+            tags: [...recording.tags, settings.style],
+            features: { ...features, chordEvents: harmonicBlocks },
+          },
         };
       });
   } catch (error: unknown) {

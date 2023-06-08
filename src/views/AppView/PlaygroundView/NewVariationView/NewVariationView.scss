@@ -97,10 +97,35 @@
       }
     }
   }
-  .NewVariationView__button {
+  .NewVariationView__suspense {
+    @include v-mar($gap-xl);
+    font-size: $txt-xxl;
+    * {
+      color: var(--primary-3);
+    }
+  }
+  .NewVariationView__buttons {
     @include t-mar($gap-xxl);
-    background: var(--main-gradient);
-    border: none;
-    font-size: $txt-ml;
+    @include h-stack-c;
+    width: 100%;
+    justify-content: space-between;
+    .NewVariationView__button {
+      &#generate {
+        background: var(--main-gradient);
+      }
+      &#save {
+        background-color: var(--primary-2);
+      }
+      border: none;
+      font-size: $txt-ml;
+    }
+  }
+  .NewVariationView__preview__label {
+    @include t-mar($gap-lg);
+    font-size: $txt-md;
+    letter-spacing: $gap-xs;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--disabled-3);
   }
 }

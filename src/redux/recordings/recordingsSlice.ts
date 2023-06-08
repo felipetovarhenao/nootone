@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { del } from "idb-keyval";
-import harmonize from "./harmonizerThunk";
+import harmonize, { HarmonizerReturnType } from "./harmonizerThunk";
 import retrieveCache from "./retrieveCacheThunk";
 import write from "./writeThunk";
 import { Recording } from "../../types/audio";
@@ -9,11 +9,13 @@ type InitialState = {
   isProcessing: boolean;
   selectedRecordingIndex: number | null;
   recordings: Recording[];
+  variationBuffer: Omit<Recording, "variations"> | null;
 };
 
 const initialState: InitialState = {
   isProcessing: false,
   selectedRecordingIndex: null,
+  variationBuffer: null,
   recordings: [],
 };
 
@@ -47,6 +49,18 @@ const recordings = createSlice({
           break;
         }
       }
+    },
+    selectRecording: (state, action: PayloadAction<number>) => {
+      state.selectedRecordingIndex = action.payload;
+    },
+    keepVariation: (state) => {
+      if (state.selectedRecordingIndex !== null && state.variationBuffer) {
+        state.recordings[state.selectedRecordingIndex].variations.unshift(state.variationBuffer);
+        state.variationBuffer = null;
+      }
+    },
+    clearVariationBuffer: (state) => {
+      state.variationBuffer = null;
     },
   },
   extraReducers: (builder) => {
@@ -85,19 +99,20 @@ const recordings = createSlice({
     /* HARMONIZER */
     builder.addCase(harmonize.pending, (state) => {
       state.isProcessing = true;
+      state.variationBuffer = null;
     });
-    builder.addCase(harmonize.fulfilled, (state, action) => {
+    builder.addCase(harmonize.fulfilled, (state, action: PayloadAction<HarmonizerReturnType | void>) => {
       state.isProcessing = false;
       if (action.payload) {
-        for (let i = 0; i < state.recordings.length; i++) {
-          if (state.recordings[i].url === action.payload.url) {
-            state.recordings[i] = action.payload;
-          }
+        if (state.selectedRecordingIndex) {
+          state.recordings[state.selectedRecordingIndex].features["noteEvents"] = action.payload.noteEvents;
         }
+        state.variationBuffer = action.payload.variation;
       }
     });
     builder.addCase(harmonize.rejected, (state) => {
       state.isProcessing = false;
+      state.variationBuffer = null;
     });
   },
 });

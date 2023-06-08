@@ -1,6 +1,7 @@
 const icons = {
   play: "ph:play-fill",
   pause: "ph:pause-fill",
+  save: "material-symbols:save",
   restart: "ph:skip-back-fill",
   volumeHigh: "ph:speaker-simple-high-fill",
   volumeMid: "ph:speaker-simple-low-fill",
@@ -12,6 +13,7 @@ const icons = {
   left: "icon-park-outline:left",
   right: "icon-park-outline:right",
   lab: "raphael:lab",
+  processing: "eos-icons:bubble-loading",
 };
 
 export default icons;
