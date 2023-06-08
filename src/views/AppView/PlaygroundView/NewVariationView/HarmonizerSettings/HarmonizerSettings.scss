@@ -3,6 +3,7 @@
 .HarmonizerSettings {
   @include col-grid(min-content auto);
   @include v-center;
+
   gap: $gap-xxl;
   width: 100%;
   .HarmonizerSettings__label {

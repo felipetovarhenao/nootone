@@ -11,23 +11,27 @@ import { NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
 
+type HarmonizerPayload = {
+  recording: Recording;
+  settings: {
+    style: string;
+  };
+};
+
 /**
  * Harmonizes a recording by applying various musical transformations and generating harmonized variations.
  *
  * @param recording - The recording to harmonize.
  * @returns A Promise that resolves to the harmonized recording.
  */
-const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Recording): Promise<void | Recording> => {
+const harmonize = createAsyncThunk("recordings/harmonize", async (payload: HarmonizerPayload): Promise<void | Recording> => {
+  const { recording, settings } = payload;
   try {
     // Retrieve the audio array and sample rate from the recording URL
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
 
     // Detect the pitches of the recorded notes or use the pre-computed note events
     const detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
-
-    // Select a random style for harmonization
-    const styleList = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
-    const style = styleList[Math.floor(Math.random() * styleList.length)];
 
     if (detectedNotes.length === 0) {
       return;
@@ -39,7 +43,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
     // Harmonize the detected notes using the NoteHarmonizer class
     const harmonicBlocks = new NoteHarmonizer().harmonize(
       detectedNotes.map((n) => ({ ...n, velocity: 1 })),
-      style,
+      settings.style,
       segSize
     );
 
@@ -74,11 +78,11 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
           features: features,
           variations: [
             {
-              name: `🎹 ${style} accompaniment`,
+              name: `🎹 ${settings.style} accompaniment`,
               duration: recDuration,
               date: JSON.stringify(new Date()),
               url: URL.createObjectURL(blob),
-              tags: [...recording.tags, style],
+              tags: [...recording.tags, settings.style],
               features: { ...features, chordEvents: harmonicBlocks },
             },
             ...(recording.variations || []),

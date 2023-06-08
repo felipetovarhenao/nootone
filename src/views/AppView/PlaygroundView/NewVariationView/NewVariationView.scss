@@ -81,11 +81,12 @@
           }
         }
         .NewVariationView__algorithms__options__option__settings {
-          @include v-pad($gap-lg);
+          @include v-pad($gap-xxl);
           width: 100%;
           .NewVariationView__algorithms__options__option__settings__header {
             @include no-select;
-            @include b-pad;
+            @include v-pad;
+            @include b-pad($gap-xxl);
             text-align: center;
             font-size: $txt-md;
             text-transform: uppercase;

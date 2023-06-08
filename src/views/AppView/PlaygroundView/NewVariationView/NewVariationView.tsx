@@ -41,29 +41,28 @@ const NewVariationView = () => {
     {
       name: "add accompaniment",
       icon: "emojione-monotone:musical-notes",
-      onClick: () => {
-        if (selectedRecordingIndex !== null) {
-          dispatch(recordingActions.harmonize(recordings[selectedRecordingIndex])).then(() => {
-            navigate("/app/playground/");
-          });
-        }
-      },
       component: <HarmonizerSettings name={"harmonizer"} setProcess={setProcess} setSettings={setSettings} />,
     },
-    // {
-    //   name: "retune it",
-    //   icon: "fluent:wand-16-filled",
-    //   onClick: () => {},
-    // },
-    // {
-    //   name: "drumify it",
-    //   icon: "fa6-solid:drum",
-    //   onClick: () => {},
-    // },
+    {
+      name: "retune it",
+      icon: "fluent:wand-16-filled",
+    },
+    {
+      name: "drumify it",
+      icon: "fa6-solid:drum",
+    },
   ];
 
   function handleGenerate(process: string, settings: any) {
-    console.log(process, settings);
+    if (selectedRecordingIndex === null) {
+      return;
+    }
+    switch (process) {
+      case "harmonizer":
+        dispatch(recordingActions.harmonize({ recording: recordings[selectedRecordingIndex], settings: settings })).then(() => {
+          navigate("/app/playground/");
+        });
+    }
   }
 
   return (
@@ -114,6 +113,5 @@ export default NewVariationView;
 type ProcessingOption = {
   icon: string;
   name: string;
-  onClick: (rec: any) => void;
   component?: ReactNode;
 };
