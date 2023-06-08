@@ -11,13 +11,14 @@ import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
 import { micActions } from "../../../../redux/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import getAudioDuration from "../../../../utils/getAudioDuration";
+import createUniqueTitle from "../../../../utils/createUniqueTitle";
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const notification = useNotification();
-  const [recTitle, setRecTitle] = useState("");
+  const [recTitle, setRecTitle] = useState(createUniqueTitle());
   const tempo = useAppSelector((state) => state.mic.tempo);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const MicrophoneView = () => {
         disabled={isRecording}
         className="MicrophoneView__title"
         type="text"
-        placeholder="title"
+        placeholder={"title"}
         value={recTitle}
         onChange={(e) => setRecTitle(e.target.value)}
       />

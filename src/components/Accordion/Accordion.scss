@@ -1,0 +1,22 @@
+// @use "../../styles/main.scss" as *;
+
+// .Accordion {
+//   @include h-mar(auto);
+//   @include v-stack-c;
+//   @include center;
+//   @include vh-pad($gap-md, $gap-xxl);
+
+//   gap: $gap-lg;
+//   max-width: 600px;
+//   width: 100%;
+
+//   .Accordion__header {
+//     @include pad($gap-xl);
+//     @include round;
+//     @include clickable;
+//     @include h-stack-c;
+//     width: 100%;
+//     gap: $gap-lg;
+//     background-color: var(--bg-3);
+//   }
+// }

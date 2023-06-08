@@ -9,6 +9,9 @@ const icons = {
   check: "fa-solid:check",
   trash: "mdi:trash",
   back: "ion:arrow-back-circle",
+  left: "icon-park-outline:left",
+  right: "icon-park-outline:right",
+  lab: "raphael:lab",
 };
 
 export default icons;

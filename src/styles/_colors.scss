@@ -39,6 +39,7 @@
   --secondary-5: hsl(var(--secondary-hue), 40%, 75%);
 
   --main-gradient: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
+  --secondary-gradient: linear-gradient(90deg, var(--secondary-3) 0%, var(--primary-3) 100%);
 
   // success
   --success-1: hsl(150, 60%, 25%);
@@ -55,11 +56,11 @@
   --danger-5: hsl(350, 60%, 90%);
 
   // caution
-  --caution-1: hsl(50, 70%, 25%);
-  --caution-2: hsl(50, 70%, 37%);
-  --caution-3: hsl(50, 70%, 50%);
-  --caution-4: hsl(50, 70%, 62%);
-  --caution-5: hsl(50, 70%, 75%);
+  --caution-1: hsl(38, 90%, 25%);
+  --caution-2: hsl(38, 90%, 37%);
+  --caution-3: hsl(38, 90%, 50%);
+  --caution-4: hsl(38, 90%, 62%);
+  --caution-5: hsl(38, 90%, 75%);
 
   --txt-dark: var(--fg-5);
   --txt-light: var(--bg-1);

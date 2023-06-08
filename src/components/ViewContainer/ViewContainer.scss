@@ -9,8 +9,8 @@
     @include col-grid(1fr auto 1fr);
     align-items: center;
     .ViewContainer__header__back-button {
-      font-size: $txt-xxl;
       @include clickable;
+      font-size: $txt-xxl;
       * {
         @include hyperlink;
       }

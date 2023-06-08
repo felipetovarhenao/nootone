@@ -18,7 +18,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
       <AudioPlayer className="RecordingLayout__player" rec={rec} />
       <div className="RecordingLayout__buttons">
         <Button className="RecordingLayout__button" onClick={() => navigate(`/app/playground/recordings/${recIndex}`)}>
-          <Icon className="icon" icon="raphael:lab" />
+          <Icon className="icon" icon={icons.lab} />
           New variation
         </Button>
         <Button

@@ -1,0 +1,8 @@
+@use "../../styles/main.scss" as *;
+
+.SwipeMenu {
+  @include h-stack-c;
+  .SwipeMenu__button {
+    @include hyperlink;
+  }
+}
