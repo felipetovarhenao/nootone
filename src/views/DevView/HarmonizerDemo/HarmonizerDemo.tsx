@@ -16,20 +16,20 @@ import Icon from "../../../components/Icon/Icon";
 
 /* Guitar Samples */
 
-import note1 from "../../../assets/audio/guitar/48-p.ogg";
-import note2 from "../../../assets/audio/guitar/48-f.ogg";
-import note3 from "../../../assets/audio/guitar/54-p.ogg";
-import note4 from "../../../assets/audio/guitar/54-f.ogg";
-import note5 from "../../../assets/audio/guitar/72-p.ogg";
-import note6 from "../../../assets/audio/guitar/72-f.ogg";
-import note7 from "../../../assets/audio/guitar/78-f.ogg";
-import note9 from "../../../assets/audio/guitar/78-p.ogg";
-import note10 from "../../../assets/audio/guitar/60-p.ogg";
-import note11 from "../../../assets/audio/guitar/60-f.ogg";
-import note12 from "../../../assets/audio/guitar/42-f.ogg";
-import note13 from "../../../assets/audio/guitar/66-p.ogg";
-import note14 from "../../../assets/audio/guitar/66-f.ogg";
-import note15 from "../../../assets/audio/guitar/42-p.ogg";
+import note1 from "../../../assets/audio/guitar/48-p.mp3";
+import note2 from "../../../assets/audio/guitar/48-f.mp3";
+import note3 from "../../../assets/audio/guitar/54-p.mp3";
+import note4 from "../../../assets/audio/guitar/54-f.mp3";
+import note5 from "../../../assets/audio/guitar/72-p.mp3";
+import note6 from "../../../assets/audio/guitar/72-f.mp3";
+import note7 from "../../../assets/audio/guitar/78-f.mp3";
+import note9 from "../../../assets/audio/guitar/78-p.mp3";
+import note10 from "../../../assets/audio/guitar/60-p.mp3";
+import note11 from "../../../assets/audio/guitar/60-f.mp3";
+import note12 from "../../../assets/audio/guitar/42-f.mp3";
+import note13 from "../../../assets/audio/guitar/66-p.mp3";
+import note14 from "../../../assets/audio/guitar/66-f.mp3";
+import note15 from "../../../assets/audio/guitar/42-p.mp3";
 
 const GUITAR_NOTES = [note1, note2, note3, note4, note5, note6, note7, note9, note10, note11, note12, note13, note14, note15];
 
