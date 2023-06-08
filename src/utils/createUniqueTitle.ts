@@ -1,6 +1,6 @@
 import { uniqueNamesGenerator, Config, adjectives, colors } from "unique-names-generator";
 
-const sounds = ["tune", "idea", "sound", "melody", "beat", "motif", "rhythm", "improv", "scale", "lick", "song", "scat", "music", "riff"];
+const sounds = ["tune", "idea", "sound", "melody", "beat", "motif", "rhythm", "improv", "scale", "lick", "song", "music", "riff"];
 const emoji: string[] = [
   "🎹",
   "👻",
