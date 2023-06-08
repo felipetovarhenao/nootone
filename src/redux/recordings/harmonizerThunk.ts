@@ -74,7 +74,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (recording: Rec
           features: features,
           variations: [
             {
-              name: `${recording.name} (${style})`,
+              name: `🎹 ${style} accompaniment`,
               duration: recDuration,
               date: JSON.stringify(new Date()),
               url: URL.createObjectURL(blob),

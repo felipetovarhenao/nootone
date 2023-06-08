@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../../redux/hooks";
 import Icon from "../../../../components/Icon/Icon";
 
 const MostRecentTracksView = () => {
-  const { saved: savedRecordings, isProcessing } = useAppSelector((state) => state.recordings);
+  const { recordings, isProcessing } = useAppSelector((state) => state.recordings);
 
   return (
     <div className="MostRecentTracksView">
@@ -14,13 +14,13 @@ const MostRecentTracksView = () => {
           <span className="MostRecentTracksView__processing__text">processing</span>
         </div>
       ) : (
-        savedRecordings.length > 0 && (
+        recordings.length > 0 && (
           <>
             <h1 className="TracksView__header">unsaved drafts</h1>
-            {[...savedRecordings]
+            {[...recordings]
               .sort((a, b) => b.date?.localeCompare(a.date || "0"))
               .map((rec, i) => (
-                <RecordingLayout saved={true} key={i} rec={rec} />
+                <RecordingLayout key={i} rec={rec} recIndex={i} />
               ))}
             <hr />
           </>

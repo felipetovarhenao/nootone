@@ -5,6 +5,7 @@ import DevView from "./views/DevView/DevView";
 import CaptureView from "./views/AppView/CaptureView/CaptureView";
 import PlaygroundView from "./views/AppView/PlaygroundView/PlaygroundView";
 import UserAccountView from "./views/AppView/UserAccountView/UserAccountView";
+import NewVariationView from "./views/AppView/PlaygroundView/NewVariationView/NewVariationView";
 
 export default function App() {
   return (
@@ -14,7 +15,10 @@ export default function App() {
         <Route path="/dev" element={<DevView />} />
         <Route path="/app" element={<AppView />}>
           <Route index element={<CaptureView />} />
-          <Route path="playground" element={<PlaygroundView />} />
+          <Route path="playground">
+            <Route index element={<PlaygroundView />} />
+            <Route path="recordings/:id" element={<NewVariationView />} />
+          </Route>
           <Route path="dashboard" element={<UserAccountView />} />
         </Route>
       </Routes>

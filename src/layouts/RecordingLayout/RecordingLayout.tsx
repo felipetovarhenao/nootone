@@ -6,77 +6,41 @@ import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import icons from "../../utils/icons";
 import { Recording } from "../../types/audio";
+import Button from "../../components/Button/Button";
+import { useNavigate } from "react-router-dom";
 
-const RecordingLayout = ({ rec }: { saved?: boolean; rec: Recording }) => {
+const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }) => {
   const dispatch = useAppDispatch();
-  const processingOptions: ProcessingOption[] = [
-    // {
-    //   name: "retune it",
-    //   icon: "fluent:wand-16-filled",
-    //   onClick: () => {},
-    // },
-    {
-      name: "add accompaniment",
-      icon: "emojione-monotone:musical-notes",
-      onClick: () => {
-        dispatch(recordingActions.harmonize(rec));
-      },
-    },
-    // {
-    //   name: "drumify it",
-    //   icon: "fa6-solid:drum",
-    //   onClick: () => {},
-    // },
-  ];
+  const navigate = useNavigate();
+
   return (
     <div className="RecordingLayout">
-      <div className="RecordingLayout__options">
-        {false && (
-          <Icon
-            className="RecordingLayout__options__option"
-            id="check"
-            icon={icons.check}
-            onClick={() => {
-              dispatch(recordingActions.write(rec));
-            }}
-          />
-        )}
-        <Icon
-          className="RecordingLayout__options__option"
+      <AudioPlayer className="RecordingLayout__player" rec={rec} />
+      <div className="RecordingLayout__buttons">
+        <Button className="RecordingLayout__button" onClick={() => navigate(`/app/playground/recordings/${recIndex}`)}>
+          <Icon className="icon" icon="raphael:lab" />
+          New variation
+        </Button>
+        <Button
           id="trash"
-          icon={icons.trash}
+          className="RecordingLayout__button"
           onClick={() => {
             dispatch(recordingActions.discard(rec));
           }}
-        />
+        >
+          <Icon className="icon" icon={icons.trash} />
+          Delete
+        </Button>
       </div>
-
-      <AudioPlayer className="RecordingLayout__player" rec={rec} />
-      <Dropdown legendOpen="hide options" legendClosed="show options">
-        <div className="RecordingLayout__operations">
-          {processingOptions.map((opt) => (
-            <div className="RecordingLayout__operations__operation" key={opt.name} onClick={opt.onClick}>
-              <Icon className="RecordingLayout__operations__operation__icon" icon={opt.icon} />
-              <span className="RecordingLayout__operations__operation__text">{opt.name}</span>
-            </div>
-          ))}
-        </div>
-      </Dropdown>
       {rec.variations?.length > 0 && (
-        <Dropdown legendClosed="show variations" legendOpen="hide variations">
+        <Dropdown className="RecordingLayout__variations" openByDefault={true} legendClosed="show variations" legendOpen="hide variations">
           {rec.variations?.map((variation, i) => (
-            <AudioPlayer key={i} rec={variation} />
+            <AudioPlayer className="RecordingLayout__variations__variation" key={i} rec={variation} />
           ))}
         </Dropdown>
       )}
     </div>
   );
-};
-
-type ProcessingOption = {
-  icon: string;
-  name: string;
-  onClick: (rec: any) => void;
 };
 
 export default RecordingLayout;
