@@ -4,6 +4,7 @@ import { useSwipeable } from "react-swipeable";
 import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
 import cn from "classnames";
+import wrapValue from "../../utils/wrapValue";
 
 type SwipeMenuProps = {
   children: ReactNode;
@@ -18,8 +19,11 @@ const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
     setSelected((x) => wrapValue(x - num, React.Children.count(children)));
   }
   const handlers = useSwipeable({
-    onSwiped: (e) => {
-      handleSwipe(e.dir === "Left" ? -1 : 1);
+    onSwipedLeft: () => {
+      handleSwipe(-1);
+    },
+    onSwipedRight: () => {
+      handleSwipe(1);
     },
     trackTouch: true,
     trackMouse: true,
@@ -48,8 +52,3 @@ const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
 };
 
 export default SwipeMenu;
-
-function wrapValue(x: number, N: number) {
-  const y = x % N;
-  return y < 0 ? N + y : y;
-}

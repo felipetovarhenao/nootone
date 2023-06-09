@@ -1,14 +1,33 @@
 import "./TempoTapper.scss";
-import useTempoTap from "../../hooks/useTempoTap";
+import useTempoTap, { metronomeTempi } from "../../hooks/useTempoTap";
 import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { micActions } from "../../redux/micSlice";
 import { useEffect } from "react";
+import { useSwipeable } from "react-swipeable";
+import findNearestValue from "../../utils/findNearestValue";
+import wrapValue from "../../utils/wrapValue";
+import TextCarousel from "../../components/TextCarousel/TextCarousel";
 
 const TempoTapper = ({ className }: { className?: string }) => {
   const { isRecording, tempo } = useAppSelector((state) => state.mic);
   const dispatch = useAppDispatch();
-  const { tempo: tapperTempo, tapTempo } = useTempoTap(tempo);
+  const { tempo: tapperTempo, tapTempo, setTempo } = useTempoTap(tempo);
+  const handlers = useSwipeable({
+    onSwipedUp: () => {
+      handleTempoSwipe(1);
+    },
+    onSwipedDown: () => {
+      handleTempoSwipe(-1);
+    },
+    trackTouch: true,
+    trackMouse: true,
+  });
+
+  function handleTempoSwipe(num: number) {
+    const id = findNearestValue(metronomeTempi, tempo)[1];
+    setTempo(metronomeTempi[wrapValue(id + num, metronomeTempi.length)]);
+  }
 
   useEffect(() => {
     if (tapperTempo !== tempo) {
@@ -25,10 +44,15 @@ const TempoTapper = ({ className }: { className?: string }) => {
           animationPlayState: isRecording ? "running" : "paused",
         }}
       />
-      <div onClick={tapTempo} className="TempoTapper__tempo">
+      <div onClick={tapTempo} className="TempoTapper__tempo" {...handlers}>
         {tapperTempo}
       </div>
-      <span className="TempoTapper__text">tap tempo</span>
+      <span className="TempoTapper__text">
+        <TextCarousel repetitions={2} duration={2.5}>
+          <div className="TempoTapper__text__slide">tap tempo</div>
+          <div className="TempoTapper__text__slide">swipe tempo</div>
+        </TextCarousel>
+      </span>
     </div>
   );
 };

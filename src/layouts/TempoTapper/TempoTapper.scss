@@ -5,12 +5,19 @@
   @include center;
   height: min-content;
   .TempoTapper__text {
-    @include v-pad;
-    @include no-select;
-    align-self: center;
-    font-size: $txt-ms;
-    text-transform: uppercase;
-    color: var(--disabled-3);
+    .TempoTapper__text__slide {
+      text-align: center;
+      min-width: 100px;
+    }
+    &,
+    * {
+      @include v-pad;
+      @include no-select;
+      align-self: center;
+      font-size: $txt-ms;
+      text-transform: uppercase;
+      color: var(--disabled-3);
+    }
   }
   .TempoTapper__tempo {
     @include no-select;

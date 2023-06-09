@@ -1,0 +1,56 @@
+@use "../../styles/main.scss" as *;
+.TextCarousel {
+  @include v-stack;
+  @include trans;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  .TextCarousel__current {
+    animation-name: current-slide;
+  }
+  .TextCarousel__next {
+    position: absolute;
+    animation-name: next-slide;
+  }
+  .TextCarousel__next,
+  .TextCarousel__current {
+    white-space: nowrap;
+    animation-timing-function: ease-in;
+    animation-delay: 0s;
+    // animation-duration: 3s;
+    // animation-iteration-count: infinite;
+    animation-play-state: running;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes current-slide {
+  0% {
+    translate: 0px 0px;
+    opacity: 100%;
+  }
+  90% {
+    translate: 0px 0px;
+    opacity: 100%;
+  }
+  100% {
+    translate: 0px 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes next-slide {
+  0% {
+    translate: 0px -100%;
+    opacity: 0;
+  }
+  90% {
+    translate: 0px -100%;
+    opacity: 0;
+  }
+  100% {
+    translate: 0px 0px;
+    opacity: 100%;
+  }
+}

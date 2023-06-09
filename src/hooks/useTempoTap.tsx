@@ -1,5 +1,11 @@
 import { useRef, useState } from "react";
 
+export const metronomeTempi: number[] = [
+  40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 63, 66, 69, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116, 120, 126, 132, 138, 144, 152, 160, 168,
+  176,
+];
+const numTempi = metronomeTempi.length;
+
 /**
  * Custom hook for tapping tempo.
  * @param initialTempo - The initial tempo value (default: 120).
@@ -49,7 +55,7 @@ const useTempoTap = (initialTempo: number = 120, bufferSize: number = 4, sensiti
     newTempo = Math.round(newTempo);
 
     // Update the tempo state
-    setTempo(newTempo);
+    setTempo(Math.max(metronomeTempi[0], Math.min(metronomeTempi[numTempi - 1], newTempo)));
   }
 
   return {

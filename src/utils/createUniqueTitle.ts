@@ -1,6 +1,6 @@
 import { uniqueNamesGenerator, Config, adjectives, colors } from "unique-names-generator";
 
-const sounds = [
+const sounds: string[] = [
   "tune",
   "idea",
   "sound",
