@@ -1,0 +1,6 @@
+@use "../../../../styles/main.scss" as *;
+
+.RecordingSettingsView {
+  @include v-stack;
+	@include v-center;
+}

@@ -48,10 +48,7 @@ const TempoTapper = ({ className }: { className?: string }) => {
         {tapperTempo}
       </div>
       <span className="TempoTapper__text">
-        <TextCarousel repetitions={2} duration={2.5}>
-          <div className="TempoTapper__text__slide">tap tempo</div>
-          <div className="TempoTapper__text__slide">swipe tempo</div>
-        </TextCarousel>
+        <div className="TempoTapper__text__slide">tap or swipe tempo</div>
       </span>
     </div>
   );

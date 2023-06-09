@@ -2,7 +2,11 @@
 
 .RecordingLayout {
   @include v-stack;
+  @include round;
+  @include pad($gap-lg);
   gap: $gap-md;
+  box-shadow: $gap-ms $gap-ms $gap-ms #00000022;
+  background-color: var(--bg-3);
   .RecordingLayout__options {
     @include h-stack-c;
     @include to-right;
@@ -38,9 +42,14 @@
       text-align: center;
       background: var(--main-gradient);
       border: none;
-      &#trash {
+    }
+    .RecordingLayout__icons {
+      @include h-stack-c;
+      gap: $gap-ml;
+      .RecordingLayout__icons__icon {
+        @include round;
+        @include hyperlink(var(--primary-3), var(--primary-4));
         background: none;
-        background-color: var(--danger-3);
       }
     }
   }

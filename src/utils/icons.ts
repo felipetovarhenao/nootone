@@ -1,6 +1,7 @@
 const icons = {
   play: "ph:play-fill",
   pause: "ph:pause-fill",
+  download: "material-symbols:download",
   save: "material-symbols:save",
   restart: "ph:skip-back-fill",
   volumeHigh: "ph:speaker-simple-high-fill",
@@ -9,6 +10,8 @@ const icons = {
   volumeMute: "ph:speaker-simple-none-fill",
   check: "fa-solid:check",
   trash: "mdi:trash",
+  edit: "bxs:edit",
+  settings: "mingcute:settings-6-fill",
   back: "ion:arrow-back-circle",
   left: "icon-park-outline:left",
   right: "icon-park-outline:right",

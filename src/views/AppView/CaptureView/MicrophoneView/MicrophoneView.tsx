@@ -12,6 +12,8 @@ import { micActions } from "../../../../redux/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import getAudioDuration from "../../../../utils/getAudioDuration";
 import createUniqueTitle from "../../../../utils/createUniqueTitle";
+import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
+const inputSuggestions = ["sing a tune", "hum a melody", "whistle an idea", "make music!"];
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
@@ -48,26 +50,35 @@ const MicrophoneView = () => {
         value={recTitle}
         onChange={(e) => setRecTitle(e.target.value)}
       />
-      <Icon
-        className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
-        icon={isRecording ? "svg-spinners:pulse-2" : "fluent:record-48-regular"}
-        onClick={() => {
-          if (navigator.mediaDevices?.getUserMedia!) {
-            dispatch(micActions.toggle());
-            if (isRecording) {
-              stopRecording();
-            } else {
-              startRecording();
+      <div>
+        <TextCarousel duration={2.5} className="MicrophoneView__prompt">
+          {inputSuggestions.map((txt, i) => (
+            <span className="MicrophoneView__prompt__slide" key={i}>
+              {txt}
+            </span>
+          ))}
+        </TextCarousel>
+        <Icon
+          className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
+          icon={isRecording ? "svg-spinners:pulse-2" : "fluent:record-48-regular"}
+          onClick={() => {
+            if (navigator.mediaDevices?.getUserMedia!) {
+              dispatch(micActions.toggle());
+              if (isRecording) {
+                stopRecording();
+              } else {
+                startRecording();
+              }
+            } else if (!isRecording) {
+              notification({
+                type: "ERROR",
+                icon: "material-symbols:error",
+                message: "Unable to record. Try using another a different browser, such as Google Chrome or Mozilla Firefox.",
+              });
             }
-          } else if (!isRecording) {
-            notification({
-              type: "ERROR",
-              icon: "material-symbols:error",
-              message: "Unable to record. Try using another a different browser, such as Google Chrome or Mozilla Firefox.",
-            });
-          }
-        }}
-      />
+          }}
+        />
+      </div>
       <TempoTapper className="MicrophoneView__tapper" />
     </div>
   );

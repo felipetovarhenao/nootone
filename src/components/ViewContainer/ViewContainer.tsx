@@ -14,7 +14,7 @@ type ViewContainerProps = {
 const ViewContainer = ({ onGoBack, className, viewName, children }: ViewContainerProps) => {
   const navigate = useNavigate();
   return (
-    <div className={cn(className, "ViewContainer")}>
+    <div className={"ViewContainer"}>
       <div className="ViewContainer__header">
         <Icon
           className="ViewContainer__header__back-button"
@@ -29,7 +29,7 @@ const ViewContainer = ({ onGoBack, className, viewName, children }: ViewContaine
         <header className="ViewContainer__header__text">{viewName}</header>
         <div></div>
       </div>
-      <div className="ViewContainer__children">{children}</div>
+      <div className={cn(className, "ViewContainer__children")}>{children}</div>
     </div>
   );
 };

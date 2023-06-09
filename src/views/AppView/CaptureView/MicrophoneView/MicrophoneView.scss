@@ -8,7 +8,8 @@
     @include stack;
     @include round(30px);
     @include pad;
-    @include t-mar($gap-xxl);
+    @include v-mar($gap-xxl);
+    box-shadow: $gap-sm $gap-sm $gap-sm #00000022;
     justify-self: center;
     box-sizing: border-box;
     height: fit-content;
@@ -24,12 +25,20 @@
     }
   }
   .MicrophoneView__tapper {
-    @include stack;
-    @include t-mar($gap-xxl);
-    @include h-center;
-    align-items: flex-start;
+    height: 100%;
   }
 
+  .MicrophoneView__prompt {
+    @include stack;
+    @include v-pad($gap-lg);
+    .MicrophoneView__prompt__slide {
+      text-align: center;
+      width: 100%;
+      min-width: 300px;
+      text-transform: uppercase;
+      color: var(--disabled-3);
+    }
+  }
   .MicrophoneView__icon {
     @include clickable;
     @include center;
@@ -54,4 +63,8 @@
       }
     }
   }
+}
+
+.dark .MicrophoneView .MicrophoneView__title {
+  background-color: var(--bg-3);
 }

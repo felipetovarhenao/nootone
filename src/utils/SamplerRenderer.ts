@@ -41,7 +41,7 @@ export default class SamplerRenderer {
       lastNoteOutset = Math.max(lastNoteOutset, note.onset + note.duration);
     });
 
-    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + 5 * ctx.sampleRate;
+    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset));
     return renderAudioOffline(
       async (audioContext) => {
         const audioBuffer = audioContext.createBuffer(1, array.length, audioContext.sampleRate);
