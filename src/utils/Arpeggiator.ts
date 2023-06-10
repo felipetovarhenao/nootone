@@ -220,8 +220,7 @@ export default class Arpeggiator {
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
     const timeOffset = sortedChords[0].onset;
-    const totalDur =
-      sortedChords[sortedChords.length - 1].onset - timeOffset + Math.max(patternDuration, sortedChords[sortedChords.length - 1].notes[0].duration);
+    const totalDur = sortedChords[sortedChords.length - 1].onset - timeOffset;
 
     const numPatterns = Math.round(totalDur / patternDuration);
     const arpeggioSequence: ChordEvent[] = [];
@@ -267,9 +266,10 @@ export default class Arpeggiator {
         arpeggioSequence.push(arpChordEvent);
       }
     }
-    const lastChord = { ...sortedChords.at(-1)!, onset: totalDur + timeOffset };
+    const lastChordDuration = sortedChords.at(-1)!.notes[0].duration;
+    const lastChord = { ...sortedChords.at(-1)!, onset: Math.ceil(arpeggioSequence.at(-1)!.onset / lastChordDuration) * lastChordDuration };
     lastChord.notes.forEach((n) => {
-      n.velocity = 0.6;
+      n.velocity = Math.random() * 0.5 + 0.5;
     });
     arpeggioSequence.push(lastChord);
 
