@@ -152,7 +152,8 @@ export default class Arpeggiator {
     const patternSize = [2, 4][Math.floor(Math.random() * 2)];
     const maxSubdiv = [3, 4][Math.floor(Math.random() * 2)];
     const numAttacks = Math.floor(Math.random() * (patternSize * maxSubdiv - 1) + 1);
-    const contourSize = Math.max(5, Math.floor(Math.random() * (numAttacks * 2 - numAttacks) + numAttacks));
+    const contourSize = Math.max(5, Math.floor(Math.random() * numAttacks + numAttacks));
+
     return {
       patternSize,
       maxSubdiv,
