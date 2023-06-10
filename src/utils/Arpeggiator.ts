@@ -6,7 +6,7 @@ export default class Arpeggiator {
    * @param N - The number of elements in the contour array.
    * @returns An array of random values representing the contour.
    */
-  public static createRandomContour(N: number = 4): number[] {
+  private static createRandomContour(N: number = 4): number[] {
     // Random values between 0 and 1
     if (Math.random() > 0.5) {
       const x: number[] = [];
@@ -40,7 +40,7 @@ export default class Arpeggiator {
    * @returns An array of sorted unique numbers.
    * @throws Error if the range is not large enough to generate unique numbers.
    */
-  public static generateSortedUniqueNumbers(count: number, rangeSize: number, offset: number = 0): number[] {
+  private static generateSortedUniqueNumbers(count: number, rangeSize: number, offset: number = 0): number[] {
     const end = offset + rangeSize;
     if (rangeSize < count) {
       throw new Error("The range is not large enough to generate unique numbers.");
@@ -73,7 +73,7 @@ export default class Arpeggiator {
    * @param patternSize - The size of the pattern.
    * @returns An array of random onset positions.
    */
-  public static createRandomGrid(patternDuration: number, quantumUnit: number, patternSize: number): number[] {
+  private static createRandomGrid(patternDuration: number, quantumUnit: number, patternSize: number): number[] {
     const maxAttacks = Math.floor(patternDuration / quantumUnit);
     const attacks = Math.min(patternSize, maxAttacks);
 
@@ -88,7 +88,7 @@ export default class Arpeggiator {
    * @param duration - The duration of the pattern.
    * @returns An array of time points represented as tuples of onset and index.
    */
-  public static indexPatternToTimePoints(indexPattern: number[], duration: number): [number, number][] {
+  private static indexPatternToTimePoints(indexPattern: number[], duration: number): [number, number][] {
     const patternSize = indexPattern.length;
 
     // Calculate marker positions evenly spaced in the duration
@@ -105,7 +105,7 @@ export default class Arpeggiator {
    * @param B - An array of onset positions.
    * @returns An array of grouped indices with their corresponding onset positions.
    */
-  public static groupIndices(A: [number, number][], B: number[]): { onset: number; indices: number[] }[] {
+  private static groupIndices(A: [number, number][], B: number[]): { onset: number; indices: number[] }[] {
     const result: { onset: number; indices: number[] }[] = [];
     for (const [onset, index] of A) {
       let minDiff = Infinity;
@@ -162,34 +162,19 @@ export default class Arpeggiator {
   }
 
   /**
-   * Calculate the metric weight based on the onset and segment size.
-   * @param onset - The onset position.
-   * @param segSize - The segment size.
-   * @returns The calculated metric weight.
+   * Generates a random velocity pattern for an arpeggio sequence.
+   *
+   * @param arpeggioPattern - The arpeggio pattern containing onset positions and indices.
+   * @returns A 2D array of random velocities corresponding to the arpeggio pattern.
    */
-  public static getMetricWeight(onset: number, segSize: number): number {
-    // Helper function to calculate weight at a specific time and segment
-    function w(t: number, s: number, i: number): number {
-      const theta = t * 2 ** i * Math.PI * (4 / s);
-      return 0.25 * Math.cos(theta) + 0.75;
-    }
-
-    let weight = 1;
-
-    for (let i = -1; i <= 1; i++) {
-      weight *= w(onset, segSize, i);
-    }
-    return Math.sqrt(weight);
-  }
-
-  /**
-   * Convert a pitch value to velocity.
-   * @param pitch - The pitch value.
-   * @returns The corresponding velocity value.
-   */
-  public static pitchToVelocity(pitch: number): number {
-    const theta = (pitch / 127) * Math.PI * 2;
-    return Math.cos(theta * 3) * 0.125 + 0.875;
+  private static getRandomVelocityPattern(arpeggioPattern: { onset: number; indices: number[] }[]): number[][] {
+    const randomVelocities: number[][] = [];
+    arpeggioPattern.forEach((e) => {
+      const vels: number[] = [];
+      e.indices.forEach((_) => vels.push(Math.random() * 0.5 + 0.5));
+      randomVelocities.push(vels);
+    });
+    return randomVelocities;
   }
 
   /**
@@ -229,6 +214,8 @@ export default class Arpeggiator {
     const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
     const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
 
+    const velocityPattern = this.getRandomVelocityPattern(arpeggioPattern);
+
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
     const timeOffset = sortedChords[0].onset;
@@ -246,7 +233,8 @@ export default class Arpeggiator {
 
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
-      for (const event of arpeggioPattern) {
+      for (let e = 0; e < arpeggioPattern.length; e++) {
+        const event = arpeggioPattern[e];
         const onset = event.onset + patternOffset;
         if (currentChord === null || (onset >= nextChordOnset! && !lastChordReached)) {
           // Find the next chord event
@@ -265,13 +253,12 @@ export default class Arpeggiator {
           }
         }
 
-        const onsetWeight = this.getMetricWeight((event.onset / patternDuration) * patternSize, patternSize);
         const arpChordEvent: ChordEvent = {
           onset: onset,
-          notes: event.indices.map((index) => {
+          notes: event.indices.map((index, k) => {
             const note = { ...currentChord!.notes[Math.floor(index * (currentChord!.notes.length - 1))] };
             note.duration = note.duration - (event.onset % note.duration);
-            note.velocity = onsetWeight * this.pitchToVelocity(note.pitch) * Math.random() * 0.5 + 0.25;
+            note.velocity = velocityPattern[e][k];
             return note;
           }),
         };
@@ -279,6 +266,11 @@ export default class Arpeggiator {
         arpeggioSequence.push(arpChordEvent);
       }
     }
+    const lastChord = { ...sortedChords.at(-1)!, onset: totalDur + timeOffset };
+    lastChord.notes.forEach((n) => {
+      n.velocity = 0.6;
+    });
+    arpeggioSequence.push(lastChord);
 
     return arpeggioSequence;
   }
