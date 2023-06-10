@@ -28,7 +28,7 @@ export default class SamplerRenderer {
     const sampler = new AudioSampler(audioContext);
     return sampler.loadSamples(GUITAR_NOTES).then(() => {
       noteEvents.forEach((note) => {
-        sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration);
+        sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration + 0.1);
       });
     });
   }
@@ -41,7 +41,7 @@ export default class SamplerRenderer {
       lastNoteOutset = Math.max(lastNoteOutset, note.onset + note.duration);
     });
 
-    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset));
+    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + ctx.sampleRate;
     return renderAudioOffline(
       async (audioContext) => {
         const audioBuffer = audioContext.createBuffer(1, array.length, audioContext.sampleRate);

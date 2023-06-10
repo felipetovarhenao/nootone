@@ -1,5 +1,3 @@
-// import { NoteEvent } from "./playNoteEvents";
-
 import { ChordEvent } from "../types/music";
 import { NoteEvent } from "../types/music";
 import { NoteEventSegment } from "../types/music";

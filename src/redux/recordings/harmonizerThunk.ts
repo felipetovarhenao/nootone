@@ -2,14 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import audioArrayFromURL from "../../utils/audioArrayFromURL";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
-import noteEventsToChordEvents from "../../utils/groupNoteEventsByOnset";
-import arpeggiateChords from "../../utils/arpeggiateChords";
+import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import audioBufferToBlob from "../../utils/audioBufferToBlob";
 import getAudioDuration from "../../utils/getAudioDuration";
 import SamplerRenderer from "../../utils/SamplerRenderer";
 import { NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
+import Arpeggiator from "../../utils/Arpeggiator";
+import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 
 type HarmonizerPayload = {
   recording: Recording;
@@ -62,7 +63,11 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
-    const arpeggios = arpeggiateChords(chords, recording.features.tempo!);
+    
+    const config = Arpeggiator.genRandomConfig();
+    const arpeggios = chordEventsToNoteEvents(
+      Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+    );
 
     // Update the features of the recording
     const features = {
