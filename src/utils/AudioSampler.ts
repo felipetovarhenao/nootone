@@ -1,5 +1,5 @@
 import audioArrayFromURL from "./audioArrayFromURL";
-import reverbURL from "../assets/audio/impulseResponses/Large_bottle_hall.mp3";
+import reverbURL from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 import AudioSource from "./AudioSource";
 /**
  * A class representing a sampler instrument that can load and play audio samples.

@@ -27,8 +27,11 @@
     @include v-stack;
     width: 100%;
     gap: $gap-ml;
+    overflow: hidden;
     .AudioPlayer__bar__title {
       color: var(--txt);
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     .AudioPlayer__bar__progress {
       @include clickable;

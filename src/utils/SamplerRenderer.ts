@@ -19,7 +19,7 @@ import { NoteEvent } from "../types/music";
 import renderAudioOffline from "./renderAudioOffline";
 import createNewAudioContext from "./createNewAudioContext";
 import audioArrayFromURL from "./audioArrayFromURL";
-import reverbURL from "../assets/audio/impulseResponses/Large_bottle_hall.mp3";
+import reverbURL from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 
 const GUITAR_NOTES = [note1, note2, note3, note4, note5, note6, note7, note9, note10, note11, note12, note13, note14, note15];
 
@@ -41,7 +41,7 @@ export default class SamplerRenderer {
       lastNoteOutset = Math.max(lastNoteOutset, note.onset + note.duration);
     });
 
-    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + ctx.sampleRate;
+    const totalDuration = Math.max(array.length, Math.ceil(ctx.sampleRate * lastNoteOutset)) + ctx.sampleRate * 2;
     return renderAudioOffline(
       async (audioContext) => {
         const audioBuffer = audioContext.createBuffer(1, array.length, audioContext.sampleRate);

@@ -4,6 +4,7 @@
   @include v-stack;
   @include round;
   @include pad($gap-lg);
+  height: min-content;
   gap: $gap-md;
   box-shadow: $gap-ms $gap-ms $gap-ms #00000022;
   background-color: var(--bg-3);

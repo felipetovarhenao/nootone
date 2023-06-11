@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  error: "subway:error",
   pause: "ph:pause-fill",
   download: "material-symbols:download",
   save: "material-symbols:save",

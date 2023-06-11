@@ -13,7 +13,10 @@ import { useNotification } from "../../../../components/Notification/Notificatio
 import getAudioDuration from "../../../../utils/getAudioDuration";
 import createUniqueTitle from "../../../../utils/createUniqueTitle";
 import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
+import Metronome from "../../../../components/Metronome/Metronome";
+
 const inputSuggestions = ["sing a tune", "hum a melody", "whistle an idea", "make music!"];
+const recordingPrompts = ["recording", "press to stop"];
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
@@ -50,34 +53,43 @@ const MicrophoneView = () => {
         value={recTitle}
         onChange={(e) => setRecTitle(e.target.value)}
       />
-      <div>
+      <div className="MicrophoneView__center-container">
         <TextCarousel duration={2.5} className="MicrophoneView__prompt">
-          {inputSuggestions.map((txt, i) => (
+          {(isRecording ? recordingPrompts : inputSuggestions).map((txt, i) => (
             <span className="MicrophoneView__prompt__slide" key={i}>
               {txt}
             </span>
           ))}
         </TextCarousel>
-        <Icon
-          className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
-          icon={isRecording ? "svg-spinners:pulse-2" : "fluent:record-48-regular"}
-          onClick={() => {
-            if (navigator.mediaDevices?.getUserMedia!) {
-              dispatch(micActions.toggle());
-              if (isRecording) {
-                stopRecording();
-              } else {
+        {!isRecording ? (
+          <Icon
+            className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
+            icon={"fluent:record-48-regular"}
+            onClick={() => {
+              if (navigator.mediaDevices?.getUserMedia!) {
+                dispatch(micActions.toggle());
                 startRecording();
+              } else if (!isRecording) {
+                notification({
+                  type: "ERROR",
+                  icon: "material-symbols:error",
+                  message: "Unable to record. Try using another a different browser, such as Google Chrome or Mozilla Firefox.",
+                });
               }
-            } else if (!isRecording) {
-              notification({
-                type: "ERROR",
-                icon: "material-symbols:error",
-                message: "Unable to record. Try using another a different browser, such as Google Chrome or Mozilla Firefox.",
-              });
-            }
-          }}
-        />
+            }}
+          />
+        ) : (
+          <Metronome
+            padding={30}
+            className="MicrophoneView__icon"
+            onClick={() => {
+              dispatch(micActions.toggle());
+              stopRecording();
+            }}
+            tempo={tempo}
+            canvasDims={{ width: 130, height: 130 }}
+          />
+        )}
       </div>
       <TempoTapper className="MicrophoneView__tapper" />
     </div>

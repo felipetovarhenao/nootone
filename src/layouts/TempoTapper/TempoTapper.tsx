@@ -7,10 +7,10 @@ import { useEffect } from "react";
 import { useSwipeable } from "react-swipeable";
 import findNearestValue from "../../utils/findNearestValue";
 import wrapValue from "../../utils/wrapValue";
-import TextCarousel from "../../components/TextCarousel/TextCarousel";
 
 const TempoTapper = ({ className }: { className?: string }) => {
-  const { isRecording, tempo } = useAppSelector((state) => state.mic);
+  const { tempo } = useAppSelector((state) => state.mic);
+
   const dispatch = useAppDispatch();
   const { tempo: tapperTempo, tapTempo, setTempo } = useTempoTap(tempo);
   const handlers = useSwipeable({
@@ -37,13 +37,6 @@ const TempoTapper = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn(className, "TempoTapper")}>
-      <div
-        className={"TempoTapper__blinker"}
-        style={{
-          animationDuration: `${60 / tempo}s`,
-          animationPlayState: isRecording ? "running" : "paused",
-        }}
-      />
       <div onClick={tapTempo} className="TempoTapper__tempo" {...handlers}>
         {tapperTempo}
       </div>

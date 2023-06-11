@@ -8,12 +8,13 @@ const MostRecentTracksView = () => {
   return (
     <div className="MostRecentTracksView">
       <h1 className="TracksView__header">unsaved drafts</h1>
-      {[...recordings]
-        .sort((a, b) => b.date?.localeCompare(a.date || "0"))
-        .map((rec, i) => (
-          <RecordingLayout key={i} rec={rec} recIndex={i} />
-        ))}
-      <hr />
+      <div className="TracksView__recordings">
+        {[...recordings]
+          .sort((a, b) => b.date?.localeCompare(a.date || "0"))
+          .map((rec, i) => (
+            <RecordingLayout key={i} rec={rec} recIndex={i} />
+          ))}
+      </div>
     </div>
   );
 };

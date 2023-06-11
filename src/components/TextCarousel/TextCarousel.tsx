@@ -38,14 +38,17 @@ const TextCarousel = ({ children, className, duration = 2, repetitions }: TextCa
       }
     });
   };
+
   useEffect(() => {
     const handler = setInterval(() => {
       setSelected((x) => wrapValue(x + 1, React.Children.count(children)));
     }, duration * 1000);
+
     return () => {
       clearInterval(handler);
     };
-  }, []);
+  }, [children]);
+
   return <div className={cn(className, "TextCarousel")}>{rotateChildren()}</div>;
 };
 

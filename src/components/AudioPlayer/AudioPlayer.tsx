@@ -97,6 +97,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec, showTitle = t
         </div>
       </div>
       <div className="AudioPlayer__duration">{formatTime(rec.duration)}</div>
+      <a download={true} target="_blank" rel="noreferrer" href={rec.url}>
+        <Icon icon={icons.download} />
+      </a>
     </div>
   );
 };

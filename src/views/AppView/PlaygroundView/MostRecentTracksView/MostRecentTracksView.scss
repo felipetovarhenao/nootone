@@ -4,7 +4,7 @@
   @include v-stack;
   @include vh-pad($gap-lg, $gap-xxl);
   width: 100%;
-  max-width: 500px;
+  // max-width: 500px;
   gap: calc($gap-xxl * 1.5);
   .TracksView__header {
     @include vh-pad($gap-sm, $gap-lg);
@@ -18,24 +18,19 @@
     color: var(--txt-light);
     width: fit-content;
   }
-  .MostRecentTracksView__processing {
-    @include v-stack;
-    @include center;
-    gap: $gap-xxl;
-    height: 100%;
-    .MostRecentTracksView__processing__text {
-      font-size: $txt-ml;
-      letter-spacing: $gap-xs;
-      color: var(--txt);
+  .TracksView__recordings {
+    @include v-stack-c;
+    width: 100%;
+    gap: calc($gap-xxl * 1.5);
+    @include mobile-up {
+      @include col-grid(1fr 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-    .MostRecentTracksView__processing__spinner {
-      @include stack;
-      @include center;
-      align-self: center;
-      font-size: calc($txt-xxl * 2);
-      * {
-        color: var(--primary-3);
-      }
+    @include desktop-medium-up {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    @include desktop-large-up {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 }

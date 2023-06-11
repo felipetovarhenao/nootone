@@ -30,7 +30,7 @@ const NewVariationView = () => {
       notification({
         type: "ERROR",
         message: "This recording doesn't exist",
-        icon: icons.pause,
+        icon: icons.error,
       });
       navigate("/app/playground/");
     }

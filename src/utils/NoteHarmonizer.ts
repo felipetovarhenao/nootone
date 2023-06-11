@@ -381,7 +381,7 @@ export default class NoteHarmonizer {
     segSize: number = 2,
     harmonicMemory: number = 0.125,
     keySignatureWeight: number = 0.25,
-    lookAhead: number = 2,
+    lookAhead: number = 3,
     harmonicConsonance: number = 0.5
   ): ChordEvent[] {
     if (this.chordCollection !== chordCollection) {
