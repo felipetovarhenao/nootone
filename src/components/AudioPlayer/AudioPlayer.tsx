@@ -5,6 +5,7 @@ import Icon from "../Icon/Icon";
 import cn from "classnames";
 import formatTime from "../../utils/formatTime";
 import { Recording } from "../../types/audio";
+import HamburgerDropdown from "../HamburgerDropdown/HamburgerDropdown";
 
 type OptionalExceptFor<T, TOptional extends keyof T> = Partial<T> & Omit<T, TOptional>;
 
@@ -90,31 +91,41 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange,
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
-      <div className="AudioPlayer__bar">
-        {showTitle && <h1 className="AudioPlayer__bar__title">{rec.name}</h1>}
-        <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
-          <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
+      <div className="AudioPlayer__container">
+        <h1 className="AudioPlayer__container__title">{showTitle && rec.name}</h1>
+        <div />
+        <div className="AudioPlayer__container__progress" onClick={handleProgressBarClick}>
+          <div className="AudioPlayer__container__progress__inner" style={{ width: `${progress}%` }} />
         </div>
-        {showGain && (
-          <div className="AudioPlayer__bar__volume">
-            <Icon
-              className="AudioPlayer__bar__volume__icon"
-              icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
-            />
-            <input
-              className="AudioPlayer__bar__volume__slider"
-              type="range"
-              id="volume"
-              min="0"
-              max="1"
-              step="0.01"
-              value={volume}
-              onChange={handleVolumeChange}
-            />
-          </div>
-        )}
+
+        <div className="AudioPlayer__container__duration">{formatTime(rec.duration)}</div>
+        <div className="AudioPlayer__container__volume">
+          {showGain && (
+            <>
+              <Icon
+                className="AudioPlayer__container__volume__icon"
+                icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
+              />
+              <input
+                className="AudioPlayer__container__volume__slider"
+                type="range"
+                id="volume"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={handleVolumeChange}
+              />
+            </>
+          )}
+        </div>
+        <div />
       </div>
-      <div className="AudioPlayer__duration">{formatTime(rec.duration)}</div>
+      <HamburgerDropdown>
+        <a className="AudioPlayer__download" href="">
+          download
+        </a>
+      </HamburgerDropdown>
     </div>
   );
 };

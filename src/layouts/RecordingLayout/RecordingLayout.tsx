@@ -21,8 +21,9 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
       <div className="RecordingLayout__buttons">
         <Button className="RecordingLayout__button" onClick={() => navigate(`/app/playground/recordings/${recIndex}`)}>
           <Icon className="icon" icon={icons.lab} />
-          New variation
+          new variation
         </Button>
+        <span className="RecordingLayout__date">{rec.date}</span>
       </div>
       {rec.variations?.length > 0 && (
         <Dropdown className="RecordingLayout__variations" openByDefault={true} legendClosed="show variations" legendOpen="hide variations">

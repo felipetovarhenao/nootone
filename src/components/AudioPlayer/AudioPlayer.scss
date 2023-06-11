@@ -23,42 +23,47 @@
       font-size: calc($txt-xxl * 1.25);
     }
   }
-  .AudioPlayer__bar {
-    @include v-stack;
+  .AudioPlayer__container {
+    display: grid;
+    grid-template-columns: auto min-content;
     width: 100%;
     gap: $gap-ml;
     overflow: hidden;
-    .AudioPlayer__bar__title {
+    .AudioPlayer__container__title {
+      font-weight: bold;
+      overflow: hidden;
       color: var(--txt);
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    .AudioPlayer__bar__progress {
+    .AudioPlayer__container__progress {
       @include clickable;
       @include stack;
       @include round-border;
+      align-self: center;
       width: 100%;
       height: $gap-lg;
       min-width: 50px;
       background-color: var(--bg-4);
-      .AudioPlayer__bar__progress__inner {
+      .AudioPlayer__container__progress__inner {
         @include round;
         height: 100%;
         background: var(--main-gradient);
       }
     }
-    .AudioPlayer__bar__volume {
+    .AudioPlayer__container__volume {
       @include h-stack;
       width: 75%;
       align-self: end;
+      justify-self: flex-end;
       gap: $gap-md;
-      .AudioPlayer__bar__volume__icon {
+      .AudioPlayer__container__volume__icon {
         font-size: $txt-lg;
         * {
           color: var(--txt);
         }
       }
-      .AudioPlayer__bar__volume__slider {
+      .AudioPlayer__container__volume__slider {
         @include clickable;
         background-color: transparent;
         -webkit-appearance: none;
@@ -90,9 +95,9 @@
         }
       }
     }
-  }
-  .AudioPlayer__duration {
-    color: var(--disabled-3);
-    vertical-align: middle;
+    .AudioPlayer__container__duration {
+      color: var(--disabled-3);
+      vertical-align: middle;
+    }
   }
 }

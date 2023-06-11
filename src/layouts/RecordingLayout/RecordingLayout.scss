@@ -53,6 +53,14 @@
         background: none;
       }
     }
+    .RecordingLayout__date {
+      overflow: hidden;
+      @include crop-text;
+      @include stack;
+      @include t-mar(auto);
+      color: var(--disabled-3);
+      font-size: $txt-sm;
+    }
   }
   .RecordingLayout__variations {
     .RecordingLayout__variations__variation {
