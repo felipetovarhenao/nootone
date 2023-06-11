@@ -3,13 +3,13 @@ import { del } from "idb-keyval";
 import harmonize, { HarmonizerReturnType } from "./harmonizerThunk";
 import retrieveCache from "./retrieveCacheThunk";
 import write from "./writeThunk";
-import { Recording } from "../../types/audio";
+import { Recording, RecordingVariation } from "../../types/audio";
 
 type InitialState = {
   isProcessing: boolean;
   selectedRecordingIndex: number | null;
   recordings: Recording[];
-  variationBuffer: Omit<Recording, "variations"> | null;
+  variationBuffer: RecordingVariation | null;
 };
 
 const initialState: InitialState = {
@@ -29,7 +29,7 @@ const recordings = createSlice({
         tags: [],
         features: {},
         variations: [],
-        date: JSON.stringify(new Date()),
+        date: new Date().toLocaleString(),
         ...action.payload,
       });
     },

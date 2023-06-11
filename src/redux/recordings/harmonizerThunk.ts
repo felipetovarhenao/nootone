@@ -63,7 +63,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
-    
+
     const config = Arpeggiator.genRandomConfig();
     const arpeggios = chordEventsToNoteEvents(
       Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
@@ -86,7 +86,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         return {
           noteEvents: features.noteEvents,
           variation: {
-            name: `🎹 ${settings.style} accompaniment`,
+            name: `${recording.name} (${settings.style} 🪕)`,
             duration: recDuration,
             date: JSON.stringify(new Date()),
             url: URL.createObjectURL(blob),

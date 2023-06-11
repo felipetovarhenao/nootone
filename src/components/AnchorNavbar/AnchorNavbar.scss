@@ -16,4 +16,19 @@
     text-transform: uppercase;
     font-weight: bold;
   }
+  .hamburger {
+    .navbar-link {
+      @include m.v-stack-c;
+      @include m.round;
+      @include m.pad(m.$gap-lg);
+      @include m.shadow;
+      min-width: 120px;
+      background-color: var(--bg-3);
+      gap: m.$gap-xl;
+      * {
+        color: var(--primary-3);
+        text-transform: uppercase;
+      }
+    }
+  }
 }

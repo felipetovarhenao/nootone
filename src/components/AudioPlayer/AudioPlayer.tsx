@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import icons from "../../utils/icons";
 import "./AudioPlayer.scss";
 import Icon from "../Icon/Icon";
@@ -6,16 +6,23 @@ import cn from "classnames";
 import formatTime from "../../utils/formatTime";
 import { Recording } from "../../types/audio";
 
+type OptionalExceptFor<T, TOptional extends keyof T> = Partial<T> & Omit<T, TOptional>;
+
+type GenericRecording = OptionalExceptFor<Recording, "variations">;
+
 type AudioPlayerProps = {
   className?: string;
-  rec: Recording | Omit<Recording, "variations">;
+  rec: GenericRecording;
   showTitle?: boolean;
+  showGain?: boolean;
+  defaultGain?: number;
+  onGainChange?: (gain: number) => void;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec, showTitle = true }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange, defaultGain = 0.707, showTitle = true, showGain = false }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.707);
+  const [volume, setVolume] = useState(defaultGain);
   const [progress, setProgress] = useState(0);
 
   const handlePlayPause = () => {
@@ -44,7 +51,16 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec, showTitle = t
       audio.volume = newVolume;
     }
     setVolume(newVolume);
+    if (onGainChange) {
+      onGainChange(newVolume);
+    }
   };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = defaultGain;
+    }
+  }, [defaultGain]);
 
   const handleTimeUpdate = () => {
     const audio = audioRef.current;
@@ -79,27 +95,26 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ className, rec, showTitle = t
         <div className="AudioPlayer__bar__progress" onClick={handleProgressBarClick}>
           <div className="AudioPlayer__bar__progress__inner" style={{ width: `${progress}%` }} />
         </div>
-        <div className="AudioPlayer__bar__volume">
-          <Icon
-            className="AudioPlayer__bar__volume__icon"
-            icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
-          />
-          <input
-            className="AudioPlayer__bar__volume__slider"
-            type="range"
-            id="volume"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-          />
-        </div>
+        {showGain && (
+          <div className="AudioPlayer__bar__volume">
+            <Icon
+              className="AudioPlayer__bar__volume__icon"
+              icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
+            />
+            <input
+              className="AudioPlayer__bar__volume__slider"
+              type="range"
+              id="volume"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+            />
+          </div>
+        )}
       </div>
       <div className="AudioPlayer__duration">{formatTime(rec.duration)}</div>
-      <a download={true} target="_blank" rel="noreferrer" href={rec.url}>
-        <Icon icon={icons.download} />
-      </a>
     </div>
   );
 };

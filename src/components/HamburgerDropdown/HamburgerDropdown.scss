@@ -9,19 +9,15 @@
       color: var(--txt) !important;
     }
   }
-  .menu-items {
-    @include m.v-stack-c;
-    @include m.round;
-    @include m.pad(m.$gap-lg);
-    @include m.shadow;
+  .HamburgerDropdown__children {
     right: 0;
     position: absolute;
-    min-width: 120px;
-    background-color: var(--bg-3);
-    gap: m.$gap-xl;
-    * {
-      color: var(--primary-3);
-      text-transform: uppercase;
-    }
+  }
+  .HamburgerDropdown__bg-layer {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
 }

@@ -56,7 +56,8 @@
   }
   .RecordingLayout__variations {
     .RecordingLayout__variations__variation {
-      scale: 0.9;
+      @include v-mar;
+      scale: 0.93;
     }
   }
 }

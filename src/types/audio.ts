@@ -12,12 +12,14 @@ export type RecordingMetadata = {
   duration: number;
   tags: string[];
   features: AudioFeatures;
-  variations: Omit<Recording, "variations">[];
+  variations: RecordingVariation[];
 };
 
 export type Recording = RecordingMetadata & {
   url: string;
 };
+
+export type RecordingVariation = Omit<Recording, "variations">;
 
 export type CachedRecording = {
   blob: Blob;

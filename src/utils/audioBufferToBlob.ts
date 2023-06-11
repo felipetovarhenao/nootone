@@ -1,6 +1,9 @@
 export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number) {
   // Float32Array samples
-  const [left, right] = [audioBuffer.getChannelData(0), audioBuffer.getChannelData(1)];
+  const [left, right] = [
+    audioBuffer.getChannelData(0),
+    audioBuffer.numberOfChannels === 2 ? audioBuffer.getChannelData(1) : audioBuffer.getChannelData(0),
+  ];
 
   // interleaved
   const interleaved = new Float32Array(left.length + right.length);

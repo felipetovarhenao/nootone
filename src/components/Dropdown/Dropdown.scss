@@ -11,12 +11,11 @@
     }
   }
   .content {
-    overflow: hidden;
     &.open {
       height: 100%;
     }
     &:not(.open) {
-      height: 0;
+      display: none;
     }
   }
 }

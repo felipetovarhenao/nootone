@@ -14,6 +14,7 @@ import getAudioDuration from "../../../../utils/getAudioDuration";
 import createUniqueTitle from "../../../../utils/createUniqueTitle";
 import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
 import Metronome from "../../../../components/Metronome/Metronome";
+import encodeBlobAsWav from "../../../../utils/encodeBlobAsWav";
 
 const inputSuggestions = ["sing a tune", "hum a melody", "whistle an idea", "make music!"];
 const recordingPrompts = ["recording", "press to stop"];
@@ -29,16 +30,18 @@ const MicrophoneView = () => {
   useEffect(() => {
     if (!isRecording && audioBlob) {
       getAudioDuration(audioBlob).then((duration) => {
-        const rec = {
-          url: URL.createObjectURL(audioBlob),
-          name: recTitle || getFormattedTimestamp(),
-          duration: duration,
-          features: {
-            tempo: tempo,
-          },
-        };
-        dispatch(recordingActions.addNew(rec));
-        navigate("/app/playground/");
+        encodeBlobAsWav(audioBlob).then((blob) => {
+          const rec = {
+            url: URL.createObjectURL(blob),
+            name: recTitle || getFormattedTimestamp(),
+            duration: duration,
+            features: {
+              tempo: tempo,
+            },
+          };
+          dispatch(recordingActions.addNew(rec));
+          navigate("/app/playground/");
+        });
       });
     }
   }, [isRecording]);

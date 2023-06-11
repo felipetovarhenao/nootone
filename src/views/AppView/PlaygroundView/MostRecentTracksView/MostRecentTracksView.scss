@@ -4,7 +4,6 @@
   @include v-stack;
   @include vh-pad($gap-lg, $gap-xxl);
   width: 100%;
-  // max-width: 500px;
   gap: calc($gap-xxl * 1.5);
   .TracksView__header {
     @include vh-pad($gap-sm, $gap-lg);

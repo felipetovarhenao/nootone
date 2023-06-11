@@ -1,6 +1,7 @@
 const icons = {
   play: "ph:play-fill",
   error: "subway:error",
+  menu: "mingcute:menu-fill",
   pause: "ph:pause-fill",
   download: "material-symbols:download",
   save: "material-symbols:save",

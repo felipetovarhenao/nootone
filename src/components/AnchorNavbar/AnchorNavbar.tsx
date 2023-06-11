@@ -30,7 +30,13 @@ export default function AnchorNavbar({ links, className, children, ...rest }: An
           </div>
         ))
       ) : (
-        <HamburgerDropdown links={links} />
+        <HamburgerDropdown className="hamburger">
+          {links.map((link) => (
+            <div className="navbar-link" key={link.label} onClick={() => scrollToSection(link.ref)}>
+              {link.label}
+            </div>
+          ))}
+        </HamburgerDropdown>
       )}
     </nav>
   );
