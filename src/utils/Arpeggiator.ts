@@ -220,7 +220,7 @@ export default class Arpeggiator {
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
     const timeOffset = sortedChords[0].onset;
-    const totalDur = sortedChords[sortedChords.length - 1].onset - timeOffset;
+    const totalDur = sortedChords[sortedChords.length - 1].onset - timeOffset + sortedChords[sortedChords.length - 1].notes[0].duration;
 
     const numPatterns = Math.round(totalDur / patternDuration);
     const arpeggioSequence: ChordEvent[] = [];
