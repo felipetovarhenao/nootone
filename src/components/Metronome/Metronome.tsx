@@ -57,8 +57,8 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
       }
     }, 0.016); // Animation frame rate approximately 60 frames per second (1000ms / 60 frames ≈ 0.016ms)
 
-    // Starts the Tone.Transport when the component mounts or when the tempo changes.
-    Tone.Transport.start();
+    // Starts Tone and Tone.Transport when the component mounts
+    Tone.start().then(() => Tone.Transport.start());
 
     // Cleans up and stops the Tone.Transport when the component unmounts.
     return () => {
