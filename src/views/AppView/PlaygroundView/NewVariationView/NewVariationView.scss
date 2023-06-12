@@ -126,6 +126,7 @@
       color: var(--txt-light);
       border: none;
       font-size: $txt-md;
+
       &#generate {
         &:disabled {
           background: var(--disabled-4);
@@ -133,9 +134,15 @@
         &:not(:disabled) {
           background: var(--main-gradient);
         }
+        &:hover:not(:disabled) {
+          filter: brightness(120%);
+        }
       }
       &#save {
         background-color: var(--success-3);
+        &:hover:not(:disabled) {
+          background-color: var(--success-4);
+        }
       }
     }
   }

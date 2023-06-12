@@ -56,34 +56,3 @@
     width: fit-content;
   }
 }
-
-.RecordingLayout {
-  @include v-stack;
-  gap: $gap-md;
-  .RecordingLayout__options {
-    @include h-stack-c;
-    @include to-right;
-    gap: $gap-lg;
-    .RecordingLayout__options__option {
-      @include round;
-      @include pad;
-      @include clickable;
-      font-size: $txt-xl;
-      * {
-        color: var(--txt-light);
-      }
-      &#trash {
-        background-color: var(--danger-3);
-        &:hover {
-          background-color: var(--danger-4);
-        }
-      }
-      &#check {
-        background-color: var(--success-3);
-        &:hover {
-          background-color: var(--success-4);
-        }
-      }
-    }
-  }
-}

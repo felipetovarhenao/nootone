@@ -8,32 +8,6 @@
   gap: $gap-md;
   box-shadow: $gap-ms $gap-ms $gap-ms #00000022;
   background-color: var(--bg-3);
-  .RecordingLayout__options {
-    @include h-stack-c;
-    @include to-right;
-    gap: $gap-lg;
-    .RecordingLayout__options__option {
-      @include round;
-      @include pad;
-      @include clickable;
-      font-size: $txt-xl;
-      * {
-        color: var(--txt-light);
-      }
-      &#trash {
-        background-color: var(--danger-3);
-        &:hover {
-          background-color: var(--danger-4);
-        }
-      }
-      &#check {
-        background-color: var(--success-3);
-        &:hover {
-          background-color: var(--success-4);
-        }
-      }
-    }
-  }
   .RecordingLayout__buttons {
     @include t-pad;
     @include h-stack-c;
@@ -43,6 +17,9 @@
       text-align: center;
       background: var(--main-gradient);
       border: none;
+      &:hover:not(:disabled) {
+        filter: brightness(120%);
+      }
     }
     .RecordingLayout__icons {
       @include h-stack-c;
