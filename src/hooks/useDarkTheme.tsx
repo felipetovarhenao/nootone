@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode } from "react";
+import { createContext, useState, useContext, ReactNode, useEffect } from "react";
 
 interface DarkThemeContextType {
   darkTheme: boolean;
@@ -15,7 +15,18 @@ export function DarkThemeProvider({ children }: { children: ReactNode }) {
 
   const toggleDarkTheme = () => {
     setDarkTheme((prevTheme) => !prevTheme);
+    localStorage.setItem("dark-theme", JSON.stringify(!darkTheme));
   };
+
+  useEffect(() => {
+    const cache = localStorage.getItem("dark-theme");
+    if (cache) {
+      const parsedValue = JSON.parse(cache);
+      if (typeof parsedValue === "boolean") {
+        setDarkTheme(parsedValue);
+      }
+    }
+  }, []);
 
   const contextValue: DarkThemeContextType = {
     darkTheme,

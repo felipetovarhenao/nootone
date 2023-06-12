@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  audio: "ic:round-audio-file",
   error: "subway:error",
   menu: "mingcute:menu-fill",
   pause: "ph:pause-fill",
@@ -13,7 +14,7 @@ const icons = {
   check: "fa-solid:check",
   trash: "mdi:trash",
   edit: "bxs:edit",
-  settings: "mingcute:settings-6-fill",
+  settings: "codicon:settings",
   back: "ion:arrow-back-circle",
   left: "icon-park-outline:left",
   right: "icon-park-outline:right",

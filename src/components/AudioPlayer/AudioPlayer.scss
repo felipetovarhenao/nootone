@@ -100,4 +100,37 @@
       vertical-align: middle;
     }
   }
+  .AudioPlayer__menu {
+    @include v-stack;
+    @include round;
+    width: fit-content;
+    background-color: var(--bg-5);
+    overflow: hidden;
+    box-shadow: $gap-sm $gap-sm $gap-sm #00000033;
+    .AudioPlayer__menu__option {
+      @include clickable;
+      @include h-stack-c;
+      @include vh-pad($gap-xl, $gap-xl);
+      white-space: nowrap;
+      letter-spacing: $gap-xxs;
+      color: var(--txt);
+      font-size: $txt-sm;
+      font-weight: bold;
+      text-transform: uppercase;
+      &:hover {
+        background-color: var(--secondary-4);
+        &,
+        .AudioPlayer__menu__option__icon * {
+          color: var(--txt-light) !important;
+        }
+        &.--danger {
+          background-color: var(--danger-3);
+        }
+      }
+      .AudioPlayer__menu__option__icon {
+        @include r-mar;
+        font-size: $txt-lg;
+      }
+    }
+  }
 }

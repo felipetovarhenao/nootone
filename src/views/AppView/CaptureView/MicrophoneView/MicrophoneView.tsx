@@ -16,8 +16,8 @@ import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
 import Metronome from "../../../../components/Metronome/Metronome";
 import encodeBlobAsWav from "../../../../utils/encodeBlobAsWav";
 
-const inputSuggestions = ["sing a tune", "hum a melody", "whistle an idea", "make music!"];
-const recordingPrompts = ["recording", "press to stop"];
+const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle an idea", "make music!"];
+const recordingPrompts = ["recording your idea", "press stop when you're ready"];
 
 const MicrophoneView = () => {
   const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();

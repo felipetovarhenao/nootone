@@ -59,6 +59,21 @@ const recordings = createSlice({
         state.variationBuffer = null;
       }
     },
+    deleteVariation: (state, action: PayloadAction<[Recording, RecordingVariation]>) => {
+      for (let i = 0; i < state.recordings.length; i++) {
+        if (state.recordings[i].url !== action.payload[0].url) {
+          continue;
+        }
+        for (let j = 0; j < state.recordings[i].variations.length; j++) {
+          if (state.recordings[i].variations[j].url !== action.payload[1].url) {
+            continue;
+          }
+          state.recordings[i].variations.splice(j, 1);
+          return;
+        }
+        throw new Error("Recording not found");
+      }
+    },
     clearVariationBuffer: (state) => {
       state.variationBuffer = null;
     },

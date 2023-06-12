@@ -4,12 +4,8 @@ import "./AudioPlayer.scss";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
 import formatTime from "../../utils/formatTime";
-import { Recording } from "../../types/audio";
+import { GenericRecording } from "../../types/audio";
 import HamburgerDropdown from "../HamburgerDropdown/HamburgerDropdown";
-
-type OptionalExceptFor<T, TOptional extends keyof T> = Partial<T> & Omit<T, TOptional>;
-
-type GenericRecording = OptionalExceptFor<Recording, "variations">;
 
 type AudioPlayerProps = {
   className?: string;
@@ -17,10 +13,19 @@ type AudioPlayerProps = {
   showTitle?: boolean;
   showGain?: boolean;
   defaultGain?: number;
+  menuOptions?: AudioPlayerMenu;
   onGainChange?: (gain: number) => void;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange, defaultGain = 0.707, showTitle = true, showGain = false }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({
+  rec,
+  menuOptions,
+  className,
+  onGainChange,
+  defaultGain = 0.707,
+  showTitle = true,
+  showGain = false,
+}) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(defaultGain);
@@ -121,13 +126,32 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange,
         </div>
         <div />
       </div>
-      <HamburgerDropdown>
-        <a className="AudioPlayer__download" href="">
-          download
-        </a>
-      </HamburgerDropdown>
+      {menuOptions && (
+        <HamburgerDropdown className="AudioPlayer__menu">
+          {menuOptions.map((opt, i) => {
+            const { className: optClassName, ...rest } = opt.props;
+            return React.createElement(
+              opt.component,
+              {
+                key: i,
+                className: cn(optClassName, "AudioPlayer__menu__option"),
+                ...rest,
+              },
+              <Icon className="AudioPlayer__menu__option__icon" icon={opt.icon} />,
+              opt.label
+            );
+          })}
+        </HamburgerDropdown>
+      )}
     </div>
   );
 };
 
 export default AudioPlayer;
+
+type AudioPlayerMenu = {
+  label: string;
+  icon: string;
+  component: string;
+  props?: any;
+}[];
