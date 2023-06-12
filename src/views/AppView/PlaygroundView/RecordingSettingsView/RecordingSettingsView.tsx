@@ -20,8 +20,8 @@ const RecordingSettingsView = () => {
       {recordings[selectedRecordingIndex].variations.map((recVar, i) => (
         <>
           <AudioPlayer key={i} rec={recVar} />
-          {recVar.tags.map((tag: string, i) => (
-            <span key={i}>{tag}</span>
+          {recVar.tags.map((tag: string, j) => (
+            <span key={j}>{tag}</span>
           ))}
         </>
       ))}
