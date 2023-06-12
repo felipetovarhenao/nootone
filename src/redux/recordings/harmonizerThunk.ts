@@ -93,7 +93,16 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
             date: JSON.stringify(new Date()),
             url: URL.createObjectURL(blob),
             tags: [...recording.tags, settings.style],
-            features: { ...features, chordEvents: harmonicBlocks },
+            features: {
+              ...features,
+              chordEvents: arpeggios.map((note) => {
+                const { onset, ...rest } = note;
+                return {
+                  onset: note.onset,
+                  notes: [rest],
+                };
+              }),
+            },
           },
         };
       });

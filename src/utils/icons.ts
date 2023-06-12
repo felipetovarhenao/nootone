@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  midi: "mdi:midi-port",
   audio: "ic:round-audio-file",
   error: "subway:error",
   menu: "mingcute:menu-fill",

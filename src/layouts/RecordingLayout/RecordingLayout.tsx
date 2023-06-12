@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { recordingActions } from "../../redux/recordings/recordingsSlice";
+import createMidiFile from "../../utils/createMidiFile";
+import downloadMIDI from "../../utils/downloadMIDI";
 
 const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }) => {
   const navigate = useNavigate();
@@ -44,6 +46,20 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         },
       },
     ];
+    const variationOptions = [];
+    if (recording.features?.chordEvents && recording.features?.tempo) {
+      variationOptions.push({
+        label: "export MIDI",
+        icon: icons.midi,
+        component: "div",
+        props: {
+          onClick: () => {
+            const midi = createMidiFile(recording.features.chordEvents!, recording.features.tempo!);
+            downloadMIDI(midi, recording.name);
+          },
+        },
+      });
+    }
     const parentOptions = [
       {
         label: "settings",
@@ -57,7 +73,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         },
       },
     ];
-    return [...(!isVariation ? parentOptions : []), ...defaultOptions];
+    return [...(!isVariation ? parentOptions : []), ...variationOptions, ...defaultOptions];
   }
 
   const [globalVolume, setGlobalVolume] = useState(0.707);
