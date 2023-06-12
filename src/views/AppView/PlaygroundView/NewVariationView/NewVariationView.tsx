@@ -42,14 +42,14 @@ const NewVariationView = () => {
       icon: "emojione-monotone:musical-notes",
       component: <HarmonizerSettings name={"harmonizer"} setProcess={setProcess} setSettings={setSettings} />,
     },
-    // {
-    //   name: "retune it",
-    //   icon: "fluent:wand-16-filled",
-    // },
-    // {
-    //   name: "drumify it",
-    //   icon: "fa6-solid:drum",
-    // },
+    {
+      name: "retune it",
+      icon: "fluent:wand-16-filled",
+    },
+    {
+      name: "drumify it",
+      icon: "fa6-solid:drum",
+    },
   ];
 
   function handleGenerate(process: string, settings: any) {
@@ -64,7 +64,7 @@ const NewVariationView = () => {
 
   useEffect(() => {
     dispatch(recordingActions.clearVariationBuffer());
-  }, []);
+  }, [process]);
 
   return (
     <ViewContainer viewName="new variation">
@@ -92,41 +92,46 @@ const NewVariationView = () => {
                   key={opt.name}
                 >
                   <div className="NewVariationView__algorithms__options__option__settings">
+                    {variationBuffer && (
+                      <>
+                        <h1 className="NewVariationView__preview__label">preview</h1>
+                        <AudioPlayer className="NewVariationView__preview__player" rec={variationBuffer} />
+                      </>
+                    )}
+                    {isProcessing && <Icon className="NewVariationView__suspense" icon={icons.processing} />}
+                    <div className="NewVariationView__buttons">
+                      <Button
+                        disabled={isProcessing}
+                        id="generate"
+                        className="NewVariationView__button"
+                        onClick={() => handleGenerate(process, settings)}
+                      >
+                        <Icon icon={icons.lab} />
+                        Generate
+                      </Button>
+                      {variationBuffer ? (
+                        <Button
+                          disabled={!variationBuffer}
+                          id="save"
+                          className="NewVariationView__button"
+                          onClick={() => {
+                            dispatch(recordingActions.keepVariation());
+                            navigate("/app/playground/");
+                          }}
+                        >
+                          <Icon icon={icons.heart} />
+                          Keep
+                        </Button>
+                      ) : (
+                        <div />
+                      )}
+                    </div>
                     <h1 className="NewVariationView__algorithms__options__option__settings__header">settings</h1>
                     {opt.component}
                   </div>
                 </AccordionItem>
               ))}
             </Accordion>
-            {variationBuffer && (
-              <>
-                <h1 className="NewVariationView__preview__label">preview</h1>
-                <AudioPlayer rec={variationBuffer} />
-              </>
-            )}
-            {isProcessing && <Icon className="NewVariationView__suspense" icon={icons.processing} />}
-            <div className="NewVariationView__buttons">
-              <Button disabled={isProcessing} id="generate" className="NewVariationView__button" onClick={() => handleGenerate(process, settings)}>
-                <Icon icon={icons.lab} />
-                Generate
-              </Button>
-              {variationBuffer ? (
-                <Button
-                  disabled={!variationBuffer}
-                  id="save"
-                  className="NewVariationView__button"
-                  onClick={() => {
-                    dispatch(recordingActions.keepVariation());
-                    navigate("/app/playground/");
-                  }}
-                >
-                  <Icon icon={icons.save} />
-                  Keep
-                </Button>
-              ) : (
-                <div />
-              )}
-            </div>
           </div>
         </div>
       )}

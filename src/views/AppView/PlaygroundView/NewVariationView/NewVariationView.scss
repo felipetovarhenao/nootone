@@ -1,11 +1,18 @@
 @use "../../../../styles/main.scss" as *;
 
 @mixin active-accordion {
-  background: var(--secondary-gradient);
-  box-shadow: 0px 0px 10px var(--secondary-2);
-  &,
-  * {
-    color: var(--txt-light) !important;
+  .NewVariationView__algorithms__options__option__header {
+    background: var(--main-gradient);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    &,
+    * {
+      color: var(--txt-light) !important;
+    }
+  }
+  #generate {
+    box-shadow: 0px 0px 5px var(--secondary-2);
+    outline: solid var(--caution-4) $border-sm !important;
   }
 }
 
@@ -49,18 +56,20 @@
       width: 100%;
       gap: $gap-lg;
       .NewVariationView__algorithms__options__option {
+        background-color: var(--bg-2);
+        @include round-border;
         &.--is-open {
           .NewVariationView__algorithms__options__option__header {
-            @include active-accordion;
-            outline: solid var(--caution-4) $border-md;
+            cursor: default !important;
           }
+          @include active-accordion;
         }
         .NewVariationView__algorithms__options__option__header {
           @include pad($gap-xl);
           @include round;
           @include clickable;
           @include h-stack-c;
-          @include trans(1s);
+          @include trans(0.2s);
           width: 100%;
           gap: $gap-lg;
           background-color: var(--bg-3);
@@ -70,18 +79,18 @@
             font-weight: bold;
             letter-spacing: $gap-xs;
             text-transform: uppercase;
+            font-size: $txt-ms;
             color: var(--txt);
           }
           .NewVariationView__algorithms__options__option__header__icon {
             font-size: $txt-lg;
           }
-
-          &:hover {
-            @include active-accordion();
-          }
+        }
+        &:not(.--is-open):hover {
+          @include active-accordion;
         }
         .NewVariationView__algorithms__options__option__settings {
-          @include v-pad($gap-xxl);
+          @include vh-pad($gap-xxl, $gap-xl);
           width: 100%;
           .NewVariationView__algorithms__options__option__settings__header {
             @include no-select;
@@ -98,6 +107,7 @@
     }
   }
   .NewVariationView__suspense {
+    width: 100%;
     @include v-mar($gap-xl);
     height: 68px;
     font-size: calc($txt-xxl * 1.6);
@@ -106,13 +116,16 @@
     }
   }
   .NewVariationView__buttons {
-    @include t-mar($gap-xxl);
+    @include v-mar($gap-xl);
     @include h-stack-c;
     width: 100%;
+    gap: $gap-md;
     justify-content: space-between;
     .NewVariationView__button {
-      @include trans(0s);
+      @include trans(0.2s);
       color: var(--txt-light);
+      border: none;
+      font-size: $txt-md;
       &#generate {
         &:disabled {
           background: var(--disabled-4);
@@ -122,14 +135,16 @@
         }
       }
       &#save {
-        background-color: var(--primary-2);
+        background-color: var(--success-3);
       }
-      border: none;
-      font-size: $txt-ml;
     }
   }
+  .NewVariationView__preview__player {
+    @include v-mar($gap-lg);
+  }
+
   .NewVariationView__preview__label {
-    @include t-mar($gap-lg);
+    @include v-mar($gap-lg);
     font-size: $txt-md;
     letter-spacing: $gap-xs;
     font-weight: bold;

@@ -44,9 +44,9 @@ const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
 
   return (
     <div className={cn(className, "SwipeMenu")} {...handlers}>
-      <Icon className="SwipeMenu__button" icon={icons.left} onClick={() => handleSwipe(-1)} />
+      <Icon className="SwipeMenu__button" icon={icons.left} onClick={() => handleSwipe(1)} />
       {showSelected()}
-      <Icon className="SwipeMenu__button" icon={icons.right} onClick={() => handleSwipe(1)} />
+      <Icon className="SwipeMenu__button" icon={icons.right} onClick={() => handleSwipe(-1)} />
     </div>
   );
 };

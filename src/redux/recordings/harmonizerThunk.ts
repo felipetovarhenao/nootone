@@ -11,11 +11,13 @@ import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
 import Arpeggiator from "../../utils/Arpeggiator";
 import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
+import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 
 type HarmonizerPayload = {
   recording: Recording;
   settings: {
     style: string;
+    patternSize: number;
   };
 };
 
@@ -37,14 +39,14 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
 
     // Detect the pitches of the recorded notes or use the pre-computed note events
-    const detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
+    let detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
 
     if (detectedNotes.length === 0) {
-      return;
+      detectedNotes = generateRandomNoteEvents(recording.duration, payload.recording.features.tempo!);
     }
 
-    // Calculate the segment size based on the tempo (default to 60 BPM if not provided)
-    const segSize = (60 / recording.features.tempo! || 60) * 2;
+    // Calculate the segmenƒt size based on the tempo (default to 60 BPM if not provided)
+    const segSize = (60 / recording.features.tempo! || 60) * settings.patternSize;
 
     // Harmonize the detected notes using the NoteHarmonizer class
     const harmonicBlocks = new NoteHarmonizer().harmonize(
@@ -64,7 +66,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
 
-    const config = Arpeggiator.genRandomConfig();
+    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize });
     const arpeggios = chordEventsToNoteEvents(
       Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
     );

@@ -143,16 +143,16 @@ export default class Arpeggiator {
    * Generate a random configuration object.
    * @returns A configuration object with random values.
    */
-  public static genRandomConfig(): {
+  public static genRandomConfig(defaultValues?: { patternSize?: number; maxSubdiv?: number; numAttacks?: number; contourSize?: number }): {
     patternSize: number;
     maxSubdiv: number;
     numAttacks: number;
     contourSize: number;
   } {
-    const patternSize = [2, 4][Math.floor(Math.random() * 2)];
-    const maxSubdiv = [3, 4][Math.floor(Math.random() * 2)];
-    const numAttacks = Math.floor(Math.random() * (patternSize * maxSubdiv - 1) + 1);
-    const contourSize = Math.max(5, Math.floor(Math.random() * numAttacks + numAttacks));
+    const patternSize = defaultValues?.patternSize || [2, 4][Math.floor(Math.random() * 2)];
+    const maxSubdiv = defaultValues?.maxSubdiv || [3, 4][Math.floor(Math.random() * 2)];
+    const numAttacks = defaultValues?.numAttacks || Math.floor(Math.random() * (patternSize * maxSubdiv - 1) + 1);
+    const contourSize = defaultValues?.contourSize || Math.max(5, Math.floor(Math.random() * numAttacks + numAttacks));
 
     return {
       patternSize,

@@ -75,7 +75,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
       </div>
       <div className="RecordingLayout__buttons">
         <Button className="RecordingLayout__button" onClick={() => navigate(`/app/playground/recordings/${recIndex}`)}>
-          <Icon className="icon" icon={icons.lab} />
+          <Icon className="icon" icon={icons.waveform} />
           new variation
         </Button>
         <span className="RecordingLayout__date">{rec.date}</span>

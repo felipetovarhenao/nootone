@@ -6,6 +6,7 @@ const icons = {
   pause: "ph:pause-fill",
   download: "material-symbols:download",
   save: "material-symbols:save",
+  heart: "mdi:heart",
   restart: "ph:skip-back-fill",
   volumeHigh: "ph:speaker-simple-high-fill",
   volumeMid: "ph:speaker-simple-low-fill",
@@ -19,6 +20,7 @@ const icons = {
   left: "icon-park-outline:left",
   right: "icon-park-outline:right",
   lab: "raphael:lab",
+  waveform: "bi:soundwave",
   processing: "eos-icons:bubble-loading",
 };
 
