@@ -42,14 +42,14 @@ const NewVariationView = () => {
       icon: "emojione-monotone:musical-notes",
       component: <HarmonizerSettings name={"harmonizer"} setProcess={setProcess} setSettings={setSettings} />,
     },
-    {
-      name: "retune it",
-      icon: "fluent:wand-16-filled",
-    },
-    {
-      name: "drumify it",
-      icon: "fa6-solid:drum",
-    },
+    // {
+    //   name: "retune it",
+    //   icon: "fluent:wand-16-filled",
+    // },
+    // {
+    //   name: "drumify it",
+    //   icon: "fa6-solid:drum",
+    // },
   ];
 
   function handleGenerate(process: string, settings: any) {
