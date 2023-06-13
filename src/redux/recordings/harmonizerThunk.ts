@@ -81,7 +81,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     // Render the arpeggios as audio and convert the resulting audio buffer to a Blob
     return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)
-      .then((audioBuffer) => audioBufferToBlob(audioBuffer, sampleRate, true, 0, -6))
+      .then((audioBuffer) => audioBufferToBlob(audioBuffer, sampleRate, true, 0.001, -6))
       .then(async (blob) => {
         // Calculate the duration of the harmonized recording
         const recDuration = await getAudioDuration(blob);
