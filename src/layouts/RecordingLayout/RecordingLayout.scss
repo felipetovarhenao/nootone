@@ -52,7 +52,7 @@
   }
   .RecordingLayout__variations {
     .RecordingLayout__player-container {
-      width: min-content;
+      @include h-stack-c;
       .RecordingLayout__variations__variation {
         @include v-mar;
         // scale: 0.93;

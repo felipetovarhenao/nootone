@@ -86,22 +86,22 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange,
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
-      <div className="AudioPlayer__mid-container">
-        <h1 className="AudioPlayer__container__title">{showTitle && rec.name}</h1>
-        <div className="AudioPlayer__container">
-          <div className="AudioPlayer__container__progress" onClick={handleProgressBarClick}>
-            <div className="AudioPlayer__container__progress__inner" style={{ width: `${progress}%` }} />
+      <div className="AudioPlayer__main-container">
+        <span className="AudioPlayer__main-container__title">{showTitle && rec.name}</span>
+        <div className="AudioPlayer__main-container__timeline">
+          <div className="AudioPlayer__main-container__timeline__progress" onClick={handleProgressBarClick}>
+            <div className="AudioPlayer__main-container__timeline__progress__inner" style={{ width: `${progress}%` }} />
           </div>
-          <div className="AudioPlayer__container__duration">{formatTime(rec.duration)}</div>
-          <div className="AudioPlayer__container__volume">
+          <div className="AudioPlayer__main-container__timeline__duration">{formatTime(rec.duration)}</div>
+          <div className="AudioPlayer__main-container__timeline__volume">
             {showGain && (
               <>
                 <Icon
-                  className="AudioPlayer__container__volume__icon"
+                  className="AudioPlayer__main-container__timeline__volume__icon"
                   icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
                 />
                 <input
-                  className="AudioPlayer__container__volume__slider"
+                  className="AudioPlayer__main-container__timeline__volume__slider"
                   type="range"
                   id="volume"
                   min="0"

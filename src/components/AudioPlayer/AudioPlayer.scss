@@ -23,21 +23,21 @@
       font-size: calc($txt-xxl * 1.25);
     }
   }
-  .AudioPlayer__mid-container {
-    .AudioPlayer__container__title {
+  .AudioPlayer__main-container {
+    .AudioPlayer__main-container__title {
       font-weight: bold;
       overflow: hidden;
       color: var(--txt);
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-    .AudioPlayer__container {
+    .AudioPlayer__main-container__timeline {
       display: grid;
       grid-template-columns: auto min-content;
       width: 100%;
       gap: $gap-ml;
       overflow: hidden;
-      .AudioPlayer__container__progress {
+      .AudioPlayer__main-container__timeline__progress {
         @include clickable;
         @include stack;
         @include round-border;
@@ -46,25 +46,29 @@
         height: $gap-lg;
         min-width: 50px;
         background-color: var(--bg-4);
-        .AudioPlayer__container__progress__inner {
+        .AudioPlayer__main-container__timeline__progress__inner {
           @include round;
           height: 100%;
           background: var(--main-gradient);
         }
       }
-      .AudioPlayer__container__volume {
+      .AudioPlayer__main-container__timeline__duration {
+        color: var(--disabled-3);
+        vertical-align: middle;
+      }
+      .AudioPlayer__main-container__timeline__volume {
         @include h-stack;
         width: 75%;
         align-self: end;
         justify-self: flex-end;
         gap: $gap-md;
-        .AudioPlayer__container__volume__icon {
+        .AudioPlayer__main-container__timeline__volume__icon {
           font-size: $txt-lg;
           * {
             color: var(--txt);
           }
         }
-        .AudioPlayer__container__volume__slider {
+        .AudioPlayer__main-container__timeline__volume__slider {
           @include clickable;
           background-color: transparent;
           -webkit-appearance: none;
@@ -95,10 +99,6 @@
             outline: none;
           }
         }
-      }
-      .AudioPlayer__container__duration {
-        color: var(--disabled-3);
-        vertical-align: middle;
       }
     }
   }
