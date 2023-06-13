@@ -8,15 +8,24 @@
   .FeedbackForm__header {
     text-align: center;
     font-size: $txt-lg;
+    color: var(--txt);
   }
   .FeedbackForm__form {
     width: 100%;
     @include v-stack;
     gap: $gap-lg;
+    label {
+      color: var(--txt);
+    }
     .FeedbackForm__form__input,
     .FeedbackForm__form__textarea {
       @include pad;
       @include round;
+      background-color: var(--bg-1);
+      color: var(--txt);
+      &:focus {
+        outline: solid $border-md var(--secondary-3);
+      }
     }
     .FeedbackForm__form__textarea {
       min-height: 130px;
