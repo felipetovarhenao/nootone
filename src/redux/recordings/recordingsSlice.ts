@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { del } from "idb-keyval";
 import harmonize, { HarmonizerReturnType } from "./harmonizerThunk";
 import retrieveCache from "./retrieveCacheThunk";
 import write from "./writeThunk";
-import { Recording, RecordingVariation } from "../../types/audio";
+import { GenericRecording, Recording, RecordingVariation } from "../../types/audio";
+import getRecordingLocation from "../../utils/getRecordingLocation";
 
 type InitialState = {
   isProcessing: boolean;
@@ -41,15 +41,6 @@ const recordings = createSlice({
         }
       }
     },
-    erase: (state, action: PayloadAction<Recording>) => {
-      for (let i = 0; i < state.recordings.length; i++) {
-        if (state.recordings[i].url === action.payload.url) {
-          del(state.recordings[i].url);
-          state.recordings.splice(i, 1);
-          break;
-        }
-      }
-    },
     selectRecording: (state, action: PayloadAction<number>) => {
       state.selectedRecordingIndex = action.payload;
     },
@@ -59,19 +50,16 @@ const recordings = createSlice({
         state.variationBuffer = null;
       }
     },
-    deleteVariation: (state, action: PayloadAction<[Recording, RecordingVariation]>) => {
-      for (let i = 0; i < state.recordings.length; i++) {
-        if (state.recordings[i].url !== action.payload[0].url) {
-          continue;
-        }
-        for (let j = 0; j < state.recordings[i].variations.length; j++) {
-          if (state.recordings[i].variations[j].url !== action.payload[1].url) {
-            continue;
-          }
-          state.recordings[i].variations.splice(j, 1);
-          return;
-        }
-        throw new Error("Recording not found");
+    delete: (state, action: PayloadAction<GenericRecording>) => {
+      const { parentIndex, childIndex } = getRecordingLocation(state.recordings, action.payload);
+      if (parentIndex === undefined) {
+        throw Error("Recording not found");
+      }
+      if (childIndex !== undefined) {
+        console.log("deleting");
+        state.recordings[parentIndex].variations.splice(childIndex, 1);
+      } else {
+        state.recordings.splice(parentIndex, 1);
       }
     },
     clearVariationBuffer: (state) => {

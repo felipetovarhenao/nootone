@@ -1,0 +1,41 @@
+@use "../../styles/main.scss" as *;
+
+.AudioPlayerOptions {
+  .handle {
+    @include l-pad($gap-lg);
+    box-sizing: content-box;
+  }
+  .children {
+    @include v-stack;
+    @include round;
+    width: fit-content;
+    background-color: var(--bg-5);
+    overflow: hidden;
+    box-shadow: $gap-sm $gap-sm $gap-sm #00000033;
+    .AudioPlayerOptions__option {
+      @include clickable;
+      @include h-stack-c;
+      @include vh-pad($gap-xl, $gap-xl);
+      white-space: nowrap;
+      letter-spacing: $gap-xxs;
+      color: var(--txt);
+      font-size: $txt-sm;
+      font-weight: bold;
+      text-transform: uppercase;
+      &:hover {
+        background-color: var(--secondary-4);
+        &,
+        .AudioPlayerOptions__option__icon * {
+          color: var(--txt-light) !important;
+        }
+        &.--danger {
+          background-color: var(--danger-3);
+        }
+      }
+      .AudioPlayerOptions__option__icon {
+        @include r-mar;
+        font-size: $txt-lg;
+      }
+    }
+  }
+}

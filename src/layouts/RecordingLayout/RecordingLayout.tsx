@@ -19,7 +19,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         <span className="RecordingLayout__date">{rec.date}</span>
         <div className="RecordingLayout__player-container">
           <AudioPlayer onGainChange={setGlobalVolume} showGain={true} className="RecordingLayout__player" rec={rec} />
-          <AudioPlayerOptions recording={rec} />
+          <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={rec} />
         </div>
       </div>
       <div className="RecordingLayout__buttons">
@@ -31,9 +31,9 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
       {rec.variations?.length > 0 && (
         <Dropdown className="RecordingLayout__variations" openByDefault={true} legendClosed="show variations" legendOpen="hide variations">
           {rec.variations?.map((variation: GenericRecording, i) => (
-            <div className="RecordingLayout__player-container">
+            <div key={i} className="RecordingLayout__player-container">
               <AudioPlayer defaultGain={globalVolume} className="RecordingLayout__variations__variation" key={i} rec={variation} />
-              <AudioPlayerOptions recording={variation} />
+              <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />
             </div>
           ))}
         </Dropdown>

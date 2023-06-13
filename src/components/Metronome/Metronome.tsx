@@ -43,11 +43,12 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
 
           // Calculates the alpha (transparency) value based on the elapsed time and beat duration.
           const alpha = 1 - (((time - offset) / beatDuration) % 1);
+          const theta = (alpha * 0.1 + 0.9)**1.1;
 
           // Clears the canvas and draws a circle with varying transparency.
           contextRef.current.clearRect(0, 0, canvasDims.width, canvasDims.height);
           contextRef.current.beginPath();
-          contextRef.current.arc(canvasDims.width / 2, canvasDims.height / 2, canvasDims.height / 2 - padding, 0, 2 * Math.PI);
+          contextRef.current.arc(canvasDims.width / 2, canvasDims.height / 2, (canvasDims.height / 2 - padding) * theta, 0, 2 * Math.PI);
           contextRef.current.closePath();
 
           const fillStyle = `rgba(217,100,119,${alpha})`;

@@ -47,7 +47,7 @@ const HamburgerDropdown: React.FC<HamburgerDropdownProps> = ({ component, classN
   }
 
   return (
-    <div className="HamburgerDropdown" {...rest}>
+    <div className={cn(className, "HamburgerDropdown")} {...rest}>
       {component ? (
         <div className="handle" onClick={handleClick}>
           {component}
@@ -56,7 +56,7 @@ const HamburgerDropdown: React.FC<HamburgerDropdownProps> = ({ component, classN
         <Icon className="handle" icon="mdi:hamburger-menu" onClick={handleClick} />
       )}
       {isOpen && (
-        <div ref={ref} className={cn(className, "HamburgerDropdown__children")}>
+        <div ref={ref} className={"children"}>
           {renderChildren()}
         </div>
       )}

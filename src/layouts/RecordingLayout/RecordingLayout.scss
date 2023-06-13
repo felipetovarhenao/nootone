@@ -10,6 +10,7 @@
   background-color: var(--bg-3);
   .RecordingLayout__main-container {
     @include v-stack;
+    gap: $gap-lg;
     .RecordingLayout__date {
       @include crop-text;
       @include stack;
@@ -55,7 +56,7 @@
       @include h-stack-c;
       .RecordingLayout__variations__variation {
         @include v-mar;
-        // scale: 0.93;
+        scale: 0.93;
       }
     }
   }
