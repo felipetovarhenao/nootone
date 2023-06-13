@@ -7,5 +7,4 @@ export default function downloadURL(url: string, fileName: string): void {
   link.click();
 
   document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 }
