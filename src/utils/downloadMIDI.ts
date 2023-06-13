@@ -6,4 +6,5 @@ export default function downloadMIDI(midi: Midi, name: string): void {
   const midiBlob = new Blob([midiArray]);
   const url = URL.createObjectURL(midiBlob);
   downloadURL(url, `${name}.mid`);
+  URL.revokeObjectURL(url);
 }
