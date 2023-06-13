@@ -1,23 +1,52 @@
-export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number) {
+/**
+ * Converts an AudioBuffer to a Blob object representing a WAV file.
+ *
+ * @param audioBuffer - The AudioBuffer to convert.
+ * @param sampleRate - The sample rate of the audio.
+ * @param normalize - (Optional) Flag indicating whether to normalize the audio. Defaults to true.
+ * @returns A Blob object representing the WAV file.
+ */
+export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number, normalize: boolean = true) {
   // Float32Array samples
-  const [left, right] = [
-    audioBuffer.getChannelData(0),
-    audioBuffer.numberOfChannels === 2 ? audioBuffer.getChannelData(1) : audioBuffer.getChannelData(0),
-  ];
+  const isMono = audioBuffer.numberOfChannels === 1;
+  const [left, right] = [audioBuffer.getChannelData(0), isMono ? new Float32Array([]) : audioBuffer.getChannelData(1)];
+
+  let normValue = -1;
 
   // interleaved
   const interleaved = new Float32Array(left.length + right.length);
-  for (let src = 0, dst = 0; src < left.length; src++, dst += 2) {
+
+  // Combine left and right channels into an interleaved array
+  for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
+    const values = [normValue, Math.abs(left[src])];
+
     interleaved[dst] = left[src];
-    interleaved[dst + 1] = right[src];
+    if (!isMono) {
+      interleaved[dst + 1] = right[src];
+      values.push(Math.abs(right[src]));
+    }
+    normValue = Math.max(...values);
   }
 
-  // get WAV file bytes and audio params of your audio source
+  if (normalize) {
+    normValue *= 1.414427157; // adjust to -3dB
+
+    // Normalize the audio by dividing each sample by the maximum value
+    for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
+      interleaved[dst] /= normValue;
+      if (!isMono) {
+        interleaved[dst + 1] /= normValue;
+      }
+    }
+  }
+
+  // Get WAV file bytes and audio params of your audio source
   const wavBytes = getWavBytes(interleaved.buffer, {
     isFloat: true, // floating point or 16-bit integer
-    numChannels: 2,
+    numChannels: isMono ? 1 : 2,
     sampleRate: sampleRate,
   });
+
   return new Blob([wavBytes], { type: "audio/wav" });
 }
 
