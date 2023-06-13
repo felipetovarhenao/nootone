@@ -1,3 +1,5 @@
+import { dbToGain } from "tone";
+
 /**
  * Converts an AudioBuffer to a Blob object representing a WAV file.
  *
@@ -6,7 +8,13 @@
  * @param normalize - (Optional) Flag indicating whether to normalize the audio. Defaults to true.
  * @returns A Blob object representing the WAV file.
  */
-export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number, normalize: boolean = true, crossFadeDuration: number = 0.05) {
+export default function audioBufferToBlob(
+  audioBuffer: AudioBuffer,
+  sampleRate: number,
+  normalize: boolean = true,
+  crossFadeDuration: number = 0.05,
+  maxdB: number = -6
+) {
   // Float32Array samples
   const isMono = audioBuffer.numberOfChannels === 1;
   const [left, right] = [audioBuffer.getChannelData(0), isMono ? new Float32Array([]) : audioBuffer.getChannelData(1)];
@@ -51,7 +59,7 @@ export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: 
   }
 
   if (normalize) {
-    normValue *= 1.414427157; // adjust to -3dB
+    normValue *= 1 / dbToGain(maxdB); // adjust to ~-10dB
 
     // Normalize the audio by dividing each sample by the maximum value
     for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
