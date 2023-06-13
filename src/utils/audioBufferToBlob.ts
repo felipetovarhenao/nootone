@@ -6,26 +6,48 @@
  * @param normalize - (Optional) Flag indicating whether to normalize the audio. Defaults to true.
  * @returns A Blob object representing the WAV file.
  */
-export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number, normalize: boolean = true) {
+export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: number, normalize: boolean = true, crossFadeDuration: number = 0.05) {
   // Float32Array samples
   const isMono = audioBuffer.numberOfChannels === 1;
   const [left, right] = [audioBuffer.getChannelData(0), isMono ? new Float32Array([]) : audioBuffer.getChannelData(1)];
+  const crossFadeSamples = Math.min(crossFadeDuration * sampleRate, Math.ceil(left.length * 0.05));
 
+  // initialize normalization value with -1 to prevent zero division (at best phase is inverted)
   let normValue = -1;
 
-  // interleaved
+  // initialized interleaved WAV output file
   const interleaved = new Float32Array(left.length + right.length);
 
   // Combine left and right channels into an interleaved array
   for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
-    const values = [normValue, Math.abs(left[src])];
+    // track normalization value;
+    normValue = Math.max(normValue, Math.abs(left[src]));
 
+    // populate buffer channels
     interleaved[dst] = left[src];
     if (!isMono) {
       interleaved[dst + 1] = right[src];
-      values.push(Math.abs(right[src]));
+      normValue = Math.max(normValue, Math.abs(right[src]));
     }
-    normValue = Math.max(...values);
+
+    // apply crossfade
+    if (crossFadeSamples > 0) {
+      // crossfade at start
+      if (src < crossFadeSamples) {
+        const xfade = src / crossFadeSamples;
+        interleaved[dst] *= xfade;
+        if (!isMono) {
+          interleaved[dst] *= xfade;
+        }
+        // crossfade at end
+      } else if (left.length - src < crossFadeSamples) {
+        const xfade = (left.length - src) / crossFadeSamples;
+        interleaved[dst] *= xfade;
+        if (!isMono) {
+          interleaved[dst + 1] *= xfade;
+        }
+      }
+    }
   }
 
   if (normalize) {
@@ -43,7 +65,7 @@ export default function audioBufferToBlob(audioBuffer: AudioBuffer, sampleRate: 
   // Get WAV file bytes and audio params of your audio source
   const wavBytes = getWavBytes(interleaved.buffer, {
     isFloat: true, // floating point or 16-bit integer
-    numChannels: isMono ? 1 : 2,
+    numChannels: isMono ? 1 : 2, // mono or stereo
     sampleRate: sampleRate,
   });
 
