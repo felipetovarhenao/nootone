@@ -43,7 +43,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
 
           // Calculates the alpha (transparency) value based on the elapsed time and beat duration.
           const alpha = 1 - (((time - offset) / beatDuration) % 1);
-          const theta = (alpha * 0.1 + 0.9)**1.1;
+          const theta = (alpha * 0.1 + 0.9) ** 1.1;
 
           // Clears the canvas and draws a circle with varying transparency.
           contextRef.current.clearRect(0, 0, canvasDims.width, canvasDims.height);
@@ -59,8 +59,8 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     }, 0.016); // Animation frame rate approximately 60 frames per second (1000ms / 60 frames ≈ 0.016ms)
 
     // Starts Tone and Tone.Transport when the component mounts
-    Tone.start().then(() => Tone.Transport.start());
-
+    // Tone.start().then(() => Tone.Transport.start());
+    Tone.Transport.start();
     // Cleans up and stops the Tone.Transport when the component unmounts.
     return () => {
       Tone.Transport.stop();

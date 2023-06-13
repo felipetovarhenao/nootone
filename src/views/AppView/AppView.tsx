@@ -63,7 +63,8 @@ const AppView = () => {
 export default AppView;
 
 const navbarLinks = [
-  { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
+  // { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
+  { icon: "ic:baseline-feedback", path: "/app/feedback" },
   { icon: "material-symbols:mic", path: "/app/" },
   { icon: "lucide:codesandbox", path: "/app/play/" },
 ];

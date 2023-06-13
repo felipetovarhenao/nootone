@@ -1,0 +1,9 @@
+@use "../../../styles/main.scss" as *;
+
+.UserFeedbackView {
+  @include v-stack-c;
+  @include pad($gap-xxl);
+	width: 100%;
+  justify-content: center;
+  align-items: center;
+}

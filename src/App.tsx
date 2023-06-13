@@ -6,6 +6,7 @@ import PlaygroundView from "./views/AppView/PlaygroundView/PlaygroundView";
 import UserAccountView from "./views/AppView/UserAccountView/UserAccountView";
 import NewVariationView from "./views/AppView/PlaygroundView/NewVariationView/NewVariationView";
 import RecordingSettingsView from "./views/AppView/PlaygroundView/RecordingSettingsView/RecordingSettingsView";
+import UserFeedbackView from "./views/AppView/UserFeedbackView/UserFeedbackView";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="recordings/:id/edit" element={<RecordingSettingsView />} />
           </Route>
           <Route path="dashboard" element={<UserAccountView />} />
+          <Route path="feedback" element={<UserFeedbackView />} />
         </Route>
       </Routes>
     </div>

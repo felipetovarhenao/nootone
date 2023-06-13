@@ -1,0 +1,51 @@
+@use "../../styles/main.scss" as *;
+
+.FeedbackForm {
+  @include v-stack-c;
+  width: 100%;
+  max-width: 500px;
+  gap: $gap-lg;
+  .FeedbackForm__header {
+    text-align: center;
+    font-size: $txt-lg;
+  }
+  .FeedbackForm__form {
+    width: 100%;
+    @include v-stack;
+    gap: $gap-lg;
+    .FeedbackForm__form__input,
+    .FeedbackForm__form__textarea {
+      @include pad;
+      @include round;
+    }
+    .FeedbackForm__form__textarea {
+      min-height: 130px;
+    }
+    .FeedbackForm__form__error {
+      @include h-center;
+      color: var(--danger-3);
+    }
+    .FeedbackForm__form__checkbox-container {
+      @include v-center;
+      @include mar;
+      gap: $gap-lg;
+      .FeedbackForm__form__checkbox-container__checkbox {
+        scale: 1.125;
+      }
+    }
+    .FeedbackForm__form__submit {
+      align-self: center;
+    }
+  }
+  .FeedbackForm__status {
+    text-align: center;
+    font-weight: bold;
+    font-size: $txt-ml;
+    &.--success {
+      color: var(--primary-3);
+    }
+    &.--danger {
+      color: var(--danger-3);
+    }
+  }
+}

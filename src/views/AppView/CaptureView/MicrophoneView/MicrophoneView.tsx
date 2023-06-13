@@ -15,6 +15,7 @@ import createUniqueTitle from "../../../../utils/createUniqueTitle";
 import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
 import Metronome from "../../../../components/Metronome/Metronome";
 import encodeBlobAsWav from "../../../../utils/encodeBlobAsWav";
+import * as Tone from "tone";
 
 const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle a song", "make music!"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
@@ -68,7 +69,10 @@ const MicrophoneView = () => {
           <Icon
             className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
             icon={"fluent:record-48-regular"}
-            onClick={() => {
+            onClick={async () => {
+              if (Tone.context.state !== "running") {
+                await Tone.start();
+              }
               if (navigator.mediaDevices?.getUserMedia!) {
                 dispatch(micActions.toggle());
                 startRecording();

@@ -17,6 +17,7 @@
     @include h-center;
     width: 100%;
     .HarmonizerSettings__swipe-menu__option {
+      @include no-select;
       width: 100%;
       text-align: center;
       font-size: $txt-md;

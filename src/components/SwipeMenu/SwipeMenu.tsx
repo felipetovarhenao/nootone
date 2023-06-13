@@ -9,15 +9,21 @@ import wrapValue from "../../utils/wrapValue";
 type SwipeMenuProps = {
   children: ReactNode;
   className?: string;
+  defaultValue?: number;
   onSwiped?: (i: number) => void;
 };
 
-const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
-  const [selected, setSelected] = useState(0);
+const SwipeMenu = ({ className, children, defaultValue = 0, onSwiped }: SwipeMenuProps) => {
+  const [selected, setSelected] = useState(defaultValue);
 
   function handleSwipe(num: number) {
-    setSelected((x) => wrapValue(x - num, React.Children.count(children)));
+    const newIndex = wrapValue(selected - num, React.Children.count(children));
+    setSelected(newIndex);
+    if (onSwiped) {
+      onSwiped(newIndex);
+    }
   }
+
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       handleSwipe(-1);
@@ -29,11 +35,6 @@ const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
     trackMouse: true,
   });
 
-  useEffect(() => {
-    if (onSwiped) {
-      onSwiped(selected);
-    }
-  }, [selected]);
   const showSelected = () => {
     return React.Children.map(children as any, (child: ReactElement, i: number) => {
       if (selected === i) {
@@ -41,6 +42,10 @@ const SwipeMenu = ({ className, children, onSwiped }: SwipeMenuProps) => {
       }
     });
   };
+
+  useEffect(() => {
+    setSelected(defaultValue);
+  }, [defaultValue]);
 
   return (
     <div className={cn(className, "SwipeMenu")} {...handlers}>
