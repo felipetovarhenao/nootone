@@ -26,8 +26,8 @@ const RecordingSettingsView = () => {
         </>
       ))}
       <div>
-        {tags.current.map((tag: string, i) => (
-          <span key={i}>{tag}</span>
+        {tags.current.map((tag: string) => (
+          <span key={tag}>{tag}</span>
         ))}
       </div>
       <Button color="danger">

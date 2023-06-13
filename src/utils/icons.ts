@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  export: "mdi:export",
   midi: "mdi:midi-port",
   audio: "ic:round-audio-file",
   error: "subway:error",
@@ -16,7 +17,7 @@ const icons = {
   check: "fa-solid:check",
   trash: "mdi:trash",
   edit: "bxs:edit",
-  settings: "codicon:settings",
+  settings: "material-symbols:settings",
   back: "ion:arrow-back-circle",
   left: "icon-park-outline:left",
   right: "icon-park-outline:right",

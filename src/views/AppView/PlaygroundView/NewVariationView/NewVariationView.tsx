@@ -32,7 +32,7 @@ const NewVariationView = () => {
         message: "This recording doesn't exist",
         icon: icons.error,
       });
-      navigate("/app/playground/");
+      navigate("/app/play/");
     }
   }, [location.pathname]);
 
@@ -67,7 +67,7 @@ const NewVariationView = () => {
   }, [process]);
 
   return (
-    <ViewContainer viewName="new variation">
+    <ViewContainer viewName="develop">
       {selectedRecordingIndex !== null && (
         <div className="NewVariationView">
           <div className="NewVariationView__header">
@@ -78,7 +78,7 @@ const NewVariationView = () => {
           </div>
           <AudioPlayer className="NewVariationView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
           <div className="NewVariationView__algorithms">
-            <h2 className="NewVariationView__algorithms__prompt">What would you like to do with your idea?</h2>
+            {/* <h2 className="NewVariationView__algorithms__prompt">What would you like to do with your idea?</h2> */}
             <Accordion className="NewVariationView__algorithms__options">
               {processingOptions.map((opt) => (
                 <AccordionItem
@@ -116,7 +116,7 @@ const NewVariationView = () => {
                           className="NewVariationView__button"
                           onClick={() => {
                             dispatch(recordingActions.keepVariation());
-                            navigate("/app/playground/");
+                            navigate("/app/play/");
                           }}
                         >
                           <Icon icon={icons.heart} />
@@ -126,7 +126,7 @@ const NewVariationView = () => {
                         <div />
                       )}
                     </div>
-                    <h1 className="NewVariationView__algorithms__options__option__settings__header">settings</h1>
+                    {/* <h1 className="NewVariationView__algorithms__options__option__settings__header">settings</h1> */}
                     {opt.component}
                   </div>
                 </AccordionItem>

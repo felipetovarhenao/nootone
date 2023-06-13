@@ -41,7 +41,9 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Detect the pitches of the recorded notes or use the pre-computed note events
     let detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
 
+    let didDetectionFailed = false;
     if (detectedNotes.length === 0) {
+      didDetectionFailed = true;
       detectedNotes = generateRandomNoteEvents(recording.duration, payload.recording.features.tempo!);
     }
 
@@ -95,13 +97,10 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
             tags: [...recording.tags, settings.style],
             features: {
               ...features,
-              chordEvents: arpeggios.map((note) => {
-                const { onset, ...rest } = note;
-                return {
-                  onset: note.onset,
-                  notes: [rest],
-                };
-              }),
+              chordEvents: [
+                // ...(!didDetectionFailed ? noteEventsToChordEvents(detectedNotes.map((note) => ({ ...note, velocity: 0.707 }))) : []),
+                ...noteEventsToChordEvents(arpeggios),
+              ],
             },
           },
         };

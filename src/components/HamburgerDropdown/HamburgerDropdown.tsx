@@ -6,9 +6,10 @@ import cn from "classnames";
 interface HamburgerDropdownProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
   className?: string;
+  component?: ReactNode;
 }
 
-const HamburgerDropdown: React.FC<HamburgerDropdownProps> = ({ className, children, ...rest }) => {
+const HamburgerDropdown: React.FC<HamburgerDropdownProps> = ({ component, className, children, ...rest }) => {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -41,9 +42,19 @@ const HamburgerDropdown: React.FC<HamburgerDropdownProps> = ({ className, childr
     };
   }, []);
 
+  function handleClick() {
+    setIsOpen((x) => !x);
+  }
+
   return (
     <div className="HamburgerDropdown" {...rest}>
-      <Icon icon="mdi:hamburger-menu" onClick={() => setIsOpen((x) => !x)} />
+      {component ? (
+        <div className="handle" onClick={handleClick}>
+          {component}
+        </div>
+      ) : (
+        <Icon className="handle" icon="mdi:hamburger-menu" onClick={handleClick} />
+      )}
       {isOpen && (
         <div ref={ref} className={cn(className, "HamburgerDropdown__children")}>
           {renderChildren()}

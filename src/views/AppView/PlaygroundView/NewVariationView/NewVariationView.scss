@@ -19,9 +19,9 @@
 .NewVariationView {
   @include v-stack;
   justify-content: center;
-  gap: $gap-lg;
+  gap: $gap-ml;
   .NewVariationView__header {
-    @include v-pad($gap-lg);
+    @include v-pad($gap-md);
     text-align: center;
     font-size: $txt-ml;
     font-weight: bold;
@@ -90,7 +90,7 @@
           @include active-accordion;
         }
         .NewVariationView__algorithms__options__option__settings {
-          @include vh-pad($gap-xxl, $gap-xl);
+          @include vh-pad($gap-lg, $gap-xl);
           width: 100%;
           .NewVariationView__algorithms__options__option__settings__header {
             @include no-select;
@@ -139,9 +139,9 @@
         }
       }
       &#save {
-        background-color: var(--success-3);
+        background-color: var(--danger-4);
         &:hover:not(:disabled) {
-          background-color: var(--success-4);
+          background-color: var(--danger-5);
         }
       }
     }

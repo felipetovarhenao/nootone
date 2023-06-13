@@ -27,7 +27,7 @@ export default function createMidiFile(chordEvents: ChordEvent[], tempo: number)
     });
   });
 
-  return cleanMidi(midi);
+  return midi;
 }
 
 export function cleanMidi(midi: Midi): Midi {

@@ -5,7 +5,6 @@ import Icon from "../Icon/Icon";
 import cn from "classnames";
 import formatTime from "../../utils/formatTime";
 import { GenericRecording } from "../../types/audio";
-import HamburgerDropdown from "../HamburgerDropdown/HamburgerDropdown";
 
 type AudioPlayerProps = {
   className?: string;
@@ -13,19 +12,10 @@ type AudioPlayerProps = {
   showTitle?: boolean;
   showGain?: boolean;
   defaultGain?: number;
-  menuOptions?: AudioPlayerMenu;
   onGainChange?: (gain: number) => void;
 };
 
-const AudioPlayer: React.FC<AudioPlayerProps> = ({
-  rec,
-  menuOptions,
-  className,
-  onGainChange,
-  defaultGain = 0.707,
-  showTitle = true,
-  showGain = false,
-}) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ rec, className, onGainChange, defaultGain = 0.707, showTitle = true, showGain = false }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(defaultGain);
@@ -96,62 +86,38 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={handlePlayPause} />
         <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={handleRestart} />
       </div>
-      <div className="AudioPlayer__container">
+      <div className="AudioPlayer__mid-container">
         <h1 className="AudioPlayer__container__title">{showTitle && rec.name}</h1>
-        <div />
-        <div className="AudioPlayer__container__progress" onClick={handleProgressBarClick}>
-          <div className="AudioPlayer__container__progress__inner" style={{ width: `${progress}%` }} />
+        <div className="AudioPlayer__container">
+          <div className="AudioPlayer__container__progress" onClick={handleProgressBarClick}>
+            <div className="AudioPlayer__container__progress__inner" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="AudioPlayer__container__duration">{formatTime(rec.duration)}</div>
+          <div className="AudioPlayer__container__volume">
+            {showGain && (
+              <>
+                <Icon
+                  className="AudioPlayer__container__volume__icon"
+                  icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
+                />
+                <input
+                  className="AudioPlayer__container__volume__slider"
+                  type="range"
+                  id="volume"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                />
+              </>
+            )}
+          </div>
+          <div />
         </div>
-
-        <div className="AudioPlayer__container__duration">{formatTime(rec.duration)}</div>
-        <div className="AudioPlayer__container__volume">
-          {showGain && (
-            <>
-              <Icon
-                className="AudioPlayer__container__volume__icon"
-                icon={volume > 2 / 3 ? icons.volumeHigh : volume > 1 / 3 ? icons.volumeMid : volume > 0 ? icons.volumeLow : icons.volumeMute}
-              />
-              <input
-                className="AudioPlayer__container__volume__slider"
-                type="range"
-                id="volume"
-                min="0"
-                max="1"
-                step="0.01"
-                value={volume}
-                onChange={handleVolumeChange}
-              />
-            </>
-          )}
-        </div>
-        <div />
       </div>
-      {menuOptions && (
-        <HamburgerDropdown className="AudioPlayer__menu">
-          {menuOptions.map((opt, i) => {
-            const { className: optClassName, ...rest } = opt.props;
-            return React.createElement(
-              opt.component,
-              {
-                key: i,
-                className: cn(optClassName, "AudioPlayer__menu__option"),
-                ...rest,
-              },
-              <Icon className="AudioPlayer__menu__option__icon" icon={opt.icon} />,
-              opt.label
-            );
-          })}
-        </HamburgerDropdown>
-      )}
     </div>
   );
 };
 
 export default AudioPlayer;
-
-type AudioPlayerMenu = {
-  label: string;
-  icon: string;
-  component: string;
-  props?: any;
-}[];

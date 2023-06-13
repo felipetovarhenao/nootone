@@ -40,7 +40,7 @@ const MicrophoneView = () => {
             },
           };
           dispatch(recordingActions.addNew(rec));
-          navigate("/app/playground/");
+          navigate("/app/play/recordings/0");
         });
       });
     }
