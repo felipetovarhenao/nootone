@@ -49,14 +49,17 @@ const MicrophoneView = () => {
 
   return (
     <div className="MicrophoneView">
-      <input
-        disabled={isRecording}
-        className="MicrophoneView__title"
-        type="text"
-        placeholder={"title"}
-        value={recTitle}
-        onChange={(e) => setRecTitle(e.target.value)}
-      />
+      <div className="MicrophoneView__title">
+        <h1 className="MicrophoneView__title__label">recording title</h1>
+        <input
+          disabled={isRecording}
+          className="MicrophoneView__title__input"
+          type="text"
+          placeholder={"title"}
+          value={recTitle}
+          onChange={(e) => setRecTitle(e.target.value)}
+        />
+      </div>
       <div className="MicrophoneView__center-container">
         <TextCarousel duration={2.5} className="MicrophoneView__prompt">
           {(isRecording ? recordingPrompts : inputSuggestions).map((txt, i) => (

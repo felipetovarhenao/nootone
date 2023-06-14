@@ -5,23 +5,34 @@
   grid-template-rows: 1fr auto 1fr;
   height: 100%;
   .MicrophoneView__title {
-    @include stack;
-    @include round(30px);
+    @include v-stack;
     @include pad;
     @include v-mar($gap-xxl);
-    box-shadow: $gap-sm $gap-sm $gap-sm #00000022;
     justify-self: center;
-    box-sizing: border-box;
     height: fit-content;
-    font-size: $txt-ml;
-    color: var(--txt);
-    background-color: var(--bg-1);
-    outline-color: var(--secondary-4);
-    text-align: center;
     width: 80%;
     max-width: 400px;
-    &::placeholder {
+    gap: $gap-md;
+    .MicrophoneView__title__label {
+      text-align: center;
+      letter-spacing: $gap-xxs;
+      font-size: $txt-ms;
       color: var(--disabled-3);
+      text-transform: uppercase;
+    }
+    .MicrophoneView__title__input {
+      &::placeholder {
+        color: var(--disabled-3);
+      }
+      @include stack;
+      @include round(30px);
+      box-sizing: border-box;
+      box-shadow: $gap-sm $gap-sm $gap-sm #00000022;
+      font-size: $txt-ml;
+      color: var(--txt);
+      text-align: center;
+      background-color: var(--bg-1);
+      outline-color: var(--secondary-4);
     }
   }
   .MicrophoneView__center-container {
@@ -69,6 +80,6 @@
   }
 }
 
-.dark .MicrophoneView .MicrophoneView__title {
+.dark .MicrophoneView .MicrophoneView__title__input {
   background-color: var(--bg-3);
 }

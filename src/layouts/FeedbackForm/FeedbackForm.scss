@@ -16,11 +16,13 @@
     gap: $gap-lg;
     label {
       color: var(--txt);
+      font-size: $txt-ml;
     }
     .FeedbackForm__form__input,
     .FeedbackForm__form__textarea {
       @include pad;
       @include round;
+      font-size: $txt-ml;
       background-color: var(--bg-1);
       color: var(--txt);
       &:focus {
@@ -44,6 +46,7 @@
     }
     .FeedbackForm__form__submit {
       align-self: center;
+      font-size: $txt-ml;
     }
   }
   .FeedbackForm__status {

@@ -1,5 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+const getTempoCache = () => {
+  const cache = localStorage.getItem("tempo");
+  if (!cache) {
+    return;
+  }
+  const bpm = parseInt(cache);
+  return bpm;
+};
+
 type InitialState = {
   isRecording: boolean;
   tempo: number;
@@ -7,7 +16,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   isRecording: false,
-  tempo: 90,
+  tempo: getTempoCache() || 90,
 };
 
 const mic = createSlice({
@@ -19,6 +28,7 @@ const mic = createSlice({
     },
     setTempo: (state, action: PayloadAction<number>) => {
       state.tempo = action.payload;
+      localStorage.setItem("tempo", String(state.tempo));
     },
   },
 });

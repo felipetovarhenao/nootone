@@ -10,8 +10,8 @@ import wrapValue from "../../utils/wrapValue";
 
 const TempoTapper = ({ className }: { className?: string }) => {
   const { tempo } = useAppSelector((state) => state.mic);
-
   const dispatch = useAppDispatch();
+
   const { tempo: tapperTempo, tapTempo, setTempo } = useTempoTap(tempo);
   const handlers = useSwipeable({
     onSwipedUp: () => {
