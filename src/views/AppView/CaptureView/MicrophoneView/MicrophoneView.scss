@@ -21,11 +21,12 @@
       text-transform: uppercase;
     }
     .MicrophoneView__title__input {
+      @include stack;
+      @include round(30px);
+      @include pad;
       &::placeholder {
         color: var(--disabled-3);
       }
-      @include stack;
-      @include round(30px);
       box-sizing: border-box;
       box-shadow: $gap-sm $gap-sm $gap-sm #00000022;
       font-size: $txt-ml;
