@@ -1,3 +1,5 @@
+import shuffleArray from "./shuffleArray";
+
 /**
  * Connects two chords together using voice leading.
  *
@@ -10,7 +12,7 @@ export default function connectChords(A: number[], B: number[]): number[] {
     return B; // If the second chord is empty, return an empty chord
   }
 
-  const pitchClassesB = chordToPitchClasses(B).sort(() => Math.random() - 0.5); // Extract the pitch classes from chord B and randomize to prevent deterministic connections
+  const pitchClassesB = shuffleArray(chordToPitchClasses(B)); // Extract the pitch classes from chord B and randomize to prevent deterministic connections
   const visited: number[] = []; // Keep track of visited pitch classes
   let chordB: number[] = []; // Initialize the resulting chord B
 
