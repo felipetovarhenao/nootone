@@ -26,24 +26,27 @@ const MicrophoneView = () => {
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const [recTitle, setRecTitle] = useState(createUniqueTitle());
-  const tempo = useAppSelector((state) => state.mic.tempo);
+  const { tempo } = useAppSelector((state) => state.mic);
 
   useEffect(() => {
     if (!isRecording && audioBlob) {
-      getAudioDuration(audioBlob).then((duration) => {
-        encodeBlobAsWav(audioBlob).then((blob) => {
-          const rec = {
-            url: URL.createObjectURL(blob),
-            name: recTitle || getFormattedTimestamp(),
-            duration: duration,
-            features: {
-              tempo: tempo,
-            },
-          };
-          dispatch(recordingActions.addNew(rec));
-          navigate("/app/play/recordings/0");
-        });
-      });
+      dispatch(micActions.togglePreprocessing());
+      getAudioDuration(audioBlob)
+        .then((duration) => {
+          encodeBlobAsWav(audioBlob).then((blob) => {
+            const rec = {
+              url: URL.createObjectURL(blob),
+              name: recTitle || getFormattedTimestamp(),
+              duration: duration,
+              features: {
+                tempo: tempo,
+              },
+            };
+            dispatch(recordingActions.addNew(rec));
+            navigate("/app/play/recordings/0/develop");
+          });
+        })
+        .finally(() => dispatch(micActions.togglePreprocessing()));
     }
   }, [isRecording]);
 

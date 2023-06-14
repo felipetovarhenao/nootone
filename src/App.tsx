@@ -17,7 +17,7 @@ export default function App() {
           <Route index element={<CaptureView />} />
           <Route path="play">
             <Route index element={<PlaygroundView />} />
-            <Route path="recordings/:id" element={<NewVariationView />} />
+            <Route path="recordings/:id/develop" element={<NewVariationView />} />
             <Route path="recordings/:id/edit" element={<RecordingSettingsView />} />
           </Route>
           <Route path="dashboard" element={<UserAccountView />} />

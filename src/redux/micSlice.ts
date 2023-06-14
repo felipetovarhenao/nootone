@@ -11,11 +11,13 @@ const getTempoCache = () => {
 
 type InitialState = {
   isRecording: boolean;
+  isPreprocessing: boolean;
   tempo: number;
 };
 
 const initialState: InitialState = {
   isRecording: false,
+  isPreprocessing: false,
   tempo: getTempoCache() || 90,
 };
 
@@ -30,9 +32,12 @@ const mic = createSlice({
       state.tempo = action.payload;
       localStorage.setItem("tempo", String(state.tempo));
     },
+    togglePreprocessing: (state) => {
+      state.isPreprocessing = !state.isPreprocessing;
+      console.log(state.isPreprocessing);
+    },
   },
 });
 
 export default mic.reducer;
-export const { toggle, setTempo } = mic.actions;
 export const micActions = mic.actions;

@@ -11,6 +11,7 @@ import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 import Accordion, { AccordionItem } from "../../../../components/Accordion/Accordion";
 import Button from "../../../../components/Button/Button";
 import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
+import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
 
 const NewVariationView = () => {
   const location = useLocation();
@@ -22,9 +23,8 @@ const NewVariationView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const pathArray = location.pathname.split("/");
-    const id = parseInt(pathArray.at(-1) as string);
-    if (id >= 0 && id < recordings.length) {
+    const id = getRecordingIndexFromPath(location.pathname);
+    if (id !== null && id >= 0 && id < recordings.length) {
       dispatch(recordingActions.selectRecording(id));
     } else {
       notification({

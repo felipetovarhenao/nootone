@@ -9,8 +9,9 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Avatar from "../../components/Avatar/Avatar";
 import { recordingActions } from "../../redux/recordings/recordingsSlice";
 import { useDarkTheme } from "../../hooks/useDarkTheme";
+import findSubstringIndex from "../../utils/findSubstringIndex";
 
-const DEFAULT_VIEWNAME = "/ capture";
+const DEFAULT_VIEWNAME = "capture";
 
 const AppView = () => {
   useViewportInfo();
@@ -33,13 +34,14 @@ const AppView = () => {
   }, []);
 
   useEffect(() => {
-    for (let i = 0; i < navbarLinks.length; i++) {
-      if (location.pathname === navbarLinks[i].path) {
-        setCurrentViewIndex(i);
-        setViewHeader(pathToBreadcrumbs(location.pathname) || DEFAULT_VIEWNAME);
-        break;
-      }
+    const index = findSubstringIndex(location.pathname, ["feedback", "capture", "play"]);
+    setCurrentViewIndex(index === -1 ? 1 : index);
+    const pathArray = location.pathname.split("/").filter((x) => x !== "");
+    let viewName = pathArray.at(-1) === "app" ? DEFAULT_VIEWNAME : pathArray.at(-1);
+    if (pathArray.length > 2) {
+      viewName += ` / ${pathArray[1]}`;
     }
+    setViewHeader(`/ ${viewName}`);
   }, [location]);
 
   return (
@@ -66,11 +68,5 @@ const navbarLinks = [
   // { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
   { icon: "ic:baseline-feedback", path: "/app/feedback" },
   { icon: "material-symbols:mic", path: "/app/" },
-  { icon: "lucide:codesandbox", path: "/app/play/" },
+  { icon: "lucide:codesandbox", path: "/app/play" },
 ];
-
-function pathToBreadcrumbs(path: string) {
-  let breadCrumbs = path.split("/").slice(2);
-  breadCrumbs.sort(() => -1);
-  return breadCrumbs.join(" / ");
-}
