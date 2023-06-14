@@ -34,7 +34,6 @@ const mic = createSlice({
     },
     togglePreprocessing: (state) => {
       state.isPreprocessing = !state.isPreprocessing;
-      console.log(state.isPreprocessing);
     },
   },
 });

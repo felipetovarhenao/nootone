@@ -18,6 +18,7 @@ type HarmonizerPayload = {
   settings: {
     style: string;
     patternSize: number;
+    segSize: number;
   };
 };
 
@@ -48,7 +49,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     }
 
     // Calculate the segmenƒt size based on the tempo (default to 60 BPM if not provided)
-    const segSize = (60 / recording.features.tempo! || 60) * settings.patternSize;
+    const segSize = (60 / recording.features.tempo! || 60) * settings.segSize;
 
     // Harmonize the detected notes using the NoteHarmonizer class
     const harmonicBlocks = new NoteHarmonizer().harmonize(

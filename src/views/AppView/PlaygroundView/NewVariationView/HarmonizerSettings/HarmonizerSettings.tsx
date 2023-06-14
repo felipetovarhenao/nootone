@@ -2,21 +2,31 @@ import "./HarmonizerSettings.scss";
 import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
+import randomChoice from "../../../../../utils/randomChoice";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
 const timeSigs = [
   {
     label: "2/4",
-    value: 2,
+    value: {
+      segSizes: [2, 4],
+      patternSize: 2,
+    },
   },
   {
     label: "3/4",
-    value: 3,
+    value: {
+      segSizes: [3],
+      patternSize: 3,
+    },
   },
   {
     label: "4/4",
-    value: 4,
+    value: {
+      segSizes: [2, 4],
+      patternSize: 4,
+    },
   },
 ];
 
@@ -27,7 +37,7 @@ type HarmonizerSettingsProps = {
 };
 const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSettingsProps) => {
   const [styleIndex, setStyleIndex] = useState(0);
-  const [patternSizeIndex, setPatternSizeIndex] = useState(0);
+  const [timeSigIndex, setTimeSigIndex] = useState(0);
 
   function handleStyleChange(id: number) {
     setStyleIndex(id);
@@ -35,8 +45,8 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   }
 
   function handleTimeSigSelection(id: number) {
-    setPatternSizeIndex(id);
-    localStorage.setItem("harmonizerPatternSizeIndex", String(id));
+    setTimeSigIndex(id);
+    localStorage.setItem("harmonizerTimeSigIndex", String(id));
   }
 
   useEffect(() => {
@@ -52,13 +62,13 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
         },
       },
       {
-        key: "harmonizerPatternSizeIndex",
+        key: "harmonizerTimeSigIndex",
         setter: (value: string) => {
           const val = parseInt(value);
           if (val < 0 || val >= timeSigs.length) {
             return;
           }
-          setPatternSizeIndex(val);
+          setTimeSigIndex(val);
         },
       },
     ];
@@ -68,7 +78,6 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       if (!cache) {
         return;
       }
-
       param.setter(cache);
     });
   }, []);
@@ -76,9 +85,10 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   useEffect(() => {
     setSettings({
       style: styles[styleIndex],
-      patternSize: timeSigs[patternSizeIndex].value,
+      patternSize: timeSigs[timeSigIndex].value.patternSize,
+      segSize: randomChoice(timeSigs[timeSigIndex].value.segSizes),
     });
-  }, [styleIndex, patternSizeIndex]);
+  }, [styleIndex, timeSigIndex]);
 
   useEffect(() => {
     setProcess(name);
@@ -95,7 +105,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
         ))}
       </SwipeMenu>
       <h1 className="HarmonizerSettings__label">bar</h1>
-      <SwipeMenu defaultValue={patternSizeIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleTimeSigSelection}>
+      <SwipeMenu defaultValue={timeSigIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleTimeSigSelection}>
         {timeSigs.map((ts, i) => (
           <span key={i} className="HarmonizerSettings__swipe-menu__option">
             {ts.label}

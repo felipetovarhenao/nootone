@@ -56,7 +56,6 @@ const recordings = createSlice({
         throw Error("Recording not found");
       }
       if (childIndex !== undefined) {
-        console.log("deleting");
         state.recordings[parentIndex].variations.splice(childIndex, 1);
       } else {
         state.recordings.splice(parentIndex, 1);
