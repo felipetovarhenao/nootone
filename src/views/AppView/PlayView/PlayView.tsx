@@ -1,9 +1,9 @@
-import "./PlaygroundView.scss";
+import "./PlayView.scss";
 import { useAppSelector } from "../../../redux/hooks";
 import NoTracksView from "./NoTracksView/NoTracksView";
 import MostRecentTracksView from "./MostRecentTracksView/MostRecentTracksView";
 
-export default function PlaygroundView() {
+export default function PlayView() {
   const { recordings: savedRecordings } = useAppSelector((state) => state.recordings);
-  return <div className="PlaygroundView">{savedRecordings.length === 0 ? <NoTracksView /> : <MostRecentTracksView />}</div>;
+  return <div className="PlayView">{savedRecordings.length === 0 ? <NoTracksView /> : <MostRecentTracksView />}</div>;
 }

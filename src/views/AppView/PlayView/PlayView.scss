@@ -1,6 +1,6 @@
 @use "../../../styles/main.scss" as *;
 
-.PlaygroundView {
+.PlayView {
   @include stack;
   @include h-center;
   @include v-pad($gap-xxl);
