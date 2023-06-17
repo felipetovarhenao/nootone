@@ -25,6 +25,14 @@ const timeSigs = [
     },
   },
   {
+    label: "4/4",
+    value: {
+      segSizes: [2, 4],
+      patternSize: 4,
+      maxSubdiv: 4,
+    },
+  },
+  {
     label: "6/8",
     value: {
       segSizes: [2],
@@ -33,11 +41,11 @@ const timeSigs = [
     },
   },
   {
-    label: "4/4",
+    label: "9/8",
     value: {
-      segSizes: [2, 4],
-      patternSize: 4,
-      maxSubdiv: 4,
+      segSizes: [3],
+      patternSize: 3,
+      maxSubdiv: 3,
     },
   },
   {
