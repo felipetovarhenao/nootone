@@ -30,7 +30,6 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     contextRef.current = getResponsiveCanvasContext(canvasRef.current);
 
     // Calculates the initial offset based on the current time.
-    const offset = Tone.Transport.now();
 
     // Schedules a repeating animation loop using Tone.Transport.
     Tone.Transport.scheduleRepeat(function (time) {
@@ -42,7 +41,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
           const beatDuration = 60 / Tone.Transport.bpm.value;
 
           // Calculates the alpha (transparency) value based on the elapsed time and beat duration.
-          const alpha = 1 - (((time - offset) / beatDuration) % 1);
+          const alpha = 1 - ((time / beatDuration) % 1);
           const theta = (alpha * 0.1 + 0.9) ** 1.1;
 
           // Clears the canvas and draws a circle with varying transparency.
