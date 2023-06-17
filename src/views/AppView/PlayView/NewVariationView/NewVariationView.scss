@@ -21,12 +21,11 @@
   justify-content: center;
   gap: $gap-ml;
   .NewVariationView__header {
-    @include v-pad($gap-md);
     text-align: center;
     font-size: $txt-ml;
     font-weight: bold;
     letter-spacing: $gap-xs;
-    color: var(--primary-3);
+    color: var(--txt);
   }
   .NewVariationView__player {
     @include h-mar(auto);
@@ -139,9 +138,9 @@
         }
       }
       &#save {
-        background-color: var(--danger-4);
+        background-color: var(--danger-3);
         &:hover:not(:disabled) {
-          background-color: var(--danger-5);
+          background-color: var(--danger-4);
         }
       }
     }
@@ -157,5 +156,16 @@
     font-weight: bold;
     text-transform: uppercase;
     color: var(--disabled-3);
+  }
+}
+
+.dark .NewVariationView {
+  .NewVariationView__button {
+    &#save {
+      background-color: var(--danger-4);
+      &:hover:not(:disabled) {
+        background-color: var(--danger-5);
+      }
+    }
   }
 }

@@ -20,6 +20,7 @@ type HarmonizerPayload = {
     patternSize: number;
     segSize: number;
     numAttacks: number;
+    maxSubdiv: number;
   };
 };
 
@@ -36,6 +37,7 @@ export type HarmonizerReturnType = {
  */
 const harmonize = createAsyncThunk("recordings/harmonize", async (payload: HarmonizerPayload): Promise<void | HarmonizerReturnType> => {
   const { recording, settings } = payload;
+
   try {
     // Retrieve the audio array and sample rate from the recording URL
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
@@ -70,7 +72,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
 
-    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize, numAttacks: settings.numAttacks });
+    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize, numAttacks: settings.numAttacks, maxSubdiv: settings.maxSubdiv });
     const arpeggios = chordEventsToNoteEvents(
       Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
     );

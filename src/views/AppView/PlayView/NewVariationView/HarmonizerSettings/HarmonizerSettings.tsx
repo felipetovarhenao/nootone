@@ -13,6 +13,7 @@ const timeSigs = [
     value: {
       segSizes: [2, 4],
       patternSize: 2,
+      maxSubdiv: 4,
     },
   },
   {
@@ -20,6 +21,15 @@ const timeSigs = [
     value: {
       segSizes: [3],
       patternSize: 3,
+      maxSubdiv: 4,
+    },
+  },
+  {
+    label: "6/8",
+    value: {
+      segSizes: [2],
+      patternSize: 2,
+      maxSubdiv: 3,
     },
   },
   {
@@ -27,6 +37,15 @@ const timeSigs = [
     value: {
       segSizes: [2, 4],
       patternSize: 4,
+      maxSubdiv: 4,
+    },
+  },
+  {
+    label: "12/8",
+    value: {
+      segSizes: [2, 4],
+      patternSize: 4,
+      maxSubdiv: 3,
     },
   },
 ];
@@ -42,7 +61,7 @@ const complexity = [
   },
   {
     label: "dense",
-    value: [9, 20],
+    value: [9, 16],
   },
 ];
 
@@ -118,11 +137,13 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
     const patternSize = timeSigs[timeSigIndex].value.patternSize;
     const segSize = randomChoice(timeSigs[timeSigIndex].value.segSizes);
     const numAttacks = getRandomNumber(...(complexity[complexityIndex].value as [number, number]));
+    const maxSubdiv = timeSigs[timeSigIndex].value.maxSubdiv;
     setSettings({
       style: styles[styleIndex],
       patternSize,
       segSize,
       numAttacks,
+      maxSubdiv,
     });
   }, [styleIndex, timeSigIndex, complexityIndex]);
 
