@@ -12,20 +12,37 @@ export default class NoteHarmonizer {
   private chordCollection: number[][] | string | null;
 
   static CHORD_COLLECTIONS: { [key: string]: number[][] } = {
-    traditional: [
-      [0, 7, 3], // m
-      [0, 7, 4], // M
-      [0, 7, 4, 10], // Mm7
-    ],
     pop: [
-      [0, 7, 3, 5], // m+P4
-      [0, 7, 4, 5], // M+P4
-      [0, 7, 4, 10], // Mm7
-      [0, 7, 3, 10], // mm7
-      [0, 7, 4, 10], // MM7
-      [0, 7, 4, 9], // MM6
-      [0, 7, 2, 4], // MM9
-      [0, 7, 2, 3], // mM9
+      // root position
+      [0, 3, 7, 5], // m+P4
+      [0, 4, 7, 5], // M+P4
+      [0, 4, 7, 10], // Mm7
+      [0, 3, 7, 10], // mm7
+      [0, 4, 7, 10], // MM7
+      [0, 4, 7, 9], // MM6
+      [0, 2, 7, 4], // MM9
+      [0, 2, 7, 3], // mM9
+
+      // 1st inversion
+      [3, 0, 7, 5], // m+P4
+      [4, 0, 7, 5], // M+P4
+      [4, 0, 7, 10], // Mm7
+      [3, 0, 7, 10], // mm7
+      [4, 0, 7, 10], // MM7
+      [4, 0, 7, 9], // MM6
+    ],
+    traditional: [
+      // root position
+      [0, 3, 7], // m
+      [0, 4, 7], // M
+      [0, 4, 7, 10], // Mm7
+      [0, 3, 7, 10], // Mm7
+
+      // 1st inversion
+      [3, 0, 7], // m
+      [4, 0, 7], // M
+      [4, 0, 7, 10], // Mm7
+      [3, 0, 7, 10], // Mm7
     ],
     medieval: [
       [5, 0], // P4
@@ -59,10 +76,23 @@ export default class NoteHarmonizer {
       [6, 0, 10],
     ],
     classical: [
+      // root posiiton
+      [0, 4, 7], // M
+      [0, 3, 7], // m
+      [0, 4, 7, 10], // Mm7
+      [0, 3, 7, 10], // mm7
+
+      // 1st inversion
+      [4, 0, 7], // M
+      [3, 0, 7], // m
+      [4, 0, 7, 10], // Mm7
+      [3, 0, 7, 10], // mm7
+
       [0, 7, 4], // M
       [0, 7, 3], // m
       [0, 7, 4, 10], // Mm7
       [0, 7, 3, 10], // mm7
+
       [3, 0, 6], // º
       [3, 0, 6, 9], // º7
       [3, 0, 6, 10], // º7 (half)
@@ -70,20 +100,24 @@ export default class NoteHarmonizer {
       [2, 0, 6], // aug6 italian
       [2, 0, 6, 8], // aug6 french
     ],
-    blues: [
+    tense: [
       [0, 4, 7, 10], // MM7
+      [4, 0, 7, 10], // MM7
       [3, 6, 0, 9], // º7
     ],
     impressionistic: [
       [0, 4, 7], // M
-      [0, 7, 3], // m
+      [0, 3, 7], // m
       [0, 8, 4], // aug
       [2, 0, 6], // aug6 italian
       [2, 0, 6, 8], // aug6 french
       [3, 0, 6, 10], // º7 (half)
       [9, 3, 0, 6], // º7 (half)
+
+      [4, 0, 7], // M
+      [3, 0, 7], // m
     ],
-    jazz: [
+    jazzy: [
       [0, 11, 4, 7], // MM7
       [0, 10, 4, 7], // Mm7
       [0, 10, 3, 7], // mm7
@@ -91,6 +125,13 @@ export default class NoteHarmonizer {
       [0, 2, 4, 7, 11], // MM7-M9
       [0, 6, 4, 7, 10], // Mm7-#11
       [0, 10, 6, 3], // º7 (half)
+
+      // inversions
+      [4, 11, 0, 7], // MM7
+      [4, 10, 0, 7], // Mm7
+      [3, 10, 0, 7], // mm7
+      [4, 2, 0, 7, 10], // Mm7-M9
+      [4, 2, 0, 7, 11], // MM7-M9
     ],
     bittersweet: [
       [0, 7, 4, 5], // M+P4
@@ -381,7 +422,7 @@ export default class NoteHarmonizer {
     segSize: number = 2,
     harmonicMemory: number = 0.125,
     keySignatureWeight: number = 0.25,
-    lookAhead: number = 3,
+    lookAhead: number = 4,
     harmonicConsonance: number = 0.5
   ): ChordEvent[] {
     if (this.chordCollection !== chordCollection) {

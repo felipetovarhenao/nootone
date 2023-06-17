@@ -19,6 +19,7 @@ type HarmonizerPayload = {
     style: string;
     patternSize: number;
     segSize: number;
+    numAttacks: number;
   };
 };
 
@@ -69,7 +70,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
 
-    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize });
+    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize, numAttacks: settings.numAttacks });
     const arpeggios = chordEventsToNoteEvents(
       Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
     );

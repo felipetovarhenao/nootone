@@ -152,7 +152,7 @@ export default class Arpeggiator {
     const patternSize = defaultValues?.patternSize || [2, 4][Math.floor(Math.random() * 2)];
     const maxSubdiv = defaultValues?.maxSubdiv || [3, 4][Math.floor(Math.random() * 2)];
     const numAttacks = defaultValues?.numAttacks || Math.floor(Math.random() * (patternSize * maxSubdiv - 1) + 1);
-    const contourSize = defaultValues?.contourSize || Math.max(5, Math.floor(Math.random() * numAttacks + numAttacks));
+    const contourSize = defaultValues?.contourSize || Math.max(6, Math.floor(Math.random() * numAttacks + numAttacks));
 
     return {
       patternSize,

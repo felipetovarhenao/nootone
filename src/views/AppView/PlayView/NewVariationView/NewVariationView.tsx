@@ -107,7 +107,7 @@ const NewVariationView = () => {
                         onClick={() => handleGenerate(process, settings)}
                       >
                         <Icon icon={icons.lab} />
-                        Generate
+                        {variationBuffer ? "try again" : "generate"}
                       </Button>
                       {variationBuffer ? (
                         <Button

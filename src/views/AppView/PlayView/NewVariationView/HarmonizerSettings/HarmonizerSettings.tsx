@@ -3,6 +3,7 @@ import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
 import randomChoice from "../../../../../utils/randomChoice";
+import getRandomNumber from "../../../../../utils/getRandomNumber";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -30,6 +31,21 @@ const timeSigs = [
   },
 ];
 
+const complexity = [
+  {
+    label: "simple",
+    value: [1, 3],
+  },
+  {
+    label: "moderate",
+    value: [4, 9],
+  },
+  {
+    label: "dense",
+    value: [9, 20],
+  },
+];
+
 type HarmonizerSettingsProps = {
   name: string;
   setSettings: (prevSettings: any) => void;
@@ -38,6 +54,7 @@ type HarmonizerSettingsProps = {
 const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSettingsProps) => {
   const [styleIndex, setStyleIndex] = useState(0);
   const [timeSigIndex, setTimeSigIndex] = useState(0);
+  const [complexityIndex, setComplexityIndex] = useState(0);
 
   function handleStyleChange(id: number) {
     setStyleIndex(id);
@@ -47,6 +64,11 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   function handleTimeSigSelection(id: number) {
     setTimeSigIndex(id);
     localStorage.setItem("harmonizerTimeSigIndex", String(id));
+  }
+
+  function handleComplexityChange(id: number) {
+    setComplexityIndex(id);
+    localStorage.setItem("harmonizerComplexityIndex", String(id));
   }
 
   useEffect(() => {
@@ -71,6 +93,16 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
           setTimeSigIndex(val);
         },
       },
+      {
+        key: "harmonizerComplexityIndex",
+        setter: (value: string) => {
+          const val = parseInt(value);
+          if (val < 0 || val >= timeSigs.length) {
+            return;
+          }
+          setComplexityIndex(val);
+        },
+      },
     ];
 
     cacheList.forEach((param) => {
@@ -83,12 +115,16 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   }, []);
 
   useEffect(() => {
+    const patternSize = timeSigs[timeSigIndex].value.patternSize;
+    const segSize = randomChoice(timeSigs[timeSigIndex].value.segSizes);
+    const numAttacks = getRandomNumber(...(complexity[complexityIndex].value as [number, number]));
     setSettings({
       style: styles[styleIndex],
-      patternSize: timeSigs[timeSigIndex].value.patternSize,
-      segSize: randomChoice(timeSigs[timeSigIndex].value.segSizes),
+      patternSize,
+      segSize,
+      numAttacks,
     });
-  }, [styleIndex, timeSigIndex]);
+  }, [styleIndex, timeSigIndex, complexityIndex]);
 
   useEffect(() => {
     setProcess(name);
@@ -96,11 +132,19 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   return (
     <div className="HarmonizerSettings">
-      <h1 className="HarmonizerSettings__label">style</h1>
+      <h1 className="HarmonizerSettings__label">chords</h1>
       <SwipeMenu defaultValue={styleIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleStyleChange}>
         {styles.map((style, i) => (
           <span className="HarmonizerSettings__swipe-menu__option" key={i}>
             {style}
+          </span>
+        ))}
+      </SwipeMenu>
+      <h1 className="HarmonizerSettings__label">rhythm</h1>
+      <SwipeMenu defaultValue={complexityIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleComplexityChange}>
+        {complexity.map((ts, i) => (
+          <span key={i} className="HarmonizerSettings__swipe-menu__option">
+            {ts.label}
           </span>
         ))}
       </SwipeMenu>
