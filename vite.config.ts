@@ -5,4 +5,9 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   assetsInclude: ["**/*.ogg", "**/*.mp3"],
+  server: {
+    proxy: {
+      "/instruments": "https://dxbtnxd6vjk30.cloudfront.net/",
+    },
+  },
 });
