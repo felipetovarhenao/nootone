@@ -173,7 +173,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       maxSubdiv,
       instrumentName,
     });
-  }, [styleIndex, timeSigIndex, complexityIndex]);
+  }, [styleIndex, timeSigIndex, complexityIndex, instrumentIndex]);
 
   useEffect(() => {
     setProcess(name);

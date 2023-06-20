@@ -10,6 +10,7 @@ type MultiSample = Record<number, Sample>;
 export default class AudioSampler extends AudioSource {
   private samples: MultiSample;
   private reverb: ConvolverNode;
+  private reverbGain: GainNode;
   private masterGain: GainNode;
   private envelope: Float32Array;
 
@@ -21,15 +22,26 @@ export default class AudioSampler extends AudioSource {
     super(context, preconnect);
     this.samples = {};
 
-    // Create and connect the reverb effect node
+    // create default note envelope
+    this.envelope = new Float32Array([...[...Array(12).keys()].map(() => 1), 0.5, 0.25, 0.125, 0.006, 0.003, 0.0015, 0]);
+
+    // Create and connect the master gain node
+    this.masterGain = this.context.createGain();
+
+    // Create reverb node and load impulse response
     this.reverb = this.context.createConvolver();
     audioArrayFromURL(reverbURL).then(({ array }) => {
       this.reverb.buffer = this.arrayToBuffer(array);
     });
-    this.envelope = new Float32Array([...[...Array(12).keys()].map(() => 1), 0.5, 0.25, 0]);
-    // Create and connect the master gain node
-    this.masterGain = this.context.createGain();
-    this.reverb.connect(this.masterGain);
+
+    // create reverb gain node
+    this.reverbGain = this.context.createGain();
+    this.reverbGain.gain.value = 0.2;
+
+    // Node connexions
+    this.masterGain.connect(this.reverb);
+    this.reverb.connect(this.reverbGain);
+    this.reverbGain.connect(this.context.destination);
     this.masterGain.connect(this.context.destination);
   }
 
@@ -79,36 +91,41 @@ export default class AudioSampler extends AudioSource {
    */
   public playNote(onset: number, pitch: number, velocity: number, duration: number): AudioBufferSourceNode | undefined {
     const { buffer, sourcePitch } = this.findBuffer(pitch, velocity);
+
+    // get playback rate
     const playbackRate = 2 ** ((pitch - sourcePitch) / 12);
     if (playbackRate > 2 || playbackRate < 0.5) {
       return undefined;
     }
+    // create envelope
     const env = this.context.createGain();
 
-    const startTime = this.context.currentTime + onset;
-    env.gain.setValueCurveAtTime(this.envelope, startTime, duration);
+    const amp = this.context.createGain();
+    amp.gain.value = Math.random() * 0.25 + 0.75;
 
+    // create source node
     const source = this.context.createBufferSource();
     source.buffer = buffer;
+
+    // retune
     source.playbackRate.value = playbackRate;
 
-    const dryMix = this.context.createGain();
-    dryMix.gain.value = Math.random() * 0.15 + 0.85;
-
-    const wetMix = this.context.createGain();
-    wetMix.gain.value = 0.25;
+    // get note duration
+    const noteDuration = Math.min(source.buffer.duration, duration * playbackRate + 0.12);
+    const startTime = this.context.currentTime + onset;
+    env.gain.setValueCurveAtTime(this.envelope, startTime, noteDuration);
 
     const panner = this.context.createStereoPanner();
-    panner.pan.value = Math.min(1, Math.max(0, (pitch / 127) * 2 - 1));
-    source.connect(env);
-    env.connect(panner);
+    panner.pan.value = Math.sin((pitch / 127) * Math.PI * 4) * 0.5;
 
-    panner.connect(wetMix);
-    panner.connect(dryMix);
-    dryMix.connect(this.masterGain);
-    wetMix.connect(this.reverb);
+    source.connect(amp);
+    amp.connect(env);
+    env.connect(panner);
+    panner.connect(this.masterGain);
+
     source.start(startTime);
-    source.stop(startTime + duration + 0.125);
+    source.stop(startTime + noteDuration + 1);
+
     return source;
   }
 

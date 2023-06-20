@@ -24,6 +24,7 @@
       @include round;
       font-size: $txt-ml;
       background-color: var(--bg-1);
+      resize: none;
       color: var(--txt);
       &:focus {
         outline: solid $border-md var(--secondary-3);
