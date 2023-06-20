@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import icons from "../../../../utils/icons";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
-import "./NewVariationView.scss";
+import "./DevelopView.scss";
 import AudioPlayer from "../../../../components/AudioPlayer/AudioPlayer";
 import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 import Accordion, { AccordionItem } from "../../../../components/Accordion/Accordion";
@@ -13,7 +13,7 @@ import Button from "../../../../components/Button/Button";
 import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
 import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
 
-const NewVariationView = () => {
+const DevelopView = () => {
   const location = useLocation();
   const [settings, setSettings] = useState({});
   const [process, setProcess] = useState("");
@@ -69,41 +69,41 @@ const NewVariationView = () => {
   return (
     <ViewContainer viewName="develop">
       {selectedRecordingIndex !== null && (
-        <div className="NewVariationView">
-          <div className="NewVariationView__header">
+        <div className="DevelopView">
+          <div className="DevelopView__header">
             <div className="">
-              <h1 className="NewVariationView__header">{recordings[selectedRecordingIndex].name}</h1>
+              <h1 className="DevelopView__header">{recordings[selectedRecordingIndex].name}</h1>
             </div>
             <div></div>
           </div>
-          <AudioPlayer className="NewVariationView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
-          <div className="NewVariationView__algorithms">
-            {/* <h2 className="NewVariationView__algorithms__prompt">What would you like to do with your idea?</h2> */}
-            <Accordion className="NewVariationView__algorithms__options">
+          <AudioPlayer className="DevelopView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
+          <div className="DevelopView__algorithms">
+            {/* <h2 className="DevelopView__algorithms__prompt">What would you like to do with your idea?</h2> */}
+            <Accordion className="DevelopView__algorithms__options">
               {processingOptions.map((opt) => (
                 <AccordionItem
-                  className="NewVariationView__algorithms__options__option"
+                  className="DevelopView__algorithms__options__option"
                   header={
-                    <div className="NewVariationView__algorithms__options__option__header" key={opt.name}>
-                      <Icon className="NewVariationView__algorithms__options__option__header__icon" icon={opt.icon} />
-                      <span className="NewVariationView__algorithms__options__option__header__text">{opt.name}</span>
+                    <div className="DevelopView__algorithms__options__option__header" key={opt.name}>
+                      <Icon className="DevelopView__algorithms__options__option__header__icon" icon={opt.icon} />
+                      <span className="DevelopView__algorithms__options__option__header__text">{opt.name}</span>
                     </div>
                   }
                   key={opt.name}
                 >
-                  <div className="NewVariationView__algorithms__options__option__settings">
+                  <div className="DevelopView__algorithms__options__option__settings">
                     {variationBuffer && (
                       <>
-                        <h1 className="NewVariationView__preview__label">preview</h1>
-                        <AudioPlayer className="NewVariationView__preview__player" rec={variationBuffer} />
+                        <h1 className="DevelopView__preview__label">preview</h1>
+                        <AudioPlayer className="DevelopView__preview__player" rec={variationBuffer} />
                       </>
                     )}
-                    {isProcessing && <Icon className="NewVariationView__suspense" icon={icons.processing} />}
-                    <div className="NewVariationView__buttons">
+                    {isProcessing && <Icon className="DevelopView__suspense" icon={icons.processing} />}
+                    <div className="DevelopView__buttons">
                       <Button
                         disabled={isProcessing}
                         id="generate"
-                        className="NewVariationView__button"
+                        className="DevelopView__button"
                         onClick={() => handleGenerate(process, settings)}
                       >
                         <Icon icon={icons.lab} />
@@ -113,7 +113,7 @@ const NewVariationView = () => {
                         <Button
                           disabled={!variationBuffer}
                           id="save"
-                          className="NewVariationView__button"
+                          className="DevelopView__button"
                           onClick={() => {
                             dispatch(recordingActions.keepVariation());
                             navigate("/app/play/");
@@ -126,7 +126,7 @@ const NewVariationView = () => {
                         <div />
                       )}
                     </div>
-                    {/* <h1 className="NewVariationView__algorithms__options__option__settings__header">settings</h1> */}
+                    {/* <h1 className="DevelopView__algorithms__options__option__settings__header">settings</h1> */}
                     {opt.component}
                   </div>
                 </AccordionItem>
@@ -139,7 +139,7 @@ const NewVariationView = () => {
   );
 };
 
-export default NewVariationView;
+export default DevelopView;
 
 type ProcessingOption = {
   icon: string;

@@ -7,7 +7,7 @@ const MostRecentTracksView = () => {
 
   return (
     <div className="MostRecentTracksView">
-      <h1 className="TracksView__header">unsaved drafts</h1>
+      <h1 className="TracksView__header">my ideas</h1>
       <div className="TracksView__recordings">
         {[...recordings]
           .sort((a, b) => b.date?.localeCompare(a.date || "0"))

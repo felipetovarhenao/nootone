@@ -1,7 +1,7 @@
 @use "../../../../styles/main.scss" as *;
 
 @mixin active-accordion {
-  .NewVariationView__algorithms__options__option__header {
+  .DevelopView__algorithms__options__option__header {
     background: var(--main-gradient);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -16,24 +16,24 @@
   }
 }
 
-.NewVariationView {
+.DevelopView {
   @include v-stack;
   justify-content: center;
   gap: $gap-ml;
-  .NewVariationView__header {
+  .DevelopView__header {
     text-align: center;
     font-size: $txt-ml;
     font-weight: bold;
     letter-spacing: $gap-xs;
     color: var(--txt);
   }
-  .NewVariationView__player {
+  .DevelopView__player {
     @include h-mar(auto);
     @include vh-pad($gap-ml, $gap-xxl);
     max-width: 500px;
   }
 
-  .NewVariationView__algorithms {
+  .DevelopView__algorithms {
     @include h-mar(auto);
     @include v-stack-c;
     @include h-center;
@@ -44,26 +44,26 @@
     max-width: 600px;
     width: 100%;
 
-    .NewVariationView__algorithms__prompt {
+    .DevelopView__algorithms__prompt {
       @include v-pad;
       font-size: $txt-ml;
       font-weight: bold;
       color: var(--txt);
     }
-    .NewVariationView__algorithms__options {
+    .DevelopView__algorithms__options {
       @include v-stack;
       width: 100%;
       gap: $gap-lg;
-      .NewVariationView__algorithms__options__option {
+      .DevelopView__algorithms__options__option {
         background-color: var(--bg-2);
         @include round-border;
         &.--is-open {
-          .NewVariationView__algorithms__options__option__header {
+          .DevelopView__algorithms__options__option__header {
             cursor: default !important;
           }
           @include active-accordion;
         }
-        .NewVariationView__algorithms__options__option__header {
+        .DevelopView__algorithms__options__option__header {
           @include pad($gap-xl);
           @include round;
           @include clickable;
@@ -72,8 +72,8 @@
           width: 100%;
           gap: $gap-lg;
           background-color: var(--bg-3);
-          .NewVariationView__algorithms__options__option__header__text,
-          .NewVariationView__algorithms__options__option__header__icon * {
+          .DevelopView__algorithms__options__option__header__text,
+          .DevelopView__algorithms__options__option__header__icon * {
             vertical-align: middle;
             font-weight: bold;
             letter-spacing: $gap-xs;
@@ -81,17 +81,17 @@
             font-size: $txt-ms;
             color: var(--txt);
           }
-          .NewVariationView__algorithms__options__option__header__icon {
+          .DevelopView__algorithms__options__option__header__icon {
             font-size: $txt-lg;
           }
         }
         &:not(.--is-open):hover {
           @include active-accordion;
         }
-        .NewVariationView__algorithms__options__option__settings {
+        .DevelopView__algorithms__options__option__settings {
           @include vh-pad($gap-lg, $gap-xl);
           width: 100%;
-          .NewVariationView__algorithms__options__option__settings__header {
+          .DevelopView__algorithms__options__option__settings__header {
             @include no-select;
             @include v-pad;
             @include b-pad($gap-xxl);
@@ -105,7 +105,7 @@
       }
     }
   }
-  .NewVariationView__suspense {
+  .DevelopView__suspense {
     width: 100%;
     @include v-mar($gap-xl);
     height: 68px;
@@ -114,13 +114,13 @@
       color: var(--primary-3);
     }
   }
-  .NewVariationView__buttons {
+  .DevelopView__buttons {
     @include v-mar($gap-xl);
     @include h-stack-c;
     width: 100%;
     gap: $gap-md;
     justify-content: space-between;
-    .NewVariationView__button {
+    .DevelopView__button {
       @include trans(0.2s);
       color: var(--txt-light);
       border: none;
@@ -145,11 +145,11 @@
       }
     }
   }
-  .NewVariationView__preview__player {
+  .DevelopView__preview__player {
     @include v-mar($gap-lg);
   }
 
-  .NewVariationView__preview__label {
+  .DevelopView__preview__label {
     @include v-mar($gap-lg);
     font-size: $txt-md;
     letter-spacing: $gap-xs;
@@ -159,8 +159,8 @@
   }
 }
 
-.dark .NewVariationView {
-  .NewVariationView__button {
+.dark .DevelopView {
+  .DevelopView__button {
     &#save {
       background-color: var(--danger-4);
       &:hover:not(:disabled) {

@@ -30,34 +30,44 @@ const MicrophoneView = () => {
 
   useEffect(() => {
     async function processRecording() {
+      // do nothing if recording in progress or no audio blob available
       if (isRecording || !audioBlob) {
         return;
       }
+      // start processing
       dispatch(micActions.togglePreprocessing());
+
+      // initialize blob, use as fallback in case of error
+      let recordingBlob = audioBlob;
+
       try {
-        const wavBlob = await encodeBlobAsWav(audioBlob);
+        // encode as wav
+        recordingBlob = await encodeBlobAsWav(audioBlob);
+
+        // create form data
         const formData = new FormData();
-        formData.append("file", wavBlob);
+        formData.append("file", recordingBlob);
         const response = await fetch(`http://18.212.195.169:8000/generate/constanttempo/?user_tempo=${tempo}`, {
           method: "PUT",
           body: formData,
         });
 
-        const processedBlob = await response.blob();
-
-        const duration = await getAudioDuration(processedBlob);
+        recordingBlob = await response.blob();
+      } catch (error: any) {
+        console.log("API call failed: ", error);
+      } finally {
+        const duration = await getAudioDuration(recordingBlob);
         const rec = {
-          url: URL.createObjectURL(processedBlob),
+          url: URL.createObjectURL(recordingBlob),
           name: recTitle || getFormattedTimestamp(),
           duration: duration,
           features: {
             tempo: tempo,
           },
         };
+
         dispatch(recordingActions.addNew(rec));
         navigate("/app/play/recordings/0/develop");
-      } catch {
-      } finally {
         dispatch(micActions.togglePreprocessing());
       }
     }

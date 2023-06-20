@@ -36,7 +36,7 @@ export default class AudioSampler extends AudioSource {
 
     // create reverb gain node
     this.reverbGain = this.context.createGain();
-    this.reverbGain.gain.value = 0.2;
+    this.reverbGain.gain.value = 0.15;
 
     // Node connexions
     this.masterGain.connect(this.reverb);

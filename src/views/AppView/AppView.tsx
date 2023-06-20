@@ -38,10 +38,10 @@ const AppView = () => {
     setCurrentViewIndex(index === -1 ? 1 : index);
     const pathArray = location.pathname.split("/").filter((x) => x !== "");
     let viewName = pathArray.at(-1) === "app" ? DEFAULT_VIEWNAME : pathArray.at(-1);
-    if (pathArray.length > 2) {
-      viewName += ` / ${pathArray[1]}`;
-    }
-    setViewHeader(`/ ${viewName}`);
+    // if (pathArray.length > 2) {
+    //   viewName += ` ${pathArray[1]}`;
+    // }
+    setViewHeader(`${viewName}`);
   }, [location]);
 
   return (

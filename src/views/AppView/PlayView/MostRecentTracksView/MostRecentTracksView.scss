@@ -9,7 +9,7 @@
     @include vh-pad($gap-sm, $gap-lg);
     @include round;
     @include stack;
-    align-self: self-end;
+    align-self: self-start;
     font-size: $txt-ms;
     font-weight: bold;
     text-transform: uppercase;
