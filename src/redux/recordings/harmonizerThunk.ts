@@ -87,31 +87,29 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     };
 
     // Render the arpeggios as audio and convert the resulting audio buffer to a Blob
-    return SamplerRenderer.renderNoteEvents(arpeggios, recording.url, settings.instrumentName as InstrumentName)
-      .then((audioBuffer) => audioBufferToBlob(audioBuffer, sampleRate, true, 0.001, -6))
-      .then(async (blob) => {
-        // Calculate the duration of the harmonized recording
-        const recDuration = await getAudioDuration(blob);
+    const audioBuffer = await SamplerRenderer.renderNoteEvents(arpeggios, recording.url, settings.instrumentName as InstrumentName);
 
-        // Create a new harmonized variation of the recording
-        return {
-          noteEvents: features.noteEvents,
-          variation: {
-            name: `${recording.name} (${settings.style} 🪕)`,
-            duration: recDuration,
-            date: JSON.stringify(new Date()),
-            url: URL.createObjectURL(blob),
-            tags: [...recording.tags, settings.style],
-            features: {
-              ...features,
-              chordEvents: [
-                // ...(!didDetectionFailed ? noteEventsToChordEvents(detectedNotes.map((note) => ({ ...note, velocity: 0.707 }))) : []),
-                ...noteEventsToChordEvents(arpeggios),
-              ],
-            },
-          },
-        };
-      });
+    const renderedBlob = audioBufferToBlob(audioBuffer, sampleRate, true, 0.001, -6);
+
+    const recDuration = await getAudioDuration(renderedBlob);
+
+    return {
+      noteEvents: features.noteEvents,
+      variation: {
+        name: `${recording.name} (${settings.style} 🪕)`,
+        duration: recDuration,
+        date: JSON.stringify(new Date()),
+        url: URL.createObjectURL(renderedBlob),
+        tags: [...recording.tags, settings.style],
+        features: {
+          ...features,
+          chordEvents: [
+            // ...(!didDetectionFailed ? noteEventsToChordEvents(detectedNotes.map((note) => ({ ...note, velocity: 0.707 }))) : []),
+            ...noteEventsToChordEvents(arpeggios),
+          ],
+        },
+      },
+    };
   } catch (error: unknown) {
     console.log(error);
   }
