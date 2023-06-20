@@ -7,7 +7,11 @@ export default defineConfig({
   assetsInclude: ["**/*.ogg", "**/*.mp3"],
   server: {
     proxy: {
-      "/instruments": "https://dxbtnxd6vjk30.cloudfront.net/",
+      "/instruments": {
+        target: "https://dxbtnxd6vjk30.cloudfront.net/",
+        changeOrigin: true,
+        rewrite: (path) => `https://dxbtnxd6vjk30.cloudfront.net/${path}`,
+      },
     },
   },
 });
