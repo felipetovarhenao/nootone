@@ -93,10 +93,10 @@ export default class AudioSampler extends AudioSource {
     source.playbackRate.value = playbackRate;
 
     const dryMix = this.context.createGain();
-    dryMix.gain.value = 1;
+    dryMix.gain.value = Math.random() * 0.15 + 0.85;
 
     const wetMix = this.context.createGain();
-    wetMix.gain.value = 0.125;
+    wetMix.gain.value = 0.25;
 
     const panner = this.context.createStereoPanner();
     panner.pan.value = Math.min(1, Math.max(0, (pitch / 127) * 2 - 1));
@@ -108,7 +108,7 @@ export default class AudioSampler extends AudioSource {
     dryMix.connect(this.masterGain);
     wetMix.connect(this.reverb);
     source.start(startTime);
-    source.stop(startTime + duration + 0.1);
+    source.stop(startTime + duration + 0.125);
     return source;
   }
 

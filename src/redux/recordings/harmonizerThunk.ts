@@ -5,7 +5,7 @@ import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import audioBufferToBlob from "../../utils/audioBufferToBlob";
 import getAudioDuration from "../../utils/getAudioDuration";
-import SamplerRenderer from "../../utils/SamplerRenderer";
+import SamplerRenderer, { InstrumentName } from "../../utils/SamplerRenderer";
 import { NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
@@ -13,15 +13,18 @@ import Arpeggiator from "../../utils/Arpeggiator";
 import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 
+export type HarmonizerSettings = {
+  style: string;
+  patternSize: number;
+  segSize: number;
+  numAttacks: number;
+  maxSubdiv: number;
+  instrumentName: string;
+};
+
 type HarmonizerPayload = {
   recording: Recording;
-  settings: {
-    style: string;
-    patternSize: number;
-    segSize: number;
-    numAttacks: number;
-    maxSubdiv: number;
-  };
+  settings: HarmonizerSettings;
 };
 
 export type HarmonizerReturnType = {
@@ -84,7 +87,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     };
 
     // Render the arpeggios as audio and convert the resulting audio buffer to a Blob
-    return SamplerRenderer.renderNoteEvents(arpeggios, recording.url)
+    return SamplerRenderer.renderNoteEvents(arpeggios, recording.url, settings.instrumentName as InstrumentName)
       .then((audioBuffer) => audioBufferToBlob(audioBuffer, sampleRate, true, 0.001, -6))
       .then(async (blob) => {
         // Calculate the duration of the harmonized recording

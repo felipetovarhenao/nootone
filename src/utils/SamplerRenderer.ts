@@ -1,39 +1,29 @@
 import AudioSampler from "./AudioSampler";
-
-import note1 from "../assets/audio/guitar/48-p.mp3";
-import note2 from "../assets/audio/guitar/48-f.mp3";
-import note3 from "../assets/audio/guitar/54-p.mp3";
-import note4 from "../assets/audio/guitar/54-f.mp3";
-import note5 from "../assets/audio/guitar/72-p.mp3";
-import note6 from "../assets/audio/guitar/72-f.mp3";
-import note7 from "../assets/audio/guitar/78-f.mp3";
-import note9 from "../assets/audio/guitar/78-p.mp3";
-import note10 from "../assets/audio/guitar/60-p.mp3";
-import note11 from "../assets/audio/guitar/60-f.mp3";
-import note12 from "../assets/audio/guitar/42-f.mp3";
-import note13 from "../assets/audio/guitar/66-p.mp3";
-import note14 from "../assets/audio/guitar/66-f.mp3";
-import note15 from "../assets/audio/guitar/42-p.mp3";
-
 import { NoteEvent } from "../types/music";
 import renderAudioOffline from "./renderAudioOffline";
 import createNewAudioContext from "./createNewAudioContext";
 import audioArrayFromURL from "./audioArrayFromURL";
 import reverbURL from "../assets/audio/impulseResponses/Five_columns_long.mp3";
+import generateAudioUrls from "./generateAudioUrls";
 
-const GUITAR_NOTES = [note1, note2, note3, note4, note5, note6, note7, note9, note10, note11, note12, note13, note14, note15];
+const INSTRUMENTS = {
+  guitar: generateAudioUrls("guitar", 42, 68),
+  piano: generateAudioUrls("piano", 21, 99),
+};
+
+export type InstrumentName = "guitar" | "piano";
 
 export default class SamplerRenderer {
-  public static async renderNoteEventsCallback(audioContext: OfflineAudioContext, noteEvents: NoteEvent[]) {
+  public static async renderNoteEventsCallback(audioContext: OfflineAudioContext, noteEvents: NoteEvent[], instrumentName: InstrumentName) {
     const sampler = new AudioSampler(audioContext);
-    return sampler.loadSamples(GUITAR_NOTES).then(() => {
+    return sampler.loadSamples(INSTRUMENTS[instrumentName]).then(() => {
       noteEvents.forEach((note) => {
         sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration + 0.1);
       });
     });
   }
 
-  public static async renderNoteEvents(noteEvents: NoteEvent[], url: string): Promise<AudioBuffer> {
+  public static async renderNoteEvents(noteEvents: NoteEvent[], url: string, instrumentName: InstrumentName = "piano"): Promise<AudioBuffer> {
     const ctx = createNewAudioContext();
     const { array } = await audioArrayFromURL(url, ctx.sampleRate);
     let lastNoteOutset = 0;
@@ -62,7 +52,7 @@ export default class SamplerRenderer {
 
         // Start playback
         sourceNode.start(0);
-        return SamplerRenderer.renderNoteEventsCallback(audioContext, noteEvents);
+        return SamplerRenderer.renderNoteEventsCallback(audioContext, noteEvents, instrumentName);
       },
       ctx.sampleRate,
       totalDuration

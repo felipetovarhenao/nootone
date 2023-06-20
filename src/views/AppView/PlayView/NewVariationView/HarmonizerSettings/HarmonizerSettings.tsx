@@ -4,6 +4,7 @@ import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
 import randomChoice from "../../../../../utils/randomChoice";
 import getRandomNumber from "../../../../../utils/getRandomNumber";
+import { HarmonizerSettings as NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizerThunk";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -64,24 +65,37 @@ const complexity = [
     value: [1, 3],
   },
   {
-    label: "moderate",
+    label: "normal",
     value: [4, 9],
   },
   {
-    label: "dense",
+    label: "complex",
     value: [9, 16],
+  },
+];
+
+const instrumentOptions = [
+  {
+    label: "piano",
+    value: "piano",
+  },
+  {
+    label: "guitar",
+    value: "guitar",
   },
 ];
 
 type HarmonizerSettingsProps = {
   name: string;
-  setSettings: (prevSettings: any) => void;
+  setSettings: (prevSettings: NoteHarmonizerSettings) => void;
   setProcess: (prevProcess: string) => void;
 };
+
 const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSettingsProps) => {
   const [styleIndex, setStyleIndex] = useState(0);
   const [timeSigIndex, setTimeSigIndex] = useState(0);
   const [complexityIndex, setComplexityIndex] = useState(0);
+  const [instrumentIndex, setInstrumentIndex] = useState(0);
 
   function handleStyleChange(id: number) {
     setStyleIndex(id);
@@ -96,6 +110,10 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   function handleComplexityChange(id: number) {
     setComplexityIndex(id);
     localStorage.setItem("harmonizerComplexityIndex", String(id));
+  }
+
+  function handleInstrumentSelection(id: number) {
+    setInstrumentIndex(id);
   }
 
   useEffect(() => {
@@ -143,15 +161,17 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   useEffect(() => {
     const patternSize = timeSigs[timeSigIndex].value.patternSize;
-    const segSize = randomChoice(timeSigs[timeSigIndex].value.segSizes);
+    const segSize = randomChoice(timeSigs[timeSigIndex].value.segSizes) as number;
     const numAttacks = getRandomNumber(...(complexity[complexityIndex].value as [number, number]));
     const maxSubdiv = timeSigs[timeSigIndex].value.maxSubdiv;
+    const instrumentName = instrumentOptions[instrumentIndex].value;
     setSettings({
       style: styles[styleIndex],
       patternSize,
       segSize,
       numAttacks,
       maxSubdiv,
+      instrumentName,
     });
   }, [styleIndex, timeSigIndex, complexityIndex]);
 
@@ -180,6 +200,14 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       <h1 className="HarmonizerSettings__label">bar</h1>
       <SwipeMenu defaultValue={timeSigIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleTimeSigSelection}>
         {timeSigs.map((ts, i) => (
+          <span key={i} className="HarmonizerSettings__swipe-menu__option">
+            {ts.label}
+          </span>
+        ))}
+      </SwipeMenu>
+      <h1 className="HarmonizerSettings__label">instrument</h1>
+      <SwipeMenu defaultValue={instrumentIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleInstrumentSelection}>
+        {instrumentOptions.map((ts, i) => (
           <span key={i} className="HarmonizerSettings__swipe-menu__option">
             {ts.label}
           </span>
