@@ -3,6 +3,7 @@ import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
 import { HarmonizerSettings as NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizerThunk";
+import { InstrumentName } from "../../../../../types/music";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -74,12 +75,12 @@ const complexity = [
 
 const instrumentOptions = [
   {
-    label: "piano",
-    value: "piano",
+    label: InstrumentName.PIANO,
+    value: InstrumentName.PIANO,
   },
   {
-    label: "guitar",
-    value: "guitar",
+    label: InstrumentName.GUITAR,
+    value: InstrumentName.GUITAR,
   },
 ];
 

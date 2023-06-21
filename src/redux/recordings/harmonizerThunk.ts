@@ -5,8 +5,8 @@ import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import audioBufferToBlob from "../../utils/audioBufferToBlob";
 import getAudioDuration from "../../utils/getAudioDuration";
-import SamplerRenderer, { InstrumentName } from "../../utils/SamplerRenderer";
-import { NoteEvent } from "../../types/music";
+import SamplerRenderer from "../../utils/SamplerRenderer";
+import { InstrumentName, NoteEvent } from "../../types/music";
 import { Recording } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
 import Arpeggiator from "../../utils/Arpeggiator";
@@ -21,7 +21,7 @@ export type HarmonizerSettings = {
   segSizes: number[];
   numAttacksRange: [number, number];
   maxSubdiv: number;
-  instrumentName: string;
+  instrumentName: InstrumentName;
 };
 
 type HarmonizerPayload = {

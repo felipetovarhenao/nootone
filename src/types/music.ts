@@ -14,3 +14,13 @@ export type NoteEventSegment = {
   onset: number;
   notes: NoteEvent[];
 };
+
+export enum InstrumentName {
+  PIANO = "piano",
+  GUITAR = "guitar",
+}
+
+export type InstrumentalPart = {
+  name: InstrumentName;
+  chordEvents: ChordEvent[];
+};

@@ -1,5 +1,5 @@
 import AudioSampler from "./AudioSampler";
-import { NoteEvent } from "../types/music";
+import { InstrumentName, NoteEvent } from "../types/music";
 import renderAudioOffline from "./renderAudioOffline";
 import createNewAudioContext from "./createNewAudioContext";
 import audioArrayFromURL from "./audioArrayFromURL";
@@ -7,11 +7,9 @@ import reverbURL from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 import generateAudioUrls from "./generateAudioUrls";
 
 const INSTRUMENTS = {
-  guitar: generateAudioUrls("guitar", 42, 68),
-  piano: generateAudioUrls("piano", 21, 99),
+  guitar: generateAudioUrls(InstrumentName.GUITAR, 42, 68),
+  piano: generateAudioUrls(InstrumentName.PIANO, 21, 99),
 };
-
-export type InstrumentName = "guitar" | "piano";
 
 export default class SamplerRenderer {
   public static async renderNoteEventsCallback(audioContext: OfflineAudioContext, noteEvents: NoteEvent[], instrumentName: InstrumentName) {
@@ -23,7 +21,11 @@ export default class SamplerRenderer {
     });
   }
 
-  public static async renderNoteEvents(noteEvents: NoteEvent[], url: string, instrumentName: InstrumentName = "piano"): Promise<AudioBuffer> {
+  public static async renderNoteEvents(
+    noteEvents: NoteEvent[],
+    url: string,
+    instrumentName: InstrumentName = InstrumentName.PIANO
+  ): Promise<AudioBuffer> {
     const ctx = createNewAudioContext();
     const { array } = await audioArrayFromURL(url, ctx.sampleRate);
     let lastNoteOutset = 0;

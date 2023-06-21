@@ -1,4 +1,6 @@
-export default function generateAudioUrls(instrumentName: string, minValue: number, maxValue: number, increment: number = 6): string[] {
+import { InstrumentName } from "../types/music";
+
+export default function generateAudioUrls(instrumentName: InstrumentName, minValue: number, maxValue: number, increment: number = 6): string[] {
   const urls: string[] = [];
   let value = minValue;
 

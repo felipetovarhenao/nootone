@@ -12,6 +12,12 @@ export default class NoteHarmonizer {
   private chordCollection: number[][] | string | null;
 
   static CHORD_COLLECTIONS: { [key: string]: number[][] } = {
+    pentatonic: [
+      [0, 4, 7, 9, 2],
+      [4, 0, 7, 9, 2],
+      [0, 3, 7, 10, 5],
+      [3, 0, 7, 10, 5],
+    ],
     pop: [
       // root position
       [0, 3, 7, 5], // m+P4
@@ -157,12 +163,6 @@ export default class NoteHarmonizer {
     //   [3, 0, 4, 7, 11], // M#9M7
     //   [3, 0, 4, 7, 6], // M#9#11
     // ],
-    pentatonic: [
-      [0, 4, 7, 9, 2],
-      [4, 0, 7, 9, 2],
-      [0, 3, 7, 10, 5],
-      [3, 0, 7, 10, 5],
-    ],
   };
 
   /**
@@ -198,7 +198,7 @@ export default class NoteHarmonizer {
 
   /**
    * Converts a note array into segments of specified size.
-   * @param {NoteEvent[]} notes - The input note array.
+   * @param {NoteEvent[]} noteEvents - The input note array.
    * @param {number} segSize - The size of segments.
    * @returns {NoteEventSegment[]} An array of segments.
    */
