@@ -42,6 +42,11 @@ export default function connectChords(A: number[], B: number[]): number[] {
       // Update the closest pitch and minimum distance if the current distance is smaller
       if (absClosestDistance < minDistance) {
         closestPitch = A[i] + closestDistance;
+        if (closestPitch < 42) {
+          closestPitch += 12;
+        } else if (closestPitch > 85) {
+          closestPitch -= 12;
+        }
         minDistance = absClosestDistance;
       }
     }

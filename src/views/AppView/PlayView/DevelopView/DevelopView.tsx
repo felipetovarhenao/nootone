@@ -67,7 +67,7 @@ const DevelopView = () => {
   }, [process]);
 
   return (
-    <ViewContainer viewName="develop">
+    <ViewContainer viewName="">
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">
