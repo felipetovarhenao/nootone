@@ -3,7 +3,7 @@ import useAudioRecorder from "../../../../hooks/useAudioRecorder";
 import Icon from "../../../../components/Icon/Icon";
 import cn from "classnames";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
@@ -26,7 +26,8 @@ const MicrophoneView = () => {
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const [recTitle, setRecTitle] = useState(createUniqueTitle());
-  const { tempo } = useAppSelector((state) => state.mic);
+  const { tempo, numCountBeats } = useAppSelector((state) => state.mic);
+  const startTime = useRef(0);
 
   useEffect(() => {
     async function processRecording() {
@@ -42,8 +43,7 @@ const MicrophoneView = () => {
 
       try {
         // encode as wav
-        recordingBlob = await encodeBlobAsWav(audioBlob);
-
+        recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo) });
         // create form data
         const formData = new FormData();
         formData.append("file", recordingBlob);
@@ -105,6 +105,7 @@ const MicrophoneView = () => {
                 await Tone.start();
               }
               if (navigator.mediaDevices?.getUserMedia!) {
+                startTime.current = Date.now();
                 dispatch(micActions.toggle());
                 startRecording();
               } else if (!isRecording) {
@@ -121,6 +122,10 @@ const MicrophoneView = () => {
             padding={30}
             className="MicrophoneView__icon"
             onClick={() => {
+              // don't stop recording if counter is still active
+              if (Date.now() - startTime.current < numCountBeats * (60000 / tempo)) {
+                return;
+              }
               dispatch(micActions.toggle());
               stopRecording();
             }}

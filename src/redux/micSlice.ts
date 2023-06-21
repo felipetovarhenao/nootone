@@ -13,12 +13,14 @@ type InitialState = {
   isRecording: boolean;
   isPreprocessing: boolean;
   tempo: number;
+  numCountBeats: number;
 };
 
 const initialState: InitialState = {
   isRecording: false,
   isPreprocessing: false,
   tempo: getTempoCache() || 90,
+  numCountBeats: 4,
 };
 
 const mic = createSlice({

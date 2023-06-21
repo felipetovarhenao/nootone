@@ -13,7 +13,8 @@ export default function audioBufferToBlob(
   sampleRate: number,
   normalize: boolean = true,
   crossFadeDuration: number = 0.05,
-  maxdB: number = -6
+  maxdB: number = -6,
+  startTime: number = 0
 ) {
   // Float32Array samples
   const isMono = audioBuffer.numberOfChannels === 1;
@@ -23,11 +24,16 @@ export default function audioBufferToBlob(
   // initialize normalization value with -1 to prevent zero division (at best phase is inverted)
   let normValue = -1;
 
+  const startOffset = Math.floor(startTime * sampleRate);
+
+  const leftLength = Math.max(0, left.length - startOffset);
+  const rightLength = Math.max(0, right.length - startOffset);
+
   // initialized interleaved WAV output file
-  const interleaved = new Float32Array(left.length + right.length);
+  const interleaved = new Float32Array(leftLength + rightLength);
 
   // Combine left and right channels into an interleaved array
-  for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
+  for (let src = startOffset, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
     // track normalization value;
     normValue = Math.max(normValue, Math.abs(left[src]));
 
@@ -41,8 +47,8 @@ export default function audioBufferToBlob(
     // apply crossfade
     if (crossFadeSamples > 0) {
       // crossfade at start
-      if (src < crossFadeSamples) {
-        const xfade = src / crossFadeSamples;
+      if (src - startOffset < crossFadeSamples) {
+        const xfade = (src - startOffset) / crossFadeSamples;
         interleaved[dst] *= xfade;
         if (!isMono) {
           interleaved[dst] *= xfade;
@@ -62,7 +68,7 @@ export default function audioBufferToBlob(
     normValue *= 1 / dbToGain(maxdB); // adjust to ~-10dB
 
     // Normalize the audio by dividing each sample by the maximum value
-    for (let src = 0, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
+    for (let src = startOffset, dst = 0; src < left.length; src++, dst += isMono ? 1 : 2) {
       interleaved[dst] /= normValue;
       if (!isMono) {
         interleaved[dst + 1] /= normValue;
