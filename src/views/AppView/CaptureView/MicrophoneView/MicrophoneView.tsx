@@ -47,7 +47,7 @@ const MicrophoneView = () => {
         // create form data
         const formData = new FormData();
         formData.append("file", recordingBlob);
-        const response = await fetch(`http://18.212.195.169:8000/generate/constanttempo/?user_tempo=${tempo}`, {
+        const response = await fetch(`https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`, {
           method: "PUT",
           body: formData,
         });
