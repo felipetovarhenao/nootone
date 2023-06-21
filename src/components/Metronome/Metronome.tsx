@@ -43,8 +43,8 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     const gainNode = new Tone.Gain(0.1).toDestination();
     const synth = new Tone.Synth({
       oscillator: {
-        type: "pwm",
-        modulationFrequency: 0.2,
+        type: "sine",
+        // modulationFrequency: 0.2,
       },
       envelope: {
         attack: 0,
@@ -88,6 +88,9 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
           const number = numCountBeats - Math.floor(normalizedTime);
           if (number > -numCountBeats) {
             contextRef.current.fillStyle = `rgba(255, 255, 255, ${number > 0 || number - 1 === -numCountBeats ? alpha : 1})`;
+            if (number <= 0) {
+              contextRef.current.font = "bold 24px Nunito";
+            }
             contextRef.current.fillText(number > 0 ? String(number) : "REC", canvasDims.width / 2, canvasDims.height / 2 + 4); // (text, x, y)
           }
         }, time);
