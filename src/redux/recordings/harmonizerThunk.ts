@@ -12,12 +12,14 @@ import detectPitch from "../../utils/detectPitch";
 import Arpeggiator from "../../utils/Arpeggiator";
 import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
+import randomChoice from "../../utils/randomChoice";
+import getRandomNumber from "../../utils/getRandomNumber";
 
 export type HarmonizerSettings = {
   style: string;
   patternSize: number;
-  segSize: number;
-  numAttacks: number;
+  segSizes: number[];
+  numAttacksRange: [number, number];
   maxSubdiv: number;
   instrumentName: string;
 };
@@ -55,7 +57,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     }
 
     // Calculate the segmenƒt size based on the tempo (default to 60 BPM if not provided)
-    const segSize = (60 / recording.features.tempo! || 60) * settings.segSize;
+    const segSize = (60 / recording.features.tempo! || 60) * randomChoice(settings.segSizes)!;
 
     // Harmonize the detected notes using the NoteHarmonizer class
     const harmonicBlocks = new NoteHarmonizer().harmonize(
@@ -75,7 +77,12 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
 
-    const config = Arpeggiator.genRandomConfig({ patternSize: settings.patternSize, numAttacks: settings.numAttacks, maxSubdiv: settings.maxSubdiv });
+    const config = Arpeggiator.genRandomConfig({
+      patternSize: settings.patternSize,
+      numAttacks: getRandomNumber(...settings.numAttacksRange),
+      maxSubdiv: settings.maxSubdiv,
+    });
+
     const arpeggios = chordEventsToNoteEvents(
       Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
     );

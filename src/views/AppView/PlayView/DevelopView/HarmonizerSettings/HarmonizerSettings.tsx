@@ -2,8 +2,6 @@ import "./HarmonizerSettings.scss";
 import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
-import randomChoice from "../../../../../utils/randomChoice";
-import getRandomNumber from "../../../../../utils/getRandomNumber";
 import { HarmonizerSettings as NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizerThunk";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
@@ -62,11 +60,11 @@ const timeSigs = [
 const complexity = [
   {
     label: "simple",
-    value: [1, 3],
+    value: [1, 4],
   },
   {
     label: "normal",
-    value: [4, 9],
+    value: [5, 9],
   },
   {
     label: "complex",
@@ -114,6 +112,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   function handleInstrumentSelection(id: number) {
     setInstrumentIndex(id);
+    localStorage.setItem("harmonizerInstrumentIndex", String(id));
   }
 
   useEffect(() => {
@@ -148,6 +147,16 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
           setComplexityIndex(val);
         },
       },
+      {
+        key: "harmonizerInstrumentIndex",
+        setter: (value: string) => {
+          const val = parseInt(value);
+          if (val < 0 || val >= instrumentOptions.length) {
+            return;
+          }
+          setInstrumentIndex(val);
+        },
+      },
     ];
 
     cacheList.forEach((param) => {
@@ -161,15 +170,13 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   useEffect(() => {
     const patternSize = timeSigs[timeSigIndex].value.patternSize;
-    const segSize = randomChoice(timeSigs[timeSigIndex].value.segSizes) as number;
-    const numAttacks = getRandomNumber(...(complexity[complexityIndex].value as [number, number]));
     const maxSubdiv = timeSigs[timeSigIndex].value.maxSubdiv;
     const instrumentName = instrumentOptions[instrumentIndex].value;
     setSettings({
       style: styles[styleIndex],
       patternSize,
-      segSize,
-      numAttacks,
+      segSizes: timeSigs[timeSigIndex].value.segSizes,
+      numAttacksRange: complexity[complexityIndex].value as [number, number],
       maxSubdiv,
       instrumentName,
     });
