@@ -96,7 +96,7 @@ const MicrophoneView = () => {
             </span>
           ))}
         </TextCarousel>
-        {false ? (
+        {!isRecording ? (
           <Icon
             className={cn("MicrophoneView__icon", { "--is-recording": isRecording })}
             icon={"fluent:record-48-regular"}
