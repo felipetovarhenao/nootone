@@ -33,7 +33,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
           audio: {
             echoCancellation: false,
             autoGainControl: false,
-            noiseSuppression: false,
+            noiseSuppression: true,
           },
           video: false,
         })
