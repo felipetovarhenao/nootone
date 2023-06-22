@@ -10,12 +10,14 @@ type InitialState = {
   selectedRecordingIndex: number | null;
   recordings: Recording[];
   variationBuffer: RecordingVariation | null;
+  keptVariationsBuffer: RecordingVariation[];
 };
 
 const initialState: InitialState = {
   isProcessing: false,
   selectedRecordingIndex: null,
   variationBuffer: null,
+  keptVariationsBuffer: [],
   recordings: [],
 };
 
@@ -47,6 +49,7 @@ const recordings = createSlice({
     keepVariation: (state) => {
       if (state.selectedRecordingIndex !== null && state.variationBuffer) {
         state.recordings[state.selectedRecordingIndex].variations.unshift(state.variationBuffer);
+        state.keptVariationsBuffer.push(state.variationBuffer);
         state.variationBuffer = null;
       }
     },
@@ -63,6 +66,7 @@ const recordings = createSlice({
     },
     clearVariationBuffer: (state) => {
       state.variationBuffer = null;
+      state.keptVariationsBuffer = [];
     },
   },
   extraReducers: (builder) => {

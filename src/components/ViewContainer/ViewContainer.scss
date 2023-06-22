@@ -10,7 +10,7 @@
     align-items: center;
     .ViewContainer__header__back-button {
       @include clickable;
-      font-size: $txt-xxl;
+      font-size: calc($txt-xxl * 1.125);
       * {
         @include hyperlink;
       }

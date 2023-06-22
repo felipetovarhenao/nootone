@@ -21,8 +21,9 @@ const ViewContainer = ({ onGoBack, className, viewName, children }: ViewContaine
           onClick={() => {
             if (onGoBack) {
               onGoBack();
+            } else {
+              navigate(-1);
             }
-            navigate(-1);
           }}
           icon={icons.back}
         />

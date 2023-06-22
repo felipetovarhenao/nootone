@@ -17,7 +17,7 @@ const DevelopView = () => {
   const location = useLocation();
   const [settings, setSettings] = useState({});
   const [process, setProcess] = useState("");
-  const { selectedRecordingIndex, recordings, variationBuffer, isProcessing } = useAppSelector((state) => state.recordings);
+  const { selectedRecordingIndex, recordings, variationBuffer, isProcessing, keptVariationsBuffer } = useAppSelector((state) => state.recordings);
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const DevelopView = () => {
   }, [process]);
 
   return (
-    <ViewContainer viewName="">
+    <ViewContainer viewName="" onGoBack={() => navigate("/app/play")}>
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">
@@ -77,8 +77,17 @@ const DevelopView = () => {
             <div></div>
           </div>
           <AudioPlayer className="DevelopView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
+          {keptVariationsBuffer.length > 0 && (
+            <div className="DevelopView__kept-variations">
+              <h1 className="DevelopView__kept-variations__label">my new variations</h1>
+              <div className="DevelopView__kept-variations__container">
+                {keptVariationsBuffer.map((variation, i) => (
+                  <AudioPlayer className="DevelopView__kept-variations__container__variation" key={i} rec={variation} />
+                ))}
+              </div>
+            </div>
+          )}
           <div className="DevelopView__algorithms">
-            {/* <h2 className="DevelopView__algorithms__prompt">What would you like to do with your idea?</h2> */}
             <Accordion className="DevelopView__algorithms__options">
               {processingOptions.map((opt) => (
                 <AccordionItem
@@ -100,12 +109,7 @@ const DevelopView = () => {
                     )}
                     {isProcessing && <Icon className="DevelopView__suspense" icon={icons.processing} />}
                     <div className="DevelopView__buttons">
-                      <Button
-                        disabled={isProcessing}
-                        id="generate"
-                        className="DevelopView__button"
-                        onClick={() => handleGenerate(process, settings)}
-                      >
+                      <Button disabled={isProcessing} id="generate" className="DevelopView__button" onClick={() => handleGenerate(process, settings)}>
                         <Icon icon={icons.lab} />
                         {variationBuffer ? "try again" : "generate"}
                       </Button>
@@ -116,7 +120,7 @@ const DevelopView = () => {
                           className="DevelopView__button"
                           onClick={() => {
                             dispatch(recordingActions.keepVariation());
-                            navigate("/app/play/");
+                            // navigate("/app/play/");
                           }}
                         >
                           <Icon icon={icons.heart} />

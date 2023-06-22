@@ -103,7 +103,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     return {
       noteEvents: features.noteEvents,
       variation: {
-        name: `${recording.name} (${settings.style} 🪕)`,
+        name: `${recording.name} (${settings.style} ${settings.instrumentName === InstrumentName.PIANO ? "🎹" : "🪕"})`,
         duration: recDuration,
         date: JSON.stringify(new Date()),
         url: URL.createObjectURL(renderedBlob),

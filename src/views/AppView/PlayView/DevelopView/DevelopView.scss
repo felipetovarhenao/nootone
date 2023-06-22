@@ -33,6 +33,36 @@
     max-width: 500px;
   }
 
+  .DevelopView__kept-variations {
+    @include v-stack-c;
+    @include h-center;
+    @include vh-pad($gap-md, $gap-xxl);
+    @include v-center;
+    @include h-mar(auto);
+    gap: $gap-lg;
+    max-width: 600px;
+    width: 100%;
+    .DevelopView__kept-variations__label {
+      width: 100%;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: var(--disabled-3);
+    }
+    .DevelopView__kept-variations__container {
+      @include round-border;
+      @include v-stack;
+      @include v-pad($gap-ml);
+      width: 100%;
+      overflow: auto;
+      max-height: 200px;
+      background-color: var(--bg-3);
+      gap: $gap-xl;
+      .DevelopView__kept-variations__container__variation {
+        scale: 0.9;
+      }
+    }
+  }
+
   .DevelopView__algorithms {
     @include h-mar(auto);
     @include v-stack-c;
