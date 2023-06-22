@@ -266,8 +266,8 @@ export default class Arpeggiator {
         arpeggioSequence.push(arpChordEvent);
       }
     }
-    const lastChordDuration = sortedChords.at(-1)!.notes[0].duration;
-    const lastChord = { ...sortedChords.at(-1)!, onset: Math.ceil(arpeggioSequence.at(-1)!.onset / lastChordDuration) * lastChordDuration };
+    const lastChord = { ...sortedChords.at(-1)! };
+    lastChord.onset = numPatterns * patternDuration;
     lastChord.notes.forEach((n) => {
       n.velocity = Math.random() * 0.5 + 0.5;
     });
