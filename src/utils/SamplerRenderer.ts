@@ -15,9 +15,9 @@ export default class SamplerRenderer {
   public static async renderNoteEventsCallback(audioContext: OfflineAudioContext, noteEvents: NoteEvent[], instrumentName: InstrumentName) {
     const sampler = new AudioSampler(audioContext);
     return sampler.loadSamples(INSTRUMENTS[instrumentName]).then(() => {
-      noteEvents.forEach((note) => {
-        sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration + 0.1);
-      });
+        noteEvents.forEach((note) => {
+          sampler.playNote(note.onset, note.pitch, note.velocity || 1, note.duration + 0.1);
+        });
     });
   }
 
@@ -43,7 +43,7 @@ export default class SamplerRenderer {
         sourceNode.buffer = audioBuffer;
         const reverb = audioContext.createConvolver();
         const reverbGain = audioContext.createGain();
-        reverbGain.gain.value = 0.1;
+        reverbGain.gain.value = 0.125;
         await audioArrayFromURL(reverbURL).then(({ array }) => {
           reverb.buffer = new AudioSampler().arrayToBuffer(array);
         });

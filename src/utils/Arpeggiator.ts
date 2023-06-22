@@ -1,4 +1,12 @@
 import { ChordEvent } from "../types/music";
+import getRandomNumber from "./getRandomNumber";
+import randomChoice from "./randomChoice";
+import wrapValue from "./wrapValue";
+
+type ArpeggioPattern = {
+  onset: number;
+  indices: number[];
+}[];
 
 export default class Arpeggiator {
   /**
@@ -105,7 +113,7 @@ export default class Arpeggiator {
    * @param B - An array of onset positions.
    * @returns An array of grouped indices with their corresponding onset positions.
    */
-  private static groupIndices(A: [number, number][], B: number[]): { onset: number; indices: number[] }[] {
+  private static groupIndices(A: [number, number][], B: number[]): ArpeggioPattern {
     const result: { onset: number; indices: number[] }[] = [];
     for (const [onset, index] of A) {
       let minDiff = Infinity;
@@ -215,8 +223,6 @@ export default class Arpeggiator {
     const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
     const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
 
-    const velocityPattern = this.getRandomVelocityPattern(arpeggioPattern);
-
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
     const timeOffset = sortedChords[0].onset;
@@ -231,10 +237,12 @@ export default class Arpeggiator {
     let lastChordReached = false;
     const numChords = sortedChords.length;
 
+    const velocityPattern = this.getRandomVelocityPattern(arpeggioPattern);
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
-      for (let e = 0; e < arpeggioPattern.length; e++) {
-        const event = arpeggioPattern[e];
+      const variation = this.getArpeggioPatternVariation(arpeggioPattern, quantumUnit, patternDuration);
+      for (let e = 0; e < variation.length; e++) {
+        const event = variation[e];
         const onset = event.onset + patternOffset;
         if (currentChord === null || (onset >= nextChordOnset! && !lastChordReached)) {
           // Find the next chord event
@@ -258,7 +266,8 @@ export default class Arpeggiator {
           notes: event.indices.map((index, k) => {
             const note = { ...currentChord!.notes[Math.floor(index * (currentChord!.notes.length - 1))] };
             note.duration = note.duration - (event.onset % note.duration);
-            note.velocity = velocityPattern[e][k];
+            const eventVelocities = velocityPattern[wrapValue(e, velocityPattern.length)];
+            note.velocity = eventVelocities[wrapValue(k, eventVelocities.length)];
             return note;
           }),
         };
@@ -274,5 +283,73 @@ export default class Arpeggiator {
     arpeggioSequence.push(lastChord);
 
     return arpeggioSequence;
+  }
+
+  private static getArpeggioPatternVariation(arpegioPattern: ArpeggioPattern, quantumUnit: number, patternDuration: number) {
+    const arpeggioCopy = JSON.parse(JSON.stringify(arpegioPattern)) as ArpeggioPattern;
+    const actions = ["prune", "add", "shuffle"];
+
+    function getOnsets(arp: ArpeggioPattern) {
+      const maxAttacks = patternDuration / quantumUnit;
+      const emptyOnsets = [];
+      const activeOnsets = arp.map((x) => x.onset);
+      for (let i = 0; i < maxAttacks; i++) {
+        const onset = i * quantumUnit;
+        if (!activeOnsets.includes(onset)) {
+          emptyOnsets.push(onset);
+        }
+      }
+      return { emptyOnsets, activeOnsets };
+    }
+
+    function prune(arp: ArpeggioPattern) {
+      if (arp.length === 1) {
+        return;
+      }
+      const index = getRandomNumber(1, arp.length);
+      return arp.splice(index, 1);
+    }
+
+    function add(arp: ArpeggioPattern) {
+      const { emptyOnsets } = getOnsets(arp);
+      if (emptyOnsets.length === 0) {
+        return;
+      }
+      const newOnset = randomChoice(emptyOnsets) as number;
+      arp.push({ onset: newOnset, indices: [Math.random()] });
+    }
+
+    function shuffle(arp: ArpeggioPattern) {
+      if (arp.length === 1) {
+        return;
+      }
+      const { emptyOnsets } = getOnsets(arp);
+      if (emptyOnsets.length === 0) {
+        return;
+      }
+      const oldEventIndex = getRandomNumber(1, arp.length);
+      const newOnset = randomChoice(emptyOnsets) as number;
+      const oldEvent = arp[oldEventIndex];
+      const newEvent = { ...oldEvent, onset: newOnset };
+      arp.splice(oldEventIndex, 1);
+      arp.push(newEvent);
+    }
+    const numChanges = getRandomNumber(1, 2);
+    for (let i = 0; i < numChanges; i++) {
+      const action = randomChoice(actions) as string;
+      switch (action) {
+        case "prune":
+          prune(arpeggioCopy);
+          break;
+        case "add":
+          add(arpeggioCopy);
+          break;
+        default:
+          shuffle(arpeggioCopy);
+          break;
+      }
+    }
+    arpeggioCopy.sort((a, b) => a.onset - b.onset);
+    return arpeggioCopy;
   }
 }

@@ -33,7 +33,7 @@ const useTempoTap = (initialTempo: number = 120, bufferSize: number = 4, sensiti
     tapBuffer.current.push(time);
 
     // Return if the buffer is not yet filled to the desired size
-    if (tapBuffer.current.length < 3) {
+    if (tapBuffer.current.length < 2) {
       return;
     }
 
@@ -49,7 +49,7 @@ const useTempoTap = (initialTempo: number = 120, bufferSize: number = 4, sensiti
     }
 
     // Calculate the new tempo based on sensitivity and previous tempo
-    let newTempo = sensitivity * (60000 / (deltaSum / (bufferSize - 1))) + (1 - sensitivity) * tempo;
+    let newTempo = sensitivity * (60000 / (deltaSum / (tapBuffer.current.length - 1))) + (1 - sensitivity) * tempo;
 
     // Round the tempo to the nearest integer
     newTempo = Math.round(newTempo);
