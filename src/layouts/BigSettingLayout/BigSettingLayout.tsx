@@ -11,17 +11,18 @@ type BigSettingLayoutProps = {
   onSwipedDown?: () => void;
   unit?: string;
   label: string;
+  disabled?: boolean;
 };
 
-const BigSettingLayout = ({ onSwipedDown, onSwipedUp, children, unit = "", className, label, onClick }: BigSettingLayoutProps) => {
+const BigSettingLayout = ({ onSwipedDown, onSwipedUp, children, unit = "", className, label, onClick, disabled = false }: BigSettingLayoutProps) => {
   const handlers = useSwipeable({
     onSwipedUp: () => {
-      if (onSwipedUp) {
+      if (!disabled && onSwipedUp) {
         onSwipedUp();
       }
     },
     onSwipedDown: () => {
-      if (onSwipedDown) {
+      if (!disabled && onSwipedDown) {
         onSwipedDown();
       }
     },
@@ -31,7 +32,16 @@ const BigSettingLayout = ({ onSwipedDown, onSwipedUp, children, unit = "", class
 
   return (
     <div className={cn(className, "BigSettingLayout")}>
-      <div onClick={onClick} className="BigSettingLayout__value" {...handlers}>
+      <div
+        onClick={() => {
+          if (disabled) {
+            return;
+          }
+          onClick;
+        }}
+        className="BigSettingLayout__value"
+        {...handlers}
+      >
         {children}
         <span className="BigSettingLayout__value__unit">{unit}</span>
       </div>

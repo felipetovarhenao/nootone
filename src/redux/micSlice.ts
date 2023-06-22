@@ -14,6 +14,7 @@ type InitialState = {
   isPreprocessing: boolean;
   tempo: number;
   numCountBeats: number;
+  referencePitch: number;
 };
 
 const initialState: InitialState = {
@@ -21,6 +22,7 @@ const initialState: InitialState = {
   isPreprocessing: false,
   tempo: getTempoCache() || 90,
   numCountBeats: 4,
+  referencePitch: 69,
 };
 
 const mic = createSlice({
@@ -39,6 +41,9 @@ const mic = createSlice({
     },
     setNumCountBeats: (state, action: PayloadAction<number>) => {
       state.numCountBeats = action.payload;
+    },
+    setReferencePitch: (state, action: PayloadAction<number>) => {
+      state.referencePitch = (action.payload % 12) + 60;
     },
   },
 });

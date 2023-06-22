@@ -4,6 +4,7 @@ import getResponsiveCanvasContext from "../../utils/getResponsiveCanvasContext";
 import cn from "classnames";
 import * as Tone from "tone";
 import { useAppSelector } from "../../redux/hooks";
+import pitchToFrequency from "../../utils/pitchToFrequency";
 
 /**
  * Metronome component that displays a visual metronome using a canvas element.
@@ -23,7 +24,7 @@ type MetronomeProps = {
 const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, onClick, padding = 0 }: MetronomeProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const { numCountBeats } = useAppSelector((state) => state.mic);
+  const { numCountBeats, referencePitch } = useAppSelector((state) => state.mic);
 
   useEffect(() => {
     // Sets up the canvas and animation when the component mounts.
@@ -57,7 +58,8 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     Tone.Transport.scheduleRepeat(function (time) {
       const beatDuration = 60 / Tone.Transport.bpm.value;
       if (time - offset < beatDuration * numCountBeats) {
-        synth.triggerAttackRelease(440, "8t", time);
+        const fq = pitchToFrequency(referencePitch);
+        synth.triggerAttackRelease(fq, "8t", time);
       }
     }, "4n");
 

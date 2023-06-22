@@ -5,8 +5,9 @@ import { micActions } from "../../redux/micSlice";
 
 type CountdownSettingsLayoutProps = {
   className?: string;
+  disabled?: boolean;
 };
-const CountdownSettingsLayout = ({ className }: CountdownSettingsLayoutProps) => {
+const CountdownSettingsLayout = ({ className, disabled }: CountdownSettingsLayoutProps) => {
   const { numCountBeats } = useAppSelector((state) => state.mic);
   const dispatch = useAppDispatch();
 
@@ -24,6 +25,7 @@ const CountdownSettingsLayout = ({ className }: CountdownSettingsLayoutProps) =>
       onSwipedDown={() => handleBeatCountChange(-1)}
       onSwipedUp={() => handleBeatCountChange(1)}
       unit="beats"
+      disabled={disabled}
     >
       {numCountBeats}
     </BigSettingLayout>
