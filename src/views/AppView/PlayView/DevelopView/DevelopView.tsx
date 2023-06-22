@@ -12,12 +12,13 @@ import Accordion, { AccordionItem } from "../../../../components/Accordion/Accor
 import Button from "../../../../components/Button/Button";
 import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
 import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
+import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVariationsLayout";
 
 const DevelopView = () => {
   const location = useLocation();
   const [settings, setSettings] = useState({});
   const [process, setProcess] = useState("");
-  const { selectedRecordingIndex, recordings, variationBuffer, isProcessing, keptVariationsBuffer } = useAppSelector((state) => state.recordings);
+  const { selectedRecordingIndex, recordings, variationBuffer, isProcessing } = useAppSelector((state) => state.recordings);
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const navigate = useNavigate();
@@ -77,16 +78,7 @@ const DevelopView = () => {
             <div></div>
           </div>
           <AudioPlayer className="DevelopView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
-          {keptVariationsBuffer.length > 0 && (
-            <div className="DevelopView__kept-variations">
-              <h1 className="DevelopView__kept-variations__label">my new variations ({keptVariationsBuffer.length})</h1>
-              <div className="DevelopView__kept-variations__container">
-                {keptVariationsBuffer.map((variation, i) => (
-                  <AudioPlayer className="DevelopView__kept-variations__container__variation" key={i} rec={variation} />
-                ))}
-              </div>
-            </div>
-          )}
+          <NewVariationsLayout />
           <div className="DevelopView__algorithms">
             <Accordion className="DevelopView__algorithms__options">
               {processingOptions.map((opt) => (
@@ -120,7 +112,6 @@ const DevelopView = () => {
                           className="DevelopView__button"
                           onClick={() => {
                             dispatch(recordingActions.keepVariation());
-                            // navigate("/app/play/");
                           }}
                         >
                           <Icon icon={icons.heart} />

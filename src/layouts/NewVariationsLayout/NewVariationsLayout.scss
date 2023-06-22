@@ -1,0 +1,31 @@
+@use "../../styles/main.scss" as *;
+
+.NewVariationsLayout {
+  @include v-stack-c;
+  @include h-center;
+  @include vh-pad($gap-md, $gap-xxl);
+  @include v-center;
+  @include h-mar(auto);
+  gap: $gap-lg;
+  max-width: 600px;
+  width: 100%;
+  .NewVariationsLayout__label {
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--disabled-3);
+  }
+  .NewVariationsLayout__container {
+    @include round-border;
+    @include v-stack;
+    @include v-pad($gap-ml);
+    width: 100%;
+    overflow: auto;
+    max-height: 200px;
+    background-color: var(--bg-3);
+    gap: $gap-xl;
+    .NewVariationsLayout__container__variation {
+      scale: 0.9;
+    }
+  }
+}
