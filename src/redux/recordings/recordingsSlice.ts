@@ -111,9 +111,20 @@ const recordings = createSlice({
       state.isProcessing = false;
       if (action.payload) {
         if (state.selectedRecordingIndex !== null) {
+          const existingTitles = state.recordings[state.selectedRecordingIndex].variations.map((x) => x.name);
+          let currentTitle = action.payload.variation.name;
+          let v = 1;
+
+          while (true) {
+            if (!existingTitles.includes(`${currentTitle} v${v}`)) {
+              break;
+            }
+            v++;
+          }
+          action.payload.variation.name = `${currentTitle} v${v}`;
           state.recordings[state.selectedRecordingIndex].features.noteEvents = action.payload.noteEvents;
+          state.variationBuffer = action.payload.variation;
         }
-        state.variationBuffer = action.payload.variation;
       }
     });
     builder.addCase(harmonize.rejected, (state) => {
