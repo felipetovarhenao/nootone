@@ -41,7 +41,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     contextRef.current.textAlign = "center";
     contextRef.current.textBaseline = "middle";
 
-    const gainNode = new Tone.Gain(0.1).toDestination();
+    const gainNode = new Tone.Gain(0.15).toDestination();
     const synth = new Tone.Synth({
       oscillator: {
         type: "sine",
@@ -49,7 +49,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
       },
       envelope: {
         attack: 0,
-        decay: 0.1,
+        decay: 0.3,
         sustain: 0,
         release: 0.1,
       },
@@ -59,7 +59,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
       const beatDuration = 60 / Tone.Transport.bpm.value;
       if (time - offset < beatDuration * numCountBeats) {
         const fq = pitchToFrequency(referencePitch);
-        synth.triggerAttackRelease(fq, "8t", time);
+        synth.triggerAttackRelease(fq, "1n", time);
       }
     }, "4n");
 
