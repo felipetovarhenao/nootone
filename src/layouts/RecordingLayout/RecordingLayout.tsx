@@ -29,7 +29,12 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         </Button>
       </div>
       {rec.variations?.length > 0 && (
-        <Dropdown className="RecordingLayout__variations" openByDefault={true} legendClosed="show variations" legendOpen="hide variations">
+        <Dropdown
+          className="RecordingLayout__variations"
+          openByDefault={true}
+          legendClosed={`show variations (${rec.variations?.length})`}
+          legendOpen={`hide variations (${rec.variations?.length})`}
+        >
           {rec.variations?.map((variation: GenericRecording, i) => (
             <div key={i} className="RecordingLayout__player-container">
               <AudioPlayer defaultGain={globalVolume} className="RecordingLayout__variations__variation" key={i} rec={variation} />
