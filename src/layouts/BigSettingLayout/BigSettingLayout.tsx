@@ -34,10 +34,10 @@ const BigSettingLayout = ({ onSwipedDown, onSwipedUp, children, unit = "", class
     <div className={cn(className, "BigSettingLayout")}>
       <div
         onClick={() => {
-          if (disabled) {
+          if (disabled || !onClick) {
             return;
           }
-          onClick;
+          onClick();
         }}
         className="BigSettingLayout__value"
         {...handlers}
