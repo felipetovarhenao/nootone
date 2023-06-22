@@ -2,20 +2,24 @@ import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import BigSettingLayout from "../BigSettingLayout/BigSettingLayout";
 import { micActions } from "../../redux/micSlice";
+import { useState } from "react";
+import wrapValue from "../../utils/wrapValue";
 
 type CountdownSettingsLayoutProps = {
   className?: string;
   disabled?: boolean;
 };
+
+const countValues = [0, 2, 3, 4, 5, 6];
 const CountdownSettingsLayout = ({ className, disabled }: CountdownSettingsLayoutProps) => {
   const { numCountBeats } = useAppSelector((state) => state.mic);
+  const [countIndex, setCountIndex] = useState(countValues.indexOf(4) || 3);
   const dispatch = useAppDispatch();
 
   function handleBeatCountChange(increment: number) {
-    if ((numCountBeats <= 2 && increment < 0) || (numCountBeats >= 6 && increment > 0)) {
-      return;
-    }
-    dispatch(micActions.setNumCountBeats(numCountBeats + increment));
+    const newIndex = wrapValue(countIndex + increment, countValues.length);
+    setCountIndex(newIndex);
+    dispatch(micActions.setNumCountBeats(countValues[newIndex]));
   }
 
   return (
@@ -27,7 +31,7 @@ const CountdownSettingsLayout = ({ className, disabled }: CountdownSettingsLayou
       unit="beats"
       disabled={disabled}
     >
-      {numCountBeats}
+      {numCountBeats === 0 ? "NO" : numCountBeats}
     </BigSettingLayout>
   );
 };

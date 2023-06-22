@@ -39,7 +39,7 @@ const BigSettingLayout = ({ onSwipedDown, onSwipedUp, children, unit = "", class
           }
           onClick();
         }}
-        className="BigSettingLayout__value"
+        className={cn("BigSettingLayout__value", { "--disabled": disabled })}
         {...handlers}
       >
         {children}

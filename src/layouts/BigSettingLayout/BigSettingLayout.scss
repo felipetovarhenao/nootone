@@ -37,6 +37,10 @@
     &:hover {
       filter: brightness(120%);
     }
+    &.--disabled {
+      background: none;
+      background-color: var(--disabled-3);
+    }
     .BigSettingLayout__value__unit {
       line-height: 95%;
       text-align: center;

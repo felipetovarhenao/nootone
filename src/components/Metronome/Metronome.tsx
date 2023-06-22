@@ -41,7 +41,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
     contextRef.current.textAlign = "center";
     contextRef.current.textBaseline = "middle";
 
-    const gainNode = new Tone.Gain(0.15).toDestination();
+    const gainNode = new Tone.Gain(0.2).toDestination();
     const synth = new Tone.Synth({
       oscillator: {
         type: "sine",
