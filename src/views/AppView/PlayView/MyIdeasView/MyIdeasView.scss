@@ -1,6 +1,6 @@
 @use "../../../../styles/main.scss" as *;
 
-.MostRecentTracksView {
+.MyIdeasView {
   @include v-stack;
   @include vh-pad($gap-lg, $gap-xxl);
   width: 100%;

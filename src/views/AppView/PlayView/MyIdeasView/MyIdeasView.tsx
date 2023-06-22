@@ -1,13 +1,13 @@
-import "./MostRecentTracksView.scss";
+import "./MyIdeasView.scss";
 import RecordingLayout from "../../../../layouts/RecordingLayout/RecordingLayout";
 import { useAppSelector } from "../../../../redux/hooks";
 
-const MostRecentTracksView = () => {
+const MyIdeasView = () => {
   const { recordings } = useAppSelector((state) => state.recordings);
 
   return (
-    <div className="MostRecentTracksView">
-      <h1 className="TracksView__header">my ideas</h1>
+    <div className="MyIdeasView">
+      <h1 className="TracksView__header">my ideas ({recordings.length})</h1>
       <div className="TracksView__recordings">
         {[...recordings]
           .sort((a, b) => b.date?.localeCompare(a.date || "0"))
@@ -19,4 +19,4 @@ const MostRecentTracksView = () => {
   );
 };
 
-export default MostRecentTracksView;
+export default MyIdeasView;

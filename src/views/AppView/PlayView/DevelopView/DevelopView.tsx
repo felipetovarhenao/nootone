@@ -79,7 +79,7 @@ const DevelopView = () => {
           <AudioPlayer className="DevelopView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
           {keptVariationsBuffer.length > 0 && (
             <div className="DevelopView__kept-variations">
-              <h1 className="DevelopView__kept-variations__label">my new variations</h1>
+              <h1 className="DevelopView__kept-variations__label">my new variations ({keptVariationsBuffer.length})</h1>
               <div className="DevelopView__kept-variations__container">
                 {keptVariationsBuffer.map((variation, i) => (
                   <AudioPlayer className="DevelopView__kept-variations__container__variation" key={i} rec={variation} />
