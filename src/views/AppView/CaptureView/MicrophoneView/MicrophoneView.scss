@@ -76,8 +76,15 @@
       }
     }
   }
-  .MicrophoneView__tapper {
-    height: 100%;
+  .MicrophoneView__settings {
+    @include h-mar(auto);
+    @include h-pad($gap-lg);
+    max-width: 350px;
+    width: 100%;
+    .MicrophoneView__settings__setting {
+      height: 100%;
+      width: 100%;
+    }
   }
 }
 

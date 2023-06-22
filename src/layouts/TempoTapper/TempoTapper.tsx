@@ -4,25 +4,15 @@ import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { micActions } from "../../redux/micSlice";
 import { useEffect } from "react";
-import { useSwipeable } from "react-swipeable";
 import findNearestValue from "../../utils/findNearestValue";
 import wrapValue from "../../utils/wrapValue";
+import BigSettingLayout from "../BigSettingLayout/BigSettingLayout";
 
 const TempoTapper = ({ className }: { className?: string }) => {
   const { tempo } = useAppSelector((state) => state.mic);
   const dispatch = useAppDispatch();
 
   const { tempo: tapperTempo, tapTempo, setTempo } = useTempoTap(tempo);
-  const handlers = useSwipeable({
-    onSwipedUp: () => {
-      handleTempoSwipe(1);
-    },
-    onSwipedDown: () => {
-      handleTempoSwipe(-1);
-    },
-    trackTouch: true,
-    trackMouse: true,
-  });
 
   function handleTempoSwipe(num: number) {
     const id = findNearestValue(metronomeTempi, tempo)[1];
@@ -36,14 +26,16 @@ const TempoTapper = ({ className }: { className?: string }) => {
   }, [tapperTempo]);
 
   return (
-    <div className={cn(className, "TempoTapper")}>
-      <div onClick={tapTempo} className="TempoTapper__tempo" {...handlers}>
-        {tapperTempo}
-      </div>
-      <span className="TempoTapper__text">
-        <div className="TempoTapper__text__slide">tap or swipe tempo</div>
-      </span>
-    </div>
+    <BigSettingLayout
+      className={cn(className, "TempoTapper")}
+      onClick={tapTempo}
+      label="tap or swipe &#8597;"
+      onSwipedDown={() => handleTempoSwipe(-1)}
+      onSwipedUp={() => handleTempoSwipe(1)}
+      unit="bpm"
+    >
+      {tapperTempo}
+    </BigSettingLayout>
   );
 };
 

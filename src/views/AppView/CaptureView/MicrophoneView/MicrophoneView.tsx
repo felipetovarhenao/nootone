@@ -16,6 +16,8 @@ import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
 import Metronome from "../../../../components/Metronome/Metronome";
 import encodeBlobAsWav from "../../../../utils/encodeBlobAsWav";
 import * as Tone from "tone";
+import SwipeMenu from "../../../../components/SwipeMenu/SwipeMenu";
+import CountdownSettingsLayout from "../../../../layouts/CountdownSettingsLayout/CountdownSettingsLayout";
 
 const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle a song", "make music!"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
@@ -134,7 +136,10 @@ const MicrophoneView = () => {
           />
         )}
       </div>
-      <TempoTapper className="MicrophoneView__tapper" />
+      <SwipeMenu className="MicrophoneView__settings">
+        <TempoTapper className="MicrophoneView__settings__setting" />
+        <CountdownSettingsLayout className="MicrophoneView__settings__setting" />
+      </SwipeMenu>
     </div>
   );
 };

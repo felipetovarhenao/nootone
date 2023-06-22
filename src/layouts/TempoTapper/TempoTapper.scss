@@ -1,58 +1,46 @@
-@use "../../styles/main.scss" as *;
+// @use "../../styles/main.scss" as *;
 
-.TempoTapper {
-  @include v-stack-c;
-  @include center;
-  height: min-content;
-  .TempoTapper__text {
-    .TempoTapper__text__slide {
-      text-align: center;
-      min-width: 100px;
-    }
-    &,
-    * {
-      @include v-pad;
-      @include no-select;
-      align-self: center;
-      font-size: $txt-ms;
-      text-transform: uppercase;
-      color: var(--disabled-3);
-    }
-  }
-  .TempoTapper__tempo {
-    @include no-select;
-    @include vh-pad($gap-sm, $gap-xl);
-    @include round;
-    @include clickable;
-    @include trans;
-    align-self: center;
-    background: var(--main-gradient);
-    font-weight: bold;
-    font-size: $txt-xl;
-    color: var(--txt-light);
-    &:hover {
-      filter: brightness(120%);
-    }
-  }
-  .TempoTapper__blinker {
-    @include round(100%);
-    @include v-mar($gap-xxl);
-    align-self: center;
-    height: $txt-lg;
-    width: $txt-lg;
-    background-color: var(--secondary-3);
-    box-shadow: 0px 0px 10px var(--secondary-4);
-  }
-}
+// .TempoTapper {
+//   @include v-stack-c;
+//   @include center;
+//   height: min-content;
+//   .TempoTapper__text {
+//     .TempoTapper__text__slide {
+//       text-align: center;
+//       min-width: 100px;
+//     }
+//     &,
+//     * {
+//       @include v-pad;
+//       @include no-select;
+//       align-self: center;
+//       font-size: $txt-ms;
+//       text-transform: uppercase;
+//       color: var(--disabled-3);
+//     }
+//   }
+//   .TempoTapper__tempo {
+//     @include big-value-look;
+//   }
+//   .TempoTapper__blinker {
+//     @include round(100%);
+//     @include v-mar($gap-xxl);
+//     align-self: center;
+//     height: $txt-lg;
+//     width: $txt-lg;
+//     background-color: var(--secondary-3);
+//     box-shadow: 0px 0px 10px var(--secondary-4);
+//   }
+// }
 
-@keyframes blink {
-  0% {
-    opacity: 0%;
-  }
-  5% {
-    opacity: 100%;
-  }
-  100% {
-    opacity: 0%;
-  }
-}
+// @keyframes blink {
+//   0% {
+//     opacity: 0%;
+//   }
+//   5% {
+//     opacity: 100%;
+//   }
+//   100% {
+//     opacity: 0%;
+//   }
+// }

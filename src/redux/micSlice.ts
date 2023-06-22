@@ -37,6 +37,9 @@ const mic = createSlice({
     togglePreprocessing: (state) => {
       state.isPreprocessing = !state.isPreprocessing;
     },
+    setNumCountBeats: (state, action: PayloadAction<number>) => {
+      state.numCountBeats = action.payload;
+    },
   },
 });
 

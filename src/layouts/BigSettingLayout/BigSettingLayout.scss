@@ -1,0 +1,49 @@
+@use "../../styles/main.scss" as *;
+
+.BigSettingLayout {
+  @include v-stack-c;
+  @include center;
+  height: min-content;
+  gap: $gap-md;
+  .BigSettingLayout__text {
+    .BigSettingLayout__text__slide {
+      text-align: center;
+      min-width: 100px;
+    }
+    &,
+    * {
+      @include v-pad;
+      @include no-select;
+      align-self: center;
+      font-size: $txt-ms;
+      text-transform: uppercase;
+      color: var(--disabled-3);
+    }
+  }
+  .BigSettingLayout__value {
+    @include v-stack;
+    @include no-select;
+    @include vh-pad($gap-sm, $gap-xl);
+    @include round;
+    @include clickable;
+    @include trans;
+    align-self: center;
+    background: var(--main-gradient);
+    font-weight: bold;
+    font-size: $txt-xl;
+    color: var(--txt-light);
+    text-align: center;
+    line-height: 95%;
+    &:hover {
+      filter: brightness(120%);
+    }
+    .BigSettingLayout__value__unit {
+      line-height: 95%;
+      text-align: center;
+      font-size: $txt-sm;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: var(--txt-light);
+    }
+  }
+}

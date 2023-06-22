@@ -33,7 +33,7 @@ const useTempoTap = (initialTempo: number = 120, bufferSize: number = 4, sensiti
     tapBuffer.current.push(time);
 
     // Return if the buffer is not yet filled to the desired size
-    if (tapBuffer.current.length < bufferSize) {
+    if (tapBuffer.current.length < 3) {
       return;
     }
 
