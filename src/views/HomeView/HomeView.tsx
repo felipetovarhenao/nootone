@@ -7,14 +7,14 @@ import cn from "classnames";
 
 import useScrollPosition from "../../hooks/useScrollPosition";
 
-// import TeamAnchor from "./TeamAnchor/TeamAnchor";
+import TeamAnchor from "./TeamAnchor/TeamAnchor";
 import AboutAnchor from "./AboutAnchor/AboutAnchor";
 import ContactAnchor from "./ContactAnchor/ContactAnchor";
 
 const HomeView: React.FC = () => {
   const [darkTheme, setDarkTheme] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
-  // const teamRef = useRef<HTMLDivElement>(null);
+  const teamRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
 
   const scrollPosition = useScrollPosition();
@@ -24,10 +24,10 @@ const HomeView: React.FC = () => {
       label: "About",
       ref: aboutRef,
     },
-    // {
-    //   label: "Team",
-    //   ref: teamRef,
-    // },
+    {
+      label: "Team",
+      ref: teamRef,
+    },
     {
       label: "Contact",
       ref: contactRef,
@@ -44,7 +44,7 @@ const HomeView: React.FC = () => {
       </AnchorNavbar>
       <div className="content">
         <AboutAnchor ref={aboutRef} />
-        {/* <TeamAnchor ref={teamRef} /> */}
+        <TeamAnchor ref={teamRef} />
         <ContactAnchor ref={contactRef} />
         <footer className="footer">Sound icons created by Freepik - Flaticon</footer>
       </div>
