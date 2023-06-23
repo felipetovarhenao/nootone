@@ -57,7 +57,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
 
     Tone.Transport.scheduleRepeat(function (time) {
       const beatDuration = 60 / Tone.Transport.bpm.value;
-      if (time - offset < beatDuration * numCountBeats) {
+      if (time - offset < beatDuration * numCountBeats * 0.99) {
         const fq = pitchToFrequency(referencePitch);
         synth.triggerAttackRelease(fq, "1n", time);
       }
