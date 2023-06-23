@@ -83,9 +83,13 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
       maxSubdiv: settings.maxSubdiv,
     });
 
-    const arpeggios = chordEventsToNoteEvents(
-      Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
-    );
+    let arpeggios = notes;
+
+    if (config.numAttacks > 1) {
+      arpeggios = chordEventsToNoteEvents(
+        Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+      );
+    }
 
     // Update the features of the recording
     const features = {

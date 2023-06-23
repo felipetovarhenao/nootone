@@ -61,12 +61,16 @@ const timeSigs = [
 
 const complexity = [
   {
+    label: "minimal",
+    value: [1, 2],
+  },
+  {
     label: "simple",
-    value: [1, 4],
+    value: [2, 4],
   },
   {
     label: "normal",
-    value: [5, 9],
+    value: [4, 9],
   },
   {
     label: "complex",
