@@ -1,11 +1,11 @@
 import "./RecordingSettingsView.scss";
-import AudioPlayer from "../../../../components/AudioPlayer/AudioPlayer";
 import Button from "../../../../components/Button/Button";
 import Icon from "../../../../components/Icon/Icon";
 import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 import { useAppSelector } from "../../../../redux/hooks";
 import icons from "../../../../utils/icons";
 import { useRef } from "react";
+import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 
 const RecordingSettingsView = () => {
   const { recordings, selectedRecordingIndex } = useAppSelector((state) => state.recordings);
@@ -16,10 +16,10 @@ const RecordingSettingsView = () => {
   const tags = useRef<string[]>([...recordings[selectedRecordingIndex].tags]);
   return (
     <ViewContainer className="RecordingSettingsView" viewName="recording settings">
-      <AudioPlayer rec={recordings[selectedRecordingIndex]} />
+      <WaveSurferPlayer rec={recordings[selectedRecordingIndex]} />
       {recordings[selectedRecordingIndex].variations.map((recVar, i) => (
         <>
-          <AudioPlayer key={i} rec={recVar} />
+          <WaveSurferPlayer key={i} rec={recVar} />
           {recVar.tags.map((tag: string, j) => (
             <span key={j}>{tag}</span>
           ))}

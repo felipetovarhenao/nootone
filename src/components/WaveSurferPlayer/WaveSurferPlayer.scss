@@ -1,0 +1,46 @@
+@use "../../styles/main.scss" as *;
+
+.WaveSurferPlayer {
+  .WaveSurferPlayer__title {
+    @include l-pad($gap-md);
+    font-weight: bold;
+    color: var(--txt);
+  }
+  .WaveSurferPlayer__container {
+    @include h-stack-c;
+    width: 100%;
+    gap: $gap-lg;
+    .WaveSurferPlayer__playback {
+      @include h-stack-c;
+      gap: $gap-ms;
+      .WaveSurferPlayer__playback__toggle,
+      .WaveSurferPlayer__playback__restart {
+        @include clickable;
+        @include pad;
+        @include round(100%);
+        background-color: var(--primary-3);
+        &:hover {
+          background-color: var(--primary-4);
+        }
+        * {
+          color: var(--txt-light);
+        }
+      }
+      .WaveSurferPlayer__playback__toggle {
+        font-size: calc($txt-xxl * 1.25);
+      }
+    }
+    .WaveSurferPlayer__display {
+      display: grid;
+      grid-template-columns: auto min-content;
+      width: 100%;
+      gap: $gap-ml;
+      overflow: hidden;
+      .WaveSurferPlayer__display__duration {
+        color: var(--disabled-3);
+        vertical-align: middle;
+        align-self: center;
+      }
+    }
+  }
+}

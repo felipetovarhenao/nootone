@@ -1,109 +1,150 @@
-@use "../../styles/main.scss" as *;
-.AudioPlayer {
-  @include h-stack-c;
-  width: 100%;
-  gap: $gap-lg;
-  .AudioPlayer__playback {
-    @include h-stack-c;
-    gap: $gap-ms;
-    .AudioPlayer__playback__toggle,
-    .AudioPlayer__playback__restart {
-      @include clickable;
-      @include pad;
-      @include round(100%);
-      background-color: var(--primary-3);
-      &:hover {
-        background-color: var(--primary-4);
-      }
-      * {
-        color: var(--txt-light);
-      }
-    }
-    .AudioPlayer__playback__toggle {
-      font-size: calc($txt-xxl * 1.25);
-    }
-  }
-  .AudioPlayer__main-container {
-    @include v-stack;
-    width: 100%;
-    gap: $gap-lg;
-    // .AudioPlayer__main-container__waveform {
-    // @include v-pad($gap-xxl);
-    // }
-    .AudioPlayer__main-container__timeline {
-      display: grid;
-      grid-template-columns: auto min-content;
-      width: 100%;
-      gap: $gap-ml;
-      overflow: hidden;
-      .AudioPlayer__main-container__timeline__progress {
-        @include clickable;
-        @include stack;
-        @include round-border;
-        align-self: center;
-        width: 100%;
-        height: $gap-lg;
-        min-width: 50px;
-        background-color: var(--bg-4);
-        .AudioPlayer__main-container__timeline__progress__inner {
-          @include round;
-          height: 100%;
-          background: var(--main-gradient);
-        }
-      }
-      .AudioPlayer__main-container__timeline__duration {
-        color: var(--disabled-3);
-        vertical-align: middle;
-      }
-      .AudioPlayer__main-container__timeline__volume {
-        @include h-stack;
-        width: 75%;
-        align-self: end;
-        justify-self: flex-end;
-        gap: $gap-md;
-        .AudioPlayer__main-container__timeline__volume__icon {
-          font-size: $txt-lg;
-          * {
-            color: var(--txt);
-          }
-        }
-        .AudioPlayer__main-container__timeline__volume__slider {
-          @include clickable;
-          background-color: transparent;
-          -webkit-appearance: none;
-          appearance: none;
-          text-decoration: none;
-          width: 100%;
-          /* track */
-          &::-webkit-slider-runnable-track {
-            @include range-track;
-          }
-          &::-moz-range-track {
-            @include range-track;
-          }
-          &::-ms-track {
-            @include range-track;
-          }
-          /* thumb */
-          &::-webkit-slider-thumb {
-            @include range-thumb;
-          }
-          &::-moz-range-thumb {
-            @include range-thumb;
-          }
-          &::-ms-thumb {
-            @include range-thumb;
-          }
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-    }
-  }
-}
-.AudioPlayer__main-container__title {
-  @include l-pad($gap-md);
-  font-weight: bold;
-  color: var(--txt);
-}
+// @use "../../styles/main.scss" as *;
+// .AudioPlayer {
+//   @include h-stack-c;
+//   width: 100%;
+//   gap: $gap-lg;
+//   .AudioPlayer__playback {
+//     @include h-stack-c;
+//     gap: $gap-ms;
+//     .AudioPlayer__playback__toggle,
+//     .AudioPlayer__playback__restart {
+//       @include clickable;
+//       @include pad;
+//       @include round(100%);
+//       background-color: var(--primary-3);
+//       &:hover {
+//         background-color: var(--primary-4);
+//       }
+//       * {
+//         color: var(--txt-light);
+//       }
+//     }
+//     .AudioPlayer__playback__toggle {
+//       font-size: calc($txt-xxl * 1.25);
+//     }
+//   }
+//   .AudioPlayer__main-container {
+//     // @include v-stack;
+//     // width: 100%;
+//     // gap: $gap-lg;
+//     // // .AudioPlayer__main-container__waveform {
+//     // // @include v-pad($gap-xxl);
+//     // // }
+//     display: grid;
+//     grid-template-columns: auto min-content;
+//     width: 100%;
+//     gap: $gap-ml;
+//     overflow: hidden;
+//     .AudioPlayer__main-container__timeline {
+//       display: grid;
+//       grid-template-columns: auto min-content;
+//       width: 100%;
+//       gap: $gap-ml;
+//       overflow: hidden;
+//       .AudioPlayer__main-container__timeline__progress {
+//         @include clickable;
+//         @include stack;
+//         @include round-border;
+//         align-self: center;
+//         width: 100%;
+//         height: $gap-lg;
+//         min-width: 50px;
+//         background-color: var(--bg-4);
+//         .AudioPlayer__main-container__timeline__progress__inner {
+//           @include round;
+//           height: 100%;
+//           background: var(--main-gradient);
+//         }
+//       }
+
+//       .AudioPlayer__main-container__timeline__volume {
+//         @include h-stack;
+//         width: 75%;
+//         align-self: end;
+//         justify-self: flex-end;
+//         gap: $gap-md;
+//         .AudioPlayer__main-container__timeline__volume__icon {
+//           font-size: $txt-lg;
+//           * {
+//             color: var(--txt);
+//           }
+//         }
+//         .AudioPlayer__main-container__timeline__volume__slider {
+//           @include clickable;
+//           background-color: transparent;
+//           -webkit-appearance: none;
+//           appearance: none;
+//           text-decoration: none;
+//           width: 100%;
+//           /* track */
+//           &::-webkit-slider-runnable-track {
+//             @include range-track;
+//           }
+//           &::-moz-range-track {
+//             @include range-track;
+//           }
+//           &::-ms-track {
+//             @include range-track;
+//           }
+//           /* thumb */
+//           &::-webkit-slider-thumb {
+//             @include range-thumb;
+//           }
+//           &::-moz-range-thumb {
+//             @include range-thumb;
+//           }
+//           &::-ms-thumb {
+//             @include range-thumb;
+//           }
+//           &:focus {
+//             outline: none;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// .WaveSurferPlayer {
+//   .WaveSurferPlayer__title {
+//     @include l-pad($gap-md);
+//     font-weight: bold;
+//     color: var(--txt);
+//   }
+//   .WaveSurferPlayer__container {
+//     @include h-stack-c;
+//     width: 100%;
+//     gap: $gap-lg;
+//     .WaveSurferPlayer__playback {
+//       @include h-stack-c;
+//       gap: $gap-ms;
+//       .WaveSurferPlayer__playback__toggle,
+//       .WaveSurferPlayer__playback__restart {
+//         @include clickable;
+//         @include pad;
+//         @include round(100%);
+//         background-color: var(--primary-3);
+//         &:hover {
+//           background-color: var(--primary-4);
+//         }
+//         * {
+//           color: var(--txt-light);
+//         }
+//       }
+//       .WaveSurferPlayer__playback__toggle {
+//         font-size: calc($txt-xxl * 1.25);
+//       }
+//     }
+//     .WaveSurferPlayer__display {
+//       display: grid;
+//       grid-template-columns: auto min-content;
+//       width: 100%;
+//       gap: $gap-ml;
+//       overflow: hidden;
+//       .WaveSurferPlayer__display__duration {
+//         color: var(--disabled-3);
+//         vertical-align: middle;
+//         align-self: center;
+//       }
+//     }
+//   }
+// }

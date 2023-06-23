@@ -1,9 +1,11 @@
+import "./WaveSurferPlayer.scss";
 import classNames from "classnames";
 import { useRef, useState, useEffect, useCallback, RefObject } from "react";
 import WaveSurfer, { WaveSurferOptions } from "wavesurfer.js";
 import { GenericRecording } from "../../types/audio";
 import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
+import formatTime from "../../utils/formatTime";
 
 export const useWavesurfer = (containerRef: RefObject<HTMLDivElement | null>, options: Omit<WaveSurferOptions, "container">): WaveSurfer | null => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
@@ -23,7 +25,7 @@ export const useWavesurfer = (containerRef: RefObject<HTMLDivElement | null>, op
     return () => {
       ws.destroy();
     };
-  }, []);
+  }, [options.url]);
 
   return wavesurfer;
 };
@@ -73,14 +75,15 @@ const WaveSurferPlayer = ({ className, rec, showTitle = true }: WaveSurferPlayer
 
   return (
     <div className={classNames(className, "WaveSurferPlayer")} style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }}>
-      <span className="AudioPlayer__main-container__title">{showTitle && rec.name}</span>
-      <div className="AudioPlayer">
-        <div className="AudioPlayer__playback">
-          <Icon className="AudioPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={onPlayClick} />
-          <Icon className="AudioPlayer__playback__restart" icon={icons.restart} onClick={() => wavesurfer?.seekTo(0)} />
+      <span className="WaveSurferPlayer__title">{showTitle && rec.name}</span>
+      <div className="WaveSurferPlayer__container">
+        <div className="WaveSurferPlayer__playback">
+          <Icon className="WaveSurferPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={onPlayClick} />
+          <Icon className="WaveSurferPlayer__playback__restart" icon={icons.restart} onClick={() => wavesurfer?.seekTo(0)} />
         </div>
-        <div className="AudioPlayer__main-container">
-          <div className="AudioPlayer__main-container__waveform" ref={containerRef} style={{ width: "100%" }} />
+        <div className="WaveSurferPlayer__display">
+          <div className="WaveSurferPlayer__display__waveform" ref={containerRef} style={{ width: "100%" }} />
+          <div className="WaveSurferPlayer__display__duration">{formatTime(rec.duration)}</div>
         </div>
       </div>
     </div>
