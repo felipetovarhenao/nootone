@@ -1,7 +1,7 @@
 import "./NewVariationsLayout.scss";
-import AudioPlayer from "../../components/AudioPlayer/AudioPlayer";
 import { useAppSelector } from "../../redux/hooks";
 import { useEffect, useRef } from "react";
+import WaveSurferPlayer from "../../components/WaveSurferPlayer/WaveSurferPlayer";
 
 const NewVariationsLayout = () => {
   const { keptVariationsBuffer } = useAppSelector((state) => state.recordings);
@@ -23,7 +23,7 @@ const NewVariationsLayout = () => {
       <h1 className="NewVariationsLayout__label">my new variations ({keptVariationsBuffer.length})</h1>
       <div ref={containerRef} className="NewVariationsLayout__container">
         {keptVariationsBuffer.map((variation, i) => (
-          <AudioPlayer className="NewVariationsLayout__container__variation" key={i} rec={variation} />
+          <WaveSurferPlayer className="NewVariationsLayout__container__variation" key={i} rec={variation} />
         ))}
       </div>
     </div>

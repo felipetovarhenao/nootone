@@ -1,24 +1,22 @@
 import "./RecordingLayout.scss";
-import AudioPlayer from "../../components/AudioPlayer/AudioPlayer";
 import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import icons from "../../utils/icons";
 import { GenericRecording, Recording } from "../../types/audio";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import AudioPlayerOptions from "../AudioPlayerOptions/AudioPlayerOptions";
+import WaveSurferPlayer from "../../components/WaveSurferPlayer/WaveSurferPlayer";
 
 const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }) => {
   const navigate = useNavigate();
-  const [globalVolume, setGlobalVolume] = useState(0.707);
 
   return (
     <div className="RecordingLayout">
       <div className="RecordingLayout__main-container">
         <span className="RecordingLayout__date">{rec.date}</span>
         <div className="RecordingLayout__player-container">
-          <AudioPlayer onGainChange={setGlobalVolume} showGain={true} className="RecordingLayout__player" rec={rec} />
+          <WaveSurferPlayer rec={rec} className="RecordingLayout__player" />
           <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={rec} />
         </div>
       </div>
@@ -37,7 +35,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         >
           {rec.variations?.map((variation: GenericRecording, i) => (
             <div key={i} className="RecordingLayout__player-container">
-              <AudioPlayer defaultGain={globalVolume} className="RecordingLayout__variations__variation" key={i} rec={variation} />
+              <WaveSurferPlayer key={i} rec={variation} className="RecordingLayout__variations__variation" />
               <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />
             </div>
           ))}

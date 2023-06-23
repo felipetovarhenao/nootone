@@ -1,3 +1,4 @@
+import "./DevelopView.scss";
 import { ReactNode, useEffect, useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -5,14 +6,13 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import icons from "../../../../utils/icons";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
-import "./DevelopView.scss";
-import AudioPlayer from "../../../../components/AudioPlayer/AudioPlayer";
 import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 import Accordion, { AccordionItem } from "../../../../components/Accordion/Accordion";
 import Button from "../../../../components/Button/Button";
 import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
 import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
 import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVariationsLayout";
+import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 
 const DevelopView = () => {
   const location = useLocation();
@@ -77,7 +77,7 @@ const DevelopView = () => {
             </div>
             <div></div>
           </div>
-          <AudioPlayer className="DevelopView__player" showTitle={false} rec={recordings[selectedRecordingIndex]} />
+          <WaveSurferPlayer className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
           <NewVariationsLayout />
           <div className="DevelopView__algorithms">
             <Accordion className="DevelopView__algorithms__options">
@@ -96,7 +96,7 @@ const DevelopView = () => {
                     {variationBuffer && (
                       <>
                         <h1 className="DevelopView__preview__label">preview</h1>
-                        <AudioPlayer className="DevelopView__preview__player" rec={variationBuffer} />
+                        <WaveSurferPlayer className="DevelopView__preview__player" rec={variationBuffer} />
                       </>
                     )}
                     {isProcessing && <Icon className="DevelopView__suspense" icon={icons.processing} />}

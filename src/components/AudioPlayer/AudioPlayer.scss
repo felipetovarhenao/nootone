@@ -24,11 +24,12 @@
     }
   }
   .AudioPlayer__main-container {
+    @include v-stack;
     width: 100%;
-    .AudioPlayer__main-container__title {
-      font-weight: bold;
-      color: var(--txt);
-    }
+    gap: $gap-lg;
+    // .AudioPlayer__main-container__waveform {
+    // @include v-pad($gap-xxl);
+    // }
     .AudioPlayer__main-container__timeline {
       display: grid;
       grid-template-columns: auto min-content;
@@ -100,4 +101,9 @@
       }
     }
   }
+}
+.AudioPlayer__main-container__title {
+  @include l-pad($gap-md);
+  font-weight: bold;
+  color: var(--txt);
 }
