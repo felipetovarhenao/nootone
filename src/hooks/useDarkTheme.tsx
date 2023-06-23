@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import CacheAPI from "../utils/CacheAPI";
 
 interface DarkThemeContextType {
   darkTheme: boolean;
@@ -15,16 +16,13 @@ export function DarkThemeProvider({ children }: { children: ReactNode }) {
 
   const toggleDarkTheme = () => {
     setDarkTheme((prevTheme) => !prevTheme);
-    localStorage.setItem("dark-theme", JSON.stringify(!darkTheme));
+    CacheAPI.setLocalItem<boolean>("darkTheme", !darkTheme);
   };
 
   useEffect(() => {
-    const cache = localStorage.getItem("dark-theme");
-    if (cache) {
-      const parsedValue = JSON.parse(cache);
-      if (typeof parsedValue === "boolean") {
-        setDarkTheme(parsedValue);
-      }
+    const cache = CacheAPI.getLocalItem<boolean>("darkTheme");
+    if (cache !== null) {
+      setDarkTheme(cache);
     }
   }, []);
 

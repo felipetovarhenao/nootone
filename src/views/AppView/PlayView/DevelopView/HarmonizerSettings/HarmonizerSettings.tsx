@@ -4,6 +4,7 @@ import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
 import { HarmonizerSettings as NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizerThunk";
 import { InstrumentName } from "../../../../../types/music";
+import CacheAPI from "../../../../../utils/CacheAPI";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -98,71 +99,55 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   function handleStyleChange(id: number) {
     setStyleIndex(id);
-    localStorage.setItem("harmonizerStyleIndex", String(id));
+    CacheAPI.setLocalItem<number>("harmonizerStyleIndex", id);
   }
 
   function handleTimeSigSelection(id: number) {
     setTimeSigIndex(id);
-    localStorage.setItem("harmonizerTimeSigIndex", String(id));
+    CacheAPI.setLocalItem<number>("harmonizerTimeSigIndex", id);
   }
 
   function handleComplexityChange(id: number) {
     setComplexityIndex(id);
-    localStorage.setItem("harmonizerComplexityIndex", String(id));
+    CacheAPI.setLocalItem<number>("harmonizerComplexityIndex", id);
   }
 
   function handleInstrumentSelection(id: number) {
     setInstrumentIndex(id);
-    localStorage.setItem("harmonizerInstrumentIndex", String(id));
+    CacheAPI.setLocalItem<number>("harmonizerInstrumentIndex", id);
   }
 
   useEffect(() => {
     const cacheList = [
       {
         key: "harmonizerStyleIndex",
-        setter: (value: string) => {
-          const val = parseInt(value);
-          if (val < 0 || val >= styles.length) {
-            return;
-          }
-          setStyleIndex(val);
+        setter: (value: number) => {
+          setStyleIndex(value);
         },
       },
       {
         key: "harmonizerTimeSigIndex",
-        setter: (value: string) => {
-          const val = parseInt(value);
-          if (val < 0 || val >= timeSigs.length) {
-            return;
-          }
-          setTimeSigIndex(val);
+        setter: (value: number) => {
+          setTimeSigIndex(value);
         },
       },
       {
         key: "harmonizerComplexityIndex",
-        setter: (value: string) => {
-          const val = parseInt(value);
-          if (val < 0 || val >= timeSigs.length) {
-            return;
-          }
-          setComplexityIndex(val);
+        setter: (value: number) => {
+          setComplexityIndex(value);
         },
       },
       {
         key: "harmonizerInstrumentIndex",
-        setter: (value: string) => {
-          const val = parseInt(value);
-          if (val < 0 || val >= instrumentOptions.length) {
-            return;
-          }
-          setInstrumentIndex(val);
+        setter: (value: number) => {
+          setInstrumentIndex(value);
         },
       },
     ];
 
     cacheList.forEach((param) => {
-      const cache = localStorage.getItem(param.key);
-      if (!cache) {
+      const cache = CacheAPI.getLocalItem<number>(param.key);
+      if (cache === null) {
         return;
       }
       param.setter(cache);
