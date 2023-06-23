@@ -121,7 +121,6 @@ const DevelopView = () => {
                         <div />
                       )}
                     </div>
-                    {/* <h1 className="DevelopView__algorithms__options__option__settings__header">settings</h1> */}
                     {opt.component}
                   </div>
                 </AccordionItem>
