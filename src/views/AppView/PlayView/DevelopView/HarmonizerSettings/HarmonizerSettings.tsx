@@ -147,7 +147,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
     cacheList.forEach((param) => {
       const cache = CacheAPI.getLocalItem<number>(param.key);
-      if (cache === null) {
+      if (cache === null || typeof cache !== "number") {
         return;
       }
       param.setter(cache);
