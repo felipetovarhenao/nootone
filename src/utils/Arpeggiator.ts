@@ -287,7 +287,7 @@ export default class Arpeggiator {
 
   private static getArpeggioPatternVariation(arpegioPattern: ArpeggioPattern, quantumUnit: number, patternDuration: number) {
     const arpeggioCopy = JSON.parse(JSON.stringify(arpegioPattern)) as ArpeggioPattern;
-    const actions = ["prune", "add", "shuffle"];
+    const actions = ["prune", "add", "shuffle", "nothing"];
 
     function getOnsets(arp: ArpeggioPattern) {
       const maxAttacks = patternDuration / quantumUnit;
@@ -344,8 +344,10 @@ export default class Arpeggiator {
         case "add":
           add(arpeggioCopy);
           break;
-        default:
+        case "shuffle":
           shuffle(arpeggioCopy);
+          break;
+        default:
           break;
       }
     }
