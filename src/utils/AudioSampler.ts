@@ -101,7 +101,7 @@ export default class AudioSampler extends AudioSource {
     const env = this.context.createGain();
 
     const amp = this.context.createGain();
-    amp.gain.value = Math.random() * 0.25 + 0.75;
+    amp.gain.value = Math.random() * 0.25 + 1;
 
     // create source node
     const source = this.context.createBufferSource();

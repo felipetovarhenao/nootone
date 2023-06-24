@@ -1,4 +1,4 @@
-import { ChordEvent, NoteEvent } from "./music";
+import { ChordEvent, InstrumentalPart, NoteEvent } from "./music";
 
 export type AudioFeatures = {
   noteEvents?: NoteEvent[];
@@ -29,3 +29,23 @@ export type CachedRecording = {
   blob: Blob;
   metadata: RecordingMetadata;
 };
+
+export enum TrackType {
+  SYMBOLIC,
+  AUDIO,
+}
+
+export type SymbolicTrack = {
+  type: TrackType.SYMBOLIC;
+  data: InstrumentalPart;
+};
+
+export type AudioTrack = {
+  type: TrackType.AUDIO;
+  data: {
+    url: string;
+    onset: number;
+  };
+};
+
+export type TrackSequence = Array<SymbolicTrack | AudioTrack>;

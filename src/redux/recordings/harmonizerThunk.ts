@@ -3,17 +3,15 @@ import audioArrayFromURL from "../../utils/audioArrayFromURL";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
-import audioBufferToBlob from "../../utils/audioBufferToBlob";
 import getAudioDuration from "../../utils/getAudioDuration";
-import SamplerRenderer from "../../utils/SamplerRenderer";
-import { InstrumentName, NoteEvent } from "../../types/music";
-import { Recording } from "../../types/audio";
+import { ChordEvent, InstrumentName, NoteEvent } from "../../types/music";
+import { Recording, TrackSequence, TrackType } from "../../types/audio";
 import detectPitch from "../../utils/detectPitch";
 import Arpeggiator from "../../utils/Arpeggiator";
-import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import randomChoice from "../../utils/randomChoice";
 import getRandomNumber from "../../utils/getRandomNumber";
+import AudioRenderer from "../../utils/AudioRenderer";
 
 export type HarmonizerSettings = {
   style: string;
@@ -83,11 +81,16 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
       maxSubdiv: settings.maxSubdiv,
     });
 
-    let arpeggios = notes;
+    let arpeggios: ChordEvent[] = chords;
 
     if (config.numAttacks > 1) {
-      arpeggios = chordEventsToNoteEvents(
-        Arpeggiator.arpeggiate(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+      arpeggios = Arpeggiator.arpeggiate(
+        chords,
+        config.numAttacks,
+        config.maxSubdiv,
+        config.patternSize,
+        config.contourSize,
+        recording.features.tempo!
       );
     }
 
@@ -97,10 +100,24 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
       noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
     };
 
-    // Render the arpeggios as audio and convert the resulting audio buffer to a Blob
-    const audioBuffer = await SamplerRenderer.renderNoteEvents(arpeggios, recording.url, settings.instrumentName as InstrumentName);
+    const tracks: TrackSequence = [
+      {
+        type: TrackType.AUDIO,
+        data: {
+          url: recording.url,
+          onset: 0,
+        },
+      },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: arpeggios,
+          name: settings.instrumentName,
+        },
+      },
+    ];
 
-    const renderedBlob = audioBufferToBlob(audioBuffer, sampleRate, true, 0.001, -6);
+    const renderedBlob = await AudioRenderer.render(tracks);
 
     const recDuration = await getAudioDuration(renderedBlob);
 
@@ -116,7 +133,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           ...features,
           chordEvents: [
             // ...(!didDetectionFailed ? noteEventsToChordEvents(detectedNotes.map((note) => ({ ...note, velocity: 0.707 }))) : []),
-            ...noteEventsToChordEvents(arpeggios),
+            ...arpeggios,
           ],
         },
       },
