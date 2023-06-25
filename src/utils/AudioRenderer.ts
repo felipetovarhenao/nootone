@@ -104,9 +104,9 @@ export default class AudioRenderer {
 
   private static createCompressorNode(context: OfflineAudioContext) {
     const compressorNode = context.createDynamicsCompressor();
-    compressorNode.threshold.value = -30;
+    compressorNode.threshold.value = -10;
     compressorNode.knee.value = 10;
-    compressorNode.ratio.value = 20;
+    compressorNode.ratio.value = 10;
     compressorNode.attack.value = 0.08;
     compressorNode.release.value = 0.2;
     return compressorNode;
