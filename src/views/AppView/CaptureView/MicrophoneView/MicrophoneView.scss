@@ -44,6 +44,7 @@
       @include stack;
       @include v-pad($gap-lg);
       .MicrophoneView__prompt__slide {
+        @include no-select;
         text-align: center;
         width: 100%;
         min-width: 300px;

@@ -42,6 +42,7 @@
       background-color: var(--disabled-3);
     }
     .BigSettingLayout__value__unit {
+      @include no-select;
       line-height: 95%;
       text-align: center;
       font-size: $txt-sm;
