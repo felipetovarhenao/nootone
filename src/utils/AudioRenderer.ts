@@ -1,19 +1,10 @@
 import * as Tone from "tone";
 import { AudioTrack, SymbolicTrack, TrackSequence, TrackType } from "../types/audio";
 import getAudioDuration from "./getAudioDuration";
-import AudioSampler, { DynamicMarking } from "./AudioSampler";
 import audioArrayFromURL from "./audioArrayFromURL";
 import reverbUrl from "../assets/audio/impulseResponses/Five_columns_long.mp3";
-import generateAudioUrls from "./generateAudioUrls";
-import { InstrumentName } from "../types/music";
 import audioBufferToBlob from "./audioBufferToBlob";
-
-const INSTRUMENTS = {
-  [InstrumentName.GUITAR]: generateAudioUrls(InstrumentName.GUITAR, 41, 83),
-  [InstrumentName.PIANO]: generateAudioUrls(InstrumentName.PIANO, 36, 90),
-  [InstrumentName.EPIANO]: generateAudioUrls(InstrumentName.EPIANO, 36, 90),
-  [InstrumentName.MANDOLIN]: generateAudioUrls(InstrumentName.MANDOLIN, 48, 72, 12, [DynamicMarking.MEZZOFORTE]),
-};
+import InstrumentSampler from "./InstrumentSampler";
 
 export default class AudioRenderer {
   public static async render(tracks: TrackSequence, numChannels: number = 2): Promise<Blob> {
@@ -63,8 +54,10 @@ export default class AudioRenderer {
 
   private static async playSymbolicTrack(outputNode: GainNode, track: SymbolicTrack) {
     const context = outputNode.context as OfflineAudioContext;
-    const sampler = new AudioSampler(context, false);
-    await sampler.loadSamples(INSTRUMENTS[track.data.name]);
+
+    const sampler = new InstrumentSampler(context);
+    await sampler.load(track.data.name);
+
     track.data.chordEvents.forEach((chord) =>
       chord.notes.forEach((note) => sampler.playNote(chord.onset, note.pitch, note.velocity || 1, note.duration + 0.1))
     );
