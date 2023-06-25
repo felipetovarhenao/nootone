@@ -53,8 +53,12 @@ export default class AudioSampler extends AudioSource {
   public async loadSamples(samples: string[]): Promise<void> {
     const promises = samples.map((sampleURL) => {
       return new Promise<void>((resolve, reject) => {
-        const [pitch, dynamic] = parseFileName(sampleURL);
-        const velocity = dynamic == "f" ? 1.0 : 0.5;
+        const matches = retrievePitchAndDynamic(sampleURL);
+        if (!matches) {
+          return;
+        }
+        const [pitch, dynamic] = matches;
+        const velocity = dynamicToVelocity(dynamic);
 
         audioArrayFromURL(sampleURL).then(
           ({ array }) => {
@@ -101,7 +105,7 @@ export default class AudioSampler extends AudioSource {
     const env = this.context.createGain();
 
     const amp = this.context.createGain();
-    amp.gain.value = Math.random() * 0.25 + 1;
+    amp.gain.value = velocity;
 
     // create source node
     const source = this.context.createBufferSource();
@@ -178,16 +182,32 @@ export default class AudioSampler extends AudioSource {
   }
 }
 
-function parseFileName(filePath: string): [number, string] {
-  // Extract the file name from the full path
-  const fileName = filePath.split("/").pop()!;
+function retrievePitchAndDynamic(url: string): [number, DynamicMarking] | null {
+  const filename = url.split("/").pop(); // Extract the file name from the URL
+  if (!filename) return null; // No file name found
 
-  // Extract the initial number using a regular expression
-  const numberMatch = fileName.match(/^(\d+)-/);
-  const initialNumber = parseInt(numberMatch![1]);
+  const regex = /(\d+)-([a-zA-Z]+)\.mp3/; // Regular expression to match the pitch and dynamic
+  const matches = regex.exec(filename);
 
-  // Extract the letter following the number
-  const letter = fileName.charAt(numberMatch![0].length);
+  if (matches && matches.length >= 3) {
+    const pitch = parseInt(matches[1], 10);
+    const dynamic = matches[2] as DynamicMarking;
+    return [pitch, dynamic];
+  }
 
-  return [initialNumber, letter];
+  return null; // No matches found
+}
+
+function dynamicToVelocity(dynamic: DynamicMarking) {
+  return {
+    [DynamicMarking.PIANO]: 1 / 3,
+    [DynamicMarking.MEZZOFORTE]: 2 / 3,
+    [DynamicMarking.FORTE]: 1,
+  }[dynamic];
+}
+
+export enum DynamicMarking {
+  PIANO = "p",
+  MEZZOFORTE = "mf",
+  FORTE = "f",
 }

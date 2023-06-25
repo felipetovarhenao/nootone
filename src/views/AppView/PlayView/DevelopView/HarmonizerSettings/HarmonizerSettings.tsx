@@ -80,11 +80,15 @@ const complexity = [
 
 const instrumentOptions = [
   {
-    label: InstrumentName.PIANO,
+    label: "electric piano",
+    value: InstrumentName.EPIANO,
+  },
+  {
+    label: "grand piano",
     value: InstrumentName.PIANO,
   },
   {
-    label: InstrumentName.GUITAR,
+    label: 'nylon guitar',
     value: InstrumentName.GUITAR,
   },
 ];

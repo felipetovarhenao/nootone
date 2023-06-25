@@ -46,16 +46,16 @@ const MicrophoneView = () => {
 
       try {
         // encode as wav
-        recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo) });
-        // create form data
-        const formData = new FormData();
-        formData.append("file", recordingBlob);
-        const response = await fetch(`https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`, {
-          method: "PUT",
-          body: formData,
-        });
+        recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo), maxdB: -3 });
+        // // create form data
+        // const formData = new FormData();
+        // formData.append("file", recordingBlob);
+        // const response = await fetch(`https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`, {
+        //   method: "PUT",
+        //   body: formData,
+        // });
 
-        recordingBlob = await response.blob();
+        // recordingBlob = await response.blob();
       } catch (error: any) {
         console.log("API call failed: ", error);
       } finally {

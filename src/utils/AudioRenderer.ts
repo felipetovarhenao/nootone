@@ -9,8 +9,9 @@ import { InstrumentName } from "../types/music";
 import audioBufferToBlob from "./audioBufferToBlob";
 
 const INSTRUMENTS = {
-  guitar: generateAudioUrls(InstrumentName.GUITAR, 42, 68),
-  piano: generateAudioUrls(InstrumentName.PIANO, 21, 99),
+  [InstrumentName.GUITAR]: generateAudioUrls(InstrumentName.GUITAR, 41, 83),
+  [InstrumentName.PIANO]: generateAudioUrls(InstrumentName.PIANO, 36, 90),
+  [InstrumentName.EPIANO]: generateAudioUrls(InstrumentName.EPIANO, 36, 90),
 };
 
 export default class AudioRenderer {
@@ -48,8 +49,14 @@ export default class AudioRenderer {
     const channelData = audioBuffer.getChannelData(0);
     channelData.set(array);
     const sourceNode = context.createBufferSource();
+    const gain = context.createGain();
+
     sourceNode.buffer = audioBuffer;
-    sourceNode.connect(outputNode);
+    gain.gain.value = track.config?.gain || 1;
+
+    sourceNode.connect(gain);
+    gain.connect(outputNode);
+
     sourceNode.start(track.data.onset);
   }
 
@@ -97,7 +104,7 @@ export default class AudioRenderer {
 
   private static createCompressorNode(context: OfflineAudioContext) {
     const compressorNode = context.createDynamicsCompressor();
-    compressorNode.threshold.value = -45;
+    compressorNode.threshold.value = -30;
     compressorNode.knee.value = 10;
     compressorNode.ratio.value = 20;
     compressorNode.attack.value = 0.08;

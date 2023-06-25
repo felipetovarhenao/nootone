@@ -16,8 +16,9 @@ export type NoteEventSegment = {
 };
 
 export enum InstrumentName {
-  PIANO = "piano",
-  GUITAR = "guitar",
+  PIANO = "grandPiano",
+  GUITAR = "nylonGuitar",
+  EPIANO = "electricPiano",
 }
 
 export type InstrumentalPart = {

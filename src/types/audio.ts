@@ -35,9 +35,14 @@ export enum TrackType {
   AUDIO,
 }
 
+type TrackConfig = {
+  gain: number;
+};
+
 export type SymbolicTrack = {
   type: TrackType.SYMBOLIC;
   data: InstrumentalPart;
+  config?: TrackConfig;
 };
 
 export type AudioTrack = {
@@ -46,6 +51,7 @@ export type AudioTrack = {
     url: string;
     onset: number;
   };
+  config?: TrackConfig;
 };
 
 export type TrackSequence = Array<SymbolicTrack | AudioTrack>;

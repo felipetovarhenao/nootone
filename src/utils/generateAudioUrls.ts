@@ -6,6 +6,7 @@ export default function generateAudioUrls(instrumentName: InstrumentName, minVal
 
   while (value <= maxValue) {
     urls.push(`https://dxbtnxd6vjk30.cloudfront.net/instruments/${instrumentName}/${value}-f.mp3`);
+    urls.push(`https://dxbtnxd6vjk30.cloudfront.net/instruments/${instrumentName}/${value}-mf.mp3`);
     urls.push(`https://dxbtnxd6vjk30.cloudfront.net/instruments/${instrumentName}/${value}-p.mp3`);
     value += increment;
   }

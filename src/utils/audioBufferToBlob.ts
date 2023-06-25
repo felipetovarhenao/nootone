@@ -19,7 +19,6 @@ export default function audioBufferToBlob(
   // Float32Array samples
   const isMono = audioBuffer.numberOfChannels === 1;
   const [left, right] = [audioBuffer.getChannelData(0), isMono ? new Float32Array([]) : audioBuffer.getChannelData(1)];
-  const crossFadeSamples = Math.min(crossFadeDuration * sampleRate, Math.ceil(left.length * 0.05));
 
   // initialize normalization value with -1 to prevent zero division (at best phase is inverted)
   let normValue = -1;
@@ -28,6 +27,8 @@ export default function audioBufferToBlob(
 
   const leftLength = Math.max(0, left.length - startOffset);
   const rightLength = Math.max(0, right.length - startOffset);
+
+  const crossFadeSamples = Math.min(crossFadeDuration * sampleRate, Math.ceil(leftLength * 0.5));
 
   // initialized interleaved WAV output file
   const interleaved = new Float32Array(leftLength + rightLength);
@@ -51,11 +52,11 @@ export default function audioBufferToBlob(
         const xfade = (src - startOffset) / crossFadeSamples;
         interleaved[dst] *= xfade;
         if (!isMono) {
-          interleaved[dst] *= xfade;
+          interleaved[dst + 1] *= xfade;
         }
         // crossfade at end
       } else if (left.length - src < crossFadeSamples) {
-        const xfade = (left.length - src) / crossFadeSamples;
+        const xfade = (left.length - src - 1) / crossFadeSamples;
         interleaved[dst] *= xfade;
         if (!isMono) {
           interleaved[dst + 1] *= xfade;
