@@ -2,7 +2,7 @@ import "./MicrophoneView.scss";
 import useAudioRecorder from "../../../../hooks/useAudioRecorder";
 import Icon from "../../../../components/Icon/Icon";
 import cn from "classnames";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
@@ -31,6 +31,7 @@ const MicrophoneView = () => {
   const [recTitle, setRecTitle] = useState(createUniqueTitle());
   const { tempo, numCountBeats } = useAppSelector((state) => state.mic);
   const startTime = useRef(0);
+  const location = useLocation();
 
   useEffect(() => {
     async function processRecording() {
@@ -47,15 +48,22 @@ const MicrophoneView = () => {
       try {
         // encode as wav
         recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo), maxdB: -3 });
-        // // create form data
-        // const formData = new FormData();
-        // formData.append("file", recordingBlob);
-        // const response = await fetch(`https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`, {
-        //   method: "PUT",
-        //   body: formData,
-        // });
+        // create form data
+        const formData = new FormData();
+        formData.append("file", recordingBlob);
 
-        // recordingBlob = await response.blob();
+        let apiEndpoint = `https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`;
+
+        if (location.search.includes("debug")) {
+          apiEndpoint += "&debug=true";
+        }
+
+        const response = await fetch(apiEndpoint, {
+          method: "PUT",
+          body: formData,
+        });
+
+        recordingBlob = await response.blob();
       } catch (error: any) {
         console.log("API call failed: ", error);
       } finally {
