@@ -10,7 +10,8 @@ type CacheOptions = {
 
 export default class CacheAPI {
   public static setLocalItem<T>(key: string, value: T, options: CacheOptions = {}): void {
-    const { maxTime = 3600000 } = options;
+    // set 24h as default cache time
+    const { maxTime = 86400000 } = options;
     const cachedValue: CachedValue<T> = {
       maxTime,
       timeStamp: Date.now(),
