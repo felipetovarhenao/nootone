@@ -14,9 +14,8 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
   return (
     <div className="RecordingLayout">
       <div className="RecordingLayout__main-container">
-        <span className="RecordingLayout__date">{rec.date}</span>
         <div className="RecordingLayout__player-container">
-          <WaveSurferPlayer rec={rec} className="RecordingLayout__player" />
+          <WaveSurferPlayer showDate={true} rec={rec} className="RecordingLayout__player" />
           <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={rec} />
         </div>
       </div>
@@ -35,7 +34,7 @@ const RecordingLayout = ({ rec, recIndex }: { rec: Recording; recIndex: number }
         >
           {rec.variations?.map((variation: GenericRecording, i) => (
             <div key={i} className="RecordingLayout__player-container">
-              <WaveSurferPlayer key={i} rec={variation} className="RecordingLayout__variations__variation" />
+              <WaveSurferPlayer showDate={true} key={i} rec={variation} className="RecordingLayout__variations__variation" />
               <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />
             </div>
           ))}

@@ -2,7 +2,7 @@
 
 .AudioPlayerOptions {
   .handle {
-    @include l-pad($gap-lg);
+    @include l-pad($gap-ml);
     box-sizing: content-box;
   }
   .children {

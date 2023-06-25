@@ -34,9 +34,10 @@ type WaveSurferPlayerProps = {
   className?: string;
   rec: GenericRecording;
   showTitle?: boolean;
+  showDate?: boolean;
 };
 
-const WaveSurferPlayer = ({ className, rec, showTitle = true }: WaveSurferPlayerProps) => {
+const WaveSurferPlayer = ({ className, rec, showTitle = true, showDate = false }: WaveSurferPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -75,7 +76,10 @@ const WaveSurferPlayer = ({ className, rec, showTitle = true }: WaveSurferPlayer
 
   return (
     <div className={classNames(className, "WaveSurferPlayer")} style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }}>
-      <span className="WaveSurferPlayer__title">{showTitle && rec.name}</span>
+      <div className="WaveSurferPlayer__header">
+        <span className="WaveSurferPlayer__header__date">{showDate && rec.date}</span>
+        <span className="WaveSurferPlayer__header__title">{showTitle && rec.name}</span>
+      </div>
       <div className="WaveSurferPlayer__container">
         <div className="WaveSurferPlayer__playback">
           <Icon className="WaveSurferPlayer__playback__toggle" icon={isPlaying ? icons.pause : icons.play} onClick={onPlayClick} />

@@ -1,10 +1,22 @@
 @use "../../styles/main.scss" as *;
 
 .WaveSurferPlayer {
-  .WaveSurferPlayer__title {
+  .WaveSurferPlayer__header {
+    @include v-stack;
     @include l-pad($gap-md);
-    font-weight: bold;
-    color: var(--txt);
+    width: 100%;
+    .WaveSurferPlayer__header__date {
+      @include crop-text;
+      @include stack;
+      align-self: flex-start;
+      overflow: hidden;
+      color: var(--disabled-3);
+      font-size: $txt-sm;
+    }
+    .WaveSurferPlayer__header__title {
+      font-weight: bold;
+      color: var(--txt);
+    }
   }
   .WaveSurferPlayer__container {
     @include h-stack-c;
