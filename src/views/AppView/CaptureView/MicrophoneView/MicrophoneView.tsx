@@ -48,6 +48,11 @@ const MicrophoneView = () => {
       try {
         // encode as wav
         recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo), maxdB: -3 });
+
+        if (location.search.includes("raw")) {
+          throw new Error("skipping API call");
+        }
+
         // create form data
         const formData = new FormData();
         formData.append("file", recordingBlob);
