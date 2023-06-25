@@ -50,6 +50,7 @@ export type AudioTrack = {
   data: {
     url: string;
     onset: number;
+    duration: number;
   };
   config?: TrackConfig;
 };

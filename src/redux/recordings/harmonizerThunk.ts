@@ -106,6 +106,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         data: {
           url: recording.url,
           onset: 0,
+          duration: recording.duration,
         },
         config: {
           gain: 3,

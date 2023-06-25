@@ -1,6 +1,5 @@
 import * as Tone from "tone";
 import { AudioTrack, SymbolicTrack, TrackSequence, TrackType } from "../types/audio";
-import getAudioDuration from "./getAudioDuration";
 import audioArrayFromURL from "./audioArrayFromURL";
 import reverbUrl from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 import audioBufferToBlob from "./audioBufferToBlob";
@@ -8,7 +7,7 @@ import InstrumentSampler from "./InstrumentSampler";
 
 export default class AudioRenderer {
   public static async render(tracks: TrackSequence, numChannels: number = 2): Promise<Blob> {
-    const outputDuration = (await this.getOutputDuration(tracks)) + 1.5;
+    const outputDuration = this.getOutputDuration(tracks) + 1.5;
     const sampleRate = Tone.context.sampleRate;
     const context = new OfflineAudioContext(numChannels, sampleRate * outputDuration, sampleRate);
 
@@ -114,20 +113,13 @@ export default class AudioRenderer {
     return convolver;
   }
 
-  private static async getOutputDuration(tracks: TrackSequence): Promise<number> {
+  private static getOutputDuration(tracks: TrackSequence): number {
     let totalDuration = 0;
     for (let i = 0; i < tracks.length; i++) {
       const track = tracks[i];
       switch (track.type) {
         case TrackType.AUDIO:
-          try {
-            const res = await fetch(track.data.url);
-            const blob = await res.blob();
-            const duration = await getAudioDuration(blob);
-            totalDuration = Math.max(duration + track.data.onset, totalDuration);
-          } catch (err) {
-            console.log(err);
-          }
+          totalDuration = Math.max(track.data.duration + track.data.onset, totalDuration);
           break;
         case TrackType.SYMBOLIC:
           track.data.chordEvents.forEach((chord) =>
@@ -135,7 +127,6 @@ export default class AudioRenderer {
           );
       }
     }
-
     return totalDuration;
   }
 }
