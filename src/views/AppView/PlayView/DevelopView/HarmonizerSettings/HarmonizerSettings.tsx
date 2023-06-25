@@ -80,15 +80,15 @@ const complexity = [
 
 const instrumentOptions = [
   {
-    label: "electric piano",
-    value: InstrumentName.EPIANO,
-  },
-  {
     label: "grand piano",
     value: InstrumentName.PIANO,
   },
   {
-    label: 'nylon guitar',
+    label: "electric piano",
+    value: InstrumentName.EPIANO,
+  },
+  {
+    label: "nylon guitar",
     value: InstrumentName.GUITAR,
   },
 ];
@@ -102,7 +102,7 @@ type HarmonizerSettingsProps = {
 const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSettingsProps) => {
   const [styleIndex, setStyleIndex] = useState(0);
   const [timeSigIndex, setTimeSigIndex] = useState(0);
-  const [complexityIndex, setComplexityIndex] = useState(0);
+  const [complexityIndex, setComplexityIndex] = useState(2);
   const [instrumentIndex, setInstrumentIndex] = useState(0);
 
   function handleStyleChange(id: number) {
