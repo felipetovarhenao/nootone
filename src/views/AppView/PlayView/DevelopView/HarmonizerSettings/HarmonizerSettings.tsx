@@ -12,7 +12,7 @@ const timeSigs = [
   {
     label: "2/4",
     value: {
-      segSizes: [2, 4],
+      segSizes: [2],
       patternSize: 2,
       maxSubdiv: 4,
     },
@@ -62,19 +62,31 @@ const timeSigs = [
 const complexity = [
   {
     label: "minimal",
-    value: [1, 2],
+    value: {
+      min: 0,
+      max: 0,
+    },
   },
   {
     label: "simple",
-    value: [2, 4],
+    value: {
+      min: 1/4,
+      max: 1/3,
+    },
   },
   {
     label: "normal",
-    value: [4, 9],
+    value: {
+      min: 1/3,
+      max: 2/3,
+    },
   },
   {
     label: "complex",
-    value: [9, 16],
+    value: {
+      min: 2/3,
+      max: 1,
+    },
   },
 ];
 
@@ -170,11 +182,12 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
     const patternSize = timeSigs[timeSigIndex].value.patternSize;
     const maxSubdiv = timeSigs[timeSigIndex].value.maxSubdiv;
     const instrumentName = instrumentOptions[instrumentIndex].value;
+
     setSettings({
       style: styles[styleIndex],
       patternSize,
       segSizes: timeSigs[timeSigIndex].value.segSizes,
-      numAttacksRange: complexity[complexityIndex].value as [number, number],
+      rhythmicComplexity: complexity[complexityIndex].value as { min: number; max: number },
       maxSubdiv,
       instrumentName,
     });

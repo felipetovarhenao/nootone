@@ -240,7 +240,7 @@ export default class Arpeggiator {
     const velocityPattern = this.getRandomVelocityPattern(arpeggioPattern);
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
-      const variation = this.getArpeggioPatternVariation(arpeggioPattern, quantumUnit, patternDuration);
+      const variation = i > 0 ? this.getArpeggioPatternVariation(arpeggioPattern, quantumUnit, patternDuration) : arpeggioPattern;
       for (let e = 0; e < variation.length; e++) {
         const event = variation[e];
         const onset = event.onset + patternOffset;

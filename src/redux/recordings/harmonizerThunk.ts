@@ -10,14 +10,13 @@ import detectPitch from "../../utils/detectPitch";
 import Arpeggiator from "../../utils/Arpeggiator";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import randomChoice from "../../utils/randomChoice";
-import getRandomNumber from "../../utils/getRandomNumber";
 import AudioRenderer from "../../utils/AudioRenderer";
 
 export type HarmonizerSettings = {
   style: string;
   patternSize: number;
   segSizes: number[];
-  numAttacksRange: [number, number];
+  rhythmicComplexity: { min: number; max: number };
   maxSubdiv: number;
   instrumentName: InstrumentName;
 };
@@ -75,15 +74,20 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     // Convert the note events into chord events and arpeggiate the chords
     const chords = noteEventsToChordEvents(notes);
 
+    const maxAttacks = settings.patternSize * settings.maxSubdiv;
+
+    const { min: minComplexity, max: maxComplexity } = settings.rhythmicComplexity;
+    const numAttacks = Math.ceil(maxAttacks * (Math.random() * (maxComplexity - minComplexity) + minComplexity));
+
     const config = Arpeggiator.genRandomConfig({
       patternSize: settings.patternSize,
-      numAttacks: getRandomNumber(...settings.numAttacksRange),
+      numAttacks: numAttacks,
       maxSubdiv: settings.maxSubdiv,
     });
 
     let arpeggios: ChordEvent[] = chords;
 
-    if (config.numAttacks > 1) {
+    if (maxComplexity > 0) {
       arpeggios = Arpeggiator.arpeggiate(
         chords,
         config.numAttacks,
