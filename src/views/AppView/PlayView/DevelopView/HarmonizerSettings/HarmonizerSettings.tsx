@@ -91,6 +91,10 @@ const instrumentOptions = [
     label: "nylon guitar",
     value: InstrumentName.GUITAR,
   },
+  {
+    label: "mandolin",
+    value: InstrumentName.MANDOLIN,
+  },
 ];
 
 type HarmonizerSettingsProps = {

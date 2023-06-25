@@ -1,7 +1,7 @@
 import * as Tone from "tone";
 import { AudioTrack, SymbolicTrack, TrackSequence, TrackType } from "../types/audio";
 import getAudioDuration from "./getAudioDuration";
-import AudioSampler from "./AudioSampler";
+import AudioSampler, { DynamicMarking } from "./AudioSampler";
 import audioArrayFromURL from "./audioArrayFromURL";
 import reverbUrl from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 import generateAudioUrls from "./generateAudioUrls";
@@ -12,6 +12,7 @@ const INSTRUMENTS = {
   [InstrumentName.GUITAR]: generateAudioUrls(InstrumentName.GUITAR, 41, 83),
   [InstrumentName.PIANO]: generateAudioUrls(InstrumentName.PIANO, 36, 90),
   [InstrumentName.EPIANO]: generateAudioUrls(InstrumentName.EPIANO, 36, 90),
+  [InstrumentName.MANDOLIN]: generateAudioUrls(InstrumentName.MANDOLIN, 48, 72, 12, [DynamicMarking.MEZZOFORTE]),
 };
 
 export default class AudioRenderer {
