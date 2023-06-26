@@ -53,22 +53,22 @@ const MicrophoneView = () => {
           throw new Error("skipping API call");
         }
 
-        // // create form data
-        // const formData = new FormData();
-        // formData.append("file", recordingBlob);
+        // create form data
+        const formData = new FormData();
+        formData.append("file", recordingBlob);
 
-        // let apiEndpoint = `https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`;
+        let apiEndpoint = `https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`;
 
-        // if (location.search.includes("debug")) {
-        //   apiEndpoint += "&debug=true";
-        // }
+        if (location.search.includes("debug")) {
+          apiEndpoint += "&debug=true";
+        }
 
-        // const response = await fetch(apiEndpoint, {
-        //   method: "PUT",
-        //   body: formData,
-        // });
+        const response = await fetch(apiEndpoint, {
+          method: "PUT",
+          body: formData,
+        });
 
-        // recordingBlob = await response.blob();
+        recordingBlob = await response.blob();
       } catch (error: any) {
         console.log("API call failed: ", error);
       } finally {
