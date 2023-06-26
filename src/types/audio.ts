@@ -4,6 +4,10 @@ export type AudioFeatures = {
   noteEvents?: NoteEvent[];
   chordEvents?: ChordEvent[];
   tempo?: number;
+  rms?: {
+    hopSize: number;
+    data: Float32Array;
+  };
 };
 
 export type RecordingMetadata = {

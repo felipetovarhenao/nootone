@@ -6,11 +6,12 @@ import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import getAudioDuration from "../../utils/getAudioDuration";
 import { ChordEvent, InstrumentName, NoteEvent } from "../../types/music";
 import { Recording, TrackSequence, TrackType } from "../../types/audio";
-import detectPitch from "../../utils/detectPitch";
+import extractAudioFeatures from "../../utils/extractAudioFeatures";
 import Arpeggiator from "../../utils/Arpeggiator";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import randomChoice from "../../utils/randomChoice";
 import AudioRenderer from "../../utils/AudioRenderer";
+import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
 
 export type HarmonizerSettings = {
   style: string;
@@ -45,7 +46,13 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
 
     // Detect the pitches of the recorded notes or use the pre-computed note events
-    let detectedNotes = recording.features.noteEvents || detectPitch(array, sampleRate);
+    let detectedNotes = recording.features.noteEvents;
+    let rms = recording.features.rms;
+    if (!detectedNotes || !rms) {
+      const { noteEvents, rms: rmsArray, hopSize } = extractAudioFeatures(array, sampleRate);
+      detectedNotes = noteEvents.map((n) => ({ ...n, velocity: 1 }));
+      rms = { hopSize: hopSize, data: rmsArray };
+    }
 
     // let didDetectionFailed = false;
     if (detectedNotes.length === 0) {
@@ -97,6 +104,8 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         recording.features.tempo!
       );
     }
+
+    applyRmsToChordEvents(arpeggios, rms.data, rms.hopSize, sampleRate);
 
     // Update the features of the recording
     const features = {
