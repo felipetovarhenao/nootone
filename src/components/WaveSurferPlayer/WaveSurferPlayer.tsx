@@ -46,7 +46,7 @@ const WaveSurferPlayer = ({ className, rec, showTitle = true, showDate = false }
     barGap: 3,
     barRadius: 100,
     duration: rec.duration,
-    normalize: true,
+    normalize: false,
     height: 40,
     progressColor: ["rgb(37,158,216)", "rgb(93,77,179)"],
     cursorColor: "rgb(37,158,216)",

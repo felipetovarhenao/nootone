@@ -19,6 +19,7 @@ import * as Tone from "tone";
 import SwipeMenu from "../../../../components/SwipeMenu/SwipeMenu";
 import CountdownSettingsLayout from "../../../../layouts/CountdownSettingsLayout/CountdownSettingsLayout";
 import ReferencePitchSettingLayout from "../../../../layouts/ReferencePitchSettingLayout/ReferencePitchSettingLayout";
+import CONFIG, { DeploymentType } from "../../../../utils/config";
 
 const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle a song", "make music!"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
@@ -49,26 +50,28 @@ const MicrophoneView = () => {
         // encode as wav
         recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo), maxdB: -6 });
 
-        if (location.search.includes("raw")) {
-          throw new Error("skipping API call");
+        if ([DeploymentType.PRE].includes(CONFIG.deploymentType)) {
+          if (location.search.includes("raw")) {
+            throw new Error("skipping API call");
+          }
+
+          // create form data
+          const formData = new FormData();
+          formData.append("file", recordingBlob);
+
+          let apiEndpoint = `https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`;
+
+          if (location.search.includes("debug")) {
+            apiEndpoint += "&debug=true";
+          }
+
+          const response = await fetch(apiEndpoint, {
+            method: "PUT",
+            body: formData,
+          });
+
+          recordingBlob = await response.blob();
         }
-
-        // create form data
-        const formData = new FormData();
-        formData.append("file", recordingBlob);
-
-        let apiEndpoint = `https://api.nootone.io/generate/constanttempo/?user_tempo=${tempo}`;
-
-        if (location.search.includes("debug")) {
-          apiEndpoint += "&debug=true";
-        }
-
-        const response = await fetch(apiEndpoint, {
-          method: "PUT",
-          body: formData,
-        });
-
-        recordingBlob = await response.blob();
       } catch (error: any) {
         console.log("API call failed: ", error);
       } finally {

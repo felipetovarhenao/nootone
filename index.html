@@ -8,7 +8,7 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4C4JMQH4SM"></script>
   <script>
-    if (document.location.hostname.search("nootone.io") !== -1) {
+    if (window.origin.includes("nootone.io")) {
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
