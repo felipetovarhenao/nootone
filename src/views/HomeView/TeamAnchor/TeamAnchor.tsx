@@ -2,6 +2,7 @@ import "./TeamAnchor.scss";
 import { Ref, forwardRef } from "react";
 import AnchorSection from "../../../layouts/AnchorSection/AnchorSection";
 import teamProfiles from "../../../data/teamProfiles.json";
+import ImageWrapper from "../../../components/ImageWrapper/ImageWrapper";
 
 const TeamAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   return (
@@ -11,7 +12,7 @@ const TeamAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
       <div className="team-profiles">
         {teamProfiles.map((info) => (
           <div key={info.name} className="profile">
-            <img className="profile-photo" src={info.image} alt={`${info.name}-headshot`} />
+            <ImageWrapper className="profile-photo" src={info.image} alt={`${info.name}-headshot`} />
             <a target="_blank" rel="noreferrer" href={info.url} className="profile-network">
               <h2 className="profile-name">{info.name}</h2>
             </a>
