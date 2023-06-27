@@ -132,6 +132,26 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           name: settings.instrumentName,
         },
       },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: chords,
+          name: InstrumentName.PAD,
+        },
+        config: {
+          gain: 0.125,
+        },
+      },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: chords.map((chord) => ({ ...chord, notes: [{ ...chord.notes[0], pitch: chord.notes[0].pitch - 12 }] })),
+          name: InstrumentName.EBASS,
+        },
+        config: {
+          gain: 0.5,
+        },
+      },
     ];
 
     const renderedBlob = await AudioRenderer.render(tracks);

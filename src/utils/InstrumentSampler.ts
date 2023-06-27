@@ -46,6 +46,18 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
+  [InstrumentName.PAD]: {
+    minPitch: 36,
+    maxPitch: 77,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
+  [InstrumentName.EBASS]: {
+    minPitch: 36,
+    maxPitch: 66,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
 };
 
 export default class InstrumentSampler {
@@ -88,6 +100,10 @@ export default class InstrumentSampler {
       });
     });
     await Promise.all(promises);
+  }
+
+  public setGain(gain: number) {
+    this.output.gain.value = gain;
   }
 
   public playNote(onset: number, pitch: number, velocity: number, duration: number): AudioBufferSourceNode | undefined {

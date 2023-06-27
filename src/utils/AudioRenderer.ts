@@ -56,6 +56,9 @@ export default class AudioRenderer {
 
     const sampler = new InstrumentSampler(context);
     await sampler.load(track.data.name);
+    if (track.config) {
+      sampler.setGain(track.config.gain || 1);
+    }
 
     track.data.chordEvents.forEach((chord) =>
       chord.notes.forEach((note) => sampler.playNote(chord.onset, note.pitch, note.velocity || 1, note.duration + 0.1))
@@ -97,9 +100,9 @@ export default class AudioRenderer {
 
   private static createCompressorNode(context: OfflineAudioContext) {
     const compressorNode = context.createDynamicsCompressor();
-    compressorNode.threshold.value = -10;
+    compressorNode.threshold.value = -12;
     compressorNode.knee.value = 10;
-    compressorNode.ratio.value = 10;
+    compressorNode.ratio.value = 4;
     compressorNode.attack.value = 0.08;
     compressorNode.release.value = 0.2;
     return compressorNode;

@@ -20,6 +20,8 @@ export enum InstrumentName {
   GUITAR = "nylonGuitar",
   EPIANO = "electricPiano",
   MANDOLIN = "mandolin",
+  PAD = "buzzPad",
+  EBASS = "electricBass",
 }
 
 export type InstrumentalPart = {
