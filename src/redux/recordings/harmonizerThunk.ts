@@ -12,6 +12,7 @@ import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import randomChoice from "../../utils/randomChoice";
 import AudioRenderer from "../../utils/AudioRenderer";
 import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
+import generateBassLine from "./generateBassLine";
 
 export type HarmonizerSettings = {
   style: string;
@@ -113,44 +114,53 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
       noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
     };
 
+    const bassLine =
+      maxComplexity > 0
+        ? generateBassLine(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+        : chords.map((chord) => {
+            const bass = { ...chord, notes: chord.notes.slice(0, 1) };
+            bass.notes.forEach((note) => (note.pitch -= 12));
+            return bass;
+          });
+    applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
     const tracks: TrackSequence = [
-      {
-        type: TrackType.AUDIO,
-        data: {
-          url: recording.url,
-          onset: 0,
-          duration: recording.duration,
-        },
-        config: {
-          gain: 3,
-        },
-      },
+      // {
+      //   type: TrackType.AUDIO,
+      //   data: {
+      //     url: recording.url,
+      //     onset: 0,
+      //     duration: recording.duration,
+      //   },
+      //   config: {
+      //     gain: 3,
+      //   },
+      // },
+      // {
+      //   type: TrackType.SYMBOLIC,
+      //   data: {
+      //     chordEvents: arpeggios,
+      //     name: settings.instrumentName,
+      //   },
+      // },
+      // {
+      //   type: TrackType.SYMBOLIC,
+      //   data: {
+      //     chordEvents: chords,
+      //     name: InstrumentName.PAD,
+      //   },
+      //   config: {
+      //     gain: 0.125,
+      //   },
+      // },
       {
         type: TrackType.SYMBOLIC,
         data: {
-          chordEvents: arpeggios,
-          name: settings.instrumentName,
+          chordEvents: bassLine,
+          name: InstrumentName.ACOUSTIC_BASS,
         },
-      },
-      {
-        type: TrackType.SYMBOLIC,
-        data: {
-          chordEvents: chords,
-          name: InstrumentName.PAD,
-        },
-        config: {
-          gain: 0.125,
-        },
-      },
-      {
-        type: TrackType.SYMBOLIC,
-        data: {
-          chordEvents: chords.map((chord) => ({ ...chord, notes: [{ ...chord.notes[0], pitch: chord.notes[0].pitch - 12 }] })),
-          name: InstrumentName.EBASS,
-        },
-        config: {
-          gain: 0.5,
-        },
+        // config: {
+        //   gain: 0.707,
+        // },
       },
     ];
 

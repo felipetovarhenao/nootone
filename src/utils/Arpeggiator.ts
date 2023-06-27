@@ -186,6 +186,19 @@ export default class Arpeggiator {
     return randomVelocities;
   }
 
+  public static generateArpeggioPattern(numAttacks: number, quantumUnit: number, patternDuration: number, contourSize: number) {
+    // Get normalized index contour
+    const normalizedContour = this.createRandomContour(contourSize);
+
+    // Generate a random onset grid
+    const onsetGrid = this.createRandomGrid(patternDuration, quantumUnit, numAttacks);
+
+    // Assign onset positions to contour
+    const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
+    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
+    return arpeggioPattern;
+  }
+
   /**
    * Generate an arpeggio sequence based on the provided chords and configuration.
    * @param chords - The input chords.
@@ -213,15 +226,8 @@ export default class Arpeggiator {
     // Get grid quantization duration unit
     const quantumUnit = beatDuration / maxSubdiv;
 
-    // Get normalized index contour
-    const normalizedContour = this.createRandomContour(contourSize);
-
-    // Generate a random onset grid
-    const onsetGrid = this.createRandomGrid(patternDuration, quantumUnit, numAttacks);
-
-    // Assign onset positions to contour
-    const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
-    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
+    // generate arpeggio pattern
+    const arpeggioPattern = this.generateArpeggioPattern(numAttacks, quantumUnit, patternDuration, contourSize);
 
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
@@ -266,6 +272,7 @@ export default class Arpeggiator {
           notes: event.indices.map((index, k) => {
             const note = { ...currentChord!.notes[Math.floor(index * (currentChord!.notes.length - 1))] };
             note.duration = note.duration - (event.onset % note.duration);
+            console.log(note.duration);
             const eventVelocities = velocityPattern[wrapValue(e, velocityPattern.length)];
             note.velocity = eventVelocities[wrapValue(k, eventVelocities.length)];
             return note;

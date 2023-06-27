@@ -22,6 +22,7 @@ export enum InstrumentName {
   MANDOLIN = "mandolin",
   PAD = "buzzPad",
   EBASS = "electricBass",
+  ACOUSTIC_BASS = "acousticBass",
 }
 
 export type InstrumentalPart = {

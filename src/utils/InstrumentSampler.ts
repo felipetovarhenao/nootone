@@ -58,6 +58,12 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
+  [InstrumentName.ACOUSTIC_BASS]: {
+    minPitch: 24,
+    maxPitch: 54,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
 };
 
 export default class InstrumentSampler {
