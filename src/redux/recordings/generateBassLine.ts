@@ -12,7 +12,7 @@ export default function generateBassLine(
   contourSize: number,
   tempo: number
 ) {
-  // utility function to randomize input value
+  // utility function to randomize input values
   function randomizeValue(value: number) {
     return Math.max(1, Math.floor(value * Math.random()));
   }
@@ -20,21 +20,27 @@ export default function generateBassLine(
   // get deep copy of chords
   const chordsCopy = JSON.parse(JSON.stringify(chords)) as ChordEvent[];
 
+  // re-order first chord, such that pitches are are close as possible (i.e., scale-like)
   reorderChordNotes(chordsCopy[0]);
 
-  const chordProgression = applyVoiceLeading(
+  // apply voice leading to chords (pitch only)
+  const chordProgression: number[][] = applyVoiceLeading(
     chordsCopy.map((chord) => chord.notes.map((note) => note.pitch)),
     21,
     55
   );
 
+  // array of notes events to st
   const notes: NoteEvent[] = [];
+
+  // push pitch values from chords to note event array
   chordProgression.forEach((chord: number[], i) =>
     chord
       .sort()
       .forEach((pitch: number) => notes.push({ pitch: pitch, onset: chordsCopy[i].onset, duration: chordsCopy[i].notes[0].duration, velocity: 1 }))
   );
 
+  // convert note events to chord
   const chordsAsScale = noteEventsToChordEvents(notes);
 
   // generate bass line and map to chord sequence
