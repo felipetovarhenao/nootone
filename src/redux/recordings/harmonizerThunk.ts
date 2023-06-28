@@ -122,26 +122,26 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
             bass.notes.forEach((note) => (note.pitch -= 12));
             return bass;
           });
-    applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
+    // applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
     const tracks: TrackSequence = [
-      // {
-      //   type: TrackType.AUDIO,
-      //   data: {
-      //     url: recording.url,
-      //     onset: 0,
-      //     duration: recording.duration,
-      //   },
-      //   config: {
-      //     gain: 3,
-      //   },
-      // },
-      // {
-      //   type: TrackType.SYMBOLIC,
-      //   data: {
-      //     chordEvents: arpeggios,
-      //     name: settings.instrumentName,
-      //   },
-      // },
+      {
+        type: TrackType.AUDIO,
+        data: {
+          url: recording.url,
+          onset: 0,
+          duration: recording.duration,
+        },
+        config: {
+          gain: 3,
+        },
+      },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: arpeggios,
+          name: settings.instrumentName,
+        },
+      },
       // {
       //   type: TrackType.SYMBOLIC,
       //   data: {
@@ -158,9 +158,9 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           chordEvents: bassLine,
           name: InstrumentName.ACOUSTIC_BASS,
         },
-        // config: {
-        //   gain: 0.707,
-        // },
+        config: {
+          gain: 0.707,
+        },
       },
     ];
 

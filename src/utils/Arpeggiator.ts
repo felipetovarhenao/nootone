@@ -29,7 +29,7 @@ export default class Arpeggiator {
       return x.map((value) => (value - xMin) / (Math.max(...x) - xMin));
     } else {
       // Generate values evenly spaced between 0 and 1
-      const x = Array.from({ length: N }, (_, index) => index / (N - 1));
+      const x = Array.from({ length: N }, (_, index) => index / Math.max(1, N - 1));
 
       // Shuffle the values randomly
       for (let i = x.length - 1; i > 0; i--) {
@@ -272,7 +272,6 @@ export default class Arpeggiator {
           notes: event.indices.map((index, k) => {
             const note = { ...currentChord!.notes[Math.floor(index * (currentChord!.notes.length - 1))] };
             note.duration = note.duration - (event.onset % note.duration);
-            console.log(note.duration);
             const eventVelocities = velocityPattern[wrapValue(e, velocityPattern.length)];
             note.velocity = eventVelocities[wrapValue(k, eventVelocities.length)];
             return note;
