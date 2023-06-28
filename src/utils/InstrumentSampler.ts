@@ -52,7 +52,7 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
-  [InstrumentName.EBASS]: {
+  [InstrumentName.ELECTRIC_BASS]: {
     minPitch: 36,
     maxPitch: 66,
     pitchIncrement: 6,
@@ -143,7 +143,7 @@ export default class InstrumentSampler {
     env.gain.setValueCurveAtTime(this.envelope, startTime, noteDuration);
 
     const panner = this.context.createStereoPanner();
-    panner.pan.value = Math.sin((pitch / 127) * Math.PI * 4) * 0.5;
+    panner.pan.value = Math.sin((pitch / 127) * Math.PI * 10) * 0.25;
 
     source.connect(amp);
     amp.connect(env);

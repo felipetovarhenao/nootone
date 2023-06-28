@@ -25,7 +25,7 @@ export default function generateBassLine(
   const chordProgression = applyVoiceLeading(
     chordsCopy.map((chord) => chord.notes.map((note) => note.pitch)),
     21,
-    48
+    55
   );
 
   const notes: NoteEvent[] = [];

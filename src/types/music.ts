@@ -21,7 +21,7 @@ export enum InstrumentName {
   EPIANO = "electricPiano",
   MANDOLIN = "mandolin",
   PAD = "buzzPad",
-  EBASS = "electricBass",
+  ELECTRIC_BASS = "electricBass",
   ACOUSTIC_BASS = "acousticBass",
 }
 

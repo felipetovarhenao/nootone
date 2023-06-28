@@ -102,7 +102,7 @@ export default class AudioRenderer {
     const compressorNode = context.createDynamicsCompressor();
     compressorNode.threshold.value = -12;
     compressorNode.knee.value = 10;
-    compressorNode.ratio.value = 4;
+    compressorNode.ratio.value = 8;
     compressorNode.attack.value = 0.08;
     compressorNode.release.value = 0.2;
     return compressorNode;
