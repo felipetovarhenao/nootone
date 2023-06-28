@@ -12,6 +12,7 @@ import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import randomChoice from "../../utils/randomChoice";
 import AudioRenderer from "../../utils/AudioRenderer";
 import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
+import generateBassLine from "./generateBassLine";
 
 export type HarmonizerSettings = {
   style: string;
@@ -113,6 +114,15 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
       noteEvents: detectedNotes.map((n) => ({ ...n, velocity: 0.707 })),
     };
 
+    const bassLine =
+      maxComplexity > 0
+        ? generateBassLine(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+        : chords.map((chord) => {
+            const bass = { ...chord, notes: chord.notes.slice(0, 1) };
+            bass.notes.forEach((note) => (note.pitch -= 12));
+            return bass;
+          });
+    // applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
     const tracks: TrackSequence = [
       {
         type: TrackType.AUDIO,
@@ -130,6 +140,26 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         data: {
           chordEvents: arpeggios,
           name: settings.instrumentName,
+        },
+      },
+      // {
+      //   type: TrackType.SYMBOLIC,
+      //   data: {
+      //     chordEvents: chords,
+      //     name: InstrumentName.PAD,
+      //   },
+      //   config: {
+      //     gain: 0.125,
+      //   },
+      // },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: bassLine,
+          name: InstrumentName.ACOUSTIC_BASS,
+        },
+        config: {
+          gain: 0.707,
         },
       },
     ];

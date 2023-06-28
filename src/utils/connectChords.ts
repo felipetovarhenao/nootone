@@ -7,7 +7,7 @@ import shuffleArray from "./shuffleArray";
  * @param B - The second chord represented as an array of numbers.
  * @returns The connected chord resulting from voice leading.
  */
-export default function connectChords(A: number[], B: number[]): number[] {
+export default function connectChords(A: number[], B: number[], lowerPitchBound: number = 36, upperPitchBound: number = 85): number[] {
   if (B.length === 0) {
     return B; // If the second chord is empty, return an empty chord
   }
@@ -42,9 +42,9 @@ export default function connectChords(A: number[], B: number[]): number[] {
       // Update the closest pitch and minimum distance if the current distance is smaller
       if (absClosestDistance < minDistance) {
         closestPitch = A[i] + closestDistance;
-        if (closestPitch < 42) {
+        if (closestPitch < lowerPitchBound) {
           closestPitch += 12;
-        } else if (closestPitch > 85) {
+        } else if (closestPitch > upperPitchBound) {
           closestPitch -= 12;
         }
         minDistance = absClosestDistance;

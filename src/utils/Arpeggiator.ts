@@ -29,7 +29,7 @@ export default class Arpeggiator {
       return x.map((value) => (value - xMin) / (Math.max(...x) - xMin));
     } else {
       // Generate values evenly spaced between 0 and 1
-      const x = Array.from({ length: N }, (_, index) => index / (N - 1));
+      const x = Array.from({ length: N }, (_, index) => index / Math.max(1, N - 1));
 
       // Shuffle the values randomly
       for (let i = x.length - 1; i > 0; i--) {
@@ -186,6 +186,19 @@ export default class Arpeggiator {
     return randomVelocities;
   }
 
+  public static generateArpeggioPattern(numAttacks: number, quantumUnit: number, patternDuration: number, contourSize: number) {
+    // Get normalized index contour
+    const normalizedContour = this.createRandomContour(contourSize);
+
+    // Generate a random onset grid
+    const onsetGrid = this.createRandomGrid(patternDuration, quantumUnit, numAttacks);
+
+    // Assign onset positions to contour
+    const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
+    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
+    return arpeggioPattern;
+  }
+
   /**
    * Generate an arpeggio sequence based on the provided chords and configuration.
    * @param chords - The input chords.
@@ -213,15 +226,8 @@ export default class Arpeggiator {
     // Get grid quantization duration unit
     const quantumUnit = beatDuration / maxSubdiv;
 
-    // Get normalized index contour
-    const normalizedContour = this.createRandomContour(contourSize);
-
-    // Generate a random onset grid
-    const onsetGrid = this.createRandomGrid(patternDuration, quantumUnit, numAttacks);
-
-    // Assign onset positions to contour
-    const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
-    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
+    // generate arpeggio pattern
+    const arpeggioPattern = this.generateArpeggioPattern(numAttacks, quantumUnit, patternDuration, contourSize);
 
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
