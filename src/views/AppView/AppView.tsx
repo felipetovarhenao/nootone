@@ -10,6 +10,7 @@ import Avatar from "../../components/Avatar/Avatar";
 import { recordingActions } from "../../redux/recordings/recordingsSlice";
 import { useDarkTheme } from "../../hooks/useDarkTheme";
 import findSubstringIndex from "../../utils/findSubstringIndex";
+import Icon from "../../components/Icon/Icon";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -49,7 +50,9 @@ const AppView = () => {
         ) : (
           <Avatar size={"32px"} className="AppView__header__avatar --is-authenticated" username={username} />
         )}
-        <span className="AppView__header__text">{viewHeader}</span>
+        <span className="AppView__header__text">
+          {viewHeader} <Icon icon={navbarLinks[currentViewIndex].icon} />
+        </span>
       </h1>
       <div className="AppView__content">
         <Outlet />
