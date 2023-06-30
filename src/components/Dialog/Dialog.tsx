@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, createContext, ReactNode, useContext } fro
 import Button from "../Button/Button";
 import { createPortal } from "react-dom";
 import cn from "classnames";
+import { useDarkTheme } from "../../hooks/useDarkTheme";
 
 const DialogContext = createContext<DialogContextType | undefined>(undefined);
 
@@ -12,6 +13,7 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement | null>(null);
   const [dialogProps, setDialogProps] = useState<DialogProps | undefined>();
+  const { darkTheme } = useDarkTheme();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -42,7 +44,7 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
     <DialogContext.Provider value={updateDialog}>
       {children}
       {createPortal(
-        <dialog className="Dialog" ref={dialogRef}>
+        <dialog className={cn({ dark: darkTheme }, "Dialog")} ref={dialogRef}>
           <div className="Dialog__container">
             <div className="Dialog__container__text">
               <h1 className="Dialog__container__header">{dialogProps?.header}</h1>

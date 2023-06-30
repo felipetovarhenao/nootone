@@ -11,11 +11,11 @@
   .Dialog__container {
     @include v-stack;
     @include h-center;
-    @include round;
+    @include round-border;
     @include shadow;
-    @include vh-pad($gap-ml, $gap-xxl);
+    @include vh-pad($gap-xl, $gap-xxl);
     max-width: 500px;
-    background-color: var(--bg-1);
+    background-color: var(--bg-2);
     gap: $gap-xxl;
     .Dialog__container__text {
       @include v-stack;
@@ -25,11 +25,13 @@
         font-size: $txt-ml;
         text-transform: uppercase;
         text-align: center;
+        color: var(--fg-3);
       }
       .Dialog__container__message {
         font-size: $txt-ml;
         white-space: pre-wrap;
         text-align: center;
+        color: var(--fg-3);
       }
     }
     .Dialog__container__buttons {
