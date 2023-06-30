@@ -12,6 +12,8 @@ import { recordingActions } from "../../redux/recordings/recordingsSlice";
 // import { useAppSelector } from "../../redux/hooks";
 import cn from "classnames";
 import downloadURL from "../../utils/downloadURL";
+import useDialog, { DialogProps } from "../../components/Dialog/Dialog";
+import { useNotification } from "../../components/Notification/NotificationProvider";
 
 type AudioPlayerOptionsProps = {
   recording: GenericRecording;
@@ -27,8 +29,35 @@ type Options = {
 
 const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
   const dispatch = useDispatch();
+  const dialog = useDialog();
+  const notification = useNotification();
   // const navigate = useNavigate();
   // const { recordings } = useAppSelector((state) => state.recordings);
+  const deleteDialog: DialogProps = {
+    header: "WAIT!",
+    message: `You're about to delete this recording.${
+      recording.variations !== undefined && recording.variations?.length > 0 ? " This will also delete all variations." : ""
+    }\nAre you sure you want to proceed?`,
+    buttons: [
+      {
+        label: "delete",
+        icon: "",
+        type: "danger",
+        onClick: (closeDialog) => {
+          closeDialog();
+          notification({ type: "SUCCESS", icon: icons.check, message: "Recording deleted" });
+          dispatch(recordingActions.delete(recording));
+        },
+      },
+      {
+        label: "cancel",
+        icon: "",
+        onClick: (closeDialog) => {
+          closeDialog();
+        },
+      },
+    ],
+  };
   function makeMenuOptions(): any[] {
     const isVariation = recording.variations === undefined;
     const defaultOptions: Options = [
@@ -48,7 +77,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
         value: "div",
         props: {
           onClick: () => {
-            dispatch(recordingActions.delete(recording));
+            dialog(deleteDialog);
           },
           className: "--danger",
         },

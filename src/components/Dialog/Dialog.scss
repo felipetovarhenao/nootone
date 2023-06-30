@@ -1,0 +1,44 @@
+@use "../../styles/main.scss" as *;
+.Dialog {
+  @include stack;
+  @include center;
+  background: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  .Dialog__container {
+    @include v-stack;
+    @include h-center;
+    @include round;
+    @include shadow;
+    @include vh-pad($gap-ml, $gap-xxl);
+    max-width: 500px;
+    background-color: var(--bg-1);
+    gap: $gap-xxl;
+    .Dialog__container__text {
+      @include v-stack;
+      gap: $gap-lg;
+      .Dialog__container__header {
+        font-weight: bold;
+        font-size: $txt-ml;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .Dialog__container__message {
+        font-size: $txt-ml;
+        white-space: pre-wrap;
+        text-align: center;
+      }
+    }
+    .Dialog__container__buttons {
+      @include h-stack;
+      @include h-center;
+      gap: $gap-md;
+      .Dialog__container__buttons__button {
+        font-size: $txt-md;
+      }
+    }
+  }
+}

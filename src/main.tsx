@@ -6,15 +6,18 @@ import { Provider } from "react-redux";
 import store from "./redux/store.ts";
 import NotificationProvider from "./components/Notification/NotificationProvider.tsx";
 import { DarkThemeProvider } from "./hooks/useDarkTheme.tsx";
+import { DialogProvider } from "./components/Dialog/Dialog.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <DarkThemeProvider>
       <Provider store={store}>
         <NotificationProvider>
-          <HashRouter>
-            <App />
-          </HashRouter>
+          <DialogProvider>
+            <HashRouter>
+              <App />
+            </HashRouter>
+          </DialogProvider>
         </NotificationProvider>
       </Provider>
     </DarkThemeProvider>

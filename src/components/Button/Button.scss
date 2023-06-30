@@ -7,42 +7,43 @@
   text-transform: uppercase;
   font-weight: bold;
   font-size: m.$txt-ms;
-  &.primary {
+  border: none;
+  &.--primary {
     background-color: var(--primary-3);
     border-color: var(--primary-3);
     &:hover:not([disabled]) {
       background-color: var(--primary-4);
     }
   }
-  &.secondary {
+  &.--secondary {
     background-color: var(--secondary-3);
     border-color: var(--secondary-3);
     &:hover:not([disabled]) {
       background-color: var(--secondary-4);
     }
   }
-  &.danger {
+  &.--danger {
     background-color: var(--danger-3);
     border-color: var(--danger-3);
     &:hover:not([disabled]) {
       background-color: var(--danger-4);
     }
   }
-  &.caution {
+  &.--caution {
     background-color: var(--caution-3);
     border-color: var(--caution-3);
     &:hover:not([disabled]) {
       background-color: var(--caution-4);
     }
   }
-  &.success {
+  &.--success {
     background-color: var(--success-3);
     border-color: var(--success-3);
     &:hover:not([disabled]) {
       background-color: var(--success-4);
     }
   }
-  &.neutral {
+  &.--neutral {
     background-color: var(--disabled-5);
     border-color: var(--disabled-5);
     &:hover:not([disabled]) {
