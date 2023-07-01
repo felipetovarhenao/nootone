@@ -1,11 +1,10 @@
 import { ChordEvent } from "../types/music";
 import getRandomNumber from "./getRandomNumber";
 import randomChoice from "./randomChoice";
-import wrapValue from "./wrapValue";
 
 type ArpeggioPattern = {
   onset: number;
-  indices: number[];
+  notes: { index: number; velocity: number; duration: number }[];
 }[];
 
 export default class Arpeggiator {
@@ -96,14 +95,14 @@ export default class Arpeggiator {
    * @param duration - The duration of the pattern.
    * @returns An array of time points represented as tuples of onset and index.
    */
-  private static indexPatternToTimePoints(indexPattern: number[], duration: number): [number, number][] {
+  private static indexPatternToTimePoints(indexPattern: number[], duration: number): { onset: number; index: number }[] {
     const patternSize = indexPattern.length;
 
     // Calculate marker positions evenly spaced in the duration
     const markers = Array.from({ length: patternSize + 1 }, (_, i) => (i / patternSize) * duration);
 
     // Convert markers to time points with their corresponding indices
-    const timePoints: [number, number][] = markers.slice(0, -1).map((marker, index) => [marker, indexPattern[index]]);
+    const timePoints = markers.slice(0, -1).map((marker, index) => ({ onset: marker, index: indexPattern[index] }));
     return timePoints;
   }
 
@@ -113,9 +112,11 @@ export default class Arpeggiator {
    * @param B - An array of onset positions.
    * @returns An array of grouped indices with their corresponding onset positions.
    */
-  private static groupIndices(A: [number, number][], B: number[]): ArpeggioPattern {
-    const result: { onset: number; indices: number[] }[] = [];
-    for (const [onset, index] of A) {
+  private static groupIndices(A: { onset: number; index: number }[], B: number[]): ArpeggioPattern {
+    const result: { onset: number; notes: { index: number; velocity: number; duration: number }[] }[] = [];
+
+    for (const marker of A) {
+      const { onset, index } = marker;
       let minDiff = Infinity;
       let closestOnset: number | null = null;
 
@@ -130,17 +131,18 @@ export default class Arpeggiator {
 
       if (closestOnset !== null) {
         let found = false;
+        const eventDuration = Math.random();
         // Check if the onset position already exists in the result
         for (const item of result) {
           if (item.onset === closestOnset) {
-            item.indices.push(index);
+            item.notes.push({ index: index, velocity: Math.random(), duration: eventDuration });
             found = true;
             break;
           }
         }
         // If not found, add a new entry to the result
         if (!found) {
-          result.push({ onset: closestOnset, indices: [index] });
+          result.push({ onset: closestOnset, notes: [{ index: index, velocity: Math.random(), duration: eventDuration }] });
         }
       }
     }
@@ -168,22 +170,6 @@ export default class Arpeggiator {
       numAttacks,
       contourSize,
     };
-  }
-
-  /**
-   * Generates a random velocity pattern for an arpeggio sequence.
-   *
-   * @param arpeggioPattern - The arpeggio pattern containing onset positions and indices.
-   * @returns A 2D array of random velocities corresponding to the arpeggio pattern.
-   */
-  private static getRandomVelocityPattern(arpeggioPattern: { onset: number; indices: number[] }[]): number[][] {
-    const randomVelocities: number[][] = [];
-    arpeggioPattern.forEach((e) => {
-      const vels: number[] = [];
-      e.indices.forEach((_) => vels.push(Math.random() * 0.5 + 0.5));
-      randomVelocities.push(vels);
-    });
-    return randomVelocities;
   }
 
   public static generateArpeggioPattern(numAttacks: number, quantumUnit: number, patternDuration: number, contourSize: number) {
@@ -243,7 +229,6 @@ export default class Arpeggiator {
     let lastChordReached = false;
     const numChords = sortedChords.length;
 
-    const velocityPattern = this.getRandomVelocityPattern(arpeggioPattern);
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
       const variation = i > 0 ? this.getArpeggioPatternVariation(arpeggioPattern, quantumUnit, patternDuration) : arpeggioPattern;
@@ -269,11 +254,11 @@ export default class Arpeggiator {
 
         const arpChordEvent: ChordEvent = {
           onset: onset,
-          notes: event.indices.map((index, k) => {
-            const note = { ...currentChord!.notes[Math.floor(index * (currentChord!.notes.length - 1))] };
+          notes: event.notes.map((e) => {
+            const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
+            const note = { ...currentChord!.notes[noteIndex] };
             note.duration = note.duration - (event.onset % note.duration);
-            const eventVelocities = velocityPattern[wrapValue(e, velocityPattern.length)];
-            note.velocity = eventVelocities[wrapValue(k, eventVelocities.length)];
+            note.velocity = e.velocity;
             return note;
           }),
         };
@@ -322,7 +307,7 @@ export default class Arpeggiator {
         return;
       }
       const newOnset = randomChoice(emptyOnsets) as number;
-      arp.push({ onset: newOnset, indices: [Math.random()] });
+      arp.push({ onset: newOnset, notes: [{ index: Math.random(), velocity: Math.random(), duration: Math.random() }] });
     }
 
     function shuffle(arp: ArpeggioPattern) {
