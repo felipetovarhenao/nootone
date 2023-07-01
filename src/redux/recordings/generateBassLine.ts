@@ -55,7 +55,7 @@ export default function generateBassLine(
 }
 
 function reorderChordNotes(chord: ChordEvent) {
-  const bassOffset = Math.floor(Math.random() * 20 + 21);
+  const bassOffset = Math.floor(Math.random() * 20 + 28);
   // get bass note and shift it to 24 - 36 note range
   const bassNote = chord.notes[0];
 

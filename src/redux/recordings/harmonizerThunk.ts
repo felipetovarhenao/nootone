@@ -13,6 +13,7 @@ import randomChoice from "../../utils/randomChoice";
 import AudioRenderer from "../../utils/AudioRenderer";
 import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
 import generateBassLine from "./generateBassLine";
+import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
 
 export type HarmonizerSettings = {
   style: string;
@@ -123,6 +124,8 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
             return bass;
           });
     // applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
+
+    applyLegatoToChordEvents(bassLine);
 
     const bassName = randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!;
     const tracks: TrackSequence = [
