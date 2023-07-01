@@ -1,13 +1,13 @@
-import { ChordEvent, InstrumentalPart, NoteEvent } from "./music";
+import { InstrumentalPart, NoteEvent, SymbolicMusicSequence } from "./music";
 
 export type AudioFeatures = {
   noteEvents?: NoteEvent[];
-  chordEvents?: ChordEvent[];
   tempo?: number;
   rms?: {
     hopSize: number;
     data: Float32Array;
   };
+  symbolicRepresentation?: SymbolicMusicSequence;
 };
 
 export type RecordingMetadata = {

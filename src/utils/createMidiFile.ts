@@ -1,7 +1,40 @@
 import { Midi } from "@tonejs/midi";
-import { ChordEvent } from "../types/music";
+import { InstrumentName, SymbolicMusicSequence } from "../types/music";
 
-export default function createMidiFile(chordEvents: ChordEvent[], tempo: number): Midi {
+type GeneralMidiMap = Record<
+  InstrumentName,
+  {
+    channel: number;
+  }
+>;
+const generalMidiMap: GeneralMidiMap = {
+  [InstrumentName.PIANO]: {
+    channel: 1,
+  },
+  [InstrumentName.EPIANO]: {
+    channel: 3,
+  },
+  [InstrumentName.UPRIGHT_BASS]: {
+    channel: 33,
+  },
+  [InstrumentName.ELECTRIC_BASS]: {
+    channel: 34,
+  },
+  [InstrumentName.ACOUSTIC_BASS]: {
+    channel: 36,
+  },
+  [InstrumentName.GUITAR]: {
+    channel: 25,
+  },
+  [InstrumentName.MANDOLIN]: {
+    channel: 106,
+  },
+  [InstrumentName.PAD]: {
+    channel: 89,
+  },
+};
+
+export default function createMidiFile(musicalSequence: SymbolicMusicSequence, tempo: number): Midi {
   // Create a new MIDI object
   const midi = new Midi();
 
@@ -9,23 +42,29 @@ export default function createMidiFile(chordEvents: ChordEvent[], tempo: number)
   midi.header.setTempo(tempo);
 
   // Create a new track
-  const track = midi.addTrack();
+  for (let i = 0; i < musicalSequence.instrumentalParts.length; i++) {
+    const instrumentalPart = musicalSequence.instrumentalParts[i];
+    const track = midi.addTrack();
+    track.name = instrumentalPart.name;
+    track.channel = i + 1;
+    track.instrument.number = generalMidiMap[instrumentalPart.name].channel;
 
-  // Iterate over the note events
-  chordEvents.forEach((chord) => {
-    chord.notes.forEach((event) => {
-      const { pitch, duration, velocity } = event;
+    // Iterate over the note events
+    instrumentalPart.chordEvents.forEach((chord) => {
+      chord.notes.forEach((event) => {
+        const { pitch, duration, velocity } = event;
 
-      // Convert the onset and duration to ticks based on the tempo
-      const ticksPerQuarterNote = midi.header.ppq;
-      const ticksPerSecond = ticksPerQuarterNote * (tempo / 60);
-      const tickOnset = Math.round(chord.onset * ticksPerSecond);
-      const tickDuration = Math.round(duration * ticksPerSecond);
+        // Convert the onset and duration to ticks based on the tempo
+        const ticksPerQuarterNote = midi.header.ppq;
+        const ticksPerSecond = ticksPerQuarterNote * (tempo / 60);
+        const tickOnset = Math.round(chord.onset * ticksPerSecond);
+        const tickDuration = Math.round(duration * ticksPerSecond);
 
-      // Add a note on event to the track
-      track.addNote({ midi: pitch, ticks: tickOnset, durationTicks: tickDuration, velocity: velocity });
+        // Add a note on event to the track
+        track.addNote({ midi: pitch, ticks: tickOnset, durationTicks: tickDuration, velocity: velocity });
+      });
     });
-  });
+  }
 
   return midi;
 }

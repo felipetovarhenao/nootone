@@ -4,7 +4,7 @@ import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import getAudioDuration from "../../utils/getAudioDuration";
-import { ChordEvent, InstrumentName, NoteEvent } from "../../types/music";
+import { ChordEvent, InstrumentName, NoteEvent, SymbolicMusicSequence } from "../../types/music";
 import { Recording, TrackSequence, TrackType } from "../../types/audio";
 import extractAudioFeatures from "../../utils/extractAudioFeatures";
 import Arpeggiator from "../../utils/Arpeggiator";
@@ -123,6 +123,8 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
             return bass;
           });
     // applyRmsToChordEvents(bassLine, rms.data, rms.hopSize, sampleRate);
+
+    const bassName = randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!;
     const tracks: TrackSequence = [
       {
         type: TrackType.AUDIO,
@@ -156,7 +158,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         type: TrackType.SYMBOLIC,
         data: {
           chordEvents: bassLine,
-          name: randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!,
+          name: bassName,
         },
         config: {
           gain: 0.707,
@@ -168,6 +170,13 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const recDuration = await getAudioDuration(renderedBlob);
 
+    const symbolicRepresentation: SymbolicMusicSequence = {
+      instrumentalParts: [
+        { name: bassName, chordEvents: bassLine },
+        { name: settings.instrumentName, chordEvents: arpeggios },
+      ],
+    };
+
     return {
       noteEvents: features.noteEvents,
       variation: {
@@ -178,10 +187,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         tags: [...recording.tags, settings.style],
         features: {
           ...features,
-          chordEvents: [
-            // ...(!didDetectionFailed ? noteEventsToChordEvents(detectedNotes.map((note) => ({ ...note, velocity: 0.707 }))) : []),
-            ...arpeggios,
-          ],
+          symbolicRepresentation: symbolicRepresentation,
         },
       },
     };

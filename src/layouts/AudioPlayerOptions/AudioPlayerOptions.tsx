@@ -84,14 +84,14 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
       },
     ];
     const variationOptions = [];
-    if (recording.features?.chordEvents && recording.features?.tempo) {
+    if (recording.features?.symbolicRepresentation && recording.features?.tempo) {
       variationOptions.push({
         label: "export MIDI",
         icon: icons.midi,
         value: "div",
         props: {
           onClick: () => {
-            const midi = createMidiFile(recording.features.chordEvents!, recording.features.tempo!);
+            const midi = createMidiFile(recording.features.symbolicRepresentation!, recording.features.tempo!);
             downloadMIDI(midi, recording.name);
           },
         },

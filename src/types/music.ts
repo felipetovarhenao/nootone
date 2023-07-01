@@ -30,3 +30,7 @@ export type InstrumentalPart = {
   name: InstrumentName;
   chordEvents: ChordEvent[];
 };
+
+export type SymbolicMusicSequence = {
+  instrumentalParts: InstrumentalPart[];
+};
