@@ -30,6 +30,13 @@ const sounds: string[] = [
   "vocals",
   "intro",
   "chorus",
+  "notes",
+  "lyrics",
+  "demo",
+  "single",
+  "ad lib",
+  "vamp",
+  "coda",
 ];
 const emoji: string[] = [
   "🎹",
