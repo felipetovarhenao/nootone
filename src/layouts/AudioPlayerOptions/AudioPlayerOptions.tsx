@@ -36,8 +36,8 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
   const deleteDialog: DialogProps = {
     header: "WAIT!",
     message: `You're about to delete this recording.${
-      recording.variations !== undefined && recording.variations?.length > 0 ? " This will also delete all variations." : ""
-    }\nAre you sure you want to proceed?`,
+      recording.variations !== undefined && recording.variations?.length > 0 ? " This will also delete all related variations." : ""
+    }\n\nDo you want to proceed?`,
     buttons: [
       {
         label: "delete",

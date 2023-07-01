@@ -8,13 +8,17 @@
   height: 100%;
   max-width: 100vw;
   max-height: 100vh;
+  &::backdrop {
+    background-color: #00000077;
+  }
   .Dialog__container {
     @include v-stack;
     @include h-center;
     @include round-border;
     @include shadow;
     @include vh-pad($gap-xl, $gap-xxl);
-    max-width: 500px;
+    min-width: 300px;
+    width: min-content;
     background-color: var(--bg-2);
     gap: $gap-xxl;
     .Dialog__container__text {
@@ -37,6 +41,7 @@
     .Dialog__container__buttons {
       @include h-stack;
       @include h-center;
+      justify-content: space-evenly;
       gap: $gap-md;
       .Dialog__container__buttons__button {
         font-size: $txt-md;
