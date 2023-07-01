@@ -156,7 +156,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         type: TrackType.SYMBOLIC,
         data: {
           chordEvents: bassLine,
-          name: randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS])!,
+          name: randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!,
         },
         config: {
           gain: 0.707,

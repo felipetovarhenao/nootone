@@ -67,7 +67,7 @@ export default class NoteHarmonizer {
       [7, 4, 0], // M
       [7, 0, 4], // M
     ],
-    dramatic: [
+    nostalgic: [
       [3, 0, 7], // m
       [3, 7, 0], // m
       [0, 3, 7], // m
