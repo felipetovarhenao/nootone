@@ -31,9 +31,9 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
       navigator.mediaDevices
         .getUserMedia({
           audio: {
-            echoCancellation: true,
-            // autoGainControl: false,
-            // noiseSuppression: false,
+            echoCancellation: false,
+            autoGainControl: false,
+            noiseSuppression: false,
           },
           video: false,
         })
