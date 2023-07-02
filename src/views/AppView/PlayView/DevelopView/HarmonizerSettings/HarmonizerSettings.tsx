@@ -70,21 +70,21 @@ const complexity = [
   {
     label: "simple",
     value: {
-      min: 1/4,
-      max: 1/3,
+      min: 1 / 4,
+      max: 1 / 3,
     },
   },
   {
     label: "normal",
     value: {
-      min: 1/3,
-      max: 2/3,
+      min: 1 / 3,
+      max: 2 / 3,
     },
   },
   {
     label: "complex",
     value: {
-      min: 2/3,
+      min: 2 / 3,
       max: 1,
     },
   },
@@ -107,6 +107,10 @@ const instrumentOptions = [
     label: "mandolin",
     value: InstrumentName.MANDOLIN,
   },
+  // {
+  //   label: "synth",
+  //   value: InstrumentName.BRASS_SYNTH,
+  // },
 ];
 
 type HarmonizerSettingsProps = {

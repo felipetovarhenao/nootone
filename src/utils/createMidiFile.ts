@@ -32,6 +32,9 @@ const generalMidiMap: GeneralMidiMap = {
   [InstrumentName.PAD]: {
     channel: 89,
   },
+  [InstrumentName.BRASS_SYNTH]: {
+    channel: 90,
+  },
 };
 
 export default function createMidiFile(musicalSequence: SymbolicMusicSequence, tempo: number): Midi {

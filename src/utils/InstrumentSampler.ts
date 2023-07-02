@@ -70,6 +70,12 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
+  [InstrumentName.BRASS_SYNTH]: {
+    minPitch: 36,
+    maxPitch: 78,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
 };
 
 export default class InstrumentSampler {

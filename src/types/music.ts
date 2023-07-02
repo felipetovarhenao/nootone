@@ -24,6 +24,7 @@ export enum InstrumentName {
   ELECTRIC_BASS = "electricBass",
   ACOUSTIC_BASS = "acousticBass",
   UPRIGHT_BASS = "uprightBass",
+  BRASS_SYNTH = "brassSynth",
 }
 
 export type InstrumentalPart = {
