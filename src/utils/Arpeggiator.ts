@@ -116,6 +116,7 @@ export default class Arpeggiator {
     const result: { onset: number; notes: { index: number; velocity: number; duration: number }[] }[] = [];
 
     const maxAttacks = Math.floor(patternDuration / quantumUnit);
+    
     function getNoteEnd(index: number) {
       let stopIndex = maxAttacks;
       if (index < maxAttacks - 1) {
