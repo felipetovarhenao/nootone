@@ -112,16 +112,27 @@ export default class Arpeggiator {
    * @param B - An array of onset positions.
    * @returns An array of grouped indices with their corresponding onset positions.
    */
-  private static groupIndices(A: { onset: number; index: number }[], B: number[]): ArpeggioPattern {
+  private static groupIndices(A: { onset: number; index: number }[], B: number[], patternDuration: number, quantumUnit: number): ArpeggioPattern {
     const result: { onset: number; notes: { index: number; velocity: number; duration: number }[] }[] = [];
 
-    for (const marker of A) {
-      const { onset, index } = marker;
+    const maxAttacks = Math.floor(patternDuration / quantumUnit);
+    function getNoteEnd(index: number) {
+      let stopIndex = maxAttacks;
+      if (index < maxAttacks - 1) {
+        stopIndex = getRandomNumber(index + 1, maxAttacks);
+      }
+      return stopIndex * quantumUnit;
+    }
+
+    let noteEnd = getNoteEnd(0);
+    for (let i = 0; i < A.length; i++) {
+      const { onset, index } = A[i];
       let minDiff = Infinity;
       let closestOnset: number | null = null;
 
       // Find the closest onset position from B
-      for (const bOnset of B) {
+      for (let j = 0; j < B.length; j++) {
+        const bOnset = B[j];
         const diff = Math.abs(onset - bOnset);
         if (diff < minDiff) {
           minDiff = diff;
@@ -131,7 +142,12 @@ export default class Arpeggiator {
 
       if (closestOnset !== null) {
         let found = false;
-        const eventDuration = Math.random();
+
+        if (noteEnd <= closestOnset) {
+          noteEnd = getNoteEnd(Math.floor(closestOnset / quantumUnit));
+        }
+        const eventDuration = noteEnd - closestOnset;
+
         // Check if the onset position already exists in the result
         for (const item of result) {
           if (item.onset === closestOnset) {
@@ -181,7 +197,7 @@ export default class Arpeggiator {
 
     // Assign onset positions to contour
     const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
-    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid);
+    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid, patternDuration, quantumUnit);
     return arpeggioPattern;
   }
 
@@ -229,6 +245,8 @@ export default class Arpeggiator {
     let lastChordReached = false;
     const numChords = sortedChords.length;
 
+    const groovy = Math.random() > 0.5;
+
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
       const variation = i > 0 ? this.getArpeggioPatternVariation(arpeggioPattern, quantumUnit, patternDuration) : arpeggioPattern;
@@ -258,6 +276,9 @@ export default class Arpeggiator {
             const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
             const note = { ...currentChord!.notes[noteIndex] };
             note.duration = note.duration - (event.onset % note.duration);
+            if (groovy) {
+              note.duration = Math.min(e.duration, note.duration);
+            }
             note.velocity = e.velocity;
             return note;
           }),
@@ -307,7 +328,7 @@ export default class Arpeggiator {
         return;
       }
       const newOnset = randomChoice(emptyOnsets) as number;
-      arp.push({ onset: newOnset, notes: [{ index: Math.random(), velocity: Math.random(), duration: Math.random() }] });
+      arp.push({ onset: newOnset, notes: [{ index: Math.random(), velocity: Math.random(), duration: quantumUnit }] });
     }
 
     function shuffle(arp: ArpeggioPattern) {
