@@ -102,16 +102,20 @@ const instrumentOptions = [
   },
   {
     label: "nylon guitar",
-    value: InstrumentName.GUITAR,
+    value: InstrumentName.NYLON_GUITAR,
   },
+  // {
+  //   label: "electric guitar",
+  //   value: InstrumentName.ELECTRIC_GUITAR,
+  // },
   {
     label: "mandolin",
     value: InstrumentName.MANDOLIN,
   },
-  // {
-  //   label: "synth",
-  //   value: InstrumentName.BRASS_SYNTH,
-  // },
+  {
+    label: "wave synth",
+    value: InstrumentName.WAVE_SYNTH,
+  },
 ];
 
 type HarmonizerSettingsProps = {

@@ -40,7 +40,7 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 12,
     dynamics: [DynamicMarking.MEZZOFORTE],
   },
-  [InstrumentName.GUITAR]: {
+  [InstrumentName.NYLON_GUITAR]: {
     minPitch: 41,
     maxPitch: 83,
     pitchIncrement: 6,
@@ -71,6 +71,18 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     dynamics: ALL_DYNAMICS,
   },
   [InstrumentName.BRASS_SYNTH]: {
+    minPitch: 36,
+    maxPitch: 78,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
+  [InstrumentName.WAVE_SYNTH]: {
+    minPitch: 36,
+    maxPitch: 84,
+    pitchIncrement: 6,
+    dynamics: ALL_DYNAMICS,
+  },
+  [InstrumentName.ELECTRIC_GUITAR]: {
     minPitch: 36,
     maxPitch: 78,
     pitchIncrement: 6,
@@ -140,7 +152,7 @@ export default class InstrumentSampler {
 
     // create contant note amplitude and set to velocity
     const amp = this.context.createGain();
-    amp.gain.value = velocity;
+    amp.gain.value = velocity ** 0.5;
 
     // create source node
     const source = this.context.createBufferSource();

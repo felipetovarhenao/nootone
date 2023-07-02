@@ -24,7 +24,10 @@ const generalMidiMap: GeneralMidiMap = {
   [InstrumentName.ACOUSTIC_BASS]: {
     channel: 36,
   },
-  [InstrumentName.GUITAR]: {
+  [InstrumentName.NYLON_GUITAR]: {
+    channel: 25,
+  },
+  [InstrumentName.ELECTRIC_GUITAR]: {
     channel: 25,
   },
   [InstrumentName.MANDOLIN]: {
@@ -35,6 +38,9 @@ const generalMidiMap: GeneralMidiMap = {
   },
   [InstrumentName.BRASS_SYNTH]: {
     channel: 90,
+  },
+  [InstrumentName.WAVE_SYNTH]: {
+    channel: 91,
   },
 };
 

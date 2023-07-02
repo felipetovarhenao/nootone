@@ -17,7 +17,8 @@ export type NoteEventSegment = {
 
 export enum InstrumentName {
   PIANO = "grandPiano",
-  GUITAR = "nylonGuitar",
+  NYLON_GUITAR = "nylonGuitar",
+  ELECTRIC_GUITAR = "electricGuitar",
   EPIANO = "electricPiano",
   MANDOLIN = "mandolin",
   PAD = "sineSynth",
@@ -25,6 +26,7 @@ export enum InstrumentName {
   ACOUSTIC_BASS = "acousticBass",
   UPRIGHT_BASS = "uprightBass",
   BRASS_SYNTH = "brassSynth",
+  WAVE_SYNTH = "waveSynth",
 }
 
 export type InstrumentalPart = {
