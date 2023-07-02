@@ -142,7 +142,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           duration: recording.duration,
         },
         config: {
-          gain: 1.5,
+          gain: 1.25,
         },
       },
       {
