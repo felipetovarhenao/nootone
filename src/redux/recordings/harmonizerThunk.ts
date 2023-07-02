@@ -128,6 +128,11 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     applyLegatoToChordEvents(bassLine);
 
     const bassName = randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!;
+
+    const pads = chords.map((chord) => ({
+      ...chord,
+      notes: chord.notes.map((note) => ({ ...note, duration: note.duration * 0.5, velocity: Math.random() * 0.4 + 0.1 })),
+    }));
     const tracks: TrackSequence = [
       {
         type: TrackType.AUDIO,
@@ -147,16 +152,13 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           name: settings.instrumentName,
         },
       },
-      // {
-      //   type: TrackType.SYMBOLIC,
-      //   data: {
-      //     chordEvents: chords,
-      //     name: InstrumentName.PAD,
-      //   },
-      //   config: {
-      //     gain: 0.125,
-      //   },
-      // },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
+          chordEvents: pads,
+          name: InstrumentName.PAD,
+        },
+      },
       {
         type: TrackType.SYMBOLIC,
         data: {
@@ -175,8 +177,9 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const symbolicRepresentation: SymbolicMusicSequence = {
       instrumentalParts: [
-        { name: bassName, chordEvents: bassLine },
         { name: settings.instrumentName, chordEvents: arpeggios },
+        { name: InstrumentName.PAD, chordEvents: pads },
+        { name: bassName, chordEvents: bassLine },
       ],
     };
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { HarmonizerSettings as NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizerThunk";
 import { InstrumentName } from "../../../../../types/music";
 import CacheAPI from "../../../../../utils/CacheAPI";
+import wrapValue from "../../../../../utils/wrapValue";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
@@ -150,25 +151,25 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       {
         key: "harmonizerStyleIndex",
         setter: (value: number) => {
-          setStyleIndex(value);
+          setStyleIndex(wrapValue(value, styles.length));
         },
       },
       {
         key: "harmonizerTimeSigIndex",
         setter: (value: number) => {
-          setTimeSigIndex(value);
+          setTimeSigIndex(wrapValue(value, timeSigs.length));
         },
       },
       {
         key: "harmonizerComplexityIndex",
         setter: (value: number) => {
-          setComplexityIndex(value);
+          setComplexityIndex(wrapValue(value, complexity.length));
         },
       },
       {
         key: "harmonizerInstrumentIndex",
         setter: (value: number) => {
-          setInstrumentIndex(value);
+          setInstrumentIndex(wrapValue(value, instrumentOptions.length));
         },
       },
     ];

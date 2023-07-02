@@ -20,7 +20,7 @@ export enum InstrumentName {
   GUITAR = "nylonGuitar",
   EPIANO = "electricPiano",
   MANDOLIN = "mandolin",
-  PAD = "buzzPad",
+  PAD = "sineSynth",
   ELECTRIC_BASS = "electricBass",
   ACOUSTIC_BASS = "acousticBass",
   UPRIGHT_BASS = "uprightBass",

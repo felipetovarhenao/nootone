@@ -1,5 +1,6 @@
 import { Midi } from "@tonejs/midi";
 import { InstrumentName, SymbolicMusicSequence } from "../types/music";
+import camelToSpaces from "./camelToSpaces";
 
 type GeneralMidiMap = Record<
   InstrumentName,
@@ -30,7 +31,7 @@ const generalMidiMap: GeneralMidiMap = {
     channel: 106,
   },
   [InstrumentName.PAD]: {
-    channel: 89,
+    channel: 95,
   },
   [InstrumentName.BRASS_SYNTH]: {
     channel: 90,
@@ -48,7 +49,7 @@ export default function createMidiFile(musicalSequence: SymbolicMusicSequence, t
   for (let i = 0; i < musicalSequence.instrumentalParts.length; i++) {
     const instrumentalPart = musicalSequence.instrumentalParts[i];
     const track = midi.addTrack();
-    track.name = instrumentalPart.name;
+    track.name = camelToSpaces(instrumentalPart.name);
     track.channel = i + 1;
     track.instrument.number = generalMidiMap[instrumentalPart.name].channel;
 
