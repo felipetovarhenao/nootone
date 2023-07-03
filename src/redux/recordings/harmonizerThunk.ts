@@ -135,7 +135,11 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const pads = chords.map((chord) => ({
       ...chord,
-      notes: chord.notes.map((note) => ({ ...note, duration: note.duration * Math.max(0.125, 1 - grooviness), velocity: Math.random() * 0.4 + 0.1 })),
+      notes: chord.notes.map((note) => ({
+        ...note,
+        duration: note.duration * 2 ** Math.round(Math.log2(1 - grooviness)),
+        velocity: Math.random() * 0.4 + 0.1,
+      })),
     }));
     const tracks: TrackSequence = [
       {
