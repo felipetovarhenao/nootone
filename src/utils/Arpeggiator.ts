@@ -112,15 +112,20 @@ export default class Arpeggiator {
    * @param B - An array of onset positions.
    * @returns An array of grouped indices with their corresponding onset positions.
    */
-  private static groupIndices(A: { onset: number; index: number }[], B: number[], patternDuration: number, quantumUnit: number): ArpeggioPattern {
+  private static groupIndices(
+    A: { onset: number; index: number }[],
+    B: number[],
+    patternDuration: number,
+    quantumUnit: number,
+    grooviness: number
+  ): ArpeggioPattern {
     const result: { onset: number; notes: { index: number; velocity: number; duration: number }[] }[] = [];
-
     const maxAttacks = Math.floor(patternDuration / quantumUnit);
-    
     function getNoteEnd(index: number) {
       let stopIndex = maxAttacks;
       if (index < maxAttacks - 1) {
-        stopIndex = getRandomNumber(index + 1, maxAttacks);
+        const maxIndex = Math.floor((maxAttacks - index) * (1 - grooviness)) + index + 2;
+        stopIndex = getRandomNumber(index + 1, maxIndex);
       }
       return stopIndex * quantumUnit;
     }
@@ -189,7 +194,7 @@ export default class Arpeggiator {
     };
   }
 
-  public static generateArpeggioPattern(numAttacks: number, quantumUnit: number, patternDuration: number, contourSize: number) {
+  public static generateArpeggioPattern(numAttacks: number, quantumUnit: number, patternDuration: number, contourSize: number, grooviness: number) {
     // Get normalized index contour
     const normalizedContour = this.createRandomContour(contourSize);
 
@@ -198,7 +203,7 @@ export default class Arpeggiator {
 
     // Assign onset positions to contour
     const rawIndexPattern = this.indexPatternToTimePoints(normalizedContour, patternDuration);
-    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid, patternDuration, quantumUnit);
+    const arpeggioPattern = this.groupIndices(rawIndexPattern, onsetGrid, patternDuration, quantumUnit, grooviness);
     return arpeggioPattern;
   }
 
@@ -218,7 +223,8 @@ export default class Arpeggiator {
     maxSubdiv: number = 4,
     patternSize: number = 2,
     contourSize: number = 8,
-    tempo: number = 60
+    tempo: number = 60,
+    grooviness: number = 0.5
   ): ChordEvent[] {
     // Get beat duration
     const beatDuration = 60 / tempo;
@@ -230,7 +236,7 @@ export default class Arpeggiator {
     const quantumUnit = beatDuration / maxSubdiv;
 
     // generate arpeggio pattern
-    const arpeggioPattern = this.generateArpeggioPattern(numAttacks, quantumUnit, patternDuration, contourSize);
+    const arpeggioPattern = this.generateArpeggioPattern(numAttacks, quantumUnit, patternDuration, contourSize, grooviness);
 
     const sortedChords = chords.sort((a, b) => a.onset - b.onset);
 
@@ -245,8 +251,6 @@ export default class Arpeggiator {
     let currentChordIndex = 0;
     let lastChordReached = false;
     const numChords = sortedChords.length;
-
-    const groovy = Math.random() > 0.5;
 
     for (let i = 0; i < numPatterns; i++) {
       const patternOffset = patternDuration * i + timeOffset;
@@ -277,9 +281,7 @@ export default class Arpeggiator {
             const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
             const note = { ...currentChord!.notes[noteIndex] };
             note.duration = note.duration - (event.onset % note.duration);
-            if (groovy) {
-              note.duration = Math.min(e.duration, note.duration);
-            }
+            note.duration = Math.min(e.duration, note.duration);
             note.velocity = e.velocity;
             return note;
           }),

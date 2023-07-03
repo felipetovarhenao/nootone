@@ -22,6 +22,7 @@ export type HarmonizerSettings = {
   rhythmicComplexity: { min: number; max: number };
   maxSubdiv: number;
   instrumentName: InstrumentName;
+  groovinessRange: { min: number; max: number };
 };
 
 type HarmonizerPayload = {
@@ -96,6 +97,8 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     let arpeggios: ChordEvent[] = chords;
 
+    const grooviness = Math.random() * (settings.groovinessRange.max - settings.groovinessRange.min) + settings.groovinessRange.min;
+
     if (maxComplexity > 0) {
       arpeggios = Arpeggiator.arpeggiate(
         chords,
@@ -103,7 +106,8 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         config.maxSubdiv,
         config.patternSize,
         config.contourSize,
-        recording.features.tempo!
+        recording.features.tempo!,
+        grooviness
       );
     }
 
@@ -117,7 +121,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const bassLine =
       maxComplexity > 0
-        ? generateBassLine(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!)
+        ? generateBassLine(chords, config.numAttacks, config.maxSubdiv, config.patternSize, config.contourSize, recording.features.tempo!, grooviness)
         : chords.map((chord) => {
             const bass = { ...chord, notes: chord.notes.slice(0, 1) };
             bass.notes.forEach((note) => (note.pitch -= 12));
@@ -131,7 +135,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const pads = chords.map((chord) => ({
       ...chord,
-      notes: chord.notes.map((note) => ({ ...note, duration: note.duration * 0.5, velocity: Math.random() * 0.4 + 0.1 })),
+      notes: chord.notes.map((note) => ({ ...note, duration: note.duration * Math.max(0.125, 1 - grooviness), velocity: Math.random() * 0.4 + 0.1 })),
     }));
     const tracks: TrackSequence = [
       {

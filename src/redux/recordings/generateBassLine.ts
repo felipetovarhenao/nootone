@@ -10,7 +10,8 @@ export default function generateBassLine(
   maxSubdiv: number,
   patternSize: number,
   contourSize: number,
-  tempo: number
+  tempo: number,
+  grooviness: number
 ) {
   // utility function to randomize input values
   function randomizeValue(value: number) {
@@ -44,7 +45,15 @@ export default function generateBassLine(
   const chordsAsScale = noteEventsToChordEvents(notes);
 
   // generate bass line and map to chord sequence
-  const bassLine = Arpeggiator.arpeggiate(chordsAsScale, randomizeValue(numAttacks), maxSubdiv, patternSize, randomizeValue(contourSize), tempo!);
+  const bassLine = Arpeggiator.arpeggiate(
+    chordsAsScale,
+    randomizeValue(numAttacks),
+    maxSubdiv,
+    patternSize,
+    randomizeValue(contourSize),
+    tempo!,
+    grooviness
+  );
 
   // filter chords to get monophonic line
   bassLine.forEach((chord) => {

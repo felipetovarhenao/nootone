@@ -9,6 +9,30 @@ import wrapValue from "../../../../../utils/wrapValue";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
+const groovinessOptions = [
+  {
+    label: "low",
+    value: {
+      min: 0,
+      max: 1 / 3,
+    },
+  },
+  {
+    label: "medium",
+    value: {
+      min: 1 / 3,
+      max: 2 / 3,
+    },
+  },
+  {
+    label: "high",
+    value: {
+      min: 2 / 3,
+      max: 1,
+    },
+  },
+];
+
 const timeSigs = [
   {
     label: "2/4",
@@ -129,6 +153,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   const [timeSigIndex, setTimeSigIndex] = useState(0);
   const [complexityIndex, setComplexityIndex] = useState(2);
   const [instrumentIndex, setInstrumentIndex] = useState(0);
+  const [groovinessIndex, setGroovinessIndex] = useState(1);
 
   function handleStyleChange(id: number) {
     setStyleIndex(id);
@@ -148,6 +173,11 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   function handleInstrumentSelection(id: number) {
     setInstrumentIndex(id);
     CacheAPI.setLocalItem<number>("harmonizerInstrumentIndex", id);
+  }
+
+  function handleGroovinessChange(id: number) {
+    setGroovinessIndex(id), CacheAPI.setLocalItem<number>("harmonizerGroovinessIndex", id);
+    CacheAPI.setLocalItem<number>("harmonizerGroovinessIndex", id);
   }
 
   useEffect(() => {
@@ -176,6 +206,12 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
           setInstrumentIndex(wrapValue(value, instrumentOptions.length));
         },
       },
+      {
+        key: "harmonizerGroovinessIndex",
+        setter: (value: number) => {
+          setInstrumentIndex(wrapValue(value, groovinessOptions.length));
+        },
+      },
     ];
 
     cacheList.forEach((param) => {
@@ -199,8 +235,9 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       rhythmicComplexity: complexity[complexityIndex].value as { min: number; max: number },
       maxSubdiv,
       instrumentName,
+      groovinessRange: groovinessOptions[groovinessIndex].value as { min: number; max: number },
     });
-  }, [styleIndex, timeSigIndex, complexityIndex, instrumentIndex]);
+  }, [styleIndex, timeSigIndex, complexityIndex, instrumentIndex, groovinessIndex]);
 
   useEffect(() => {
     setProcess(name);
@@ -208,19 +245,19 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
 
   return (
     <div className="HarmonizerSettings">
+      <h1 className="HarmonizerSettings__label">instrument</h1>
+      <SwipeMenu defaultValue={instrumentIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleInstrumentSelection}>
+        {instrumentOptions.map((ts, i) => (
+          <span key={i} className="HarmonizerSettings__swipe-menu__option">
+            {ts.label}
+          </span>
+        ))}
+      </SwipeMenu>
       <h1 className="HarmonizerSettings__label">chords</h1>
       <SwipeMenu defaultValue={styleIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleStyleChange}>
         {styles.map((style, i) => (
           <span className="HarmonizerSettings__swipe-menu__option" key={i}>
             {style}
-          </span>
-        ))}
-      </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">rhythm</h1>
-      <SwipeMenu defaultValue={complexityIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleComplexityChange}>
-        {complexity.map((ts, i) => (
-          <span key={i} className="HarmonizerSettings__swipe-menu__option">
-            {ts.label}
           </span>
         ))}
       </SwipeMenu>
@@ -232,9 +269,17 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
           </span>
         ))}
       </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">instrument</h1>
-      <SwipeMenu defaultValue={instrumentIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleInstrumentSelection}>
-        {instrumentOptions.map((ts, i) => (
+      <h1 className="HarmonizerSettings__label">rhythm</h1>
+      <SwipeMenu defaultValue={complexityIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleComplexityChange}>
+        {complexity.map((ts, i) => (
+          <span key={i} className="HarmonizerSettings__swipe-menu__option">
+            {ts.label}
+          </span>
+        ))}
+      </SwipeMenu>
+      <h1 className="HarmonizerSettings__label">grooviness</h1>
+      <SwipeMenu defaultValue={groovinessIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleGroovinessChange}>
+        {groovinessOptions.map((ts, i) => (
           <span key={i} className="HarmonizerSettings__swipe-menu__option">
             {ts.label}
           </span>
