@@ -11,6 +11,8 @@ import { recordingActions } from "../../redux/recordings/recordingsSlice";
 import { useDarkTheme } from "../../hooks/useDarkTheme";
 import findSubstringIndex from "../../utils/findSubstringIndex";
 import Icon from "../../components/Icon/Icon";
+import CONFIG, { DeploymentType } from "../../utils/config";
+import loadTestRecordings from "../../utils/loadTestRecordings";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -27,10 +29,19 @@ const AppView = () => {
   const cacheCheck = useRef(false);
   const { darkTheme } = useDarkTheme();
 
+  const testsLoaded = useRef(false);
+
   useEffect(() => {
     if (!cacheCheck.current) {
       cacheCheck.current = true;
       dispatch(recordingActions.retrieveCache());
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!testsLoaded.current && CONFIG.deploymentType === DeploymentType.DEV) {
+      testsLoaded.current = true;
+      loadTestRecordings((rec) => dispatch(recordingActions.addNew(rec)));
     }
   }, []);
 
