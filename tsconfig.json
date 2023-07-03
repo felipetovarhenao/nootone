@@ -21,7 +21,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "types": [
-      "@types/audioworklet"
+      "@types/audioworklet",
+      "node",
     ]
   },
   "include": [

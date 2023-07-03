@@ -1,7 +1,6 @@
 import * as Tone from "tone";
 import { AudioTrack, SymbolicTrack, TrackSequence, TrackType } from "../types/audio";
 import audioArrayFromURL from "./audioArrayFromURL";
-import reverbUrl from "../assets/audio/impulseResponses/Five_columns_long.mp3";
 import audioBufferToBlob from "./audioBufferToBlob";
 import InstrumentSampler from "./InstrumentSampler";
 
@@ -80,7 +79,7 @@ export default class AudioRenderer {
 
     /* reverb FX */
     const reverbGain = context.createGain();
-    const reverbConvolver = await this.createConvolver(context, reverbUrl);
+    const reverbConvolver = await this.createConvolver(context, "https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/Five+Columns+Long.mp3");
     reverbGain.gain.value = 0.125;
 
     const compressorNode = this.createCompressorNode(context);
