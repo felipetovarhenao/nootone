@@ -23,7 +23,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
       <ul className="links">
         {links.map((link, index) => (
           <li
-            className="link"
+            className={cn("link", { "--selected": selected === index })}
             key={index}
             onClick={() => {
               if (!isRecording) {
@@ -31,7 +31,8 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
               }
             }}
           >
-            <Icon className={cn("icon", { "--selected": selected === index })} icon={link.icon} />
+            <div className="line" />
+            <Icon className="icon" icon={link.icon} />
           </li>
         ))}
       </ul>

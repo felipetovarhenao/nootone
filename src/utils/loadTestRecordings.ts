@@ -1,7 +1,7 @@
 import getAudioDuration from "./getAudioDuration";
 
 export default function loadTestRecordings(callback: (rec: any) => void): void {
-  const bpmSamples = [70, 90, 99];
+  const bpmSamples = [70, 90, 99, 117];
   bpmSamples.forEach(async (bpm) => {
     try {
       const res = await fetch(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`);

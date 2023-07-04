@@ -50,9 +50,13 @@
   .AppView__navbar {
     .links {
       @include h-stack-c;
-      @include vh-pad($gap-lg, $gap-xxl);
       justify-content: space-between;
       background-color: var(--txt-dark);
+      .link {
+        .icon {
+          @include vh-mar($gap-ml, $gap-xxl);
+        }
+      }
     }
   }
 }
