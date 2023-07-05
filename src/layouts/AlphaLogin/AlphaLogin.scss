@@ -1,0 +1,36 @@
+@use "../../styles/main.scss" as *;
+.alpha-login {
+  @include v-stack-c;
+  @include center;
+  height: 100vh;
+  background-color: var(--bg-2);
+  gap: $gap-xl;
+  $max-width: 300px;
+  .alpha-login__header {
+    @include v-stack;
+    max-width: $max-width;
+    text-align: center;
+    gap: $gap-lg;
+    .alpha-login__header__app-name {
+      font-size: $txt-lg;
+    }
+  }
+  .alpha-login__form {
+    @include v-stack-c;
+    @include v-center;
+    gap: $gap-lg;
+    input {
+      @include round;
+      @include pad;
+    }
+  }
+  .footer {
+    @include round-border;
+    @include pad($gap-lg);
+    max-width: $max-width;
+    background-color: var(--bg-3);
+    * {
+      font-weight: bold;
+    }
+  }
+}

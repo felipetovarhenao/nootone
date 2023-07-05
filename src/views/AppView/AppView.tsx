@@ -1,5 +1,5 @@
 import "./AppView.scss";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { useEffect, useRef, useState } from "react";
 import cn from "classnames";
@@ -24,6 +24,7 @@ const AppView = () => {
 
   const location = useLocation();
   const username = useAppSelector((state) => state.user.username);
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const cacheCheck = useRef(false);
@@ -52,6 +53,12 @@ const AppView = () => {
     let viewName = pathArray.at(-1) === "app" ? DEFAULT_VIEWNAME : pathArray.at(-1);
     setViewHeader(`${viewName}`);
   }, [location]);
+
+  useEffect(() => {
+    if (!username && CONFIG.deploymentType === DeploymentType.PROD) {
+      navigate("/alpha-login");
+    }
+  }, [username]);
 
   return (
     <div className={cn("AppView", { dark: darkTheme })}>

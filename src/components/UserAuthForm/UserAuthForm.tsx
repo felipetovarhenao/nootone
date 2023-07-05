@@ -1,9 +1,10 @@
+import "./UserAuthForm.scss";
 import cn from "classnames";
 import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Button from "../Button/Button";
 
-type LoginForm = {
+export type LoginForm = {
   username: string;
   password: string;
 };
@@ -42,16 +43,29 @@ const UserAuthForm = ({ className, onRegistration = () => {}, onLogin = () => {}
   const handleSubmit = (values: RegistrationForm, helpers: FormikHelpers<RegistrationForm>) => {
     helpers.setSubmitting(true);
     if (isRegistration) {
-      onRegistration(values)?.then(() => {
-        helpers.resetForm();
-        helpers.setSubmitting(false);
-      });
+      onRegistration(values)
+        ?.then(() => {
+          helpers.resetForm();
+          helpers.setSubmitting(false);
+        })
+        .catch((err) => {
+          helpers.setFieldError("password", err || "error");
+        })
+        .finally(() => {
+          helpers.setSubmitting(false);
+        });
     } else {
       const { username, password } = values;
-      onLogin({ username, password })?.then(() => {
-        helpers.resetForm();
-        helpers.setSubmitting(false);
-      });
+      onLogin({ username, password })
+        ?.then(() => {
+          helpers.resetForm();
+        })
+        .catch((err) => {
+          helpers.setFieldError("password", err || "error");
+        })
+        .finally(() => {
+          helpers.setSubmitting(false);
+        });
     }
   };
 
