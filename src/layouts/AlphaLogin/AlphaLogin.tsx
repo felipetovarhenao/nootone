@@ -53,7 +53,7 @@ const AlphaLogin = () => {
         <p>We're currently in alpha testing!</p>
         <br />
         <p>
-          To access the app, please login. If you've forgotten your user password or would like to join the testing group, please{" "}
+          To access the app, please login. If you've forgotten your username or password, or would like to join the testing group, please{" "}
           <a href="mailto:contact@nootone.io">contact us</a>!
         </p>
       </div>
