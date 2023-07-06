@@ -8,8 +8,10 @@ import AppName from "../../components/AppName/AppName";
 import { useNotification } from "../../components/Notification/NotificationProvider";
 import icons from "../../utils/icons";
 import CONFIG, { DeploymentType } from "../../utils/config";
+import useViewportInfo from "../../hooks/useViewportInfo";
 
 const AlphaLogin = () => {
+  useViewportInfo();
   const dispatch = useAppDispatch();
   const { username } = useAppSelector((state) => state.user);
   const navigate = useNavigate();

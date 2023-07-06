@@ -3,6 +3,7 @@
   @include v-stack-c;
   @include center;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: var(--bg-2);
   gap: $gap-xl;
   $max-width: 300px;
