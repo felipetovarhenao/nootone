@@ -9,6 +9,7 @@ import { useNotification } from "../../components/Notification/NotificationProvi
 import icons from "../../utils/icons";
 import CONFIG, { DeploymentType } from "../../utils/config";
 import useViewportInfo from "../../hooks/useViewportInfo";
+import CacheAPI from "../../utils/CacheAPI";
 
 const AlphaLogin = () => {
   useViewportInfo();
@@ -19,7 +20,6 @@ const AlphaLogin = () => {
 
   async function handleLogin(formData: LoginForm) {
     const { username: u, password: p } = formData;
-    console.log(u, p);
     return new Promise<void>((resolve, reject) => {
       if (u === "nootone-user" && p === "nootone-password") {
         dispatch(userActions.login(formData)).then(() => {
@@ -28,6 +28,7 @@ const AlphaLogin = () => {
             icon: icons.check,
             message: "Login successful!",
           });
+          CacheAPI.setLocalItem<LoginForm>("alphaLogin", formData);
           resolve();
         });
       } else {
@@ -39,8 +40,14 @@ const AlphaLogin = () => {
   useEffect(() => {
     if (username || CONFIG.deploymentType !== DeploymentType.PROD) {
       navigate("/app");
+    } else if (!username && CONFIG.deploymentType === DeploymentType.PROD) {
+      const cache = CacheAPI.getLocalItem<LoginForm>("alphaLogin");
+      if (cache) {
+        dispatch(userActions.login(cache));
+      }
     }
   }, [username]);
+
   return (
     <div className="alpha-login">
       <div className="alpha-login__header">

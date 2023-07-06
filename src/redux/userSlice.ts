@@ -19,7 +19,7 @@ const loginCallback = async (loginForm: UserLogin): Promise<UserLogin | string> 
       } else {
         resolve(loginForm);
       }
-    }, 1000);
+    }, 250);
   });
 };
 
