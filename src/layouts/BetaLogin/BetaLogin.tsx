@@ -1,4 +1,4 @@
-import "./AlphaLogin.scss";
+import "./BetaLogin.scss";
 import UserAuthForm, { LoginForm } from "../../components/UserAuthForm/UserAuthForm";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { userActions } from "../../redux/userSlice";
@@ -11,7 +11,7 @@ import CONFIG, { DeploymentType } from "../../utils/config";
 import useViewportInfo from "../../hooks/useViewportInfo";
 import CacheAPI from "../../utils/CacheAPI";
 
-const AlphaLogin = () => {
+const BetaLogin = () => {
   useViewportInfo();
   const dispatch = useAppDispatch();
   const { username } = useAppSelector((state) => state.user);
@@ -28,7 +28,7 @@ const AlphaLogin = () => {
             icon: icons.check,
             message: "Login successful!",
           });
-          CacheAPI.setLocalItem<LoginForm>("alphaLogin", formData);
+          CacheAPI.setLocalItem<LoginForm>("betaLogin", formData);
           resolve();
         });
       } else {
@@ -41,7 +41,7 @@ const AlphaLogin = () => {
     if (username || CONFIG.deploymentType !== DeploymentType.PROD) {
       navigate("/app");
     } else if (!username && CONFIG.deploymentType === DeploymentType.PROD) {
-      const cache = CacheAPI.getLocalItem<LoginForm>("alphaLogin");
+      const cache = CacheAPI.getLocalItem<LoginForm>("betaLogin");
       if (cache) {
         dispatch(userActions.login(cache));
       }
@@ -49,17 +49,17 @@ const AlphaLogin = () => {
   }, [username]);
 
   return (
-    <div className="alpha-login">
-      <div className="alpha-login__header">
+    <div className="beta-login">
+      <div className="beta-login__header">
         <div>
-          <AppName className="alpha-login__header__app-name" />
+          <AppName className="beta-login__header__app-name" />
         </div>
       </div>
-      <UserAuthForm className="alpha-login__form" onLogin={handleLogin} />
+      <UserAuthForm className="beta-login__form" onLogin={handleLogin} />
       <div className="footer">
         <p>Hi there 👋!</p>
         <br />
-        <p>We're currently in alpha testing!</p>
+        <p>We're currently in beta testing!</p>
         <br />
         <p>
           To access the app, please login. If you've forgotten your username or password, or would like to join the testing group, please{" "}
@@ -70,4 +70,4 @@ const AlphaLogin = () => {
   );
 };
 
-export default AlphaLogin;
+export default BetaLogin;

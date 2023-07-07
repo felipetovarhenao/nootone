@@ -56,7 +56,7 @@ const AppView = () => {
 
   useEffect(() => {
     if (!username && CONFIG.deploymentType === DeploymentType.PROD) {
-      navigate("/alpha-login");
+      navigate("/beta-login");
     }
   }, [username]);
 

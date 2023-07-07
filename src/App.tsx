@@ -7,7 +7,7 @@ import UserAccountView from "./views/AppView/UserAccountView/UserAccountView";
 import DevelopView from "./views/AppView/PlayView/DevelopView/DevelopView";
 import RecordingSettingsView from "./views/AppView/PlayView/RecordingSettingsView/RecordingSettingsView";
 import UserFeedbackView from "./views/AppView/UserFeedbackView/UserFeedbackView";
-import AlphaLogin from "./layouts/AlphaLogin/AlphaLogin";
+import BetaLogin from "./layouts/BetaLogin/BetaLogin";
 
 export default function App() {
   return (
@@ -24,7 +24,7 @@ export default function App() {
           <Route path="dashboard" element={<UserAccountView />} />
           <Route path="feedback" element={<UserFeedbackView />} />
         </Route>
-        <Route path="/alpha-login" element={<AlphaLogin />} />
+        <Route path="/beta-login" element={<BetaLogin />} />
       </Routes>
     </div>
   );
