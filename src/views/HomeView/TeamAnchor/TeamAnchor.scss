@@ -3,6 +3,16 @@
 #team {
   clip-path: polygon(0 0, 100% m.$gap-xxl, 100% calc(100% - m.$gap-xxl), 0 100%);
   .body {
+    .TeamAnchor__subtitle {
+      text-align: center;
+      &,
+      * {
+        font-size: m.$txt-lg;
+      }
+      b {
+        @include m.text-gradient;
+      }
+    }
     .team-profiles {
       @include m.t-mar(m.$gap-xxl);
       @include m.h-stack-c;
@@ -37,5 +47,10 @@
         }
       }
     }
+  }
+  .TeamAnchor__footer {
+    @include m.t-pad(m.$gap-xxl);
+    font-size: m.$txt-lg;
+    text-align: center;
   }
 }

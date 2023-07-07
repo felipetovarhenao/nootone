@@ -259,3 +259,9 @@
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 }
+
+@mixin text-gradient($color1: var(--primary-3), $color2: var(--secondary-4)) {
+  background: -webkit-linear-gradient(left, $color1, $color2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

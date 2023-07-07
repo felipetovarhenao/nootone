@@ -5,6 +5,7 @@
   @include m.t-mar(m.$gap-xxl);
   gap: m.$gap-lg;
   input {
+    @include m.round;
     @include m.vh-pad(m.$gap-ms, m.$gap-ml);
     font-size: m.$txt-ml;
   }

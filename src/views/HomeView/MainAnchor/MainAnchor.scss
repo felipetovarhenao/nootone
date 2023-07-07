@@ -1,0 +1,58 @@
+@use "../../../styles/main.scss" as *;
+.MainAnchor {
+  @include v-pad(calc(1.5 * $gap-xxl));
+  @include v-stack-c;
+  align-items: center;
+  .MainAnchor__subtitle {
+    &,
+    b {
+      @include b-pad($gap-xxl);
+      font-size: $txt-lg;
+      text-align: center;
+      color: var(--fg-1);
+    }
+    b {
+      @include text-gradient;
+    }
+  }
+  .MainAnchor__content {
+    @include h-stack-c;
+    @include mobile-down {
+      @include v-stack-c;
+      flex-direction: column-reverse;
+      .MainAnchor__content__text {
+        p {
+          text-align: center;
+        }
+      }
+    }
+    gap: $txt-xxl;
+    .MainAnchor__content__text {
+      @include v-stack;
+      gap: $txt-xxl;
+      justify-content: space-between;
+      p {
+        height: 100%;
+        color: var(--fg-1);
+        @include stack;
+        font-size: $txt-lg;
+      }
+    }
+    .MainAnchor__app-screenshot {
+      @include v-stack-c;
+      gap: $txt-md;
+      align-items: center;
+      .MainAnchor__app-screenshot__image {
+        @include round-border;
+        border-radius: $gap-xxl;
+        max-height: 500px;
+      }
+      .MainAnchor__app-screenshot__button {
+        font-size: $txt-ml;
+        &:disabled {
+          color: var(--txt-light);
+        }
+      }
+    }
+  }
+}

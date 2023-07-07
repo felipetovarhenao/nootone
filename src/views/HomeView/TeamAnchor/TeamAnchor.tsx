@@ -6,9 +6,10 @@ import ImageWrapper from "../../../components/ImageWrapper/ImageWrapper";
 
 const TeamAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   return (
-    <AnchorSection ref={ref} id="team" className="anchor" header={"Meet the team"}>
-      We have <b>30+ years</b> of hybrid experience in <b>music</b>, <b>engineering</b>, and <b>audio</b> industries. Our goal is to serve musicians
-      and educators at all levels.
+    <AnchorSection ref={ref} id="team" className="anchor" header={"Meet the founders"}>
+      <h2 className="TeamAnchor__subtitle">
+        30+ years in <b>music</b>, <b>audio</b>, and <b>AI</b>.
+      </h2>
       <div className="team-profiles">
         {teamProfiles.map((info) => (
           <div key={info.name} className="profile">
@@ -16,10 +17,11 @@ const TeamAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
             <a target="_blank" rel="noreferrer" href={info.url} className="profile-network">
               <h2 className="profile-name">{info.name}</h2>
             </a>
-            <h3 className="profile-role">{info.role}</h3>
+            {/* <h3 className="profile-role">{info.role}</h3> */}
           </div>
         ))}
       </div>
+      <h1 className="TeamAnchor__footer">connecting people to their creativity</h1>
     </AnchorSection>
   );
 });
