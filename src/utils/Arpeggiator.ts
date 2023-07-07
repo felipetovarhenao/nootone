@@ -1,6 +1,7 @@
 import { ChordEvent } from "../types/music";
 import getRandomNumber from "./getRandomNumber";
 import randomChoice from "./randomChoice";
+import removeDuplicates from "./removeDuplicates";
 
 type ArpeggioPattern = {
   onset: number;
@@ -277,14 +278,17 @@ export default class Arpeggiator {
 
         const arpChordEvent: ChordEvent = {
           onset: onset,
-          notes: event.notes.map((e) => {
-            const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
-            const note = { ...currentChord!.notes[noteIndex] };
-            note.duration = note.duration - (event.onset % note.duration);
-            note.duration = Math.min(e.duration, note.duration);
-            note.velocity = e.velocity;
-            return note;
-          }),
+          notes: removeDuplicates(
+            event.notes.map((e) => {
+              const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
+              const note = { ...currentChord!.notes[noteIndex] };
+              note.duration = note.duration - (event.onset % note.duration);
+              note.duration = Math.min(e.duration, note.duration);
+              note.velocity = e.velocity;
+              return note;
+            }),
+            (a, b) => a.pitch === b.pitch
+          ),
         };
 
         arpeggioSequence.push(arpChordEvent);
