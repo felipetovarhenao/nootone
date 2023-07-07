@@ -1,5 +1,27 @@
-@use "../../../styles/main.scss" as m;
+@use "../../../styles/main.scss" as *;
 
-#contact {
-  clip-path: polygon(0 0, 100% m.$gap-xxl, 100% 100%, 0 100%);
+.ContactAnchor {
+  @include v-stack-c;
+  @include v-pad($gap-xxl);
+  clip-path: polygon(0 0, 100% $gap-xxl, 100% 100%, 0 100%);
+  width: 100%;
+  .ContactAnchor__container {
+    @include h-stack-c;
+    width: 100%;
+    gap: calc(2 * $gap-xxl);
+    @include mobile-down {
+      @include v-stack-c;
+      flex-direction: column-reverse;
+      gap: $gap-xxl;
+    }
+    .ContactAnchor__container__text {
+      @include v-stack-c;
+      justify-content: space-around;
+      height: 100%;
+      gap: $gap-xxl;
+      .ContactAnchor__container__text__p {
+        font-size: $txt-lg;
+      }
+    }
+  }
 }

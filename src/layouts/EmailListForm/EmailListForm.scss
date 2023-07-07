@@ -4,14 +4,23 @@
   @include m.v-stack;
   @include m.t-mar(m.$gap-xxl);
   gap: m.$gap-lg;
-  input {
+  input,
+  textarea {
     @include m.round;
     @include m.vh-pad(m.$gap-ms, m.$gap-ml);
     font-size: m.$txt-ml;
   }
   label {
+    @include m.l-pad;
     color: var(--txt);
     font-size: m.$txt-ml;
+  }
+  textarea {
+    resize: none;
+    height: 150px;
+  }
+  input[type="checkbox"] {
+    @include m.clickable;
   }
   .error {
     color: var(--danger-4);
@@ -19,5 +28,10 @@
   .Button {
     font-size: m.$txt-ml;
     align-self: center;
+  }
+  .EmailListForm__success-message {
+    text-align: center;
+    font-size: m.$txt-ml;
+    color: var(--success-3);
   }
 }

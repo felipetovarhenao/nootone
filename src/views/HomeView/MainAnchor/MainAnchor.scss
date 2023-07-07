@@ -1,4 +1,5 @@
 @use "../../../styles/main.scss" as *;
+
 .MainAnchor {
   @include v-pad(calc(1.5 * $gap-xxl));
   @include v-stack-c;
@@ -15,46 +16,52 @@
       @include text-gradient;
     }
   }
-  .MainAnchor__content {
+  .MainAnchor__container {
     @include h-stack-c;
+    gap: $txt-xxl;
     @include mobile-down {
       @include v-stack-c;
       flex-direction: column-reverse;
-      .MainAnchor__content__text {
-        p {
+      .MainAnchor__container__left {
+        .MainAnchor__container__left__text__p {
           text-align: center;
         }
       }
     }
-    gap: $txt-xxl;
-    .MainAnchor__content__button {
-      @include border(var(--caution-3));
-      align-self: center;
-      box-shadow: 0px 0px $gap-sm var(--caution-3);
-      font-size: $txt-ml;
-      background: var(--main-gradient);
-    }
-    .MainAnchor__content__text {
+    .MainAnchor__container__left {
       @include v-stack;
-      gap: $txt-xxl;
-      justify-content: space-between;
-      p {
+      gap: calc(2 * $gap-xxl);
+      .MainAnchor__container__left__text {
+        @include v-stack;
         height: 100%;
-        color: var(--fg-1);
+        gap: calc(2 * $gap-xxl);
+        .MainAnchor__container__left__text__p {
+          @include stack;
+          height: 100%;
+          color: var(--fg-1);
+          font-size: $txt-lg;
+        }
+      }
+      .MainAnchor__container__left__button {
         @include stack;
-        font-size: $txt-lg;
+        @include border(var(--caution-3));
+        align-self: center;
+        box-shadow: 0px 0px $gap-sm var(--caution-3);
+        font-size: $txt-ml;
+        background: var(--main-gradient);
       }
     }
-    .MainAnchor__app-screenshot {
+    .MainAnchor__container__right {
       @include v-stack-c;
       gap: $txt-md;
       align-items: center;
-      .MainAnchor__app-screenshot__image {
+      .MainAnchor__container__right__image,
+      .MainAnchor__container__right__video {
         @include round-border;
         border-radius: $gap-xxl;
         max-height: 500px;
       }
-      .MainAnchor__app-screenshot__button {
+      .MainAnchor__container__right__button {
         font-size: $txt-ml;
         &:disabled {
           color: var(--txt-light);

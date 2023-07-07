@@ -3,13 +3,18 @@ import { Ref, forwardRef } from "react";
 import AnchorSection from "../../../layouts/AnchorSection/AnchorSection";
 import EmailListForm from "../../../layouts/EmailListForm/EmailListForm";
 
-const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
+const ContactAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   return (
-    <AnchorSection className="anchor" id="contact" header="receive updates!" ref={ref}>
-      If you want to learn more about what we're up to, sign up for our email list!
-      <EmailListForm />
+    <AnchorSection ref={ref} className="ContactAnchor" id="contact" header="receive updates!">
+      <div className="ContactAnchor__container">
+        <EmailListForm />
+        <div className="ContactAnchor__container__text">
+          <p className="ContactAnchor__container__text__p">Sign up to our email list!</p>
+          <p className="ContactAnchor__container__text__p">Keep up with the latest features!</p>
+        </div>
+      </div>
     </AnchorSection>
   );
 });
 
-export default AboutAnchor;
+export default ContactAnchor;
