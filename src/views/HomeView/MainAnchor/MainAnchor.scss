@@ -49,6 +49,9 @@
         box-shadow: 0px 0px $gap-sm var(--caution-3);
         font-size: $txt-ml;
         background: var(--main-gradient);
+        &:hover {
+          filter: brightness(120%);
+        }
       }
     }
     .MainAnchor__container__right {
