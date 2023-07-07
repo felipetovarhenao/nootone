@@ -21,6 +21,8 @@
   }
   input[type="checkbox"] {
     @include m.clickable;
+    @include m.r-mar(m.$gap-md);
+    scale: 1.3;
   }
   .error {
     color: var(--danger-4);

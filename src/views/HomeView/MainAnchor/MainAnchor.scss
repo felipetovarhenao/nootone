@@ -23,8 +23,12 @@
       @include v-stack-c;
       flex-direction: column-reverse;
       .MainAnchor__container__left {
-        .MainAnchor__container__left__text__p {
-          text-align: center;
+        .MainAnchor__container__left__text {
+          .MainAnchor__container__left__text__p {
+            @include stack;
+            justify-content: center;
+            text-align: center;
+          }
         }
       }
     }

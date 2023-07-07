@@ -24,11 +24,13 @@ export default function AnchorNavbar({ links, className, children, ...rest }: An
     <nav className={cn(className, "AnchorNavbar")} {...rest}>
       {children}
       {sizeID > 1 ? (
-        links.map((link) => (
-          <div className="navbar-link" key={link.label} onClick={() => scrollToSection(link.ref)}>
-            {link.label}
-          </div>
-        ))
+        <div style={{ display: "flex", justifyContent: "space-around", gap: "10px" }}>
+          {links.map((link) => (
+            <div className="navbar-link" key={link.label} onClick={() => scrollToSection(link.ref)}>
+              {link.label}
+            </div>
+          ))}
+        </div>
       ) : (
         <HamburgerDropdown className="hamburger">
           {links.map((link) => (

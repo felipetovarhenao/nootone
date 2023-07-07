@@ -22,6 +22,9 @@
   }
   .navbar {
     @include m.mobile-up {
+      justify-content: center;
+    }
+    @include m.desktop-up {
       @include m.h-pad(300px);
     }
     @include m.v-pad(m.$gap-lg);
