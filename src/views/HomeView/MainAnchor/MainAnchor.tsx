@@ -25,26 +25,27 @@ const MainAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
         </div>
         <div className="MainAnchor__container__right">
           {!showVideo ? (
-            <img
-              className="MainAnchor__container__right__image"
-              src={"https://dxbtnxd6vjk30.cloudfront.net/images/app-screenshot.png"}
-              alt="app screenshot"
-            />
+            <div
+              className="MainAnchor__container__right__image-container"
+              onClick={() => {
+                setShowVideo(true);
+              }}
+            >
+              <img
+                className="MainAnchor__container__right__image-container__image"
+                src={"https://dxbtnxd6vjk30.cloudfront.net/images/app-screenshot.png"}
+                alt="app screenshot"
+              />
+              <div className="MainAnchor__container__right__image-container__overlay">
+                <Icon className="MainAnchor__container__right__image-container__overlay__icon" icon={icons.play} />
+              </div>
+            </div>
           ) : (
             <video autoPlay={showVideo} className="MainAnchor__container__right__video" controls>
               <source src={"https://dxbtnxd6vjk30.cloudfront.net/videos/demo-v3.mp4"} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}
-          <Button
-            onClick={() => {
-              setShowVideo(true);
-            }}
-            className="MainAnchor__container__right__button"
-            disabled={showVideo}
-          >
-            watch
-          </Button>
         </div>
       </div>
     </AnchorSection>

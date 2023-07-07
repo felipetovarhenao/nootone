@@ -55,11 +55,37 @@
       @include v-stack-c;
       gap: $txt-md;
       align-items: center;
-      .MainAnchor__container__right__image,
+      .MainAnchor__container__right__image-container,
+      .MainAnchor__container__right__image-container__image,
       .MainAnchor__container__right__video {
         @include round-border;
         border-radius: $gap-xxl;
         max-height: 500px;
+      }
+      .MainAnchor__container__right__image-container {
+        position: relative;
+        overflow: hidden;
+        .MainAnchor__container__right__image-container__overlay {
+          @include stack;
+          @include clickable;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+          background-color: #00000022;
+          &:hover {
+            background-color: #00000055;
+          }
+          .MainAnchor__container__right__image-container__overlay__icon {
+            font-size: 100px;
+          }
+        }
+        .MainAnchor__container__right__image-container__overlay__icon {
+          font-size: $txt-xxl;
+        }
       }
       .MainAnchor__container__right__button {
         font-size: $txt-ml;
