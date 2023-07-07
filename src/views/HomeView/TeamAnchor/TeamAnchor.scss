@@ -22,6 +22,8 @@
       justify-content: center;
       gap: m.$gap-xxl;
       .profile {
+        @include m.v-stack;
+        gap: m.$gap-xl;
         .profile-name,
         .profile-role {
           font-size: m.$txt-lg;
