@@ -2,6 +2,8 @@ import "./MainAnchor.scss";
 import { Ref, forwardRef, useRef, useState } from "react";
 import AnchorSection from "../../../layouts/AnchorSection/AnchorSection";
 import Button from "../../../components/Button/Button";
+import Icon from "../../../components/Icon/Icon";
+import icons from "../../../utils/icons";
 
 const MainAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -13,8 +15,12 @@ const MainAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
       </h2>
       <div className="MainAnchor__content">
         <div className="MainAnchor__content__text">
-          <p>watch how easy it is to create an accompaniment</p>
-          <p>make music to match your melodies!</p>
+          <p>watch how easy it is to create an accompaniment 🎹</p>
+          <p>make music to match your melodies! 🎙</p>
+          <Button onClick={() => window.open("http://nootone.io/#/app")} className="MainAnchor__content__button">
+            <Icon icon={icons.lab} />
+            try the app
+          </Button>
         </div>
         <div className="MainAnchor__app-screenshot">
           {!showVideo ? (
