@@ -26,12 +26,12 @@ const HomeView: React.FC = () => {
       ref: aboutRef,
     },
     {
-      label: "Team",
-      ref: teamRef,
+      label: "Sign up",
+      ref: contactRef,
     },
     {
-      label: "Contact",
-      ref: contactRef,
+      label: "Team",
+      ref: teamRef,
     },
   ];
 
