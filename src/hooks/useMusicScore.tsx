@@ -29,7 +29,7 @@ const useMusicScore = (options?: useMusicScoreOptions) => {
     const { width = 800 } = options || {};
 
     let abcConfig: AbcVisualParams = {
-      selectionColor: "var(--primary-3)",
+      selectionColor: "var(--txt-dark)",
       oneSvgPerLine: true,
       print: true,
       staffwidth: width,
