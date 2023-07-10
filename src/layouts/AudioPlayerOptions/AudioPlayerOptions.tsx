@@ -100,7 +100,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
         value: "div",
         props: {
           onClick: () => {
-            updateMusicScore(recording.features.symbolicRepresentation!);
+            updateMusicScore({ musicSequence: recording.features.symbolicRepresentation!, recordingURL: recording.url });
           },
         },
       });
