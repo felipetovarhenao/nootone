@@ -7,18 +7,21 @@ import store from "./redux/store.ts";
 import NotificationProvider from "./components/Notification/NotificationProvider.tsx";
 import { DarkThemeProvider } from "./hooks/useDarkTheme.tsx";
 import { DialogProvider } from "./components/Dialog/Dialog.tsx";
+import PrintableMusiScoreProvider from "./components/PrintableMusicScore/PrintableMusicScore.tsx";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <DarkThemeProvider>
       <Provider store={store}>
-        <NotificationProvider>
-          <DialogProvider>
-            <HashRouter>
-              <App />
-            </HashRouter>
-          </DialogProvider>
-        </NotificationProvider>
+        <PrintableMusiScoreProvider>
+          <NotificationProvider>
+            <DialogProvider>
+              <HashRouter>
+                <App />
+              </HashRouter>
+            </DialogProvider>
+          </NotificationProvider>
+        </PrintableMusiScoreProvider>
       </Provider>
     </DarkThemeProvider>
   </React.StrictMode>

@@ -1,36 +1,53 @@
 @use "../../styles/main.scss" as *;
 
-.PrintableMusicScore {
+.PrintableMusicScore__dialog {
   @include v-stack-c;
-  @include round-border;
-  width: 100%;
-  height: 100%;
-  max-height: 250px;
-  .PrintableMusicScore__buttons {
-    @include stack;
-    @include pad;
+  @include pad(auto);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: #00000055;
+  .PrintableMusicScore {
+    @include v-stack-c;
+    @include round($gap-xl);
+    @include mar(auto);
     @include shadow;
-    border-bottom: solid $gap-xs var(--bg-5);
-    background-color: var(--bg-3);
-    width: 100%;
-    justify-content: end;
-    align-items: end;
-    .PrintableMusicScore__buttons__button {
-      @include hyperlink;
-      * {
-        color: var(--primary-3);
+    width: fit-content;
+    height: fit-content;
+    max-width: 90vw;
+    max-height: 90vh;
+    max-height: calc(95 * var(--vh));
+    overflow: auto;
+    .PrintableMusicScore__buttons {
+      @include stack;
+      @include pad;
+      @include shadow;
+      gap: $gap-xl;
+      border-bottom: solid $gap-xs var(--bg-5);
+      background: var(--main-gradient);
+      width: 100%;
+      justify-content: end;
+      align-items: end;
+      .PrintableMusicScore__buttons__button {
+        &.--danger {
+          @include hyperlink(var(--bg-1), var(--danger-3));
+        }
+        &.--caution {
+          @include hyperlink(var(--bg-1), var(--caution-4));
+        }
       }
     }
-  }
-  height: 100%;
-  overflow: auto;
-  .PrintableMusicScore__container {
-    overflow: auto;
-    height: 100%;
-    justify-content: center;
-    background-color: var(--txt-light);
-    .PrintableMusicScore__score {
+    .PrintableMusicScore__container {
       height: 100%;
+      justify-content: center;
+      background-color: var(--txt-light);
+      overflow: auto;
+      .PrintableMusicScore__score {
+        width: 100%;
+      }
     }
   }
 }

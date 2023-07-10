@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  close: "material-symbols:close",
   print: "material-symbols:print",
   export: "mdi:export",
   midi: "mdi:midi-port",
