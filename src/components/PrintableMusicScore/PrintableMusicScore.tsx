@@ -32,6 +32,7 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
 
   function updateMusicSequence(scoreProps: PrintableMusicScoreOptions) {
     setIsOpen(scoreProps !== null);
+    setIsPlaying(false);
     if (scoreProps) {
       setMusicSequence(scoreProps.musicSequence);
       setUrl(scoreProps.recordingURL);

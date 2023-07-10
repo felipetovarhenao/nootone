@@ -28,8 +28,8 @@ const useMusicScore = (options?: AbcVisualParams) => {
       oneSvgPerLine: true,
       print: true,
       staffwidth: 800,
-      scrollHorizontal: true,
-      viewportHorizontal: true,
+      scrollHorizontal: false,
+      viewportHorizontal: false,
       viewportVertical: true,
       wrap: {
         minSpacing: 1,
