@@ -13,11 +13,14 @@
   .PrintableMusicScore {
     @include v-stack-c;
     @include round($gap-xl);
-    @include mar(auto);
     @include shadow;
-    width: fit-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
     height: fit-content;
-    max-width: 90vw;
+    width: 90vw;
+    max-width: fit-content;
     max-height: 90vh;
     max-height: calc(95 * var(--vh));
     overflow: auto;

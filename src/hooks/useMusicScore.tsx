@@ -5,11 +5,7 @@ import { renderAbc, AbcVisualParams } from "abcjs";
 import { useAppSelector } from "../redux/hooks";
 import { useReactToPrint } from "react-to-print";
 
-type useMusicScoreOptions = {
-  width?: number;
-};
-
-const useMusicScore = (options?: useMusicScoreOptions) => {
+const useMusicScore = (options?: AbcVisualParams) => {
   const scoreRef = useRef<HTMLDivElement | null>(null);
   const [musicSequence, setMusicSequence] = useState<SymbolicMusicSequence | null>(null);
 
@@ -26,13 +22,12 @@ const useMusicScore = (options?: useMusicScoreOptions) => {
     }
     const renderer = new ScoreRenderer(musicSequence);
     const score = renderer.render({ author: username });
-    const { width = 800 } = options || {};
 
     let abcConfig: AbcVisualParams = {
       selectionColor: "var(--txt-dark)",
       oneSvgPerLine: true,
       print: true,
-      staffwidth: width,
+      staffwidth: 800,
       scrollHorizontal: true,
       viewportHorizontal: true,
       viewportVertical: true,
@@ -42,6 +37,7 @@ const useMusicScore = (options?: useMusicScoreOptions) => {
         preferredMeasuresPerLine: 3,
         minSpacingLimit: 1,
       },
+      ...options,
     };
 
     renderAbc(scoreRef.current, score, abcConfig);
