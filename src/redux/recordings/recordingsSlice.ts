@@ -25,11 +25,10 @@ const recordings = createSlice({
   name: "recordings",
   initialState: initialState,
   reducers: {
-    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "features" | "date" | "variations">>) => {
+    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "date" | "variations">>) => {
       action.payload.url;
       state.recordings.unshift({
         tags: [],
-        features: {},
         variations: [],
         date: new Date().toLocaleString(),
         ...action.payload,

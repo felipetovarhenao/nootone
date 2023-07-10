@@ -14,6 +14,7 @@ import AudioRenderer from "../../utils/AudioRenderer";
 import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
 import generateBassLine from "./generateBassLine";
 import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
+import { Fraction } from "../../types/math";
 
 export type HarmonizerSettings = {
   style: string;
@@ -22,6 +23,7 @@ export type HarmonizerSettings = {
   rhythmicComplexity: { min: number; max: number };
   maxSubdiv: number;
   instrumentName: InstrumentName;
+  timeSignature: Fraction;
   groovinessRange: { min: number; max: number };
 };
 
@@ -181,9 +183,14 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const renderedBlob = await AudioRenderer.render(tracks);
 
+    const variationName = `${recording.name} (${settings.style} ${settings.instrumentName === InstrumentName.PIANO ? "🎹" : "🪕"})`;
+
     const recDuration = await getAudioDuration(renderedBlob);
 
     const symbolicRepresentation: SymbolicMusicSequence = {
+      title: variationName,
+      tempo: recording.features.tempo,
+      timeSignature: { n: 4, d: 4 },
       instrumentalParts: [
         { name: settings.instrumentName, chordEvents: arpeggios },
         { name: InstrumentName.PAD, chordEvents: pads },
@@ -194,7 +201,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     return {
       noteEvents: features.noteEvents,
       variation: {
-        name: `${recording.name} (${settings.style} ${settings.instrumentName === InstrumentName.PIANO ? "🎹" : "🪕"})`,
+        name: variationName,
         duration: recDuration,
         date: new Date().toLocaleString(),
         url: URL.createObjectURL(renderedBlob),

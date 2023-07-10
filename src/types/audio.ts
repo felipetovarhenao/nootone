@@ -1,8 +1,8 @@
 import { InstrumentalPart, NoteEvent, SymbolicMusicSequence } from "./music";
 
 export type AudioFeatures = {
+  tempo: number;
   noteEvents?: NoteEvent[];
-  tempo?: number;
   rms?: {
     hopSize: number;
     data: Float32Array;

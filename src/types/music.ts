@@ -1,3 +1,5 @@
+import { Fraction } from "./math";
+
 export type NoteEvent = {
   pitch: number;
   onset: number;
@@ -35,5 +37,8 @@ export type InstrumentalPart = {
 };
 
 export type SymbolicMusicSequence = {
+  title: string;
+  tempo: number;
+  timeSignature: Fraction;
   instrumentalParts: InstrumentalPart[];
 };

@@ -227,6 +227,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
     const patternSize = timeSigs[timeSigIndex].value.patternSize;
     const maxSubdiv = timeSigs[timeSigIndex].value.maxSubdiv;
     const instrumentName = instrumentOptions[instrumentIndex].value;
+    const [num, den] = timeSigs[timeSigIndex].label.split("/") as [string, string];
 
     setSettings({
       style: styles[styleIndex],
@@ -236,6 +237,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       maxSubdiv,
       instrumentName,
       groovinessRange: groovinessOptions[groovinessIndex].value as { min: number; max: number },
+      timeSignature: { n: parseInt(num), d: parseInt(den) },
     });
   }, [styleIndex, timeSigIndex, complexityIndex, instrumentIndex, groovinessIndex]);
 

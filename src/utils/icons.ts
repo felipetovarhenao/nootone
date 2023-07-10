@@ -1,5 +1,6 @@
 const icons = {
   play: "ph:play-fill",
+  print: "material-symbols:print",
   export: "mdi:export",
   midi: "mdi:midi-port",
   audio: "ic:round-audio-file",
