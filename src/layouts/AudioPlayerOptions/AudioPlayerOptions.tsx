@@ -7,13 +7,11 @@ import downloadMIDI from "../../utils/downloadMIDI";
 import createMidiFile from "../../utils/createMidiFile";
 import { useDispatch } from "react-redux";
 import { recordingActions } from "../../redux/recordings/recordingsSlice";
-// import { useNavigate } from "react-router-dom";
-// import getRecordingLocation from "../../utils/getRecordingLocation";
-// import { useAppSelector } from "../../redux/hooks";
 import cn from "classnames";
 import downloadURL from "../../utils/downloadURL";
 import useDialog, { DialogProps } from "../../components/Dialog/Dialog";
 import { useNotification } from "../../components/Notification/NotificationProvider";
+import { usePrintableMusicScore } from "../../components/PrintableMusicScore/PrintableMusicScore";
 
 type AudioPlayerOptionsProps = {
   recording: GenericRecording;
@@ -31,8 +29,8 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
   const dispatch = useDispatch();
   const dialog = useDialog();
   const notification = useNotification();
-  // const navigate = useNavigate();
-  // const { recordings } = useAppSelector((state) => state.recordings);
+  const updateMusicScore = usePrintableMusicScore();
+
   const deleteDialog: DialogProps = {
     header: "WAIT!",
     message: `You're about to delete this recording.${
@@ -93,6 +91,16 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
           onClick: () => {
             const midi = createMidiFile(recording.features.symbolicRepresentation!, recording.features.tempo!);
             downloadMIDI(midi, recording.name);
+          },
+        },
+      });
+      variationOptions.push({
+        label: "view score",
+        icon: icons.notation,
+        value: "div",
+        props: {
+          onClick: () => {
+            updateMusicScore(recording.features.symbolicRepresentation!);
           },
         },
       });

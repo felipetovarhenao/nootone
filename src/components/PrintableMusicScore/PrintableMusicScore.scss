@@ -38,6 +38,9 @@
         &.--caution {
           @include hyperlink(var(--bg-1), var(--caution-4));
         }
+        &.--success {
+          @include hyperlink(var(--bg-1), var(--success-4));
+        }
       }
     }
     .PrintableMusicScore__container {
