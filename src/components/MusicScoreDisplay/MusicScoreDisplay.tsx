@@ -20,9 +20,9 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       staffwidth: 450,
       scale: 0.9,
       wrap: {
-        minSpacing: 1.7,
-        maxSpacing: 2.7,
-        preferredMeasuresPerLine: 1,
+        minSpacing: 1.2,
+        maxSpacing: 4,
+        preferredMeasuresPerLine: 2,
         minSpacingLimit: 1,
       },
     },
