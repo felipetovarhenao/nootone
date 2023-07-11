@@ -1,5 +1,105 @@
-@use "../../../styles/main.scss" as m;
+@use "../../../styles/main.scss" as *;
 
-#about {
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - m.$gap-xxl), 0 100%);
+.AboutAnchor {
+  @include v-pad(calc(1.5 * $gap-xxl));
+  @include v-stack-c;
+  align-items: center;
+  .AboutAnchor__subtitle {
+    &,
+    b {
+      @include b-pad($gap-xxl);
+      font-size: $txt-lg;
+      text-align: center;
+      color: var(--fg-1);
+    }
+    b {
+      @include text-gradient;
+    }
+  }
+  .AboutAnchor__container {
+    @include h-stack-c;
+    gap: $txt-xxl;
+    @include mobile-down {
+      @include v-stack-c;
+      flex-direction: column-reverse;
+      .AboutAnchor__container__left {
+        .AboutAnchor__container__left__text {
+          .AboutAnchor__container__left__text__p {
+            @include stack;
+            justify-content: center;
+            text-align: center;
+          }
+        }
+      }
+    }
+    .AboutAnchor__container__left {
+      @include v-stack;
+      gap: calc(2 * $gap-xxl);
+      .AboutAnchor__container__left__text {
+        @include v-stack;
+        height: 100%;
+        gap: calc(2 * $gap-xxl);
+        .AboutAnchor__container__left__text__p {
+          @include stack;
+          height: 100%;
+          color: var(--fg-1);
+          font-size: $txt-lg;
+        }
+      }
+      .AboutAnchor__container__left__button {
+        @include stack;
+        @include border(var(--caution-3));
+        align-self: center;
+        box-shadow: 0px 0px $gap-sm var(--caution-3);
+        font-size: $txt-ml;
+        background: var(--main-gradient);
+        &:hover {
+          filter: brightness(120%);
+        }
+      }
+    }
+    .AboutAnchor__container__right {
+      @include v-stack-c;
+      gap: $txt-md;
+      align-items: center;
+      .AboutAnchor__container__right__image-container,
+      .AboutAnchor__container__right__image-container__image,
+      .AboutAnchor__container__right__video {
+        @include round-border;
+        border-radius: $gap-xxl;
+        max-height: 500px;
+      }
+      .AboutAnchor__container__right__image-container {
+        position: relative;
+        overflow: hidden;
+        .AboutAnchor__container__right__image-container__overlay {
+          @include stack;
+          @include clickable;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
+          background-color: #00000022;
+          &:hover {
+            background-color: #00000055;
+          }
+          .AboutAnchor__container__right__image-container__overlay__icon {
+            font-size: 100px;
+          }
+        }
+        .AboutAnchor__container__right__image-container__overlay__icon {
+          font-size: $txt-xxl;
+        }
+      }
+      .AboutAnchor__container__right__button {
+        font-size: $txt-ml;
+        &:disabled {
+          color: var(--txt-light);
+        }
+      }
+    }
+  }
 }

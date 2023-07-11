@@ -8,9 +8,8 @@ import cn from "classnames";
 import useScrollPosition from "../../hooks/useScrollPosition";
 
 import TeamAnchor from "./TeamAnchor/TeamAnchor";
-// import AboutAnchor from "./AboutAnchor/AboutAnchor";
 import ContactAnchor from "./ContactAnchor/ContactAnchor";
-import MainAnchor from "./MainAnchor/MainAnchor";
+import AboutAnchor from "./AboutAnchor/AboutAnchor";
 
 const HomeView: React.FC = () => {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -44,8 +43,7 @@ const HomeView: React.FC = () => {
         </div>
       </AnchorNavbar>
       <div className="content">
-        {/* <AboutAnchor ref={aboutRef} /> */}
-        <MainAnchor ref={aboutRef} />
+        <AboutAnchor ref={aboutRef} />
         <ContactAnchor ref={contactRef} />
         <TeamAnchor ref={teamRef} />
         <footer className="footer">Sound icons created by Freepik - Flaticon</footer>

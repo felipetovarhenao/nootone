@@ -5,6 +5,7 @@ export enum DeploymentType {
 }
 
 const CONFIG = {
+  origin: window.location.origin,
   deploymentType: (() => {
     const origin = window.origin;
     if (origin.includes("nootone.io")) {
