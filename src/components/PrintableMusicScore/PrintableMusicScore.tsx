@@ -24,7 +24,7 @@ type PrintableMusiScoreProps = {
 };
 
 const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
-  const { setMusicSequence, scoreRef, printScore, timingCallbacks } = useMusicScore();
+  const { setMusicSequence, scoreRef, printScore, getTimingCallbacks } = useMusicScore();
   const [isOpen, setIsOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,7 +44,7 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
   }
 
   const play = () => {
-    timingCallbacks?.start(0, "seconds");
+    getTimingCallbacks().start(0, "seconds");
     audioRef.current?.play();
     setIsPlaying(true);
   };
@@ -55,7 +55,7 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
       audioRef.current.currentTime = 0;
     }
     setIsPlaying(false);
-    timingCallbacks?.stop();
+    getTimingCallbacks().stop();
   };
 
   return (

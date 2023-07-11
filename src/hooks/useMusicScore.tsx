@@ -1,11 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { SymbolicMusicSequence } from "../types/music";
 import ScoreRenderer from "../utils/abcjs/ScoreRenderer";
 import { renderAbc, AbcVisualParams, TimingCallbacks, AnimationOptions } from "abcjs";
 import { useAppSelector } from "../redux/hooks";
 import { useReactToPrint } from "react-to-print";
 
-const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOptions) => {
+type MusicScoreHelpers = {
+  printScore: () => void;
+  scoreRef: RefObject<HTMLDivElement>;
+  getTimingCallbacks: () => TimingCallbacks;
+  setMusicSequence: (musicSequence: SymbolicMusicSequence | null) => void;
+};
+
+const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOptions): MusicScoreHelpers => {
   const scoreRef = useRef<HTMLDivElement | null>(null);
   const [musicSequence, setMusicSequence] = useState<SymbolicMusicSequence | null>(null);
   const timingCallbacks = useRef<TimingCallbacks | null>(null);
@@ -60,11 +67,15 @@ const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOpt
     });
   }, [musicSequence, options, callbackOptions]);
 
+  function getTimingCallbacks() {
+    return timingCallbacks.current as TimingCallbacks;
+  }
+
   return {
     printScore,
     scoreRef,
     setMusicSequence,
-    timingCallbacks: timingCallbacks.current as TimingCallbacks,
+    getTimingCallbacks,
   };
 };
 

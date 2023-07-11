@@ -13,6 +13,7 @@ import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
 import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
 import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVariationsLayout";
 import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
+// import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
 
 const DevelopView = () => {
   const location = useLocation();
@@ -96,6 +97,9 @@ const DevelopView = () => {
                     {variationBuffer && (
                       <>
                         <h1 className="DevelopView__preview__label">preview</h1>
+                        {/* {variationBuffer.features.symbolicRepresentation && (
+                          <MusicScoreDisplay musicSequence={variationBuffer.features.symbolicRepresentation} />
+                        )} */}
                         <WaveSurferPlayer className="DevelopView__preview__player" rec={variationBuffer} />
                       </>
                     )}
