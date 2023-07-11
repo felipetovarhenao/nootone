@@ -100,7 +100,7 @@ const DevelopView = () => {
                         {/* {variationBuffer.features.symbolicRepresentation && (
                           <MusicScoreDisplay musicSequence={variationBuffer.features.symbolicRepresentation} recording={variationBuffer} />
                         )} */}
-                        {/* <WaveSurferPlayer className="DevelopView__preview__player" rec={variationBuffer} /> */}
+                        <WaveSurferPlayer className="DevelopView__preview__player" rec={variationBuffer} />
                       </>
                     )}
                     {isProcessing && <Icon className="DevelopView__suspense" icon={icons.processing} />}
