@@ -3,7 +3,7 @@
 .ContactAnchor {
   @include v-stack-c;
   @include v-pad($gap-xxl);
-  clip-path: polygon(0 0, 100% $gap-xxl, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% $gap-xl, 100% calc(100% - $gap-xl), 0 100%);
   width: 100%;
   .ContactAnchor__container {
     @include h-stack-c;

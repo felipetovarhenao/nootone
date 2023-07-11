@@ -4,6 +4,7 @@
   @include v-pad(calc(1.5 * $gap-xxl));
   @include v-stack-c;
   align-items: center;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - $gap-xl));
   .AboutAnchor__subtitle {
     &,
     b {
