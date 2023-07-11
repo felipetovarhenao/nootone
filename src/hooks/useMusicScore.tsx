@@ -31,7 +31,7 @@ const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOpt
     const renderer = new ScoreRenderer(musicSequence);
     const score = renderer.render({ author: username });
 
-    let abcConfig: AbcVisualParams = {
+    let abcConfig: AbcVisualParams = options || {
       selectionColor: "var(--txt-dark)",
       oneSvgPerLine: true,
       print: true,
@@ -45,7 +45,6 @@ const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOpt
         preferredMeasuresPerLine: 3,
         minSpacingLimit: 1,
       },
-      ...options,
     };
 
     const visualObject = renderAbc(scoreRef.current, score, abcConfig)[0];

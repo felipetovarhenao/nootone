@@ -11,10 +11,28 @@ type MusicScoreDisplayProps = {
 };
 const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps) => {
   const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore(
-    { print: false, staffwidth: 500, responsive: "resize" },
     {
-      beatCallback: (beat) => {
-        console.log(beat);
+      selectionColor: "var(--txt-dark)",
+      oneSvgPerLine: true,
+      scrollHorizontal: false,
+      viewportHorizontal: false,
+      viewportVertical: true,
+      staffwidth: 450,
+      scale: 0.9,
+      wrap: {
+        minSpacing: 1.7,
+        maxSpacing: 2.7,
+        preferredMeasuresPerLine: 1,
+        minSpacingLimit: 1,
+      },
+    },
+    {
+      beatCallback: (...beat) => {
+        if (!beat || !scoreRef.current) {
+          return;
+        }
+        const position = beat[3];
+        scoreRef.current.scrollTo({ top: position.top, left: position.left, behavior: "smooth" });
       },
     }
   );
@@ -23,20 +41,24 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
     setMusicSequence(musicSequence);
   }, [musicSequence]);
 
+  function onPlay(currentTime: number) {
+    getTimingCallbacks().start(currentTime, "seconds");
+  }
+
+  function onPause() {
+    getTimingCallbacks().pause();
+  }
+
+  function onSeeking(currentTime: number) {
+    getTimingCallbacks().setProgress(currentTime, "seconds");
+  }
+
   return (
-    <div className="MusicScoreDisplay" style={{ display: "flex", flexDirection: "column" }}>
-      <div>
-        <button
-          onClick={() => {
-            getTimingCallbacks().start(0, "seconds");
-          }}
-        >
-          start
-        </button>
-        <button onClick={() => getTimingCallbacks().stop()}>stop</button>
+    <div className="MusicScoreDisplay">
+      <div className="MusicScoreDisplay__score-container">
+        <div className="MusicScoreDisplay__score-container__score" ref={scoreRef} />
       </div>
-      <div className="MusicScoreDisplay__score" ref={scoreRef} />
-      <WaveSurferPlayer className="DevelopView__preview__player" rec={recording} />
+      <WaveSurferPlayer onSeeking={onSeeking} onPlay={onPlay} onPause={onPause} className="DevelopView__preview__player" rec={recording} />
     </div>
   );
 };

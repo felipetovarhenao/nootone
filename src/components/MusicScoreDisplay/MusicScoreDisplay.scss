@@ -1,13 +1,18 @@
 @use "../../styles/main.scss" as *;
 
 .MusicScoreDisplay {
-  @include stack;
-  @include round-border;
-  max-height: 250px;
-	overflow: auto;
+  @include v-stack-c;
   width: 100%;
-  .MusicScoreDisplay__score {
-    @include pad;
-		width: 100%;
+  .MusicScoreDisplay__score-container {
+    @include v-stack;
+    @include round-border;
+    overflow: auto;
+    max-height: 250px;
+    width: 100%;
+
+    .MusicScoreDisplay__score {
+      @include pad;
+      width: 100%;
+    }
   }
 }

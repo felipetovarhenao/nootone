@@ -35,9 +35,13 @@ type WaveSurferPlayerProps = {
   rec: GenericRecording;
   showTitle?: boolean;
   showDate?: boolean;
+  onPlay?: (currentTime: number) => void;
+  onPause?: () => void;
+  onSeeking?: (currentTime: number) => void;
+  onFinish?: () => void;
 };
 
-const WaveSurferPlayer = ({ className, rec, showTitle = true, showDate = false }: WaveSurferPlayerProps) => {
+const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish, showTitle = true, showDate = false }: WaveSurferPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -67,7 +71,30 @@ const WaveSurferPlayer = ({ className, rec, showTitle = true, showDate = false }
 
     setIsPlaying(false);
 
-    const subscriptions = [wavesurfer.on("play", () => setIsPlaying(true)), wavesurfer.on("pause", () => setIsPlaying(false))];
+    const subscriptions = [
+      wavesurfer.on("play", () => {
+        if (onPlay) {
+          onPlay(wavesurfer.getCurrentTime());
+        }
+        setIsPlaying(true);
+      }),
+      wavesurfer.on("pause", () => {
+        if (onPause) {
+          onPause();
+        }
+        setIsPlaying(false);
+      }),
+      wavesurfer.on("seeking", (currentTime: number) => {
+        if (onSeeking) {
+          onSeeking(currentTime);
+        }
+      }),
+      wavesurfer.on("finish", () => {
+        if (onFinish) {
+          onFinish();
+        }
+      }),
+    ];
 
     return () => {
       subscriptions.forEach((unsub) => unsub());
