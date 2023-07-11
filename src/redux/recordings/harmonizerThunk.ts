@@ -190,7 +190,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     const symbolicRepresentation: SymbolicMusicSequence = {
       title: variationName,
       tempo: recording.features.tempo,
-      timeSignature: { n: 4, d: 4 },
+      timeSignature: settings.timeSignature,
       instrumentalParts: [
         { name: settings.instrumentName, chordEvents: arpeggios },
         { name: InstrumentName.PAD, chordEvents: pads },

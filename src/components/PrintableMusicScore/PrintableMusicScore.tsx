@@ -24,7 +24,7 @@ type PrintableMusiScoreProps = {
 };
 
 const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
-  const { setMusicSequence, scoreRef, printScore } = useMusicScore();
+  const { setMusicSequence, scoreRef, printScore, timingCallbacks } = useMusicScore();
   const [isOpen, setIsOpen] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,7 +32,7 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
 
   function updateMusicSequence(scoreProps: PrintableMusicScoreOptions) {
     setIsOpen(scoreProps !== null);
-    setIsPlaying(false);
+
     if (scoreProps) {
       setMusicSequence(scoreProps.musicSequence);
       setUrl(scoreProps.recordingURL);
@@ -40,20 +40,23 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
       setUrl("");
       setMusicSequence(null);
     }
+    stop();
   }
 
-  function play() {
+  const play = () => {
+    timingCallbacks?.start(0, "seconds");
     audioRef.current?.play();
     setIsPlaying(true);
-  }
+  };
 
-  function stop() {
+  const stop = () => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-      setIsPlaying(false);
     }
-  }
+    setIsPlaying(false);
+    timingCallbacks?.stop();
+  };
 
   return (
     <PrintableMusicScoreContext.Provider value={updateMusicSequence}>
