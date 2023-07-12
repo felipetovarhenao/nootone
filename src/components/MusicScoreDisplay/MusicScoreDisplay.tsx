@@ -9,6 +9,8 @@ type MusicScoreDisplayProps = {
   musicSequence: SymbolicMusicSequence;
   recording: GenericRecording;
 };
+
+const defaultStaffWidth = 600;
 const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps) => {
   const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore(
     {
@@ -18,7 +20,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       scrollHorizontal: false,
       viewportHorizontal: false,
       viewportVertical: true,
-      staffwidth: 600,
+      staffwidth: defaultStaffWidth,
       wrap: {
         minSpacing: 1.7,
         maxSpacing: 4,
@@ -34,7 +36,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         const position = values[0];
         const lineIndex = values[2].line;
         const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
-        const resizeFactor = (width / 700) * 0.95;
+        const resizeFactor = (width / defaultStaffWidth) * 0.95;
         scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
       },
     }
