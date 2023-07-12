@@ -42,7 +42,7 @@ export default class ScoreRenderer {
     if (this.musicSequence.timeSignature.d === 4) {
       return { tempo, beatUnit: { n: 1, d: this.musicSequence.timeSignature.d } };
     }
-    return { tempo: Math.round(tempo * (3 / 2)), beatUnit: { n: 3, d: this.musicSequence.timeSignature.d } };
+    return { tempo: tempo * (3 / 2), beatUnit: { n: 3, d: this.musicSequence.timeSignature.d } };
   }
 
   private chordEventToSymbolicEvent(chordEvent: ChordEvent): SymbolicEvent {
@@ -317,7 +317,7 @@ export default class ScoreRenderer {
         stretchlast: "",
         stretchstaff: "",
       },
-      Q: `${this.beatUnit.n}/${this.beatUnit.d}=${this.musicSequence.tempo}`,
+      Q: `${this.beatUnit.n}/${this.beatUnit.d}=${Math.round(this.musicSequence.tempo)}`,
       K: this.detectKey(),
       S: "https://nootone.io",
     };
