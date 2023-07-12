@@ -13,6 +13,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
   const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore(
     {
       selectionColor: "var(--txt-dark)",
+      responsive: "resize",
       oneSvgPerLine: true,
       scrollHorizontal: false,
       viewportHorizontal: false,
@@ -20,19 +21,22 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       staffwidth: 450,
       scale: 0.9,
       wrap: {
-        minSpacing: 1.2,
+        minSpacing: 1.7,
         maxSpacing: 4,
         preferredMeasuresPerLine: 2,
         minSpacingLimit: 1,
       },
     },
     {
-      beatCallback: (...beat) => {
-        if (!beat || !scoreRef.current) {
+      lineEndCallback: (...values) => {
+        if (!values || !scoreRef.current) {
           return;
         }
-        const position = beat[3];
-        scoreRef.current.scrollTo({ top: position.top, left: position.left, behavior: "smooth" });
+        const position = values[0];
+        const lineIndex = values[2].line;
+        const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
+        const resizeFactor = (width / 450) * 0.9;
+        scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
       },
     }
   );
