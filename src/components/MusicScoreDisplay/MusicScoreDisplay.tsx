@@ -18,8 +18,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       scrollHorizontal: false,
       viewportHorizontal: false,
       viewportVertical: true,
-      staffwidth: 450,
-      scale: 0.9,
+      staffwidth: 700,
       wrap: {
         minSpacing: 1.7,
         maxSpacing: 4,
@@ -35,7 +34,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         const position = values[0];
         const lineIndex = values[2].line;
         const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
-        const resizeFactor = (width / 450) * 0.9;
+        const resizeFactor = (width / 700) * 0.95;
         scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
       },
     }
