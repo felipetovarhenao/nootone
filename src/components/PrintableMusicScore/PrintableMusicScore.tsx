@@ -55,7 +55,7 @@ const PrintableMusiScoreProvider = ({ children }: PrintableMusiScoreProps) => {
       audioRef.current.currentTime = 0;
     }
     setIsPlaying(false);
-    getTimingCallbacks().stop();
+    getTimingCallbacks()?.stop();
   };
 
   return (

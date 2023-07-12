@@ -51,7 +51,10 @@
       justify-content: center;
       background-color: var(--txt-light);
       overflow: auto;
+      width: 800px;
+      max-width: 80vw;
       .PrintableMusicScore__score {
+        @include pad($gap-lg);
         width: 100%;
       }
     }
