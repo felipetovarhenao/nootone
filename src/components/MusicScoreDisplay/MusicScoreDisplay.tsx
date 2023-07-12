@@ -18,7 +18,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       scrollHorizontal: false,
       viewportHorizontal: false,
       viewportVertical: true,
-      staffwidth: 700,
+      staffwidth: 600,
       wrap: {
         minSpacing: 1.7,
         maxSpacing: 4,
