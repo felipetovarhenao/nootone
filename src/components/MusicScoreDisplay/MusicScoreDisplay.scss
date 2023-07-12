@@ -9,7 +9,7 @@
     overflow: auto;
     max-height: 250px;
     width: 100%;
-
+    background-color: var(--txt-light);
     .MusicScoreDisplay__score {
       @include pad;
       width: 100%;

@@ -2,7 +2,7 @@ const icons = {
   play: "ph:play-fill",
   close: "material-symbols:close",
   print: "material-symbols:print",
-  notation: "emojione-v1:musical-score",
+  notation: "game-icons:g-clef",
   export: "mdi:export",
   midi: "mdi:midi-port",
   audio: "ic:round-audio-file",
