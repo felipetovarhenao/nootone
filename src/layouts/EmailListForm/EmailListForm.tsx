@@ -1,9 +1,10 @@
 import "./EmailListForm.scss";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as yup from "yup";
 import Button from "../../components/Button/Button";
+import cn from "classnames";
 
 const schema = yup.object().shape({
   from_name: yup.string().required("Name is required"),
@@ -29,7 +30,11 @@ const initialValues: emailForm = {
   testing: false,
 };
 
-export const EmailListForm: React.FC = () => {
+type EmailListFormProps = {
+  className?: string;
+};
+
+export const EmailListForm = ({ className }: EmailListFormProps) => {
   const form = useRef<HTMLFormElement>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -56,7 +61,7 @@ export const EmailListForm: React.FC = () => {
 
   return (
     <Formik initialValues={initialValues} validationSchema={schema} onSubmit={sendEmail}>
-      <Form className="EmailListForm" ref={form}>
+      <Form className={cn(className, "EmailListForm")} ref={form}>
         {success && <p className="EmailListForm__success-message">{success}</p>}
         <Field type="text" name="from_name" placeholder="full name" />
         <ErrorMessage className="error" name="from_name" component="p" />

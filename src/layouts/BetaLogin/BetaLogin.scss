@@ -5,7 +5,6 @@
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
   background-color: var(--bg-2);
-  gap: $gap-xl;
   $max-width: 300px;
   .beta-login__header {
     @include v-stack;
@@ -19,10 +18,15 @@
   .beta-login__form {
     @include v-stack-c;
     @include v-center;
+    @include pad;
+    width: 100%;
+    max-width: 250px;
     gap: $gap-lg;
+    align-items: center;
     input {
       @include round;
       @include pad;
+      width: 100%;
     }
   }
   .footer {
@@ -32,6 +36,23 @@
     background-color: var(--bg-3);
     * {
       font-weight: bold;
+    }
+    .beta-login__footer__link {
+      @include hyperlink;
+    }
+  }
+  .beta-login__sign-up {
+    @include v-stack-c;
+    @include pad($gap-ml);
+    max-width: 350px;
+    .beta-login__sign-up__back {
+      @include h-stack-c;
+      @include b-mar($gap-lg);
+      @include hyperlink;
+      gap: $gap-md;
+    }
+    .beta-login__sign-up__text {
+      font-size: $txt-ml;
     }
   }
 }
