@@ -6,8 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 type MicrophoneSettingsLayoutProps = {
   className?: string;
+  disabled?: boolean;
 };
-const MicrophoneSettingsLayout = ({ className }: MicrophoneSettingsLayoutProps) => {
+const MicrophoneSettingsLayout = ({ className, disabled }: MicrophoneSettingsLayoutProps) => {
   const micSettings = useAppSelector((state) => state.mic.micSettings);
   const dispatch = useAppDispatch();
 
@@ -21,6 +22,7 @@ const MicrophoneSettingsLayout = ({ className }: MicrophoneSettingsLayoutProps) 
       label="noise suppression &#8597;"
       onSwipedDown={toggleNoiseSuppression}
       onSwipedUp={toggleNoiseSuppression}
+      disabled={disabled}
     >
       {micSettings.noiseSuppression ? "ON" : "OFF"}
     </BigSettingLayout>

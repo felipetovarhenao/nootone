@@ -176,7 +176,7 @@ const MicrophoneView = () => {
         <TempoTapper className="MicrophoneView__settings__setting" />
         <CountdownSettingsLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
         <ReferencePitchSettingLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
-        <MicrophoneSettingsLayout />
+        <MicrophoneSettingsLayout disabled={isRecording} />
       </SwipeMenu>
     </div>
   );

@@ -122,6 +122,7 @@ export default class Arpeggiator {
   ): ArpeggioPattern {
     const result: { onset: number; notes: { index: number; velocity: number; duration: number }[] }[] = [];
     const maxAttacks = Math.floor(patternDuration / quantumUnit);
+
     function getNoteEnd(index: number) {
       let stopIndex = maxAttacks;
       if (index < maxAttacks - 1) {
@@ -129,6 +130,10 @@ export default class Arpeggiator {
         stopIndex = getRandomNumber(index + 1, maxIndex);
       }
       return stopIndex * quantumUnit;
+    }
+
+    function randomVelocity() {
+      return Math.random() * 0.75 + 0.25;
     }
 
     let noteEnd = getNoteEnd(0);
@@ -158,14 +163,14 @@ export default class Arpeggiator {
         // Check if the onset position already exists in the result
         for (const item of result) {
           if (item.onset === closestOnset) {
-            item.notes.push({ index: index, velocity: Math.random(), duration: eventDuration });
+            item.notes.push({ index: index, velocity: randomVelocity(), duration: eventDuration });
             found = true;
             break;
           }
         }
         // If not found, add a new entry to the result
         if (!found) {
-          result.push({ onset: closestOnset, notes: [{ index: index, velocity: Math.random(), duration: eventDuration }] });
+          result.push({ onset: closestOnset, notes: [{ index: index, velocity: randomVelocity(), duration: eventDuration }] });
         }
       }
     }
