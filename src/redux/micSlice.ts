@@ -21,7 +21,7 @@ const initialState: InitialState = {
   numCountBeats: CacheAPI.getLocalItem("numCountBeats") || 4,
   referencePitch: CacheAPI.getLocalItem("referencePitch") || 69,
   micSettings: {
-    noiseSuppression: false,
+    noiseSuppression: true,
   },
 };
 
