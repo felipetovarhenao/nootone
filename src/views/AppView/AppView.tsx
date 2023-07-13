@@ -34,6 +34,7 @@ const AppView = () => {
   const { darkTheme } = useDarkTheme();
 
   const testsLoaded = useRef(false);
+  const browserNotificationFlagRef = useRef(false);
 
   useEffect(() => {
     if (!cacheCheck.current) {
@@ -64,6 +65,10 @@ const AppView = () => {
   }, [username]);
 
   useEffect(() => {
+    if (browserNotificationFlagRef.current) {
+      return;
+    }
+    browserNotificationFlagRef.current = true;
     const browser = getBrowser();
     if (!["Google Chrome", "Mozilla Firefox"].includes(browser)) {
       notification({
