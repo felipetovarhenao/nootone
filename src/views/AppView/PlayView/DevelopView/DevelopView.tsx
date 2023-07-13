@@ -34,7 +34,7 @@ const DevelopView = () => {
         message: "This recording doesn't exist",
         icon: icons.error,
       });
-      navigate("/app/play/");
+      navigate("/app/ideas/");
     }
   }, [location.pathname]);
 
@@ -69,7 +69,7 @@ const DevelopView = () => {
   }, [process]);
 
   return (
-    <ViewContainer viewName="" onGoBack={() => navigate("/app/play")}>
+    <ViewContainer viewName="" onGoBack={() => navigate("/app/ideas")}>
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">

@@ -47,7 +47,7 @@ const AppView = () => {
   }, []);
 
   useEffect(() => {
-    const index = findSubstringIndex(location.pathname, ["feedback", "capture", "play"]);
+    const index = findSubstringIndex(location.pathname, ["feedback", "capture", "ideas"]);
     setCurrentViewIndex(index === -1 ? 1 : index);
     const pathArray = location.pathname.split("/").filter((x) => x !== "");
     let viewName = pathArray.at(-1) === "app" ? DEFAULT_VIEWNAME : pathArray.at(-1);
@@ -86,5 +86,5 @@ const navbarLinks = [
   // { icon: "carbon:user-avatar-filled-alt", path: "/app/dashboard/" },
   { icon: "ic:baseline-feedback", path: "/app/feedback" },
   { icon: "material-symbols:mic", path: "/app/" },
-  { icon: "lucide:codesandbox", path: "/app/play" },
+  { icon: "ri:folder-music-fill", path: "/app/ideas" },
 ];

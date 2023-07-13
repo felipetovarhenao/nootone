@@ -93,7 +93,7 @@ const MicrophoneView = () => {
         };
 
         dispatch(recordingActions.addNew(rec));
-        navigate("/app/play/recordings/0/develop");
+        navigate("/app/ideas/recordings/0/develop");
         dispatch(micActions.togglePreprocessing());
       }
     }

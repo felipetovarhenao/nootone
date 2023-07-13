@@ -118,7 +118,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
       //         return;
       //       }
       //       dispatch(recordingActions.selectRecording(parentIndex));
-      //       navigate(`/app/play/recordings/${parentIndex}/edit`);
+      //       navigate(`/app/ideas/recordings/${parentIndex}/edit`);
       //     },
       //   },
       // },
