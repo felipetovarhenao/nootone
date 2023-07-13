@@ -148,7 +148,7 @@ const MicrophoneView = () => {
                 startRecording();
               } else if (!isRecording) {
                 notification({
-                  type: "ERROR",
+                  type: "DANGER",
                   icon: "material-symbols:error",
                   message: "Unable to record. Try using another a different browser, such as Google Chrome or Mozilla Firefox.",
                 });

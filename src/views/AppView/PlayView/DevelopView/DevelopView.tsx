@@ -30,7 +30,7 @@ const DevelopView = () => {
       dispatch(recordingActions.selectRecording(id));
     } else {
       notification({
-        type: "ERROR",
+        type: "DANGER",
         message: "This recording doesn't exist",
         icon: icons.error,
       });

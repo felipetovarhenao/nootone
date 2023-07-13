@@ -56,6 +56,10 @@ $slide-time: 0.4s;
       color: var(--danger-3);
     }
 
+    &.caution .Notification__message .Notification__message__icon * {
+      color: var(--caution-3);
+    }
+
     .Notification__bar {
       height: $gap-md;
       background-color: var(--secondary-4);

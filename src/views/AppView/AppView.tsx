@@ -13,6 +13,8 @@ import findSubstringIndex from "../../utils/findSubstringIndex";
 import Icon from "../../components/Icon/Icon";
 import CONFIG, { DeploymentType } from "../../utils/config";
 import loadTestRecordings from "../../utils/loadTestRecordings";
+import getBrowser from "../../utils/getBrowser";
+import { useNotification } from "../../components/Notification/NotificationProvider";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -27,6 +29,7 @@ const AppView = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+  const notification = useNotification();
   const cacheCheck = useRef(false);
   const { darkTheme } = useDarkTheme();
 
@@ -59,6 +62,17 @@ const AppView = () => {
       navigate("/beta-login");
     }
   }, [username]);
+
+  useEffect(() => {
+    const browser = getBrowser();
+    if (!["Google Chrome", "Mozilla Firefox"].includes(browser)) {
+      notification({
+        type: "CAUTION",
+        icon: "icon-park-solid:caution",
+        message: "For an optimal user experience, please use Google Chrome or Mozilla Firefox.",
+      });
+    }
+  }, []);
 
   return (
     <div className={cn("AppView", { dark: darkTheme })}>

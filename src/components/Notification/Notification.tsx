@@ -5,10 +5,12 @@ import Icon from "../Icon/Icon";
 import { useDarkTheme } from "../../hooks/useDarkTheme";
 // import { ThemeContext } from "../../utils/contexts";
 
+export type NotificationMessageType = "SUCCESS" | "DANGER" | "CAUTION";
+
 interface NotificationProps {
   dispatch: Function;
   id: number | string;
-  type: string;
+  type: NotificationMessageType;
   icon: any;
   message: string;
 }
@@ -59,11 +61,8 @@ export default function Notification(props: NotificationProps) {
     handleStartTimer();
   }, []);
 
-  function getNotificationStyle(type: string) {
-    return type === "SUCCESS" ? "success" : "error";
-  }
   return (
-    <div className={classNames("Notification", getNotificationStyle(props.type), { exit: exit }, { dark: darkTheme })}>
+    <div className={classNames("Notification", props.type.toLowerCase(), { exit: exit }, { dark: darkTheme })}>
       <div className="Notification__message">
         <Icon className="Notification__message__icon" icon={props.icon} />
         <span className="Notification__message__text">{props.message}</span>

@@ -1,11 +1,11 @@
 import { createContext, useContext, useReducer, ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { v4 as uuidv4 } from "uuid";
-import Notification from "./Notification";
+import Notification, { NotificationMessageType } from "./Notification";
 
 interface NotificationState {
   id: string;
-  type: string;
+  type: NotificationMessageType;
   icon: any;
   message: string;
 }

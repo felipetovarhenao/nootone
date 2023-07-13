@@ -46,7 +46,7 @@ const UserDashboardView = () => {
         onClick={async () => {
           await dispatch(userActions.logout());
           notification({
-            type: "ERROR",
+            type: "DANGER",
             icon: "mdi:user",
             message: "logout successful!",
           });
