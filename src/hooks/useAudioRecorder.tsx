@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { MicSettings } from "../redux/micSlice";
 
 type AudioRecorderHookResult = {
   startRecording: () => void;
@@ -6,6 +7,7 @@ type AudioRecorderHookResult = {
   audioBlob: Blob | null;
   isRecording: boolean;
   recordingError: string;
+  setMicSettings: (settings: MicSettings) => void;
 };
 
 const useAudioRecorder = (): AudioRecorderHookResult => {
@@ -17,6 +19,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isRecording, setIsRecording] = useState(false);
   const [recordingError, setRecordingError] = useState("");
+  const [micSettings, setMicSettings] = useState<MicSettings>({});
 
   /* handlers */
   const handleDataAvailable = (event: BlobEvent) => {
@@ -34,6 +37,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
             echoCancellation: false,
             autoGainControl: false,
             noiseSuppression: false,
+            ...micSettings,
           },
           video: false,
         })
@@ -71,6 +75,7 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
     audioBlob,
     isRecording,
     recordingError,
+    setMicSettings,
   };
 };
 

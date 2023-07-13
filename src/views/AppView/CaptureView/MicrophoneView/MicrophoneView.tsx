@@ -20,19 +20,26 @@ import SwipeMenu from "../../../../components/SwipeMenu/SwipeMenu";
 import CountdownSettingsLayout from "../../../../layouts/CountdownSettingsLayout/CountdownSettingsLayout";
 import ReferencePitchSettingLayout from "../../../../layouts/ReferencePitchSettingLayout/ReferencePitchSettingLayout";
 import CONFIG, { DeploymentType } from "../../../../utils/config";
+import MicrophoneSettingsLayout from "../../../../layouts/MicrophoneSettingsLayout/MicrophoneSettingsLayout";
+import CacheAPI from "../../../../utils/CacheAPI";
 
 const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle a song", "make music!"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
 
 const MicrophoneView = () => {
-  const { startRecording, stopRecording, isRecording, audioBlob } = useAudioRecorder();
+  const { startRecording, stopRecording, isRecording, audioBlob, setMicSettings } = useAudioRecorder();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const notification = useNotification();
   const [recTitle, setRecTitle] = useState(createUniqueTitle());
-  const { tempo, numCountBeats } = useAppSelector((state) => state.mic);
+  const { tempo, numCountBeats, micSettings } = useAppSelector((state) => state.mic);
   const startTime = useRef(0);
   const location = useLocation();
+  const [settingIndex, setSettingIndex] = useState(0);
+
+  useEffect(() => {
+    setMicSettings(micSettings);
+  }, [micSettings]);
 
   useEffect(() => {
     async function processRecording() {
@@ -94,6 +101,18 @@ const MicrophoneView = () => {
     processRecording();
   }, [isRecording]);
 
+  function handleSettingSwipe(i: number) {
+    setSettingIndex(i);
+    CacheAPI.setLocalItem("micSettingIndex", i);
+  }
+
+  useEffect(() => {
+    const cache = CacheAPI.getLocalItem("micSettingIndex");
+    if (cache !== null && typeof cache === "number") {
+      setSettingIndex(cache);
+    }
+  }, []);
+
   return (
     <div className="MicrophoneView">
       <div className="MicrophoneView__title">
@@ -153,10 +172,11 @@ const MicrophoneView = () => {
           />
         )}
       </div>
-      <SwipeMenu className="MicrophoneView__settings">
+      <SwipeMenu defaultValue={settingIndex} className="MicrophoneView__settings" onSwiped={handleSettingSwipe}>
         <TempoTapper className="MicrophoneView__settings__setting" />
         <CountdownSettingsLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
         <ReferencePitchSettingLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
+        <MicrophoneSettingsLayout />
       </SwipeMenu>
     </div>
   );

@@ -1,12 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import CacheAPI from "../utils/CacheAPI";
 
+export type MicSettings = {
+  noiseSuppression?: boolean;
+};
+
 type InitialState = {
   isRecording: boolean;
   isPreprocessing: boolean;
   tempo: number;
   numCountBeats: number;
   referencePitch: number;
+  micSettings: MicSettings;
 };
 
 const initialState: InitialState = {
@@ -15,6 +20,9 @@ const initialState: InitialState = {
   tempo: CacheAPI.getLocalItem("tempo") || 90,
   numCountBeats: CacheAPI.getLocalItem("numCountBeats") || 4,
   referencePitch: CacheAPI.getLocalItem("referencePitch") || 69,
+  micSettings: {
+    noiseSuppression: false,
+  },
 };
 
 const mic = createSlice({
@@ -38,6 +46,12 @@ const mic = createSlice({
     setReferencePitch: (state, action: PayloadAction<number>) => {
       state.referencePitch = (action.payload % 12) + 60;
       CacheAPI.setLocalItem<number>("referencePitch", state.referencePitch);
+    },
+    setMicSettings(state, action: PayloadAction<MicSettings>) {
+      state.micSettings = {
+        ...state.micSettings,
+        ...action.payload,
+      };
     },
   },
 });
