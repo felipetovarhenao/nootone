@@ -152,7 +152,7 @@ export default class InstrumentSampler {
 
     // create contant note amplitude and set to velocity
     const amp = this.context.createGain();
-    amp.gain.value = velocity ** 0.5;
+    amp.gain.value = Math.max(0.125, velocity ** 1 / 3);
 
     // create source node
     const source = this.context.createBufferSource();
