@@ -176,7 +176,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   }
 
   function handleGroovinessChange(id: number) {
-    setGroovinessIndex(id), CacheAPI.setLocalItem<number>("harmonizerGroovinessIndex", id);
+    setGroovinessIndex(id);
     CacheAPI.setLocalItem<number>("harmonizerGroovinessIndex", id);
   }
 
@@ -209,7 +209,7 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
       {
         key: "harmonizerGroovinessIndex",
         setter: (value: number) => {
-          setInstrumentIndex(wrapValue(value, groovinessOptions.length));
+          setGroovinessIndex(wrapValue(value, groovinessOptions.length));
         },
       },
     ];
