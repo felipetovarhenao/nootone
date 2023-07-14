@@ -151,9 +151,9 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           onset: 0,
           duration: recording.duration,
         },
-        config: {
-          gain: 1.25,
-        },
+        // config: {
+        //   gain: 1.25,
+        // },
       },
       {
         type: TrackType.SYMBOLIC,

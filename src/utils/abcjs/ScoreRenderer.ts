@@ -2,8 +2,8 @@ import { Fraction } from "../../types/math";
 import { ChordEvent, SymbolicMusicSequence } from "../../types/music";
 import FractionOperator from "../FractionOperator";
 import camelToSpaces from "../camelToSpaces";
-import pitchNames from "./pitchNames";
-import { SymbolicBeat, SymbolicEvent, SymbolicMeasure } from "./types";
+import EnharmonicPitchSpeller from "./EnharmonicPitchSpeller";
+import { KeySignature, SymbolicBeat, SymbolicEvent, SymbolicMeasure } from "./types";
 
 export default class ScoreRenderer {
   private maxSubdivision: number;
@@ -13,6 +13,7 @@ export default class ScoreRenderer {
   private barDuration: number;
   private wholeNoteDuration: number;
   private timeSignature: Fraction;
+  private keySignature: KeySignature;
   private beatUnit: Fraction;
   private numBeats: number;
   private numMeasures: number;
@@ -21,6 +22,7 @@ export default class ScoreRenderer {
     this.maxSubdivision = maxSubdivision;
     this.musicSequence = musicSequence;
     this.timeSignature = musicSequence.timeSignature;
+    this.keySignature = this.detectKeySignature();
 
     const { tempo, beatUnit } = this.getSymbolicTempoMarking();
 
@@ -296,9 +298,9 @@ export default class ScoreRenderer {
   }
 
   private pitchToABC(pitch: number) {
-    const octaveOffset = Math.floor((pitch - 72) / 12);
-    const { name, accidental } = pitchNames[pitch % 12];
-    let pitchName = `${accidental || ""}${name}`;
+    const octaveOffset = Math.floor((pitch - 60) / 12);
+    const enharmonicPitch = EnharmonicPitchSpeller.getEnharmonicPitch(pitch % 12, this.keySignature);
+    let pitchName = `${enharmonicPitch.accidental || ""}${enharmonicPitch.name}`;
     for (let i = 0; i < Math.abs(octaveOffset); i++) {
       pitchName += octaveOffset > 0 ? "'" : ",";
     }
@@ -307,6 +309,8 @@ export default class ScoreRenderer {
   }
 
   private createScoreHeader(author: string) {
+    const keySig = EnharmonicPitchSpeller.keySignatureToString(this.keySignature);
+
     let header = {
       X: 1,
       T: `${this.musicSequence.title}`,
@@ -318,7 +322,7 @@ export default class ScoreRenderer {
         stretchstaff: "",
       },
       Q: `${this.beatUnit.n}/${this.beatUnit.d}=${Math.round(this.musicSequence.tempo)}`,
-      K: this.detectKey(),
+      K: keySig,
       S: "https://nootone.io",
     };
 
@@ -338,7 +342,7 @@ export default class ScoreRenderer {
     return headerString;
   }
 
-  private detectKey(): string {
+  private detectKeySignature(): KeySignature {
     const chroma = [...Array(12)].fill(0);
     this.musicSequence.instrumentalParts.forEach((instrumentalPart) =>
       instrumentalPart.chordEvents.forEach((chordEvent) => chordEvent.notes.forEach((note) => chroma[note.pitch % 12]++))
@@ -346,11 +350,7 @@ export default class ScoreRenderer {
     const maxBin = Math.max(...chroma);
     const root = chroma.indexOf(maxBin);
     const isMajor = chroma[(root + 4) % 12] >= chroma[(root + 3) % 12];
-    let key = pitchNames[root].name.toUpperCase();
-    if (!isMajor) {
-      key += "m";
-    }
-    return key;
+    return EnharmonicPitchSpeller.getKeySignature(root, isMajor);
   }
 }
 
