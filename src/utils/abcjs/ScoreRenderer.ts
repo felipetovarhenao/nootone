@@ -337,6 +337,10 @@ export default class ScoreRenderer {
       accidental = `${enharmonicPitch.accidental}`;
     }
 
+    if (!enharmonicPitch.accidental) {
+      console.log("Accidental not found");
+    }
+
     // initialize ABC pitch string
     let pitchName = `${accidental}${enharmonicPitch.name}`;
 

@@ -136,9 +136,9 @@ export default class EnharmonicPitchSpeller {
     // get C-based accidental in semitones
     let diatonicPitchClassOffset = pitchClass - diatonicPitchClass;
 
-    if (diatonicPitchClassOffset > 6) {
+    if (diatonicPitchClassOffset > 2) {
       diatonicPitchClassOffset -= 12;
-    } else if (diatonicPitchClass < -6) {
+    } else if (diatonicPitchClassOffset < -2) {
       diatonicPitchClassOffset += 12;
     }
 
