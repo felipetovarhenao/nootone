@@ -4,6 +4,7 @@ interface ViewportInfo {
   dimensions: [number, number];
   orientation: "portrait" | "landscape";
   sizeID: number;
+  scrollTop: number;
 }
 
 /**
@@ -16,12 +17,20 @@ const useViewportInfo = (): ViewportInfo => {
   const [dimensions, setDimensions] = useState<[number, number]>([0, 0]);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">("portrait");
   const [sizeID, setSizeID] = useState(0);
+  const [scrollTop, setScrollTop] = useState(0);
 
   useEffect(() => {
     /**
      * Handler function for the window resize event.
      * Updates the viewport information based on the new dimensions.
      */
+
+    const handleScroll = () => {
+      const scroll = document.documentElement.scrollTop;
+      setScrollTop(scroll);
+      document.body.style.setProperty("--scroll", `${scroll}`);
+    };
+
     const handleResize = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -65,11 +74,14 @@ const useViewportInfo = (): ViewportInfo => {
 
     // Add event listener for window resize and call the handler
     window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll);
     handleResize();
+    handleScroll();
 
     // Clean up the event listener when the component is unmounted
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -77,6 +89,7 @@ const useViewportInfo = (): ViewportInfo => {
     dimensions,
     orientation,
     sizeID,
+    scrollTop,
   };
 };
 
