@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { MicSettings } from "../redux/micSlice";
 
 type AudioRecorderHookResult = {
-  startRecording: () => void;
+  startRecording: () => Promise<void>;
   stopRecording: () => void;
   audioBlob: Blob | null;
   isRecording: boolean;
@@ -28,11 +28,11 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
     }
   };
 
-  const startRecording = () => {
+  const startRecording = async () => {
     if (navigator.mediaDevices?.getUserMedia) {
       setRecordingError("");
-      navigator.mediaDevices
-        .getUserMedia({
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: false,
             autoGainControl: false,
@@ -40,19 +40,17 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
             ...micSettings,
           },
           video: false,
-        })
-        .then((stream) => {
-          setIsRecording(true);
-          setAudioBlob(null);
-          audioChunksRef.current = [];
-          const mediaRecorder = new MediaRecorder(stream);
-          mediaRecorderRef.current = mediaRecorder;
-          mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
-          mediaRecorder.start(50);
-        })
-        .catch((error) => {
-          setRecordingError(error);
         });
+        audioChunksRef.current = [];
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        mediaRecorder.addEventListener("dataavailable", handleDataAvailable);
+        setAudioBlob(null);
+        setIsRecording(true);
+        mediaRecorder.start(50);
+      } catch (error) {
+        setRecordingError(`${error}`);
+      }
     } else {
       setRecordingError("Audio input is not supported by this browser.");
     }

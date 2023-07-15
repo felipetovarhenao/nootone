@@ -82,22 +82,25 @@ const MicrophoneView = () => {
       } catch (error: any) {
         console.log("API call failed: ", error);
       } finally {
-        const duration = await getAudioDuration(recordingBlob);
-        const rec = {
-          url: URL.createObjectURL(recordingBlob),
-          name: recTitle || getFormattedTimestamp(),
-          duration: duration,
-          features: {
-            tempo: tempo,
-          },
-        };
-
-        dispatch(recordingActions.addNew(rec));
-        navigate("/app/ideas/recordings/0/develop");
-        dispatch(micActions.togglePreprocessing());
+        try {
+          const duration = await getAudioDuration(recordingBlob);
+          const rec = {
+            url: URL.createObjectURL(recordingBlob),
+            name: recTitle || getFormattedTimestamp(),
+            duration: duration,
+            features: {
+              tempo: tempo,
+            },
+          };
+          dispatch(recordingActions.addNew(rec));
+          navigate("/app/ideas/recordings/0/develop");
+        } catch (error) {
+          console.log(error);
+        } finally {
+          dispatch(micActions.togglePreprocessing());
+        }
       }
     }
-
     processRecording();
   }, [isRecording]);
 
@@ -144,9 +147,9 @@ const MicrophoneView = () => {
                 await Tone.start();
               }
               if (navigator.mediaDevices?.getUserMedia!) {
+                await startRecording();
                 startTime.current = Date.now();
                 dispatch(micActions.toggle());
-                startRecording();
               } else if (!isRecording) {
                 notification({
                   type: "DANGER",
