@@ -5,4 +5,10 @@
   .SwipeMenu__button {
     @include hyperlink;
   }
+  .SwipeMenu__right {
+    @include on-load-animation(slide-right, 0.2s);
+  }
+  .SwipeMenu__left {
+    @include on-load-animation(slide-left, 0.2s);
+  }
 }
