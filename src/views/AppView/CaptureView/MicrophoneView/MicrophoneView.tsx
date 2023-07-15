@@ -23,7 +23,7 @@ import CONFIG, { DeploymentType } from "../../../../utils/config";
 import MicrophoneSettingsLayout from "../../../../layouts/MicrophoneSettingsLayout/MicrophoneSettingsLayout";
 import CacheAPI from "../../../../utils/CacheAPI";
 
-const inputSuggestions = ["capture your idea", "sing a tune", "hum a melody", "whistle a song", "make music!"];
+const inputSuggestions = ["turn a melody into song", "click to record", "capture your idea", "sing a tune", "hum a melody", "whistle a song"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
 
 const MicrophoneView = () => {
@@ -124,6 +124,7 @@ const MicrophoneView = () => {
           placeholder={"title"}
           value={recTitle}
           onChange={(e) => setRecTitle(e.target.value)}
+          maxLength={36}
         />
       </div>
       <div className="MicrophoneView__center-container">

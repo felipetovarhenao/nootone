@@ -18,6 +18,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
       responsive: "resize",
       oneSvgPerLine: true,
       scrollHorizontal: false,
+      add_classes: true,
       viewportHorizontal: false,
       viewportVertical: true,
       staffwidth: defaultStaffWidth,
