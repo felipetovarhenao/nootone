@@ -142,6 +142,10 @@ export default class EnharmonicPitchSpeller {
       diatonicPitchClassOffset += 12;
     }
 
+    if (Math.abs(diatonicPitchClassOffset) > 2) {
+      console.log("Fix bug — diatonic pitch class offset is greater than 2: ", diatonicPitchClassOffset);
+    }
+
     const accidental = this.semitonesToAccidental(diatonicPitchClassOffset);
 
     return {
