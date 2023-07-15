@@ -12,7 +12,7 @@ const MyIdeasView = () => {
         {[...recordings]
           .sort((a, b) => b.date?.localeCompare(a.date || "0"))
           .map((rec, i) => (
-            <RecordingLayout className="MyIdeasView__recordings__recording" key={i} rec={rec} recIndex={i} />
+            <RecordingLayout className="MyIdeasView__recordings__recording" key={rec.name} rec={rec} recIndex={i} />
           ))}
       </div>
     </div>

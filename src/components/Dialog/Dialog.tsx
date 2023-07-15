@@ -51,10 +51,10 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
               <p className="Dialog__container__message">{dialogProps?.message}</p>
             </div>
             <div className="Dialog__container__buttons">
-              {dialogProps?.buttons.map((btn, i) => (
+              {dialogProps?.buttons.map((btn) => (
                 <Button
                   className={cn({ [`--${btn.type}`]: btn.type }, "Dialog__container__buttons__button")}
-                  key={i}
+                  key={btn.label}
                   onClick={() => btn.onClick(closeDialog)}
                 >
                   {btn.label}

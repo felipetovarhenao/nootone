@@ -24,7 +24,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
         {links.map((link, index) => (
           <li
             className={cn("link", { "--selected": selected === index })}
-            key={index}
+            key={link.icon}
             onClick={() => {
               if (!isRecording) {
                 navigate(link.path);

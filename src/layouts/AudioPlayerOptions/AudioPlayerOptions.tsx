@@ -128,10 +128,10 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
 
   return (
     <HamburgerDropdown className={cn("AudioPlayerOptions")}>
-      {makeMenuOptions().map((opt, i) => {
+      {makeMenuOptions().map((opt) => {
         const { className: cname, ...rest } = opt.props;
         return (
-          <div className={cn(cname, "AudioPlayerOptions__option")} key={i} {...rest}>
+          <div className={cn(cname, "AudioPlayerOptions__option")} key={opt.label} {...rest}>
             <Icon className="AudioPlayerOptions__option__icon" icon={opt.icon} />
             {opt.label}
           </div>

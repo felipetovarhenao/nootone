@@ -39,9 +39,9 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
           legendClosed={`show variations (${rec.variations?.length})`}
           legendOpen={`hide variations (${rec.variations?.length})`}
         >
-          {rec.variations?.map((variation: GenericRecording, i) => (
-            <div key={i} className="RecordingLayout__player-container">
-              <WaveSurferPlayer showDate={true} key={i} rec={variation} className="RecordingLayout__variations__variation" />
+          {rec.variations?.map((variation: GenericRecording) => (
+            <div key={variation.name} className="RecordingLayout__player-container">
+              <WaveSurferPlayer showDate={true} rec={variation} className="RecordingLayout__variations__variation" />
               <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />
             </div>
           ))}

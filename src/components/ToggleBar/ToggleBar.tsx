@@ -23,7 +23,7 @@ export default function ToggleBar({ toggles, defaultSelected = 0, children, ...r
       {children}
       {toggles.map((tgl, i) => (
         <Toggle
-          key={i}
+          key={tgl.name}
           name={tgl.name}
           isSelected={selected === i}
           onClick={(e) => {

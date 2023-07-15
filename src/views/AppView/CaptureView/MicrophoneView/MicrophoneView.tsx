@@ -128,8 +128,8 @@ const MicrophoneView = () => {
       </div>
       <div className="MicrophoneView__center-container">
         <TextCarousel duration={2.5} className="MicrophoneView__prompt">
-          {(isRecording ? recordingPrompts : inputSuggestions).map((txt, i) => (
-            <span className="MicrophoneView__prompt__slide" key={i}>
+          {(isRecording ? recordingPrompts : inputSuggestions).map((txt) => (
+            <span className="MicrophoneView__prompt__slide" key={txt}>
               {txt}
             </span>
           ))}

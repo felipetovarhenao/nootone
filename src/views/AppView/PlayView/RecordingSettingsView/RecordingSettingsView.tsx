@@ -17,17 +17,17 @@ const RecordingSettingsView = () => {
   return (
     <ViewContainer className="RecordingSettingsView" viewName="recording settings">
       <WaveSurferPlayer rec={recordings[selectedRecordingIndex]} />
-      {recordings[selectedRecordingIndex].variations.map((recVar, i) => (
+      {recordings[selectedRecordingIndex].variations.map((recVar) => (
         <>
-          <WaveSurferPlayer key={i} rec={recVar} />
-          {recVar.tags.map((tag: string, j) => (
-            <span key={j}>{tag}</span>
+          <WaveSurferPlayer key={recVar.name} rec={recVar} />
+          {recVar.tags.map((tag: string) => (
+            <span key={tag}>{tag}</span>
           ))}
         </>
       ))}
       <div>
-        {tags.current.map((tag: string, k) => (
-          <span key={k}>{tag}</span>
+        {tags.current.map((tag: string) => (
+          <span key={tag}>{tag}</span>
         ))}
       </div>
       <Button color="danger">

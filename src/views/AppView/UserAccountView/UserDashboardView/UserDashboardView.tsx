@@ -25,12 +25,12 @@ const UserDashboardView = () => {
       </div>
       <Hr />
       <div className="UserDashboardView__sections">
-        {Object.keys(accountMenu).map((section, i) => (
-          <div key={i} className="UserDashboardView__sections__section">
+        {Object.keys(accountMenu).map((section) => (
+          <div key={section} className="UserDashboardView__sections__section">
             <h1 className="UserDashboardView__sections__section__header">{section}</h1>
             <div className="UserDashboardView__sections__section__options">
-              {accountMenu[section].map((option, j) => (
-                <div className={cn("UserDashboardView__sections__section__options__option", { "--danger": option.danger })} key={j}>
+              {accountMenu[section].map((option) => (
+                <div className={cn("UserDashboardView__sections__section__options__option", { "--danger": option.danger })} key={option.label}>
                   {option.label}
                 </div>
               ))}
