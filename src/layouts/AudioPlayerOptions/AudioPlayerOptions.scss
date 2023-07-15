@@ -6,6 +6,7 @@
     box-sizing: content-box;
   }
   .children {
+    @include on-load-animation(slide-down, 0.125s);
     @include v-stack;
     @include round;
     width: fit-content;

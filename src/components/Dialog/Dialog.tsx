@@ -44,7 +44,7 @@ export const DialogProvider = ({ children }: DialogProviderProps) => {
     <DialogContext.Provider value={updateDialog}>
       {children}
       {createPortal(
-        <dialog className={cn({ dark: darkTheme }, "Dialog")} ref={dialogRef}>
+        <dialog className={cn({ dark: darkTheme }, { "--open": isOpen }, "Dialog")} ref={dialogRef}>
           <div className="Dialog__container">
             <div className="Dialog__container__text">
               <h1 className="Dialog__container__header">{dialogProps?.header}</h1>
