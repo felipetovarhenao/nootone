@@ -18,6 +18,7 @@
 
 .DevelopView {
   @include v-stack;
+  @include on-load-animation(slide-down);
   justify-content: center;
   gap: $gap-ml;
   .DevelopView__header {

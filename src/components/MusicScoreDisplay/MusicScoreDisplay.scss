@@ -4,7 +4,7 @@
   @include v-stack-c;
   width: 100%;
   .MusicScoreDisplay__score-container {
-    @include on-load-animation(fade-in);
+    @include on-load-animation(fade-in, 1s);
     @include v-stack;
     @include round-border;
     overflow: auto;
