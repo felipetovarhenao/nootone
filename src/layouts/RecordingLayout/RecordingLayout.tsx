@@ -35,7 +35,7 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
       {rec.variations?.length > 0 && (
         <Dropdown
           className="RecordingLayout__variations"
-          openByDefault={true}
+          openByDefault={false}
           legendClosed={`show variations (${rec.variations?.length})`}
           legendOpen={`hide variations (${rec.variations?.length})`}
         >
