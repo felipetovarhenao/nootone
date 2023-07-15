@@ -31,5 +31,8 @@
     @include desktop-large-up {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+    .MyIdeasView__recordings__recording {
+      @include on-load-animation(slide-down);
+    }
   }
 }

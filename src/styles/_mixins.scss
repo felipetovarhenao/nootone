@@ -224,7 +224,7 @@
   white-space: nowrap;
 }
 
-@mixin on-load-animation($name, $dur: 0.2s) {
+@mixin on-load-animation($name, $dur: 0.4s) {
   -webkit-animation: $name $dur ease-in-out 0s 1 normal forwards;
   animation: $name $dur ease-in-out 0s 1 normal forwards;
 }

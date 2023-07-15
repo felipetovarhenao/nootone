@@ -8,6 +8,7 @@
     @include v-stack;
     @include pad;
     @include v-mar($gap-xxl);
+    @include on-load-animation(slide-up);
     justify-self: center;
     height: fit-content;
     width: 80%;
@@ -39,6 +40,7 @@
   .MicrophoneView__center-container {
     @include v-stack-c;
     @include v-center;
+    @include on-load-animation(fade-in);
 
     .MicrophoneView__prompt {
       @include stack;
@@ -80,6 +82,7 @@
   .MicrophoneView__settings {
     @include h-mar(auto);
     @include h-pad($gap-lg);
+    @include on-load-animation(slide-down);
     max-width: 350px;
     width: 100%;
     .MicrophoneView__settings__setting {
