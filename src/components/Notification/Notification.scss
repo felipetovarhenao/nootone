@@ -52,7 +52,7 @@ $slide-time: 0.4s;
       color: var(--primary-4);
     }
 
-    &.error .Notification__message .Notification__message__icon * {
+    &.danger .Notification__message .Notification__message__icon * {
       color: var(--danger-3);
     }
 

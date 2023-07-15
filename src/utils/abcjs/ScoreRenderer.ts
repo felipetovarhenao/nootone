@@ -2,8 +2,11 @@ import { Fraction } from "../../types/math";
 import { ChordEvent, SymbolicMusicSequence } from "../../types/music";
 import FractionOperator from "../FractionOperator";
 import camelToSpaces from "../camelToSpaces";
+import getDeepCopy from "../getDeepCopy";
 import EnharmonicPitchSpeller from "./EnharmonicPitchSpeller";
-import { KeySignature, SymbolicBeat, SymbolicEvent, SymbolicMeasure } from "./types";
+import { Accidental, KeySignature, PitchName, SymbolicBeat, SymbolicEvent, SymbolicMeasure } from "./types";
+
+type AccidentalsTrackingTable = Record<PitchName, Record<number, Accidental>>;
 
 export default class ScoreRenderer {
   private maxSubdivision: number;
@@ -17,12 +20,17 @@ export default class ScoreRenderer {
   private beatUnit: Fraction;
   private numBeats: number;
   private numMeasures: number;
+  private defaultAccidentals: AccidentalsTrackingTable;
+  private currentAccidentals: AccidentalsTrackingTable;
 
   constructor(musicSequence: SymbolicMusicSequence, maxSubdivision: number = 16) {
     this.maxSubdivision = maxSubdivision;
     this.musicSequence = musicSequence;
     this.timeSignature = musicSequence.timeSignature;
     this.keySignature = this.detectKeySignature();
+
+    this.defaultAccidentals = this.getAccidentalsTable();
+    this.currentAccidentals = this.getAccidentalsTable();
 
     const { tempo, beatUnit } = this.getSymbolicTempoMarking();
 
@@ -75,6 +83,18 @@ export default class ScoreRenderer {
       p.chordEvents.forEach((c) => c.notes.forEach((n) => (duration = Math.max(duration, n.duration + c.onset))))
     );
     return duration;
+  }
+
+  private getAccidentalsTable(): AccidentalsTrackingTable {
+    const scaleDegrees = EnharmonicPitchSpeller.getDefaultAccidentals(this.keySignature);
+    const accidentalsTable: any = getDeepCopy(scaleDegrees);
+    (Object.keys(scaleDegrees) as PitchName[]).map((pitchName) => {
+      accidentalsTable[pitchName] = {};
+      for (let i = 0; i < 8; i++) {
+        accidentalsTable[pitchName][i] = scaleDegrees[pitchName];
+      }
+    });
+    return accidentalsTable;
   }
 
   private checkBeatDuration(beat: SymbolicBeat) {
@@ -222,6 +242,7 @@ export default class ScoreRenderer {
 
       measures.forEach((m, i) => {
         const breakSystem = i === measures.length - 1;
+        this.currentAccidentals = getDeepCopy(this.defaultAccidentals);
         voice += this.parseMeasure(m, breakSystem);
       });
 
@@ -298,12 +319,34 @@ export default class ScoreRenderer {
   }
 
   private pitchToABC(pitch: number) {
+    // get pitch octave index
+    const octaveIndex = Math.floor(pitch / 12);
+
+    // get number of octave deviations from middle C
     const octaveOffset = Math.floor((pitch - 60) / 12);
+
+    // get pitch most adecuate pitch spelling based on key signature
     const enharmonicPitch = EnharmonicPitchSpeller.getEnharmonicPitch(pitch % 12, this.keySignature);
-    let pitchName = `${enharmonicPitch.accidental || ""}${enharmonicPitch.name}`;
+
+    // get the last accidental used for given pitch name and octave index
+    const lastAccidental = this.currentAccidentals[enharmonicPitch.name][octaveIndex];
+
+    // add accidental only if necessary
+    let accidental = "";
+    if (lastAccidental !== enharmonicPitch.accidental) {
+      accidental = `${enharmonicPitch.accidental}`;
+    }
+
+    // initialize ABC pitch string
+    let pitchName = `${accidental}${enharmonicPitch.name}`;
+
+    // apply octave offsets
     for (let i = 0; i < Math.abs(octaveOffset); i++) {
       pitchName += octaveOffset > 0 ? "'" : ",";
     }
+
+    // update accidental table
+    this.currentAccidentals[enharmonicPitch.name][octaveIndex] = enharmonicPitch.accidental as Accidental;
 
     return pitchName;
   }

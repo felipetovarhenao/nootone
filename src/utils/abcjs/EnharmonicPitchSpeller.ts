@@ -6,6 +6,7 @@ export const enharmonicSchema = {
 };
 
 const accidentalToSemitonesTable: Record<Accidental, number> = {
+  [Accidental.NATURAL]: 0,
   [Accidental.FLAT]: -1,
   [Accidental.SHARP]: 1,
   [Accidental.DOUBLE_FLAT]: -2,
@@ -14,32 +15,32 @@ const accidentalToSemitonesTable: Record<Accidental, number> = {
 
 export const pitchClassToKeySignatureTable: Record<ScaleMode, Record<number, EnharmonicPitch>> = {
   [ScaleMode.MAJOR]: {
-    0: { name: PitchName.C },
+    0: { name: PitchName.C, accidental: Accidental.NATURAL },
     1: { name: PitchName.D, accidental: Accidental.FLAT },
-    2: { name: PitchName.D },
+    2: { name: PitchName.D, accidental: Accidental.NATURAL },
     3: { name: PitchName.E, accidental: Accidental.FLAT },
-    4: { name: PitchName.E },
-    5: { name: PitchName.F },
+    4: { name: PitchName.E, accidental: Accidental.NATURAL },
+    5: { name: PitchName.F, accidental: Accidental.NATURAL },
     6: { name: PitchName.G, accidental: Accidental.FLAT },
-    7: { name: PitchName.G },
+    7: { name: PitchName.G, accidental: Accidental.NATURAL },
     8: { name: PitchName.A, accidental: Accidental.FLAT },
-    9: { name: PitchName.A },
+    9: { name: PitchName.A, accidental: Accidental.NATURAL },
     10: { name: PitchName.B, accidental: Accidental.FLAT },
-    11: { name: PitchName.B },
+    11: { name: PitchName.B, accidental: Accidental.NATURAL },
   },
   [ScaleMode.MINOR]: {
-    0: { name: PitchName.C },
+    0: { name: PitchName.C, accidental: Accidental.NATURAL },
     1: { name: PitchName.C, accidental: Accidental.SHARP },
-    2: { name: PitchName.D },
+    2: { name: PitchName.D, accidental: Accidental.NATURAL },
     3: { name: PitchName.E, accidental: Accidental.FLAT },
-    4: { name: PitchName.E },
-    5: { name: PitchName.F },
+    4: { name: PitchName.E, accidental: Accidental.NATURAL },
+    5: { name: PitchName.F, accidental: Accidental.NATURAL },
     6: { name: PitchName.F, accidental: Accidental.SHARP },
-    7: { name: PitchName.G },
+    7: { name: PitchName.G, accidental: Accidental.NATURAL },
     8: { name: PitchName.G, accidental: Accidental.SHARP },
-    9: { name: PitchName.A },
+    9: { name: PitchName.A, accidental: Accidental.NATURAL },
     10: { name: PitchName.B, accidental: Accidental.FLAT },
-    11: { name: PitchName.B },
+    11: { name: PitchName.B, accidental: Accidental.NATURAL },
   },
 };
 
@@ -55,7 +56,7 @@ export default class EnharmonicPitchSpeller {
       [PitchName.B]: 11,
     }[pitchName];
   }
-  
+
   public static getKeySignature(pitchClass: number, minor?: boolean): KeySignature {
     const mode = minor ? ScaleMode.MINOR : ScaleMode.MAJOR;
     return { ...pitchClassToKeySignatureTable[mode][pitchClass], mode };
@@ -83,6 +84,7 @@ export default class EnharmonicPitchSpeller {
     let accidental = "";
     if (keySignature.accidental) {
       const accidentalMapper: Record<Accidental, string> = {
+        [Accidental.NATURAL]: "",
         [Accidental.FLAT]: "b",
         [Accidental.DOUBLE_FLAT]: "bb",
         [Accidental.SHARP]: "#",
@@ -95,7 +97,7 @@ export default class EnharmonicPitchSpeller {
     return keySig + mode;
   }
 
-  public static getEnharmonicPitch(pitchClass: number, keySignature: KeySignature) {
+  public static keySignatureToPitchClass(keySignature: KeySignature) {
     // get key signature root pitch name as pitch class
     const diatonicRoot = this.pitchNameToPitchClass(keySignature.name);
 
@@ -104,6 +106,13 @@ export default class EnharmonicPitchSpeller {
 
     // get key signature as absolute pitch class
     const chromaticRoot = (diatonicRoot + diatonicRootOffset + 12) % 12;
+
+    return chromaticRoot;
+  }
+
+  public static getEnharmonicPitch(pitchClass: number, keySignature: KeySignature) {
+    // get key signature as absolute pitch class
+    const chromaticRoot = this.keySignatureToPitchClass(keySignature);
 
     // get enharmonic schema for key signature mode
     const schema = enharmonicSchema[keySignature.mode];
@@ -139,5 +148,16 @@ export default class EnharmonicPitchSpeller {
       name: pitchName,
       accidental: accidental,
     };
+  }
+
+  public static getDefaultAccidentals(keySignature: KeySignature): Record<PitchName, Accidental> {
+    const root = this.keySignatureToPitchClass(keySignature);
+    const diatonicScale = keySignature.mode === ScaleMode.MAJOR ? [0, 2, 4, 5, 7, 9, 11] : [0, 2, 3, 5, 7, 8, 10];
+    const accidentals: any = {};
+    diatonicScale.map((x) => {
+      const pitch = this.getEnharmonicPitch((x + root) % 12, keySignature);
+      accidentals[pitch.name as PitchName] = pitch.accidental as Accidental;
+    });
+    return accidentals;
   }
 }

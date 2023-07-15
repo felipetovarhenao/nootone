@@ -20,6 +20,7 @@ export type SymbolicMeasure = {
 };
 
 export enum Accidental {
+  NATURAL = "=",
   SHARP = "^",
   FLAT = "_",
   DOUBLE_FLAT = "__",
@@ -44,7 +45,7 @@ export type EnharmonicSchema = Record<ScaleMode, number[]>;
 
 export type EnharmonicPitch = {
   name: PitchName;
-  accidental?: Accidental;
+  accidental: Accidental;
 };
 
 export type KeySignature = EnharmonicPitch & {
