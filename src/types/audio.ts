@@ -40,7 +40,7 @@ export enum TrackType {
 }
 
 type TrackConfig = {
-  gain: number;
+  gain?: number;
 };
 
 export type SymbolicTrack = {

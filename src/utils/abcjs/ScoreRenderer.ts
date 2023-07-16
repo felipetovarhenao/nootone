@@ -388,7 +388,11 @@ export default class ScoreRenderer {
   private detectKeySignature(): KeySignature {
     const chroma = [...Array(12)].fill(0);
     this.musicSequence.instrumentalParts.forEach((instrumentalPart) =>
-      instrumentalPart.chordEvents.forEach((chordEvent) => chordEvent.notes.forEach((note) => chroma[note.pitch % 12]++))
+      instrumentalPart.chordEvents.forEach((chordEvent) =>
+        chordEvent.notes.forEach((note) => {
+          chroma[note.pitch % 12] += note.duration;
+        })
+      )
     );
     const maxBin = Math.max(...chroma);
     const root = chroma.indexOf(maxBin);

@@ -151,6 +151,9 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
           onset: 0,
           duration: recording.duration,
         },
+        config: {
+          gain: 0.707,
+        },
       },
       {
         type: TrackType.SYMBOLIC,
@@ -171,9 +174,6 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         data: {
           chordEvents: bassLine,
           name: bassName,
-        },
-        config: {
-          gain: 0.707,
         },
       },
     ];
