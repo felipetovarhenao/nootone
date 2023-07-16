@@ -55,6 +55,21 @@ const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish
     progressColor: ["rgb(37,158,216)", "rgb(93,77,179)"],
     cursorColor: "rgb(37,158,216)",
     url: rec.url,
+    renderFunction: !("roundRect" in CanvasRenderingContext2D.prototype)
+      ? (peaks, ctx) => {
+          const { width, height } = containerRef.current?.getBoundingClientRect() || { width: 500, height: 10 };
+          peaks.forEach((peak) => {
+            const skip = Math.floor(peak.length / 60);
+            peak.slice(1).forEach((pt, i) => {
+              if (i % skip !== 0) {
+                return;
+              }
+              const peakValue = Math.abs(pt * height);
+              ctx.fillRect((i / peak.length) * width * 2, height - peakValue, 5, peakValue * 2);
+            });
+          });
+        }
+      : undefined,
   });
 
   const onPlayClick = useCallback(() => {
