@@ -83,6 +83,7 @@ const DevelopView = () => {
           <div className="DevelopView__header">
             <div className="">
               <EditableField
+                key={recordings[selectedRecordingIndex].name}
                 onConfirm={handleRecordingTitleEdit}
                 className="DevelopView__header"
                 defaultValue={recordings[selectedRecordingIndex].name}
