@@ -81,7 +81,7 @@ const DevelopView = () => {
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">
-            <div className="">
+            <div className="DevelopView__header__inner">
               <EditableField
                 key={recordings[selectedRecordingIndex].name}
                 onConfirm={handleRecordingTitleEdit}
@@ -89,7 +89,6 @@ const DevelopView = () => {
                 defaultValue={recordings[selectedRecordingIndex].name}
               />
             </div>
-            <div></div>
           </div>
           <WaveSurferPlayer showTitle={false} className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
           <NewVariationsLayout />
