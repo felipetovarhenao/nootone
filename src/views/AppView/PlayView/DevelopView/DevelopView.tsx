@@ -14,6 +14,7 @@ import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPa
 import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVariationsLayout";
 import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
+import EditableField from "../../../../components/EditableField/EditableField";
 
 const DevelopView = () => {
   const location = useLocation();
@@ -68,13 +69,25 @@ const DevelopView = () => {
     dispatch(recordingActions.clearVariationBuffer());
   }, [process]);
 
+  function handleRecordingTitleEdit(title: string) {
+    if (selectedRecordingIndex === null) {
+      return;
+    }
+    dispatch(recordingActions.setRecordingTitle({ recording: recordings[selectedRecordingIndex], title }));
+  }
+
   return (
     <ViewContainer viewName="" onGoBack={() => navigate("/app/ideas")}>
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">
             <div className="">
-              <h1 className="DevelopView__header">{recordings[selectedRecordingIndex].name}</h1>
+              <EditableField
+                onConfirm={handleRecordingTitleEdit}
+                className="DevelopView__header"
+                defaultValue={recordings[selectedRecordingIndex].name}
+              />
+              {/* <h1 className="DevelopView__header">{recordings[selectedRecordingIndex].name}</h1> */}
             </div>
             <div></div>
           </div>

@@ -22,11 +22,26 @@
   justify-content: center;
   gap: $gap-ml;
   .DevelopView__header {
-    text-align: center;
-    font-size: $txt-ml;
-    font-weight: bold;
-    letter-spacing: $gap-xs;
-    color: var(--txt);
+    @include stack;
+    @include h-center;
+    width: 100%;
+    gap: $txt-ms;
+    input.EditableField__value {
+      outline-color: var(--secondary-3);
+    }
+    .EditableField__value {
+      @include round;
+      @include pad($gap-ms);
+      width: 100%;
+      text-align: center;
+      font-size: $txt-ml;
+      font-weight: bold;
+      letter-spacing: $gap-xs;
+      color: var(--txt);
+    }
+    .EditableField__options {
+      gap: $txt-ms;
+    }
   }
   .DevelopView__player {
     @include h-mar(auto);

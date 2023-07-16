@@ -1,0 +1,26 @@
+@use "../../styles/main.scss" as *;
+
+.EditableField {
+  @include h-stack-c;
+  input.EditableField__value {
+    background-color: var(--bg-1);
+    color: var(--primary-4) !important;
+  }
+  .EditableField__options {
+    @include h-stack-c;
+    .EditableField__options__option {
+      &.--success * {
+        @include hyperlink(var(--success-3), var(--success-4));
+      }
+      &.--danger * {
+        @include hyperlink(var(--danger-3), var(--danger-4));
+      }
+      &.--primary * {
+        @include hyperlink(var(--primary-3), var(--primary-4));
+      }
+      .EditableField__options__option__icon {
+        font-size: $txt-lg;
+      }
+    }
+  }
+}

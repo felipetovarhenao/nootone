@@ -34,6 +34,18 @@ const recordings = createSlice({
         ...action.payload,
       });
     },
+    setRecordingTitle: (state, action: PayloadAction<{ recording: GenericRecording; title: string }>) => {
+      const { recording, title } = action.payload;
+      const { parentIndex, childIndex } = getRecordingLocation(state.recordings, recording);
+      if (parentIndex === undefined) {
+        throw Error("Recording not found");
+      }
+      if (childIndex === undefined) {
+        state.recordings[parentIndex].name = title;
+      } else {
+        state.recordings[parentIndex].variations[childIndex].name = title;
+      }
+    },
     discard: (state, action: PayloadAction<Recording>) => {
       for (let i = 0; i < state.recordings.length; i++) {
         if (state.recordings[i].url === action.payload.url) {
