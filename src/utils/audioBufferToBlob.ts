@@ -23,7 +23,7 @@ export default function audioBufferToBlob(
   // initialize normalization value with -1 to prevent zero division (at best phase is inverted)
   let normValue = -1;
 
-  const startOffset = Math.floor(startTime * sampleRate);
+  const startOffset = Math.floor(startTime * sampleRate * audioBuffer.numberOfChannels);
 
   const leftLength = Math.max(0, left.length - startOffset);
   const rightLength = Math.max(0, right.length - startOffset);
