@@ -1,6 +1,7 @@
 const icons = {
   play: "ph:play-fill",
   close: "material-symbols:close",
+  reset: "radix-icons:reset",
   print: "material-symbols:print",
   notation: "game-icons:g-clef",
   export: "mdi:export",

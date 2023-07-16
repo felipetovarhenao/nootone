@@ -3,7 +3,7 @@ import { MicSettings } from "../redux/micSlice";
 
 type AudioRecorderHookResult = {
   startRecording: () => Promise<void>;
-  stopRecording: () => void;
+  stopRecording: (cancel?: boolean) => void;
   audioBlob: Blob | null;
   isRecording: boolean;
   recordingError: string;
@@ -56,12 +56,16 @@ const useAudioRecorder = (): AudioRecorderHookResult => {
     }
   };
 
-  const stopRecording = () => {
+  const stopRecording = (cancel: boolean = false) => {
     if (mediaRecorderRef.current?.state === "recording") {
       mediaRecorderRef.current.removeEventListener("dataavailable", handleDataAvailable);
       mediaRecorderRef.current.stop();
-      const blob = new Blob(audioChunksRef.current, { type: "audio/mp3" });
-      setAudioBlob(blob);
+      if (!cancel) {
+        const blob = new Blob(audioChunksRef.current, { type: "audio/mp3" });
+        setAudioBlob(blob);
+      } else {
+        setAudioBlob(null);
+      }
       setIsRecording(false);
       setRecordingError("");
     }

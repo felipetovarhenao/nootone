@@ -88,7 +88,6 @@ const DevelopView = () => {
                 className="DevelopView__header"
                 defaultValue={recordings[selectedRecordingIndex].name}
               />
-              {/* <h1 className="DevelopView__header">{recordings[selectedRecordingIndex].name}</h1> */}
             </div>
             <div></div>
           </div>

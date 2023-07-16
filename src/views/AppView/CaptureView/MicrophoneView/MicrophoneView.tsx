@@ -160,20 +160,31 @@ const MicrophoneView = () => {
             }}
           />
         ) : (
-          <Metronome
-            padding={30}
-            className="MicrophoneView__icon"
-            onClick={() => {
-              // don't stop recording if counter is still active
-              if (Date.now() - startTime.current < numCountBeats * (60000 / tempo)) {
-                return;
-              }
-              dispatch(micActions.toggle());
-              stopRecording();
-            }}
-            tempo={tempo}
-            canvasDims={{ width: 130, height: 130 }}
-          />
+          <>
+            <Metronome
+              padding={30}
+              className="MicrophoneView__icon"
+              onClick={() => {
+                // don't stop recording if counter is still active
+                if (Date.now() - startTime.current < numCountBeats * (60000 / tempo)) {
+                  return;
+                }
+                dispatch(micActions.toggle());
+                stopRecording();
+              }}
+              tempo={tempo}
+              canvasDims={{ width: 130, height: 130 }}
+            />
+            <span
+              onClick={() => {
+                dispatch(micActions.toggle());
+                stopRecording(true);
+              }}
+              className="MicrophoneView__cancel"
+            >
+              CANCEL
+            </span>
+          </>
         )}
       </div>
       <SwipeMenu defaultValue={settingIndex} className="MicrophoneView__settings" onSwiped={handleSettingSwipe}>

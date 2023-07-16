@@ -54,6 +54,21 @@
         color: var(--disabled-3);
       }
     }
+    .MicrophoneView__cancel {
+      @include stack;
+      @include round(20px);
+      @include vh-pad($gap-md, $gap-lg);
+      @include t-mar($gap-xxl);
+      @include clickable;
+      box-sizing: content-box;
+      color: var(--txt-light);
+      background-color: var(--danger-3);
+      &:hover {
+        background-color: var(--danger-4);
+      }
+      font-weight: bold;
+      font-size: $txt-ms;
+    }
     .MicrophoneView__icon {
       @include clickable;
       @include center;
