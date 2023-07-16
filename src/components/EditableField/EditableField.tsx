@@ -50,15 +50,24 @@ const EditableField = ({ className, defaultValue, onConfirm }: EditableFieldProp
       <div className="EditableField__options">
         {onEdit ? (
           <>
-            <div className="EditableField__options__option --success">
-              <Icon className="EditableField__options__option__icon" icon={icons.check} onClick={handleConfirm} />
+            <div className={cn("EditableField__options__option --success", { "--disabled": currentValue === "" })}>
+              <Icon
+                className="EditableField__options__option__icon"
+                icon={icons.check}
+                onClick={() => {
+                  if (currentValue === "") {
+                    return;
+                  }
+                  handleConfirm();
+                }}
+              />
             </div>
-            <div className="EditableField__options__option --danger">
+            <div className={"EditableField__options__option --danger"}>
               <Icon className="EditableField__options__option__icon" icon={icons.close} onClick={handleCancel} />
             </div>
           </>
         ) : (
-          <div className="EditableField__options__option --primary">
+          <div className={"EditableField__options__option --primary"}>
             <Icon className="EditableField__options__option__icon" icon={icons.edit} onClick={handleEdit} />
           </div>
         )}

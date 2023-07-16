@@ -9,14 +9,19 @@
   .EditableField__options {
     @include h-stack-c;
     .EditableField__options__option {
-      &.--success * {
-        @include hyperlink(var(--success-3), var(--success-4));
+      &:not(.--disabled) {
+        &.--success * {
+          @include hyperlink(var(--success-3), var(--success-4));
+        }
+        &.--danger * {
+          @include hyperlink(var(--danger-3), var(--danger-4));
+        }
+        &.--primary * {
+          @include hyperlink(var(--primary-3), var(--primary-4));
+        }
       }
-      &.--danger * {
-        @include hyperlink(var(--danger-3), var(--danger-4));
-      }
-      &.--primary * {
-        @include hyperlink(var(--primary-3), var(--primary-4));
+      &.--disabled * {
+        color: var(--disabled-3);
       }
       .EditableField__options__option__icon {
         font-size: $txt-lg;
