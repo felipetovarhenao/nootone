@@ -43,9 +43,9 @@ export default function audioBufferToBlob(
       if (removePadding) {
         if (left[i] !== 0) {
           removePadding = false;
-          cropSize = i;
           avg = applyFilter(Math.abs(left[i]));
         }
+        cropSize = i;
         continue;
       }
       const current = applyFilter(Math.abs(left[i]));
