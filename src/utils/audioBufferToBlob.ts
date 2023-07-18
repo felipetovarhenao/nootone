@@ -1,4 +1,5 @@
 import { dbToGain } from "tone";
+import createAverageFilter from "./createAverageFilter";
 
 /**
  * Converts an AudioBuffer to a Blob object representing a WAV file.
@@ -33,11 +34,23 @@ export default function audioBufferToBlob(
   This is a temporary fix to a left-padding bug in MediaRecorder.
   */
   if (startTime > 0) {
-    for (let i = 0; i < Math.min(sampleRate, left.length); i++) {
-      if (left[i] !== 0) {
+    const applyFilter = createAverageFilter(256);
+    let avg = 0;
+    let removePadding = true;
+    for (let i = 1; i < Math.min(sampleRate * 0.15, left.length); i++) {
+      if (removePadding) {
+        if (left[i] !== 0) {
+          removePadding = false;
+          avg = applyFilter(Math.abs(left[i]));
+        }
+        continue;
+      }
+      const current = applyFilter(Math.abs(left[i]));
+      if (current - avg > 1e-3) {
         startOffset += i;
         break;
       }
+      avg = current;
     }
   }
 
