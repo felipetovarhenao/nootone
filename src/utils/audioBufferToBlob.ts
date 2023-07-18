@@ -34,7 +34,8 @@ export default function audioBufferToBlob(
   This is a temporary fix to a left-padding bug in MediaRecorder.
   */
   if (startTime > 0) {
-    const applyFilter = createAverageFilter(256);
+    const frameSize = 128;
+    const applyFilter = createAverageFilter(frameSize);
     let avg = 0;
     let removePadding = true;
     let cropSize = 0;
