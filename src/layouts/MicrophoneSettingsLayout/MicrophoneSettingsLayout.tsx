@@ -21,6 +21,7 @@ const MicrophoneSettingsLayout = ({ className, disabled }: MicrophoneSettingsLay
       className={cn(className, "MicrophoneSettingsLayout")}
       label="noise suppression &#8597;"
       onSwipedDown={toggleNoiseSuppression}
+      onClick={toggleNoiseSuppression}
       onSwipedUp={toggleNoiseSuppression}
       disabled={disabled}
     >
