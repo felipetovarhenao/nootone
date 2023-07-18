@@ -57,7 +57,7 @@ const MicrophoneView = () => {
         // encode as wav
         recordingBlob = await encodeBlobAsWav(audioBlob, { startTime: numCountBeats * (60 / tempo), maxdB: -6 });
 
-        if ([DeploymentType.PRE].includes(CONFIG.deploymentType)) {
+        if ([DeploymentType.PRE].includes(CONFIG.deploymentType) && false) {
           if (location.search.includes("raw")) {
             throw new Error("skipping API call");
           }
