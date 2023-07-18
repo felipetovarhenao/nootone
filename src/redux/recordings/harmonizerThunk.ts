@@ -16,7 +16,7 @@ import generateBassLine from "./generateBassLine";
 import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
 import { Fraction } from "../../types/math";
 
-export type HarmonizerSettings = {
+export type NoteHarmonizerSettings = {
   style: string;
   patternSize: number;
   segSizes: number[];
@@ -29,7 +29,7 @@ export type HarmonizerSettings = {
 
 type HarmonizerPayload = {
   recording: Recording;
-  settings: HarmonizerSettings;
+  settings: NoteHarmonizerSettings;
 };
 
 export type HarmonizerReturnType = {
