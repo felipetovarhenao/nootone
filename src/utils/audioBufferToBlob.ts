@@ -48,7 +48,7 @@ export default function audioBufferToBlob(
         }
       } else {
         const current = applyFilter(Math.abs(left[i]));
-        if (current - avg > 1e-3) {
+        if (current - avg > 5e-3) {
           cropSize = i;
           break;
         }
