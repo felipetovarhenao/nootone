@@ -188,10 +188,14 @@ const MicrophoneView = () => {
         )}
       </div>
       <SwipeMenu defaultValue={settingIndex} className="MicrophoneView__settings" onSwiped={handleSettingSwipe}>
-        <TempoTapper className="MicrophoneView__settings__setting" />
-        <CountdownSettingsLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
-        <ReferencePitchSettingLayout disabled={isRecording} className="MicrophoneView__settings__setting" />
-        <MicrophoneSettingsLayout disabled={isRecording} />
+        {[
+          <TempoTapper key="TempoTapper" className="MicrophoneView__settings__setting" />,
+          <CountdownSettingsLayout key="CountdownSettingsLayout" disabled={isRecording} className="MicrophoneView__settings__setting" />,
+          <ReferencePitchSettingLayout key="ReferencePitchSettingLayout" disabled={isRecording} className="MicrophoneView__settings__setting" />,
+          navigator.mediaDevices.getSupportedConstraints().noiseSuppression && (
+            <MicrophoneSettingsLayout key="MicrophoneSettingsLayout" disabled={isRecording} />
+          ),
+        ].filter((x) => x !== undefined)}
       </SwipeMenu>
     </div>
   );
