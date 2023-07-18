@@ -41,19 +41,19 @@ export default function audioBufferToBlob(
     const maxCropping = Math.min(sampleRate * 0.15, left.length);
     for (let i = 0; i < maxCropping; i++) {
       if (removePadding) {
+        cropSize = i;
         if (left[i] !== 0) {
           removePadding = false;
           avg = applyFilter(Math.abs(left[i]));
         }
-        cropSize = i;
-        continue;
+      } else {
+        const current = applyFilter(Math.abs(left[i]));
+        if (current - avg > 1e-3) {
+          cropSize = i;
+          break;
+        }
+        avg = current;
       }
-      const current = applyFilter(Math.abs(left[i]));
-      if (current - avg > 1e-3) {
-        cropSize = i;
-        break;
-      }
-      avg = current;
     }
     startOffset += cropSize;
   }
