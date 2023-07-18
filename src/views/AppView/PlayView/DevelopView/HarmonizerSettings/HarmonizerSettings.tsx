@@ -9,6 +9,8 @@ import wrapValue from "../../../../../utils/wrapValue";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
+const applyCurve = (x: number, curve: number = 1.125) => x ** curve;
+
 const groovinessOptions = [
   {
     label: "low",
@@ -95,21 +97,21 @@ const complexity = [
   {
     label: "simple",
     value: {
-      min: 1 / 4,
-      max: 1 / 3,
+      min: applyCurve(1 / 4),
+      max: applyCurve(1 / 3),
     },
   },
   {
     label: "normal",
     value: {
-      min: 1 / 3,
-      max: 2 / 3,
+      min: applyCurve(1 / 3),
+      max: applyCurve(2 / 3),
     },
   },
   {
     label: "complex",
     value: {
-      min: 2 / 3,
+      min: applyCurve(2 / 3),
       max: 1,
     },
   },
