@@ -23,10 +23,23 @@ export default function audioBufferToBlob(
   // initialize normalization value with -1 to prevent zero division (at best phase is inverted)
   let normValue = -1;
 
-  const startOffset = Math.floor(startTime * sampleRate * audioBuffer.numberOfChannels);
+  let startOffset = Math.floor(startTime * sampleRate * audioBuffer.numberOfChannels);
 
   const leftLength = Math.max(0, left.length - startOffset);
   const rightLength = Math.max(0, right.length - startOffset);
+
+  /*
+  Find the first non-zero sample within the first second of the signal and add it to the start offset.
+  This is a temporary fix to a left-padding bug in MediaRecorder.
+  */
+  if (startTime > 0) {
+    for (let i = 0; i < Math.min(sampleRate, left.length); i++) {
+      if (left[i] !== 0) {
+        startOffset += i;
+        break;
+      }
+    }
+  }
 
   const crossFadeSamples = Math.min(crossFadeDuration * sampleRate, Math.ceil(leftLength * 0.5));
 
