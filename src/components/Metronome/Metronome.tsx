@@ -87,7 +87,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
           contextRef.current.fill();
 
           const number = numCountBeats - Math.floor(normalizedTime);
-          if (number > -numCountBeats) {
+          if (number > -numCountBeats && number <= numCountBeats) {
             contextRef.current.fillStyle = `rgba(255, 255, 255, ${number > 0 || number - 1 === -numCountBeats ? alpha : 1})`;
             if (number <= 0) {
               contextRef.current.font = "bold 24px Nunito";
@@ -103,6 +103,7 @@ const Metronome = ({ tempo, canvasDims = { width: 40, height: 40 }, className, o
 
     // Cleans up and stops the Tone.Transport when the component unmounts.
     return () => {
+      Tone.Transport.cancel(0);
       Tone.Transport.stop();
     };
   }, []);
