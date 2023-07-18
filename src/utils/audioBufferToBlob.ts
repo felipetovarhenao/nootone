@@ -37,21 +37,25 @@ export default function audioBufferToBlob(
     const applyFilter = createAverageFilter(256);
     let avg = 0;
     let removePadding = true;
-    for (let i = 1; i < Math.min(sampleRate * 0.15, left.length); i++) {
+    let cropSize = 0;
+    const maxCropping = Math.min(sampleRate * 0.15, left.length);
+    for (let i = 0; i < maxCropping; i++) {
       if (removePadding) {
         if (left[i] !== 0) {
           removePadding = false;
+          cropSize = i;
           avg = applyFilter(Math.abs(left[i]));
         }
         continue;
       }
       const current = applyFilter(Math.abs(left[i]));
       if (current - avg > 1e-3) {
-        startOffset += i;
+        cropSize = i;
         break;
       }
       avg = current;
     }
+    startOffset += cropSize;
   }
 
   const crossFadeSamples = Math.min(crossFadeDuration * sampleRate, Math.ceil(leftLength * 0.5));
