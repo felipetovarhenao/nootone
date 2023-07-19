@@ -1,7 +1,7 @@
 import "./AudioPlayerOptions.scss";
 import HamburgerDropdown from "../../components/HamburgerDropdown/HamburgerDropdown";
 import Icon from "../../components/Icon/Icon";
-import { GenericRecording } from "../../types/audio";
+import { Recording, RecordingVariation } from "../../types/audio";
 import icons from "../../utils/icons";
 import downloadMIDI from "../../utils/downloadMIDI";
 import createMidiFile from "../../utils/createMidiFile";
@@ -14,7 +14,7 @@ import { useNotification } from "../../components/Notification/NotificationProvi
 import { usePrintableMusicScore } from "../../components/PrintableMusicScore/PrintableMusicScore";
 
 type AudioPlayerOptionsProps = {
-  recording: GenericRecording;
+  recording: Recording | RecordingVariation;
   className?: string;
 };
 
@@ -34,7 +34,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
   const deleteDialog: DialogProps = {
     header: "WAIT!",
     message: `You're about to delete this recording.${
-      recording.variations !== undefined && recording.variations?.length > 0 ? " This will also delete all related variations." : ""
+      "variations" in recording && recording.variations?.length > 0 ? " This will also delete all related variations." : ""
     }\n\nDo you want to proceed?`,
     buttons: [
       {
@@ -57,7 +57,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
     ],
   };
   function makeMenuOptions(): any[] {
-    const isVariation = recording.variations === undefined;
+    const isVariation = !("variations" in recording);
     const defaultOptions: Options = [
       {
         label: "download audio",

@@ -2,7 +2,7 @@ import "./WaveSurferPlayer.scss";
 import classNames from "classnames";
 import { useRef, useState, useEffect, useCallback, RefObject } from "react";
 import WaveSurfer, { WaveSurferOptions } from "wavesurfer.js";
-import { GenericRecording } from "../../types/audio";
+import { Recording, RecordingVariation } from "../../types/audio";
 import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
 import formatTime from "../../utils/formatTime";
@@ -32,7 +32,7 @@ export const useWavesurfer = (containerRef: RefObject<HTMLDivElement | null>, op
 
 type WaveSurferPlayerProps = {
   className?: string;
-  rec: GenericRecording;
+  rec: Recording | RecordingVariation;
   showTitle?: boolean;
   showDate?: boolean;
   onPlay?: (currentTime: number) => void;

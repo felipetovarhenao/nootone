@@ -1,12 +1,12 @@
-import { GenericRecording } from "../types/audio";
+import { Recording, RecordingVariation } from "../types/audio";
 
 type RecordingLocation = {
   parentIndex?: number;
   childIndex?: number;
 };
 
-export default function getRecordingLocation(recordings: GenericRecording[], recording: GenericRecording): RecordingLocation {
-  const isVariation = recording.variations === undefined;
+export default function getRecordingLocation(recordings: Recording[], recording: Recording | RecordingVariation): RecordingLocation {
+  const isVariation = !("variations" in recording);
   for (let i = 0; i < recordings.length; i++) {
     if (isVariation) {
       for (let j = 0; j < recordings.length; j++) {

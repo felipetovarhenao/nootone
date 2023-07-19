@@ -2,7 +2,7 @@ import "./RecordingLayout.scss";
 import Icon from "../../components/Icon/Icon";
 import Dropdown from "../../components/Dropdown/Dropdown";
 import icons from "../../utils/icons";
-import { GenericRecording, Recording } from "../../types/audio";
+import { Recording, RecordingVariation } from "../../types/audio";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import AudioPlayerOptions from "../AudioPlayerOptions/AudioPlayerOptions";
@@ -39,7 +39,7 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
           legendClosed={`show variations (${rec.variations?.length})`}
           legendOpen={`hide variations (${rec.variations?.length})`}
         >
-          {rec.variations?.map((variation: GenericRecording) => (
+          {rec.variations?.map((variation: RecordingVariation) => (
             <div key={variation.name} className="RecordingLayout__player-container">
               <WaveSurferPlayer showDate={true} rec={variation} className="RecordingLayout__variations__variation" />
               <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />

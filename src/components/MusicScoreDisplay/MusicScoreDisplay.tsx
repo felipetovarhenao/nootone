@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { SymbolicMusicSequence } from "../../types/music";
 import useMusicScore from "../../hooks/useMusicScore";
 import WaveSurferPlayer from "../WaveSurferPlayer/WaveSurferPlayer";
-import { GenericRecording } from "../../types/audio";
+import { RecordingVariation } from "../../types/audio";
 
 type MusicScoreDisplayProps = {
   musicSequence: SymbolicMusicSequence;
-  recording: GenericRecording;
+  recording: RecordingVariation;
 };
 
 const defaultStaffWidth = 600;

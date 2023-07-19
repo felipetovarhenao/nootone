@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import harmonize, { HarmonizerReturnType } from "./harmonizerThunk";
 import retrieveCache from "./retrieveCacheThunk";
 import write from "./writeThunk";
-import { GenericRecording, Recording, RecordingVariation } from "../../types/audio";
+import { Recording, RecordingVariation } from "../../types/audio";
 import getRecordingLocation from "../../utils/getRecordingLocation";
 
 type InitialState = {
@@ -34,7 +34,7 @@ const recordings = createSlice({
         ...action.payload,
       });
     },
-    setRecordingTitle: (state, action: PayloadAction<{ recording: GenericRecording; title: string }>) => {
+    setRecordingTitle: (state, action: PayloadAction<{ recording: Recording | RecordingVariation; title: string }>) => {
       const { recording, title } = action.payload;
       const { parentIndex, childIndex } = getRecordingLocation(state.recordings, recording);
       if (parentIndex === undefined) {
@@ -64,7 +64,7 @@ const recordings = createSlice({
         state.variationBuffer = null;
       }
     },
-    delete: (state, action: PayloadAction<GenericRecording>) => {
+    delete: (state, action: PayloadAction<Recording | RecordingVariation>) => {
       const { parentIndex, childIndex } = getRecordingLocation(state.recordings, action.payload);
       if (parentIndex === undefined) {
         throw Error("Recording not found");

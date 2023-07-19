@@ -19,10 +19,6 @@ export type RecordingMetadata = {
   variations: RecordingVariation[];
 };
 
-type RequiredExceptFor<T, TOptional extends keyof T> = Partial<T> & Omit<T, TOptional>;
-
-export type GenericRecording = RequiredExceptFor<Recording, "variations">;
-
 export type Recording = RecordingMetadata & {
   url: string;
 };
