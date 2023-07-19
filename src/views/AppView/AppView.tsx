@@ -30,18 +30,10 @@ const AppView = () => {
 
   const dispatch = useAppDispatch();
   const notification = useNotification();
-  const cacheCheck = useRef(false);
   const { darkTheme } = useDarkTheme();
 
   const testsLoaded = useRef(false);
   const browserNotificationFlagRef = useRef(false);
-
-  useEffect(() => {
-    if (!cacheCheck.current) {
-      cacheCheck.current = true;
-      dispatch(recordingActions.retrieveCache());
-    }
-  }, []);
 
   useEffect(() => {
     if (!testsLoaded.current && CONFIG.deploymentType === DeploymentType.DEV) {
