@@ -193,7 +193,7 @@
 
 @mixin btn($bg-col: var(--primary-3), $bg-col-hl: var(--primary-4), $fg-col: var(--txt-light)) {
   @include clickable;
-  @include round-border;
+  @include round;
   @include vh-pad(sizes.$gap-ms, sizes.$gap-xl);
   width: -webkit-fit-content;
   width: -moz-fit-content;
