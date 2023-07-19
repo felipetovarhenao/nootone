@@ -82,14 +82,14 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
       },
     ];
     const variationOptions = [];
-    if (recording.features?.symbolicRepresentation && recording.features?.tempo) {
+    if (recording.features?.symbolicTranscription && recording.features?.tempo) {
       variationOptions.push({
         label: "export MIDI",
         icon: icons.midi,
         value: "div",
         props: {
           onClick: () => {
-            const midi = createMidiFile(recording.features.symbolicRepresentation!, recording.features.tempo!);
+            const midi = createMidiFile(recording.features.symbolicTranscription!, recording.features.tempo!);
             downloadMIDI(midi, recording.name);
           },
         },
@@ -100,7 +100,7 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
         value: "div",
         props: {
           onClick: () => {
-            updateMusicScore({ musicSequence: recording.features.symbolicRepresentation!, recordingURL: recording.url });
+            updateMusicScore({ musicSequence: recording.features.symbolicTranscription!, recordingURL: recording.url });
           },
         },
       });

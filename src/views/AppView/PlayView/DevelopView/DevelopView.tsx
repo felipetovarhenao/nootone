@@ -121,8 +121,8 @@ const DevelopView = () => {
                     {variationBuffer && (
                       <>
                         <h1 className="DevelopView__preview__label">preview</h1>
-                        {variationBuffer.features.symbolicRepresentation && (
-                          <MusicScoreDisplay musicSequence={variationBuffer.features.symbolicRepresentation} recording={variationBuffer} />
+                        {variationBuffer.features.symbolicTranscription && (
+                          <MusicScoreDisplay musicSequence={variationBuffer.features.symbolicTranscription} recording={variationBuffer} />
                         )}
                       </>
                     )}

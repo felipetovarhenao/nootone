@@ -184,7 +184,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
 
     const recDuration = await getAudioDuration(renderedBlob);
 
-    const symbolicRepresentation: SymbolicMusicSequence = {
+    const symbolicTranscription: SymbolicMusicSequence = {
       title: variationName,
       tempo: recording.features.tempo,
       timeSignature: settings.timeSignature,
@@ -205,7 +205,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         tags: [...recording.tags, settings.style],
         features: {
           ...features,
-          symbolicRepresentation: symbolicRepresentation,
+          symbolicTranscription: symbolicTranscription,
         },
       },
     };

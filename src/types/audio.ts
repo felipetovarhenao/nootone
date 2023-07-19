@@ -7,7 +7,7 @@ export type AudioFeatures = {
     hopSize: number;
     data: Float32Array;
   };
-  symbolicRepresentation?: SymbolicMusicSequence;
+  symbolicTranscription?: SymbolicMusicSequence;
 };
 
 export type RecordingMetadata = {
