@@ -7,6 +7,8 @@
       @include v-stack-c;
       &.--selected {
         .line {
+          align-self: center;
+          width: 100%;
           background-color: var(--primary-4);
           border-bottom-left-radius: 5px;
           border-bottom-right-radius: 5px;

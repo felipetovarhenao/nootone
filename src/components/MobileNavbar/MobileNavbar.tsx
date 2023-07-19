@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../Icon/Icon";
 import cn from "classnames";
@@ -17,6 +17,22 @@ interface MobileNavbarProps {
 const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected }) => {
   const navigate = useNavigate();
   const isRecording = useAppSelector((state) => state.mic.isRecording);
+  const [width, setWidth] = useState(selected ? 100 : 0);
+
+  const handleStartTimer = () => {
+    setWidth(10);
+    const id = setInterval(() => {
+      setWidth((prev) => {
+        if (prev < 100) {
+          return prev * 1.1;
+        }
+        clearInterval(id);
+        return prev;
+      });
+    }, 15);
+
+    return id;
+  };
 
   return (
     <nav className={cn(className, "MobileNavbar")}>
@@ -28,10 +44,11 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
             onClick={() => {
               if (!isRecording) {
                 navigate(link.path);
+                handleStartTimer();
               }
             }}
           >
-            <div className="line" />
+            <div style={selected === index ? { width: `${width}%` } : undefined} className="line" />
             <Icon className="icon" icon={link.icon} />
           </li>
         ))}
