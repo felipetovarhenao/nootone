@@ -5,7 +5,7 @@ import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 import getAudioDuration from "../../utils/getAudioDuration";
 import { ChordEvent, InstrumentName, NoteEvent, SymbolicMusicSequence } from "../../types/music";
-import { Recording, TrackSequence, TrackType } from "../../types/audio";
+import { AudioFeatures, Recording, TrackSequence, TrackType } from "../../types/audio";
 import extractAudioFeatures from "../../utils/extractAudioFeatures";
 import Arpeggiator from "../../utils/Arpeggiator";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
@@ -33,8 +33,8 @@ type HarmonizerPayload = {
 };
 
 export type HarmonizerReturnType = {
+  features: Pick<AudioFeatures, "noteEvents" | "rms">;
   variation: Omit<Recording, "variations">;
-  noteEvents: NoteEvent[];
 };
 
 /**
@@ -54,9 +54,10 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     let detectedNotes = recording.features.noteEvents;
     let rms = recording.features.rms;
     if (!detectedNotes || !rms) {
+      console.log("computing features");
       const { noteEvents, rms: rmsArray, hopSize } = extractAudioFeatures(array, sampleRate);
       detectedNotes = noteEvents.map((n) => ({ ...n, velocity: 1 }));
-      rms = { hopSize: hopSize, data: rmsArray };
+      rms = { hopSize: hopSize, data: Array.from(rmsArray) };
     }
 
     // let didDetectionFailed = false;
@@ -196,7 +197,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     };
 
     return {
-      noteEvents: features.noteEvents,
+      features: { noteEvents: detectedNotes, rms },
       variation: {
         name: variationName,
         duration: recDuration,
@@ -205,7 +206,7 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
         tags: [...recording.tags, settings.style],
         features: {
           ...features,
-          symbolicTranscription: symbolicTranscription,
+          symbolicTranscription,
         },
       },
     };

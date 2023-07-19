@@ -5,7 +5,7 @@ export type AudioFeatures = {
   noteEvents?: NoteEvent[];
   rms?: {
     hopSize: number;
-    data: Float32Array;
+    data: number[];
   };
   symbolicTranscription?: SymbolicMusicSequence;
 };

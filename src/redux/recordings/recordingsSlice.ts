@@ -133,7 +133,10 @@ const recordings = createSlice({
             v++;
           }
           action.payload.variation.name = `${currentTitle} v${v}`;
-          state.recordings[state.selectedRecordingIndex].features.noteEvents = action.payload.noteEvents;
+          state.recordings[state.selectedRecordingIndex].features = {
+            ...state.recordings[state.selectedRecordingIndex].features,
+            ...action.payload.features,
+          };
           state.variationBuffer = action.payload.variation;
         }
       }

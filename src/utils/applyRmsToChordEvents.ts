@@ -1,6 +1,6 @@
 import { ChordEvent } from "../types/music";
 
-export default function applyRmsToChordEvents(chordEvents: ChordEvent[], rmsArray: Float32Array, hopSize: number, sampleRate: number) {
+export default function applyRmsToChordEvents(chordEvents: ChordEvent[], rmsArray: number[], hopSize: number, sampleRate: number) {
   const frameFactor = sampleRate / hopSize;
   for (let i = 0; i < chordEvents.length; i++) {
     const chord = chordEvents[i];
