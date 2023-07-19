@@ -39,7 +39,7 @@ export default function audioBufferToBlob(
     let avg = 0;
     let removePadding = true;
     let cropSize = 0;
-    const maxCropping = Math.min(sampleRate * 0.15, left.length);
+    const maxCropping = Math.min(sampleRate * 0.25, left.length);
     for (let i = 0; i < maxCropping; i++) {
       if (removePadding) {
         cropSize = i;
