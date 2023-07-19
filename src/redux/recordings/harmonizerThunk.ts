@@ -54,7 +54,6 @@ const harmonize = createAsyncThunk("recordings/harmonize", async (payload: Harmo
     let detectedNotes = recording.features.noteEvents;
     let rms = recording.features.rms;
     if (!detectedNotes || !rms) {
-      console.log("computing features");
       const { noteEvents, rms: rmsArray, hopSize } = extractAudioFeatures(array, sampleRate);
       detectedNotes = noteEvents.map((n) => ({ ...n, velocity: 1 }));
       rms = { hopSize: hopSize, data: Array.from(rmsArray) };
