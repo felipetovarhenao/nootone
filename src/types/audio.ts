@@ -1,19 +1,19 @@
 import { InstrumentalPart, NoteEvent, SymbolicMusicSequence } from "./music";
 
 export type AudioFeatures = {
-  tempo: number;
+  readonly tempo: number;
   noteEvents?: NoteEvent[];
-  rms?: {
-    hopSize: number;
-    data: number[];
+  readonly rms?: {
+    readonly hopSize: number;
+    readonly data: number[];
   };
   symbolicTranscription?: SymbolicMusicSequence;
 };
 
 export type RecordingMetadata = {
+  readonly date: string;
+  readonly duration: number;
   name: string;
-  date: string;
-  duration: number;
   tags: string[];
   features: AudioFeatures;
   variations: RecordingVariation[];

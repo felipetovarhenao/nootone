@@ -46,7 +46,7 @@ const AppView = () => {
   useEffect(() => {
     if (!testsLoaded.current && CONFIG.deploymentType === DeploymentType.DEV) {
       testsLoaded.current = true;
-      loadTestRecordings((rec) => dispatch(recordingActions.addNew(rec)));
+      loadTestRecordings((rec) => dispatch(recordingActions.create(rec)));
     }
   }, []);
 

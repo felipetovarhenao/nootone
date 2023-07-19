@@ -1,11 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import harmonize, { HarmonizerReturnType } from "./harmonizerThunk";
-import retrieveCache from "./retrieveCacheThunk";
-import write from "./writeThunk";
+import harmonize from "./extras/harmonize/thunk";
 import { Recording, RecordingVariation } from "../../types/audio";
 import getRecordingLocation from "../../utils/getRecordingLocation";
+import harmonizeReducers from "./extras/harmonize/reducers";
 
-type InitialState = {
+export type InitialState = {
   isProcessing: boolean;
   selectedRecordingIndex: number | null;
   recordings: Recording[];
@@ -25,7 +24,7 @@ const recordings = createSlice({
   name: "recordings",
   initialState: initialState,
   reducers: {
-    addNew: (state, action: PayloadAction<Omit<Recording, "tags" | "date" | "variations">>) => {
+    create: (state, action: PayloadAction<Omit<Recording, "tags" | "date" | "variations">>) => {
       action.payload.url;
       state.recordings.unshift({
         tags: [],
@@ -34,7 +33,7 @@ const recordings = createSlice({
         ...action.payload,
       });
     },
-    setRecordingTitle: (state, action: PayloadAction<{ recording: Recording | RecordingVariation; title: string }>) => {
+    updateTitle: (state, action: PayloadAction<{ recording: Recording | RecordingVariation; title: Recording["name"] }>) => {
       const { recording, title } = action.payload;
       const { parentIndex, childIndex } = getRecordingLocation(state.recordings, recording);
       if (parentIndex === undefined) {
@@ -44,14 +43,6 @@ const recordings = createSlice({
         state.recordings[parentIndex].name = title;
       } else {
         state.recordings[parentIndex].variations[childIndex].name = title;
-      }
-    },
-    discard: (state, action: PayloadAction<Recording>) => {
-      for (let i = 0; i < state.recordings.length; i++) {
-        if (state.recordings[i].url === action.payload.url) {
-          state.recordings.splice(i, 1);
-          break;
-        }
       }
     },
     selectRecording: (state, action: PayloadAction<number>) => {
@@ -81,77 +72,15 @@ const recordings = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(write.fulfilled, (state, action: PayloadAction<Recording | string>) => {
-      const rec = action.payload as Recording;
-      for (let i = 0; i < state.recordings.length; i++) {
-        if (state.recordings[i].url === rec.url) {
-          state.recordings.splice(i, 1);
-          state.recordings.push({ ...rec });
-          break;
-        }
-      }
-    });
-    builder.addCase(write.rejected, (_, action) => {
-      console.log("Error writing file", action.payload);
-    });
-    builder.addCase(retrieveCache.fulfilled, (state, action: PayloadAction<Recording[]>) => {
-      for (let i = 0; i < action.payload.length; i++) {
-        const rec = action.payload[i];
-        let exists = false;
-        for (let j = 0; j < state.recordings.length; j++) {
-          if (state.recordings[j].url === rec.url) {
-            exists = true;
-            break;
-          }
-        }
-        if (!exists) {
-          state.recordings.push({ ...rec });
-        }
-      }
-    });
-    builder.addCase(retrieveCache.rejected, () => {
-      console.log("no entries to load");
-    });
-
     /* HARMONIZER */
-    builder.addCase(harmonize.pending, (state) => {
-      state.isProcessing = true;
-      state.variationBuffer = null;
-    });
-    builder.addCase(harmonize.fulfilled, (state, action: PayloadAction<HarmonizerReturnType | void>) => {
-      state.isProcessing = false;
-      if (action.payload) {
-        if (state.selectedRecordingIndex !== null) {
-          const existingTitles = state.recordings[state.selectedRecordingIndex].variations.map((x) => x.name);
-          let currentTitle = action.payload.variation.name;
-          let v = 1;
-
-          while (true) {
-            if (!existingTitles.includes(`${currentTitle} v${v}`)) {
-              break;
-            }
-            v++;
-          }
-          action.payload.variation.name = `${currentTitle} v${v}`;
-          state.recordings[state.selectedRecordingIndex].features = {
-            ...state.recordings[state.selectedRecordingIndex].features,
-            ...action.payload.features,
-          };
-          state.variationBuffer = action.payload.variation;
-        }
-      }
-    });
-    builder.addCase(harmonize.rejected, (state) => {
-      state.isProcessing = false;
-      state.variationBuffer = null;
-    });
+    builder.addCase(harmonize.pending, harmonizeReducers.pending);
+    builder.addCase(harmonize.fulfilled, harmonizeReducers.fulfilled);
+    builder.addCase(harmonize.rejected, harmonizeReducers.rejected);
   },
 });
 
 export default recordings.reducer;
 export const recordingActions = {
   harmonize: harmonize,
-  write: write,
-  retrieveCache: retrieveCache,
   ...recordings.actions,
 };

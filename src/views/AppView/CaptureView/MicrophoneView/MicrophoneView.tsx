@@ -92,7 +92,7 @@ const MicrophoneView = () => {
               tempo: tempo,
             },
           };
-          dispatch(recordingActions.addNew(rec));
+          dispatch(recordingActions.create(rec));
           navigate("/app/ideas/recordings/0/develop");
         } catch (error) {
           console.log(error);

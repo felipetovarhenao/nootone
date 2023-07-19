@@ -1,8 +1,8 @@
-import { ChordEvent, NoteEvent } from "../../types/music";
-import Arpeggiator from "../../utils/Arpeggiator";
-import applyVoiceLeading from "../../utils/applyVoiceLeading";
-import fillPitchRange from "../../utils/fillPitchRange";
-import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
+import { ChordEvent, NoteEvent } from "../../../../types/music";
+import Arpeggiator from "../../../../utils/Arpeggiator";
+import applyVoiceLeading from "../../../../utils/applyVoiceLeading";
+import fillPitchRange from "../../../../utils/fillPitchRange";
+import noteEventsToChordEvents from "../../../../utils/noteEventsToChordEvents";
 
 export default function generateBassLine(
   chords: ChordEvent[],

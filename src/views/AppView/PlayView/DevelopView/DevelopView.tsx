@@ -15,7 +15,7 @@ import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVari
 import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
 import EditableField from "../../../../components/EditableField/EditableField";
-import { NoteHarmonizerSettings } from "../../../../redux/recordings/harmonizerThunk";
+import { NoteHarmonizerSettings } from "../../../../redux/recordings/extras/harmonize/thunk";
 
 type UpdateSettingsCallbackPayload = NoteHarmonizerSettings;
 type UpdateSettingsCallback = (settings: UpdateSettingsCallbackPayload) => void;
@@ -43,7 +43,7 @@ const DevelopView = () => {
     if (selectedRecordingIndex === null) {
       return;
     }
-    dispatch(recordingActions.setRecordingTitle({ recording: recordings[selectedRecordingIndex], title }));
+    dispatch(recordingActions.updateTitle({ recording: recordings[selectedRecordingIndex], title }));
   };
 
   const handleKeepVariation = () => {
