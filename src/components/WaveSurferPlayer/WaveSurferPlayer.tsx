@@ -37,13 +37,26 @@ type WaveSurferPlayerProps = {
   rec: Recording | RecordingVariation;
   showTitle?: boolean;
   showDate?: boolean;
+  showTags?: boolean;
+  showOptions?: boolean;
   onPlay?: (currentTime: number) => void;
   onPause?: () => void;
   onSeeking?: (currentTime: number) => void;
   onFinish?: () => void;
 };
 
-const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish, showTitle = true, showDate = false }: WaveSurferPlayerProps) => {
+const WaveSurferPlayer = ({
+  className,
+  rec,
+  onPlay,
+  onPause,
+  onSeeking,
+  onFinish,
+  showTitle = true,
+  showDate = false,
+  showTags = true,
+  showOptions = true,
+}: WaveSurferPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -123,7 +136,7 @@ const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish
       <div className="WaveSurferPlayer__header">
         <span className="WaveSurferPlayer__header__date">{showDate && rec.date}</span>
         <span className="WaveSurferPlayer__header__title">{showTitle && rec.name}</span>
-        <Tags rec={rec} />
+        {showTags && <Tags rec={rec} />}
       </div>
       <div className="WaveSurferPlayer__container">
         <div className="WaveSurferPlayer__playback">
@@ -134,7 +147,7 @@ const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish
           <div className="WaveSurferPlayer__display__waveform" ref={containerRef} style={{ width: "100%" }} />
           <div className="WaveSurferPlayer__display__duration">{formatTime(rec.duration)}</div>
         </div>
-        <AudioPlayerOptions recording={rec} />
+        {showOptions && <AudioPlayerOptions recording={rec} />}
       </div>
     </div>
   );

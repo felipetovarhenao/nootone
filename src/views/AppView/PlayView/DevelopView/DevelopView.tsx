@@ -102,7 +102,7 @@ const DevelopView = () => {
               />
             </div>
           </div>
-          <WaveSurferPlayer showTitle={false} className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
+          <WaveSurferPlayer showOptions={false} showTitle={false} className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
           <NewVariationsLayout />
           <div className="DevelopView__algorithms">
             <Accordion className="DevelopView__algorithms__options">
