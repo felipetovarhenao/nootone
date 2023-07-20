@@ -5,7 +5,6 @@ import icons from "../../utils/icons";
 import { Recording, RecordingVariation } from "../../types/audio";
 import Button from "../../components/Button/Button";
 import { useNavigate } from "react-router-dom";
-import AudioPlayerOptions from "../AudioPlayerOptions/AudioPlayerOptions";
 import WaveSurferPlayer from "../../components/WaveSurferPlayer/WaveSurferPlayer";
 import cn from "classnames";
 
@@ -23,7 +22,6 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
       <div className="RecordingLayout__main-container">
         <div className="RecordingLayout__player-container">
           <WaveSurferPlayer showDate={true} rec={rec} className="RecordingLayout__player" />
-          <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={rec} />
         </div>
       </div>
       <div className="RecordingLayout__buttons">
@@ -41,8 +39,9 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
         >
           {rec.variations?.map((variation: RecordingVariation) => (
             <div key={variation.name} className="RecordingLayout__player-container">
-              <WaveSurferPlayer showDate={true} rec={variation} className="RecordingLayout__variations__variation" />
-              <AudioPlayerOptions className="RecordingLayout__player-container__menu" recording={variation} />
+              <div className="RecordingLayout__player-container__player">
+                <WaveSurferPlayer showDate={true} rec={variation} className="RecordingLayout__variations__variation" />
+              </div>
             </div>
           ))}
         </Dropdown>

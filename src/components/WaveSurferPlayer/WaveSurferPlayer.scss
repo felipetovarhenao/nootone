@@ -1,10 +1,14 @@
 @use "../../styles/main.scss" as *;
 
 .WaveSurferPlayer {
+  @include v-stack-c;
+  width: 100%;
+  gap: $gap-md;
   .WaveSurferPlayer__header {
     @include v-stack;
     @include l-pad($gap-md);
     width: 100%;
+    gap: $gap-xs;
     .WaveSurferPlayer__header__date {
       @include crop-text;
       @include stack;

@@ -8,6 +8,9 @@
   gap: $gap-md;
   box-shadow: $gap-ms $gap-ms $gap-ms #00000022;
   background-color: var(--bg-3);
+  .RecordingLayout__tags {
+    @include l-pad;
+  }
   .RecordingLayout__main-container {
     @include v-stack;
     gap: $gap-lg;
@@ -53,10 +56,16 @@
   }
   .RecordingLayout__variations {
     .RecordingLayout__player-container {
-      @include h-stack-c;
-      .RecordingLayout__variations__variation {
-        @include v-mar;
-        scale: 0.93;
+      @include v-stack;
+      .RecordingLayout__player-container__player {
+        @include h-stack-c;
+        .RecordingLayout__variations__variation {
+          @include v-mar;
+          scale: 0.93;
+        }
+      }
+      .RecordingLayout__player-container__tags {
+        @include l-pad($gap-lg);
       }
     }
   }

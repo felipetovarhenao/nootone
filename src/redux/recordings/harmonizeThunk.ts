@@ -86,7 +86,12 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
         sampleRate: varSampleRate,
         date: new Date().toLocaleString(),
         url: URL.createObjectURL(renderedBlob),
-        tags: [...recording.tags, ...symbolicTranscription.instrumentalParts.map((x) => camelToSpaces(`${x.name}`)), settings.style],
+        tags: [
+          settings.style,
+          `${settings.timeSignature.n}/${settings.timeSignature.d}`,
+          ...symbolicTranscription.instrumentalParts.map((x) => camelToSpaces(`${x.name}`)),
+          ...recording.tags,
+        ],
         features: {
           ...recording.features,
           noteEvents: noteEvents.map((n) => ({ ...n, velocity: 0.707 })),

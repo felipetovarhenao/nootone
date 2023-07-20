@@ -3,6 +3,8 @@ import harmonizeThunk from "./harmonizeThunk";
 import harmonizeReducers from "./harmonizeReducers";
 import { Recording, RecordingVariation } from "../../types/audio";
 import getRecordingLocation from "../../utils/getRecordingLocation";
+import getTempoTags from "../../utils/getTempoTags";
+import getDurationTags from "../../utils/getDurationTags";
 
 export type InitialState = {
   isProcessing: boolean;
@@ -27,7 +29,7 @@ const recordings = createSlice({
     create: (state, action: PayloadAction<Omit<Recording, "tags" | "date" | "variations">>) => {
       action.payload.url;
       state.recordings.unshift({
-        tags: [],
+        tags: [...getTempoTags(action.payload.features.tempo), ...getDurationTags(action.payload.duration)],
         variations: [],
         date: new Date().toLocaleString(),
         ...action.payload,

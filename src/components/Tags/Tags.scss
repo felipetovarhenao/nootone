@@ -1,0 +1,16 @@
+@use "../../styles/main.scss" as *;
+
+.Tags {
+  @include t-pad;
+  @include h-stack-c;
+  flex-wrap: wrap;
+  gap: $gap-md;
+  .Tags__tag {
+    @include no-select;
+    @include vh-pad($gap-xs, $gap-md);
+    @include round;
+    background-color: var(--disabled-4);
+    color: var(--txt-light);
+    font-size: $txt-sm;
+  }
+}

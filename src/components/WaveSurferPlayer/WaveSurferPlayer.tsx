@@ -6,6 +6,8 @@ import { Recording, RecordingVariation } from "../../types/audio";
 import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
 import formatTime from "../../utils/formatTime";
+import AudioPlayerOptions from "../../layouts/AudioPlayerOptions/AudioPlayerOptions";
+import Tags from "../Tags/Tags";
 
 export const useWavesurfer = (containerRef: RefObject<HTMLDivElement | null>, options: Omit<WaveSurferOptions, "container">): WaveSurfer | null => {
   const [wavesurfer, setWavesurfer] = useState<WaveSurfer | null>(null);
@@ -117,10 +119,11 @@ const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish
   }, [wavesurfer]);
 
   return (
-    <div className={classNames(className, "WaveSurferPlayer")} style={{ display: "flex", flexDirection: "column", width: "100%", gap: "10px" }}>
+    <div className={classNames(className, "WaveSurferPlayer")}>
       <div className="WaveSurferPlayer__header">
         <span className="WaveSurferPlayer__header__date">{showDate && rec.date}</span>
         <span className="WaveSurferPlayer__header__title">{showTitle && rec.name}</span>
+        <Tags rec={rec} />
       </div>
       <div className="WaveSurferPlayer__container">
         <div className="WaveSurferPlayer__playback">
@@ -131,6 +134,7 @@ const WaveSurferPlayer = ({ className, rec, onPlay, onPause, onSeeking, onFinish
           <div className="WaveSurferPlayer__display__waveform" ref={containerRef} style={{ width: "100%" }} />
           <div className="WaveSurferPlayer__display__duration">{formatTime(rec.duration)}</div>
         </div>
+        <AudioPlayerOptions recording={rec} />
       </div>
     </div>
   );
