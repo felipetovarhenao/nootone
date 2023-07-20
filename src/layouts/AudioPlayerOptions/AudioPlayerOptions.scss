@@ -1,6 +1,10 @@
 @use "../../styles/main.scss" as *;
 
 .AudioPlayerOptions {
+  @include stack;
+  @include to-bottom;
+  @include b-mar($gap-lg);
+  height: 100%;
   .handle {
     @include l-pad($gap-ml);
     box-sizing: content-box;

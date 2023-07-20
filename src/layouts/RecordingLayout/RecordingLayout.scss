@@ -55,17 +55,18 @@
     }
   }
   .RecordingLayout__variations {
-    .RecordingLayout__player-container {
-      @include v-stack;
-      .RecordingLayout__player-container__player {
-        @include h-stack-c;
-        .RecordingLayout__variations__variation {
-          @include v-mar;
-          scale: 0.93;
+    .content {
+      @include v-stack-c;
+      scale: 0.98;
+      gap: $txt-ml;
+      .RecordingLayout__player-container {
+        @include v-stack;
+        .RecordingLayout__player-container__player {
+          @include h-stack-c;
         }
-      }
-      .RecordingLayout__player-container__tags {
-        @include l-pad($gap-lg);
+        .RecordingLayout__player-container__tags {
+          @include l-pad($gap-lg);
+        }
       }
     }
   }

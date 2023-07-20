@@ -6,7 +6,6 @@ import { Recording, RecordingVariation } from "../../types/audio";
 import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
 import formatTime from "../../utils/formatTime";
-import AudioPlayerOptions from "../../layouts/AudioPlayerOptions/AudioPlayerOptions";
 import Tags from "../Tags/Tags";
 
 export const useWavesurfer = (containerRef: RefObject<HTMLDivElement | null>, options: Omit<WaveSurferOptions, "container">): WaveSurfer | null => {
@@ -38,7 +37,6 @@ type WaveSurferPlayerProps = {
   showTitle?: boolean;
   showDate?: boolean;
   showTags?: boolean;
-  showOptions?: boolean;
   onPlay?: (currentTime: number) => void;
   onPause?: () => void;
   onSeeking?: (currentTime: number) => void;
@@ -55,7 +53,6 @@ const WaveSurferPlayer = ({
   showTitle = true,
   showDate = false,
   showTags = true,
-  showOptions = true,
 }: WaveSurferPlayerProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -147,7 +144,6 @@ const WaveSurferPlayer = ({
           <div className="WaveSurferPlayer__display__waveform" ref={containerRef} style={{ width: "100%" }} />
           <div className="WaveSurferPlayer__display__duration">{formatTime(rec.duration)}</div>
         </div>
-        {showOptions && <AudioPlayerOptions recording={rec} />}
       </div>
     </div>
   );

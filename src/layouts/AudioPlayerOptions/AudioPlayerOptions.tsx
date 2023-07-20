@@ -25,7 +25,7 @@ type Options = {
   props: any;
 }[];
 
-const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
+const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) => {
   const dispatch = useDispatch();
   const dialog = useDialog();
   const notification = useNotification();
@@ -127,17 +127,19 @@ const AudioPlayerOptions = ({ recording }: AudioPlayerOptionsProps) => {
   }
 
   return (
-    <HamburgerDropdown className={cn("AudioPlayerOptions")}>
-      {makeMenuOptions().map((opt) => {
-        const { className: cname, ...rest } = opt.props;
-        return (
-          <div className={cn(cname, "AudioPlayerOptions__option")} key={opt.label} {...rest}>
-            <Icon className="AudioPlayerOptions__option__icon" icon={opt.icon} />
-            {opt.label}
-          </div>
-        );
-      })}
-    </HamburgerDropdown>
+    <div className={cn(className, "AudioPlayerOptions")}>
+      <HamburgerDropdown>
+        {makeMenuOptions().map((opt) => {
+          const { className: cname, ...rest } = opt.props;
+          return (
+            <div className={cn(cname, "AudioPlayerOptions__option")} key={opt.label} {...rest}>
+              <Icon className="AudioPlayerOptions__option__icon" icon={opt.icon} />
+              {opt.label}
+            </div>
+          );
+        })}
+      </HamburgerDropdown>
+    </div>
   );
 };
 
