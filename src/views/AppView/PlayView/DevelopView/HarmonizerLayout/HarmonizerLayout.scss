@@ -1,10 +1,10 @@
 @use "../../../../../styles/main.scss" as *;
 
-.HarmonizerSettings {
+.HarmonizerLayout {
   @include col-grid(min-content auto);
   gap: $gap-xl;
   width: 100%;
-  .HarmonizerSettings__label {
+  .HarmonizerLayout__label {
     @include stack;
     width: 100%;
     align-self: center;
@@ -12,11 +12,11 @@
     white-space: nowrap;
     color: var(--txt);
   }
-  .HarmonizerSettings__swipe-menu {
+  .HarmonizerLayout__swipe-menu {
     @include stack;
     @include h-center;
     width: 100%;
-    .HarmonizerSettings__swipe-menu__option {
+    .HarmonizerLayout__swipe-menu__option {
       @include no-select;
       width: 100%;
       text-align: center;

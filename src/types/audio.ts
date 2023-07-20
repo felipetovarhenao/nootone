@@ -13,6 +13,7 @@ export type AudioFeatures = {
 export type RecordingMetadata = {
   readonly date: string;
   readonly duration: number;
+  readonly sampleRate: number;
   name: string;
   tags: string[];
   features: AudioFeatures;
@@ -44,7 +45,7 @@ export type AudioTrack = {
   type: TrackType.AUDIO;
   data: {
     url: string;
-    onset: number;
+    onset?: number;
     duration: number;
   };
   config?: TrackConfig;

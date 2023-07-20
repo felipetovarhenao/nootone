@@ -1,8 +1,8 @@
-import "./HarmonizerSettings.scss";
+import "./HarmonizerLayout.scss";
 import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
-import { NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizeThunk";
+import { HarmonizerSettings } from "../../../../../redux/recordings/harmonizeTypes";
 import { InstrumentName } from "../../../../../types/music";
 import CacheAPI from "../../../../../utils/CacheAPI";
 import wrapValue from "../../../../../utils/wrapValue";
@@ -144,13 +144,13 @@ const instrumentOptions = [
   },
 ];
 
-type HarmonizerSettingsProps = {
+type HarmonizerLayoutProps = {
   name: string;
-  setSettings: (prevSettings: NoteHarmonizerSettings) => void;
+  setSettings: (prevSettings: HarmonizerSettings) => void;
   setProcess: (prevProcess: string) => void;
 };
 
-const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSettingsProps) => {
+const HarmonizerLayout = ({ name, setSettings, setProcess }: HarmonizerLayoutProps) => {
   const [styleIndex, setStyleIndex] = useState(0);
   const [timeSigIndex, setTimeSigIndex] = useState(0);
   const [complexityIndex, setComplexityIndex] = useState(2);
@@ -248,43 +248,43 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   });
 
   return (
-    <div className="HarmonizerSettings">
-      <h1 className="HarmonizerSettings__label">instrument</h1>
-      <SwipeMenu defaultValue={instrumentIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleInstrumentSelection}>
+    <div className="HarmonizerLayout">
+      <h1 className="HarmonizerLayout__label">instrument</h1>
+      <SwipeMenu defaultValue={instrumentIndex} className="HarmonizerLayout__swipe-menu" onSwiped={handleInstrumentSelection}>
         {instrumentOptions.map((ts) => (
-          <span key={ts.label} className="HarmonizerSettings__swipe-menu__option">
+          <span key={ts.label} className="HarmonizerLayout__swipe-menu__option">
             {ts.label}
           </span>
         ))}
       </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">chords</h1>
-      <SwipeMenu defaultValue={styleIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleStyleChange}>
+      <h1 className="HarmonizerLayout__label">chords</h1>
+      <SwipeMenu defaultValue={styleIndex} className="HarmonizerLayout__swipe-menu" onSwiped={handleStyleChange}>
         {styles.map((style) => (
-          <span className="HarmonizerSettings__swipe-menu__option" key={style}>
+          <span className="HarmonizerLayout__swipe-menu__option" key={style}>
             {style}
           </span>
         ))}
       </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">bar</h1>
-      <SwipeMenu defaultValue={timeSigIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleTimeSigSelection}>
+      <h1 className="HarmonizerLayout__label">bar</h1>
+      <SwipeMenu defaultValue={timeSigIndex} className="HarmonizerLayout__swipe-menu" onSwiped={handleTimeSigSelection}>
         {timeSigs.map((ts) => (
-          <span key={ts.label} className="HarmonizerSettings__swipe-menu__option">
+          <span key={ts.label} className="HarmonizerLayout__swipe-menu__option">
             {ts.label}
           </span>
         ))}
       </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">rhythm</h1>
-      <SwipeMenu defaultValue={complexityIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleComplexityChange}>
+      <h1 className="HarmonizerLayout__label">rhythm</h1>
+      <SwipeMenu defaultValue={complexityIndex} className="HarmonizerLayout__swipe-menu" onSwiped={handleComplexityChange}>
         {complexity.map((ts) => (
-          <span key={ts.label} className="HarmonizerSettings__swipe-menu__option">
+          <span key={ts.label} className="HarmonizerLayout__swipe-menu__option">
             {ts.label}
           </span>
         ))}
       </SwipeMenu>
-      <h1 className="HarmonizerSettings__label">grooviness</h1>
-      <SwipeMenu defaultValue={groovinessIndex} className="HarmonizerSettings__swipe-menu" onSwiped={handleGroovinessChange}>
+      <h1 className="HarmonizerLayout__label">grooviness</h1>
+      <SwipeMenu defaultValue={groovinessIndex} className="HarmonizerLayout__swipe-menu" onSwiped={handleGroovinessChange}>
         {groovinessOptions.map((ts) => (
-          <span key={ts.label} className="HarmonizerSettings__swipe-menu__option">
+          <span key={ts.label} className="HarmonizerLayout__swipe-menu__option">
             {ts.label}
           </span>
         ))}
@@ -293,4 +293,4 @@ const HarmonizerSettings = ({ name, setSettings, setProcess }: HarmonizerSetting
   );
 };
 
-export default HarmonizerSettings;
+export default HarmonizerLayout;

@@ -10,7 +10,7 @@ import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
 import { micActions } from "../../../../redux/mic/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
-import getAudioDuration from "../../../../utils/getAudioDuration";
+import getAudioSpecs from "../../../../utils/getAudioSpecs";
 import createUniqueTitle from "../../../../utils/createUniqueTitle";
 import TextCarousel from "../../../../components/TextCarousel/TextCarousel";
 import Metronome from "../../../../components/Metronome/Metronome";
@@ -83,11 +83,12 @@ const MicrophoneView = () => {
         console.log("API call failed: ", error);
       } finally {
         try {
-          const duration = await getAudioDuration(recordingBlob);
+          const { duration, sampleRate } = await getAudioSpecs(recordingBlob);
           const rec = {
             url: URL.createObjectURL(recordingBlob),
             name: recTitle || getFormattedTimestamp(),
-            duration: duration,
+            sampleRate,
+            duration,
             features: {
               tempo: tempo,
             },

@@ -1,6 +1,6 @@
 import { Draft, PayloadAction } from "@reduxjs/toolkit";
 import { InitialState } from "./recordingsSlice";
-import { HarmonizerReturnType } from "./harmonizeThunk";
+import { HarmonizerReturnType } from "./harmonizeTypes";
 
 /* HARMONIZER */
 const pending = (state: Draft<InitialState>) => {

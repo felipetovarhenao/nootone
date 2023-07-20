@@ -121,7 +121,7 @@ export default class AudioRenderer {
       const track = tracks[i];
       switch (track.type) {
         case TrackType.AUDIO:
-          totalDuration = Math.max(track.data.duration + track.data.onset, totalDuration);
+          totalDuration = Math.max(track.data.duration + (track.data.onset || 0), totalDuration);
           break;
         case TrackType.SYMBOLIC:
           track.data.chordEvents.forEach((chord) =>

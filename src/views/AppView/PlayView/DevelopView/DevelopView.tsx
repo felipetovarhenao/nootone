@@ -9,15 +9,15 @@ import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
 import Accordion, { AccordionItem } from "../../../../components/Accordion/Accordion";
 import Button from "../../../../components/Button/Button";
-import HarmonizerSettings from "./HarmonizerSettings/HarmonizerSettings";
+import HarmonizerLayout from "./HarmonizerLayout/HarmonizerLayout";
 import getRecordingIndexFromPath from "../../../../utils/getRecordingIndexFromPath";
 import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVariationsLayout";
 import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
 import EditableField from "../../../../components/EditableField/EditableField";
-import { NoteHarmonizerSettings } from "../../../../redux/recordings/harmonizeThunk";
+import { HarmonizerSettings } from "../../../../redux/recordings/harmonizeTypes";
 
-type UpdateSettingsCallbackPayload = NoteHarmonizerSettings;
+type UpdateSettingsCallbackPayload = HarmonizerSettings;
 type UpdateSettingsCallback = (settings: UpdateSettingsCallbackPayload) => void;
 
 const DevelopView = () => {
@@ -58,7 +58,7 @@ const DevelopView = () => {
     {
       name: "add accompaniment",
       icon: "emojione-monotone:musical-notes",
-      component: <HarmonizerSettings name={"harmonizer"} setProcess={setProcess} setSettings={updateSettings} />,
+      component: <HarmonizerLayout name={"harmonizer"} setProcess={setProcess} setSettings={updateSettings} />,
     },
     // {
     //   name: "retune it",

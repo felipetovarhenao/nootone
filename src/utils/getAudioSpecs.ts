@@ -1,18 +1,7 @@
-// export default async function getAudioDuration(blob: Blob): Promise<number> {
-//   return new Promise<number>((resolve, reject) => {
-//     const audioElement = new Audio();
-//     audioElement.addEventListener("loadedmetadata", () => {
-//       resolve(audioElement.duration);
-//     });
-//     audioElement.addEventListener("error", (error) => {
-//       reject(error);
-//     });
-//     audioElement.src = URL.createObjectURL(blob);
-//   });
-// }
+type AudioSpecs = { duration: number; sampleRate: number };
 
-export default function getAudioDuration(blob: Blob): Promise<number> {
-  return new Promise<number>((resolve, reject) => {
+export default function getAudioSpecs(blob: Blob): Promise<AudioSpecs> {
+  return new Promise<AudioSpecs>((resolve, reject) => {
     const audioContext = new AudioContext();
 
     const fileReader = new FileReader();
@@ -23,8 +12,9 @@ export default function getAudioDuration(blob: Blob): Promise<number> {
         arrayBuffer,
         (audioBuffer: AudioBuffer) => {
           const duration = audioBuffer.duration;
+          const sampleRate = audioBuffer.sampleRate;
           audioContext.close();
-          resolve(duration);
+          resolve({ duration, sampleRate });
         },
         (error: DOMException) => {
           audioContext.close();
