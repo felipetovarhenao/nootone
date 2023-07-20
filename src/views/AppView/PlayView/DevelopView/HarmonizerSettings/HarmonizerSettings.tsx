@@ -2,7 +2,7 @@ import "./HarmonizerSettings.scss";
 import NoteHarmonizer from "../../../../../utils/NoteHarmonizer";
 import SwipeMenu from "../../../../../components/SwipeMenu/SwipeMenu";
 import { useEffect, useState } from "react";
-import { NoteHarmonizerSettings } from "../../../../../redux/recordings/extras/harmonize/thunk";
+import { NoteHarmonizerSettings } from "../../../../../redux/recordings/harmonizeThunk";
 import { InstrumentName } from "../../../../../types/music";
 import CacheAPI from "../../../../../utils/CacheAPI";
 import wrapValue from "../../../../../utils/wrapValue";

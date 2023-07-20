@@ -8,7 +8,7 @@ import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import getFormattedTimestamp from "../../../../utils/getFormattedTimestamp";
 import TempoTapper from "../../../../layouts/TempoTapper/TempoTapper";
-import { micActions } from "../../../../redux/micSlice";
+import { micActions } from "../../../../redux/mic/micSlice";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import getAudioDuration from "../../../../utils/getAudioDuration";
 import createUniqueTitle from "../../../../utils/createUniqueTitle";

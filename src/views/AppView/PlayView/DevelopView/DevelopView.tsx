@@ -15,7 +15,7 @@ import NewVariationsLayout from "../../../../layouts/NewVariationsLayout/NewVari
 import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurferPlayer";
 import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
 import EditableField from "../../../../components/EditableField/EditableField";
-import { NoteHarmonizerSettings } from "../../../../redux/recordings/extras/harmonize/thunk";
+import { NoteHarmonizerSettings } from "../../../../redux/recordings/harmonizeThunk";
 
 type UpdateSettingsCallbackPayload = NoteHarmonizerSettings;
 type UpdateSettingsCallback = (settings: UpdateSettingsCallbackPayload) => void;

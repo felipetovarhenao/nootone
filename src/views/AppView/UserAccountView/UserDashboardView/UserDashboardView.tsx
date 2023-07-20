@@ -3,7 +3,7 @@ import Avatar from "../../../../components/Avatar/Avatar";
 import Button from "../../../../components/Button/Button";
 import Hr from "../../../../components/Hr/Hr";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { userActions } from "../../../../redux/userSlice";
+import { userActions } from "../../../../redux/user/userSlice";
 import "./UserDashboardView.scss";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import Switch from "../../../../components/Switch/Switch";

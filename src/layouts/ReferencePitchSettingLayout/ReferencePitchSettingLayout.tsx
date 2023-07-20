@@ -1,6 +1,6 @@
 import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { micActions } from "../../redux/micSlice";
+import { micActions } from "../../redux/mic/micSlice";
 import wrapValue from "../../utils/wrapValue";
 import BigSettingLayout from "../BigSettingLayout/BigSettingLayout";
 

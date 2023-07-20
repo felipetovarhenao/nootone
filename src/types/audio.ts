@@ -25,11 +25,6 @@ export type Recording = RecordingMetadata & {
 
 export type RecordingVariation = Omit<Recording, "variations">;
 
-export type CachedRecording = {
-  blob: Blob;
-  metadata: RecordingMetadata;
-};
-
 export enum TrackType {
   SYMBOLIC,
   AUDIO,

@@ -1,8 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import harmonize from "./extras/harmonize/thunk";
+import harmonizeThunk from "./harmonizeThunk";
+import harmonizeReducers from "./harmonizeReducers";
 import { Recording, RecordingVariation } from "../../types/audio";
 import getRecordingLocation from "../../utils/getRecordingLocation";
-import harmonizeReducers from "./extras/harmonize/reducers";
 
 export type InitialState = {
   isProcessing: boolean;
@@ -73,14 +73,14 @@ const recordings = createSlice({
   },
   extraReducers: (builder) => {
     /* HARMONIZER */
-    builder.addCase(harmonize.pending, harmonizeReducers.pending);
-    builder.addCase(harmonize.fulfilled, harmonizeReducers.fulfilled);
-    builder.addCase(harmonize.rejected, harmonizeReducers.rejected);
+    builder.addCase(harmonizeThunk.pending, harmonizeReducers.pending);
+    builder.addCase(harmonizeThunk.fulfilled, harmonizeReducers.fulfilled);
+    builder.addCase(harmonizeThunk.rejected, harmonizeReducers.rejected);
   },
 });
 
 export default recordings.reducer;
 export const recordingActions = {
-  harmonize: harmonize,
   ...recordings.actions,
+  harmonize: harmonizeThunk,
 };

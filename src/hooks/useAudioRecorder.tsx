@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { MicSettings } from "../redux/micSlice";
+import { MicSettings } from "../redux/mic/micSlice";
 
 type AudioRecorderHookResult = {
   startRecording: () => Promise<void>;

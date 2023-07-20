@@ -2,7 +2,7 @@ import "./TempoTapper.scss";
 import useTempoTap, { metronomeTempi } from "../../hooks/useTempoTap";
 import cn from "classnames";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { micActions } from "../../redux/micSlice";
+import { micActions } from "../../redux/mic/micSlice";
 import { useEffect } from "react";
 import findNearestValue from "../../utils/findNearestValue";
 import wrapValue from "../../utils/wrapValue";

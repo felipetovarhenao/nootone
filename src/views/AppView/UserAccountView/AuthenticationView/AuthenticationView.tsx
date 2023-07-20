@@ -2,7 +2,7 @@ import "./AuthenticationView.scss";
 
 import { useState } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { userActions } from "../../../../redux/userSlice";
+import { userActions } from "../../../../redux/user/userSlice";
 import UserAuthForm from "../../../../components/UserAuthForm/UserAuthForm";
 import AppName from "../../../../components/AppName/AppName";
 import logo from "../../../../assets/logo.png";

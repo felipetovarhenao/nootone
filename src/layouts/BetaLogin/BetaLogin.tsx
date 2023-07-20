@@ -1,7 +1,7 @@
 import "./BetaLogin.scss";
 import UserAuthForm, { LoginForm } from "../../components/UserAuthForm/UserAuthForm";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { userActions } from "../../redux/userSlice";
+import { userActions } from "../../redux/user/userSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import AppName from "../../components/AppName/AppName";

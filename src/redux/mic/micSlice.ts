@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import CacheAPI from "../utils/CacheAPI";
+import CacheAPI from "../../utils/CacheAPI";
 
 export type MicSettings = {
   noiseSuppression?: boolean;

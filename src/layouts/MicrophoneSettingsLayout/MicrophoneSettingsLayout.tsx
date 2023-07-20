@@ -1,7 +1,7 @@
 import BigSettingLayout from "../BigSettingLayout/BigSettingLayout";
 import "./MicrophoneSettingsLayout.scss";
 import cn from "classnames";
-import { micActions } from "../../redux/micSlice";
+import { micActions } from "../../redux/mic/micSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 type MicrophoneSettingsLayoutProps = {

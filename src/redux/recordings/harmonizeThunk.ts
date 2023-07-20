@@ -1,20 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import audioArrayFromURL from "../../../../utils/audioArrayFromURL";
-import NoteHarmonizer from "../../../../utils/NoteHarmonizer";
-import applyVoiceLeading from "../../../../utils/applyVoiceLeading";
-import noteEventsToChordEvents from "../../../../utils/noteEventsToChordEvents";
-import getAudioDuration from "../../../../utils/getAudioDuration";
-import { ChordEvent, InstrumentName, NoteEvent, SymbolicMusicSequence } from "../../../../types/music";
-import { AudioFeatures, Recording, TrackSequence, TrackType } from "../../../../types/audio";
-import extractAudioFeatures from "../../../../utils/extractAudioFeatures";
-import Arpeggiator from "../../../../utils/Arpeggiator";
-import generateRandomNoteEvents from "../../../../utils/generateRandomNoteEvents";
-import randomChoice from "../../../../utils/randomChoice";
-import AudioRenderer from "../../../../utils/AudioRenderer";
-import applyRmsToChordEvents from "../../../../utils/applyRmsToChordEvents";
-import generateBassLine from "./generateBassLine";
-import applyLegatoToChordEvents from "../../../../utils/applyLegatoToChordEvents";
-import { Fraction } from "../../../../types/math";
+import audioArrayFromURL from "../../utils/audioArrayFromURL";
+import NoteHarmonizer from "../../utils/NoteHarmonizer";
+import applyVoiceLeading from "../../utils/applyVoiceLeading";
+import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
+import getAudioDuration from "../../utils/getAudioDuration";
+import extractAudioFeatures from "../../utils/extractAudioFeatures";
+import Arpeggiator from "../../utils/Arpeggiator";
+import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
+import randomChoice from "../../utils/randomChoice";
+import AudioRenderer from "../../utils/AudioRenderer";
+import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
+import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
+import generateBassLine from "../../utils/generateBassLine";
+import { ChordEvent, InstrumentName, NoteEvent, SymbolicMusicSequence } from "../../types/music";
+import { AudioFeatures, Recording, TrackSequence, TrackType } from "../../types/audio";
+import { Fraction } from "../../types/math";
 
 export type NoteHarmonizerSettings = {
   style: string;
