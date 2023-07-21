@@ -12,6 +12,7 @@ import downloadURL from "../../utils/downloadURL";
 import useDialog, { DialogProps } from "../../components/Dialog/Dialog";
 import { useNotification } from "../../components/Notification/NotificationProvider";
 import { usePrintableMusicScore } from "../../components/PrintableMusicScore/PrintableMusicScore";
+import { useNavigate } from "react-router-dom";
 
 type AudioPlayerOptionsProps = {
   recording: Recording | RecordingVariation;
@@ -30,6 +31,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
   const dialog = useDialog();
   const notification = useNotification();
   const updateMusicScore = usePrintableMusicScore();
+  const navigate = useNavigate();
 
   const deleteDialog: DialogProps = {
     header: "WAIT!",
@@ -45,6 +47,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
           closeDialog();
           notification({ type: "SUCCESS", icon: icons.check, message: "Recording deleted" });
           dispatch(recordingActions.delete(recording));
+          navigate("/app/ideas/");
         },
       },
       {

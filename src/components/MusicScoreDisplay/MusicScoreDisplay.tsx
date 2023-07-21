@@ -65,7 +65,6 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         <div className="MusicScoreDisplay__score-container__score" ref={scoreRef} />
       </div>
       <WaveSurferPlayer
-        showOptions={false}
         showTags={false}
         onSeeking={onSeeking}
         onPlay={onPlay}

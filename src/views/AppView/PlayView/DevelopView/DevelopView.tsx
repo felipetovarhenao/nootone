@@ -3,7 +3,6 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import Icon from "../../../../components/Icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { useNotification } from "../../../../components/Notification/NotificationProvider";
 import icons from "../../../../utils/icons";
 import { recordingActions } from "../../../../redux/recordings/recordingsSlice";
 import ViewContainer from "../../../../components/ViewContainer/ViewContainer";
@@ -16,6 +15,7 @@ import WaveSurferPlayer from "../../../../components/WaveSurferPlayer/WaveSurfer
 import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicScoreDisplay";
 import EditableField from "../../../../components/EditableField/EditableField";
 import { HarmonizerSettings } from "../../../../redux/recordings/harmonizeTypes";
+import AudioPlayerOptions from "../../../../layouts/AudioPlayerOptions/AudioPlayerOptions";
 
 type UpdateSettingsCallbackPayload = HarmonizerSettings;
 type UpdateSettingsCallback = (settings: UpdateSettingsCallbackPayload) => void;
@@ -26,7 +26,6 @@ const DevelopView = () => {
   const [process, setProcess] = useState("");
   const { selectedRecordingIndex, recordings, variationBuffer, isProcessing } = useAppSelector((state) => state.recordings);
   const dispatch = useAppDispatch();
-  const notification = useNotification();
   const navigate = useNavigate();
 
   const handleGenerate = () => {
@@ -79,17 +78,12 @@ const DevelopView = () => {
     if (id !== null && id >= 0 && id < recordings.length) {
       dispatch(recordingActions.selectRecording(id));
     } else {
-      notification({
-        type: "DANGER",
-        message: "This recording doesn't exist",
-        icon: icons.error,
-      });
       navigate("/app/ideas/");
     }
   }, [location.pathname]);
 
   return (
-    <ViewContainer viewName="" onGoBack={() => navigate("/app/ideas")}>
+    <ViewContainer viewName="">
       {selectedRecordingIndex !== null && (
         <div className="DevelopView">
           <div className="DevelopView__header">
@@ -102,7 +96,10 @@ const DevelopView = () => {
               />
             </div>
           </div>
-          <WaveSurferPlayer showOptions={false} showTitle={false} className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
+          <div className="DevelopView__player-container">
+            <WaveSurferPlayer showTitle={false} className="DevelopView__player" rec={recordings[selectedRecordingIndex]} />
+            <AudioPlayerOptions recording={recordings[selectedRecordingIndex]} />
+          </div>
           <NewVariationsLayout />
           <div className="DevelopView__algorithms">
             <Accordion className="DevelopView__algorithms__options">

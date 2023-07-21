@@ -48,10 +48,12 @@
       }
     }
   }
-  .DevelopView__player {
+  .DevelopView__player-container {
+    @include h-stack-c;
     @include h-mar(auto);
     @include vh-pad($gap-ml, $gap-xxl);
-    max-width: 500px;
+    width: 100%;
+    max-width: 600px;
   }
 
   .DevelopView__kept-variations {

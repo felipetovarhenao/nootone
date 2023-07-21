@@ -67,6 +67,7 @@ const recordings = createSlice({
       } else {
         state.recordings.splice(parentIndex, 1);
       }
+      state.selectedRecordingIndex = null;
     },
     clearVariationBuffer: (state) => {
       state.variationBuffer = null;
