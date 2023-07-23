@@ -57,7 +57,7 @@
   .RecordingLayout__variations {
     .content {
       @include v-stack-c;
-      scale: 0.98;
+      // scale: 0.98;
       gap: $txt-ml;
       .RecordingLayout__player-container {
         @include v-stack;
