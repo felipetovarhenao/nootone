@@ -11,9 +11,10 @@ type MusicScoreDisplayProps = {
 };
 
 const defaultStaffWidth = 600;
+
 const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps) => {
-  const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore(
-    {
+  const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore({
+    renderingOptions: {
       selectionColor: "var(--txt-dark)",
       responsive: "resize",
       oneSvgPerLine: true,
@@ -29,7 +30,7 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         minSpacingLimit: 1,
       },
     },
-    {
+    callbackOptions: {
       lineEndCallback: (...values) => {
         if (!values || !scoreRef.current) {
           return;
@@ -40,8 +41,8 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         const resizeFactor = (width / defaultStaffWidth) * 0.95;
         scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
       },
-    }
-  );
+    },
+  });
 
   useEffect(() => {
     setMusicSequence(musicSequence);
