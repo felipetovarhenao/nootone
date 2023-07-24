@@ -34,6 +34,7 @@ const useMusicScore = (options?: AbcVisualParams, callbackOptions?: AnimationOpt
     let abcConfig: AbcVisualParams = options || {
       selectionColor: "var(--txt-dark)",
       oneSvgPerLine: true,
+      add_classes: true,
       responsive: "resize",
       staffwidth: 800,
       scrollHorizontal: false,
