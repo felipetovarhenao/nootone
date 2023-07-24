@@ -390,7 +390,6 @@ export default class ScoreRenderer {
   private detectKeySignature(): KeySignature {
     const chroma = getMusicSequenceChroma(this.musicSequence);
     const { isMajor, root } = detectKeySignature(chroma);
-    console.log(root, isMajor);
     return EnharmonicPitchSpeller.getKeySignature(root, !isMajor);
   }
 }

@@ -23,6 +23,9 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
           return;
         }
         const position = values[0];
+        if (!position) {
+          return;
+        }
         const lineIndex = values[2].line;
         const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
         const resizeFactor = (width / defaultStaffWidth) * 0.95;
