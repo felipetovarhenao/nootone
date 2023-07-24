@@ -7,8 +7,13 @@ type KeySignaturePrediction = {
 };
 
 export default function detectKeySignature(chroma: number[]): KeySignaturePrediction {
-  const majorChromaKeys = [...Array(12).keys()].map((i) => rotateArray([1, 0, 0.5, 0, 0.8, 0.6, 0, 0.9, 0, 0.4, 0, 0.7], i));
-  const minorChromaKeys = [...Array(12).keys()].map((i) => rotateArray([1, 0, 0.5, 0.8, 0, 0.6, 0, 0.9, 0.4, 0, 0.35, 0.35], i));
+  const $ = (num: number) => num ** 1.5;
+
+  const majorChroma = [11, 0, 5, 4, 9, 7, 3, 10, 2, 6, 1, 8].map((x) => $(x / 11));
+  const minorChroma = [11, 0, 5, 9, 4, 7, 3, 10, 6, 2, 4.5, 4.5].map((x) => $(x / 11));
+
+  const majorChromaKeys = [...Array(12).keys()].map((i) => rotateArray(majorChroma, i));
+  const minorChromaKeys = [...Array(12).keys()].map((i) => rotateArray(minorChroma, i));
 
   const majorKeyDistances = majorChromaKeys.map((x) => euclideanDistance(x, chroma));
   const minorKeyDistances = minorChromaKeys.map((x) => euclideanDistance(x, chroma));
