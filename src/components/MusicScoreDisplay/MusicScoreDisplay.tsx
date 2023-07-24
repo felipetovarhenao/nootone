@@ -13,8 +13,23 @@ type MusicScoreDisplayProps = {
 const defaultStaffWidth = 600;
 
 const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps) => {
-  const { scoreRef, setMusicSequence, getTimingCallbacks } = useMusicScore({
-    renderingOptions: {
+  const { scoreRef, setMusicSequence, getTimingCallbacks, setCallbackOptions, setRenderingOptions } = useMusicScore();
+
+  useEffect(() => {
+    setCallbackOptions((prev) => ({
+      ...prev,
+      lineEndCallback: (...values) => {
+        if (!values || !scoreRef.current) {
+          return;
+        }
+        const position = values[0];
+        const lineIndex = values[2].line;
+        const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
+        const resizeFactor = (width / defaultStaffWidth) * 0.95;
+        scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
+      },
+    }));
+    setRenderingOptions({
       selectionColor: "var(--txt-dark)",
       responsive: "resize",
       oneSvgPerLine: true,
@@ -29,20 +44,8 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
         preferredMeasuresPerLine: 2,
         minSpacingLimit: 1,
       },
-    },
-    callbackOptions: {
-      lineEndCallback: (...values) => {
-        if (!values || !scoreRef.current) {
-          return;
-        }
-        const position = values[0];
-        const lineIndex = values[2].line;
-        const width = scoreRef.current.children[0].children[lineIndex].clientWidth;
-        const resizeFactor = (width / defaultStaffWidth) * 0.95;
-        scoreRef.current.scrollTo({ top: position.top * resizeFactor, behavior: "smooth" });
-      },
-    },
-  });
+    });
+  }, []);
 
   useEffect(() => {
     setMusicSequence(musicSequence);
