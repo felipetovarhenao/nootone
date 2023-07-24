@@ -2,7 +2,9 @@ import { Fraction } from "../../types/math";
 import { ChordEvent, SymbolicMusicSequence } from "../../types/music";
 import FractionOperator from "../FractionOperator";
 import camelToSpaces from "../camelToSpaces";
+import detectKeySignature from "../detectKeySignature";
 import getDeepCopy from "../getDeepCopy";
+import getMusicSequenceChroma from "../getMusicSequenceChroma";
 import EnharmonicPitchSpeller from "./EnharmonicPitchSpeller";
 import { Accidental, KeySignature, PitchName, SymbolicBeat, SymbolicEvent, SymbolicMeasure } from "./types";
 
@@ -386,18 +388,10 @@ export default class ScoreRenderer {
   }
 
   private detectKeySignature(): KeySignature {
-    const chroma = [...Array(12)].fill(0);
-    this.musicSequence.instrumentalParts.forEach((instrumentalPart) =>
-      instrumentalPart.chordEvents.forEach((chordEvent) =>
-        chordEvent.notes.forEach((note) => {
-          chroma[note.pitch % 12] += note.duration;
-        })
-      )
-    );
-    const maxBin = Math.max(...chroma);
-    const root = chroma.indexOf(maxBin);
-    const isMajor = chroma[(root + 4) % 12] >= chroma[(root + 3) % 12];
-    return EnharmonicPitchSpeller.getKeySignature(root, isMajor);
+    const chroma = getMusicSequenceChroma(this.musicSequence);
+    const { isMajor, root } = detectKeySignature(chroma);
+    console.log(root, isMajor);
+    return EnharmonicPitchSpeller.getKeySignature(root, !isMajor);
   }
 }
 
