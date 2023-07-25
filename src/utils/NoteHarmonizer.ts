@@ -1,5 +1,7 @@
 import KDTree from "./KDTree";
 import { ChordEvent, NoteEvent, NoteEventSegment } from "../types/music";
+import randomChoice from "./randomChoice";
+import removeDuplicates from "./removeDuplicates";
 
 /**
  * NoteHarmonizer class that harmonizes a given note array based on chord collections and key signatures.
@@ -151,15 +153,6 @@ export default class NoteHarmonizer {
       [1, 0, 4, 7],
       [4, 0, 7, 1],
     ],
-    // mystical: [
-    //   [11, 0, 4, 7, 6], // MM7#11
-    //   [3, 0, 4, 7, 6], // M#9#11
-    //   [3, 0, 6, 2, 10], // half º7M9
-    //   [0, 4, 7, 9], // MM6
-    //   [10, 0, 4, 7, 6], // Mm7#11
-    //   [3, 0, 4, 7, 11], // M#9M7
-    //   [3, 0, 4, 7, 6], // M#9#11
-    // ],
   };
 
   /**
@@ -282,7 +275,7 @@ export default class NoteHarmonizer {
     const segmentChromaVector = this.noteArrayToChroma(noteArray, segSize);
 
     // get most similar key signature vector
-    const detectedKey = this.keySignatureTree.nearestNeighbor(segmentChromaVector) || [];
+    const detectedKey = this.keySignatureTree.knn(segmentChromaVector)[0].value;
     return detectedKey;
   }
 
@@ -384,9 +377,19 @@ export default class NoteHarmonizer {
     if (!this.chordChromaTree) {
       throw new Error("chordChromaTree is null");
     }
-    const vector = this.chordChromaTree.nearestNeighbor(chroma) || [];
+    const chordPredictions = this.removeChordDuplicates(
+      this.chordChromaTree.knn(chroma, 20).map((x) => this.chromaVectorToChord(x.value, activationThreshold))
+    );
 
-    return this.chromaVectorToChord(vector, activationThreshold);
+    const chosenChord = randomChoice(chordPredictions.slice(0, 3))!;
+
+    return chosenChord;
+  }
+
+  private removeChordDuplicates(chords: number[][]) {
+    return removeDuplicates(chords, (a, b) => {
+      return JSON.stringify(a.slice(1).sort()) === JSON.stringify(b.slice(1).sort()) && a[0] === b[0];
+    });
   }
 
   /**

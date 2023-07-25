@@ -1,99 +1,99 @@
-/**
- * Represents a node in a k-dimensional tree.
- */
-interface KDNode {
-  point: number[];
-  left: KDNode | null;
-  right: KDNode | null;
-}
-
-/**
- * Represents a k-dimensional tree.
- */
 export default class KDTree {
-  private root: KDNode | null;
+  private root: KDTreeNode | null;
+  private dims: number;
 
-  /**
-   * Constructs a KDTree object and builds the tree from the given points.
-   * @param points - An array of points in the k-dimensional space.
-   */
   constructor(points: number[][]) {
-    this.root = this.buildTree(points, 0);
+    this.dims = points[0].length;
+    this.root = this.build(this.preprocess(points), 0);
   }
 
-  /**
-   * Recursively builds the KDTree using the given points and depth.
-   * @param points - An array of points in the k-dimensional space.
-   * @param depth - The current depth in the tree.
-   * @returns The root node of the constructed KDTree.
-   */
-  private buildTree(points: number[][], depth: number): KDNode | null {
+  private preprocess(points: number[][]): KDTreePoint[] {
+    const data: KDTreePoint[] = [];
+
+    // apply normalization values
+    for (let i = 0; i < points.length; i++) {
+      data.push({
+        id: i,
+        value: points[i],
+      });
+    }
+
+    return data;
+  }
+
+  private build(points: KDTreePoint[], depth: number): KDTreeNode | null {
     if (points.length === 0) {
       return null;
     }
 
-    const axis = depth % points[0].length;
-    const sortedPoints = points.slice().sort((a, b) => a[axis] - b[axis]);
+    const axis = depth % this.dims;
+    const sortedPoints = points.slice().sort((a, b) => a.value[axis] - b.value[axis]);
     const medianIndex = Math.floor(sortedPoints.length / 2);
 
     return {
       point: sortedPoints[medianIndex],
-      left: this.buildTree(sortedPoints.slice(0, medianIndex), depth + 1),
-      right: this.buildTree(sortedPoints.slice(medianIndex + 1), depth + 1),
+      left: this.build(sortedPoints.slice(0, medianIndex), depth + 1),
+      right: this.build(sortedPoints.slice(medianIndex + 1), depth + 1),
     };
   }
 
-  /**
-   * Calculates the Euclidean distance between two points.
-   * @param point1 - The first point.
-   * @param point2 - The second point.
-   * @returns The Euclidean distance between the two points.
-   */
-  private euclideanDistance(point1: number[], point2: number[]): number {
-    return Math.sqrt(point1.reduce((sum, coord, index) => sum + Math.pow(coord - point2[index], 2), 0));
+  private euclideanDistance(x: number[], y: number[]): number {
+    return Math.sqrt(x.reduce((sum, x, i) => sum + Math.pow(x - y[i], 2), 0));
   }
 
-  /**
-   * Finds the closest point to the target point in the KDTree.
-   * @param target - The target point.
-   * @param current - The current node being visited.
-   * @param depth - The current depth in the tree.
-   * @param best - The best point found so far.
-   * @returns The closest point to the target point.
-   */
-  private closestPoint(target: number[], current: KDNode | null, depth: number, best: KDNode | null): KDNode | null {
+  private kNearestPoints(target: number[], current: KDTreeNode | null, depth: number, k: number, nearestNeighbors: KDTreeNeighbor[]): void {
     if (current === null) {
-      return best;
+      return;
     }
 
-    const axis = depth % target.length;
-    const isLeftSubtree = target[axis] < current.point[axis];
-    const nextNode = isLeftSubtree ? current.left : current.right;
-    const alternateNode = isLeftSubtree ? current.right : current.left;
-    const bestDistance = best ? this.euclideanDistance(target, best.point) : Infinity;
-    const currentDistance = this.euclideanDistance(target, current.point);
+    const axis = depth % this.dims;
+    const isLeftSubtree = target[axis] < current.point.value[axis];
+    const [nextNode, alternateNode] = isLeftSubtree ? [current.left, current.right] : [current.right, current.left];
+    const currentDistance = this.euclideanDistance(target, current.point.value);
 
-    let nextBest = best;
-    if (currentDistance < bestDistance) {
-      nextBest = current;
+    const currentNeighbor: KDTreeNeighbor = {
+      point: current.point,
+      distance: currentDistance,
+    };
+
+    if (nearestNeighbors.length < k) {
+      nearestNeighbors.push(currentNeighbor);
+      nearestNeighbors.sort((a, b) => a.distance - b.distance);
+    } else if (currentDistance < nearestNeighbors.at(-1)!.distance) {
+      nearestNeighbors.pop();
+      nearestNeighbors.push(currentNeighbor);
+      nearestNeighbors.sort((a, b) => a.distance - b.distance);
     }
 
-    nextBest = this.closestPoint(target, nextNode, depth + 1, nextBest);
+    this.kNearestPoints(target, nextNode, depth + 1, k, nearestNeighbors);
 
-    if (this.euclideanDistance(target, current.point) < bestDistance) {
-      nextBest = this.closestPoint(target, alternateNode, depth + 1, nextBest);
+    // if current distance is smaller than worst returnable distance, explore opposite subtree
+    if (currentDistance < nearestNeighbors.at(-1)!.distance) {
+      this.kNearestPoints(target, alternateNode, depth + 1, k, nearestNeighbors);
     }
-
-    return nextBest;
   }
 
-  /**
-   * Finds the nearest neighbor to the target point in the KDTree.
-   * @param target - The target point.
-   * @returns The nearest neighbor point to the target point, or null if the tree is empty.
-   */
-  public nearestNeighbor(target: number[]): number[] | null {
-    const closestNode = this.closestPoint(target, this.root, 0, null);
-    return closestNode ? closestNode.point : null;
+  public knn(target: number[], k: number = 1): KDTreePoint[] {
+    if (!this.root || k <= 0) return [];
+
+    const nearestNeighbors: KDTreeNeighbor[] = [];
+    this.kNearestPoints(target, this.root, 0, k, nearestNeighbors);
+    return nearestNeighbors.map((node) => node.point);
   }
 }
+
+type KDTreeNode = {
+  point: KDTreePoint;
+  left: KDTreeNode | null;
+  right: KDTreeNode | null;
+};
+
+type KDTreePoint = {
+  id: number;
+  value: number[];
+};
+
+type KDTreeNeighbor = {
+  distance: number;
+  point: KDTreePoint;
+};
