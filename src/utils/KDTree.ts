@@ -10,7 +10,6 @@ export default class KDTree {
   private preprocess(points: number[][]): KDTreePoint[] {
     const data: KDTreePoint[] = [];
 
-    // apply normalization values
     for (let i = 0; i < points.length; i++) {
       data.push({
         id: i,
@@ -41,7 +40,7 @@ export default class KDTree {
     return Math.sqrt(x.reduce((sum, x, i) => sum + Math.pow(x - y[i], 2), 0));
   }
 
-  private kNearestPoints(target: number[], current: KDTreeNode | null, depth: number, k: number, nearestNeighbors: KDTreeNeighbor[]): void {
+  private _knn(target: number[], current: KDTreeNode | null, depth: number, k: number, nearestNeighbors: KDTreeNeighbor[]): void {
     if (current === null) {
       return;
     }
@@ -56,28 +55,33 @@ export default class KDTree {
       distance: currentDistance,
     };
 
-    if (nearestNeighbors.length < k) {
-      nearestNeighbors.push(currentNeighbor);
-      nearestNeighbors.sort((a, b) => a.distance - b.distance);
-    } else if (currentDistance < nearestNeighbors.at(-1)!.distance) {
-      nearestNeighbors.pop();
+    function updateNeighbors() {
       nearestNeighbors.push(currentNeighbor);
       nearestNeighbors.sort((a, b) => a.distance - b.distance);
     }
 
-    this.kNearestPoints(target, nextNode, depth + 1, k, nearestNeighbors);
+    if (nearestNeighbors.length < k) {
+      updateNeighbors();
+    } else if (currentDistance < nearestNeighbors.at(-1)!.distance) {
+      nearestNeighbors.pop();
+      updateNeighbors();
+    }
+
+    this._knn(target, nextNode, depth + 1, k, nearestNeighbors);
 
     // if current distance is smaller than worst returnable distance, explore opposite subtree
     if (currentDistance < nearestNeighbors.at(-1)!.distance) {
-      this.kNearestPoints(target, alternateNode, depth + 1, k, nearestNeighbors);
+      this._knn(target, alternateNode, depth + 1, k, nearestNeighbors);
     }
   }
 
   public knn(target: number[], k: number = 1): KDTreePoint[] {
-    if (!this.root || k <= 0) return [];
-
+    if (!this.root || k <= 0) {
+      return [];
+    }
     const nearestNeighbors: KDTreeNeighbor[] = [];
-    this.kNearestPoints(target, this.root, 0, k, nearestNeighbors);
+    this._knn(target, this.root, 0, k, nearestNeighbors);
+
     return nearestNeighbors.map((node) => node.point);
   }
 }
