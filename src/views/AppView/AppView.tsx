@@ -19,7 +19,6 @@ import PitchDetector from "../../utils/PitchDetector";
 import AudioRenderer from "../../utils/AudioRenderer";
 import { SymbolicTrack, TrackType } from "../../types/audio";
 import { InstrumentName } from "../../types/music";
-import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -95,14 +94,14 @@ const AppView = () => {
         onClick={async () => {
           const p = new PitchDetector();
           const bpmSamples = [70, 90, 99, 117, 65];
-          const bpm = bpmSamples[3];
-          const noteEvents = await p.getNoteEvents(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`, bpm);
+          const bpm = bpmSamples[0];
+          const chordEvents = await p.getChordEvents(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`, bpm);
 
           const track: SymbolicTrack = {
             type: TrackType.SYMBOLIC,
             data: {
               name: InstrumentName.PIANO,
-              chordEvents: noteEventsToChordEvents(noteEvents),
+              chordEvents,
             },
           };
           const audioBlob = await AudioRenderer.render([track]);

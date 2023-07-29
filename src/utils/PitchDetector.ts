@@ -3,7 +3,7 @@ import audioArrayFromURL from "./audioArrayFromURL";
 import frequencyToPitch from "./frequencyToPitch";
 import getRMS from "./getRMS";
 import getMedian from "./getMedian";
-import { NoteEvent } from "../types/music";
+import { ChordEvent, NoteEvent } from "../types/music";
 
 const LOWEST_PITCH = 40;
 
@@ -147,7 +147,17 @@ export default class PitchDetector {
     return notes;
   }
 
-  public async getNoteEvents(url: string, tempo: number, subdiv: number = 4): Promise<NoteEvent[]> {
+  private applyRMStoNoteEvents(noteEvents: NoteEvent[], rmsArray: Float32Array): void {
+    for (let i = 0; i < noteEvents.length; i++) {
+      const noteEvent = noteEvents[i];
+      const startIndex = Math.min(Math.floor(noteEvent.onset * this.hopLength), rmsArray.length - 1);
+      const endIndex = Math.min(Math.floor((noteEvent.onset + noteEvent.duration) * this.hopLength), rmsArray.length);
+      const velocity = getMedian(rmsArray.slice(startIndex, endIndex));
+      noteEvents[i].velocity = velocity;
+    }
+  }
+
+  public async getChordEvents(url: string, tempo: number, subdiv: number = 4): Promise<ChordEvent[]> {
     const { array, sampleRate } = await audioArrayFromURL(url);
 
     const { pitchArray, clarityArray, rmsArray } = this.getFrequencyContour(array, sampleRate);
@@ -160,6 +170,11 @@ export default class PitchDetector {
 
     const noteEvents = this.pitchSegmentsToNoteEvents(pitchSegments, segmentDuration);
 
-    return noteEvents;
+    this.applyRMStoNoteEvents(noteEvents, rmsArray);
+
+    return noteEvents.map((note) => ({
+      onset: note.onset,
+      notes: [{ pitch: note.pitch, duration: note.duration, velocity: note.velocity }],
+    }));
   }
 }
