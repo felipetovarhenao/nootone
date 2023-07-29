@@ -81,7 +81,7 @@ export default class PitchDetector {
     const rmsRange = rmsMax - rmsMin;
     rmsArray.forEach((x, i) => {
       const y = (x - rmsMin) / rmsRange;
-      rmsArray[i] = y * 0.5 + 0.5;
+      rmsArray[i] = y * 0.75 + 0.25;
     });
 
     return {
