@@ -117,7 +117,7 @@ export default class PitchDetector {
     let lastPitch = pitchArray[0];
 
     for (let i = 0; i < pitchArray.length; i++) {
-      const pitch = pitchArray[i] - 12;
+      const pitch = pitchArray[i];
       if (pitch !== lastPitch) {
         const nextOnset = i * segmentDuration;
         if (lastPitch > LOWEST_PITCH) {

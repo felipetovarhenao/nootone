@@ -44,7 +44,7 @@ export async function getAudioFeatures(recording: Recording): Promise<ChordEvent
   if (!chordEvents) {
     const { array, sampleRate } = await audioArrayFromURL(recording.url);
     const detector = new PitchDetector();
-    chordEvents = detector.getChordEvents(array, sampleRate, recording.features.tempo);
+    chordEvents = detector.getChordEvents(array, sampleRate, recording.features.tempo, 8);
   }
 
   if (chordEvents.length === 0) {
