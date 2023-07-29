@@ -1,8 +1,8 @@
-import { InstrumentalPart, NoteEvent, SymbolicMusicSequence } from "./music";
+import { ChordEvent, InstrumentalPart, SymbolicMusicSequence } from "./music";
 
 export type AudioFeatures = {
   readonly tempo: number;
-  noteEvents?: NoteEvent[];
+  readonly chordEvents?: ChordEvent[];
   readonly rms?: {
     readonly hopSize: number;
     readonly data: number[];

@@ -19,7 +19,7 @@ export type HarmonizerPayload = {
 };
 
 export type HarmonizerReturnType = {
-  features: Pick<AudioFeatures, "noteEvents" | "rms">;
+  features: Pick<AudioFeatures, "chordEvents">;
   variation: Omit<Recording, "variations">;
 };
 

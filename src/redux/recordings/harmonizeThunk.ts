@@ -7,7 +7,7 @@ import { TrackSequence, TrackType } from "../../types/audio";
 import { generateArpeggio, generateBass, generatePads, getAudioFeatures, getChords, parseHarmonizerSettings } from "./harmonizeUtils";
 import camelToSpaces from "../../utils/camelToSpaces";
 import { HarmonizerPayload, HarmonizerReturnType } from "./harmonizeTypes";
-import applyRmsToChordEvents from "../../utils/applyRmsToChordEvents";
+import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 
 async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerReturnType> {
   // destructure payload
@@ -16,11 +16,10 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
 
   try {
     // get features
-    const { noteEvents, rms, sampleRate } = await getAudioFeatures(recording);
-    const chords = getChords(noteEvents, settings);
+    const chordEvents = await getAudioFeatures(recording);
+    const chords = getChords(chordEventsToNoteEvents(chordEvents), settings);
 
     const arpeggios = generateArpeggio(chords, recording.features.tempo, settings);
-    applyRmsToChordEvents(arpeggios, rms.data, rms.hopSize, sampleRate);
 
     const bassLine = generateBass(chords, recording.features.tempo, settings);
     const pads = generatePads(chords, settings);
@@ -79,7 +78,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
     };
 
     return {
-      features: { noteEvents: noteEvents, rms },
+      features: { chordEvents: chordEvents },
       variation: {
         name: variationName,
         duration: recDuration,
@@ -94,7 +93,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
         ],
         features: {
           ...recording.features,
-          noteEvents: noteEvents.map((n) => ({ ...n, velocity: 0.707 })),
+          chordEvents,
           symbolicTranscription,
         },
       },

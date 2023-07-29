@@ -2,10 +2,10 @@ import { Recording } from "../../types/audio";
 import { ChordEvent, NoteEvent } from "../../types/music";
 import Arpeggiator from "../../utils/Arpeggiator";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
+import PitchDetector from "../../utils/PitchDetector";
 import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import audioArrayFromURL from "../../utils/audioArrayFromURL";
-import extractAudioFeatures from "../../utils/extractAudioFeatures";
 import generateBassLine from "../../utils/generateBassLine";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
@@ -36,30 +36,21 @@ export function parseHarmonizerSettings(recording: Recording, settings: Harmoniz
   };
 }
 
-export async function getAudioFeatures(recording: Recording) {
+export async function getAudioFeatures(recording: Recording): Promise<ChordEvent[]> {
   // Detect the pitches of the recorded notes or use the pre-computed note events
-  let noteEvents = recording.features.noteEvents;
-  let rms = recording.features.rms;
-  let sampleRate = recording.sampleRate;
-  if (!noteEvents || !rms) {
-    const { array, sampleRate: sr } = await audioArrayFromURL(recording.url);
-    const { noteEvents: detectedNotes, rms: rmsArray, hopSize } = extractAudioFeatures(array, sampleRate);
-    noteEvents = detectedNotes.map((n) => ({ ...n, velocity: 1 }));
-    rms = { hopSize: hopSize, data: Array.from(rmsArray) };
-    sampleRate = sr;
+  let chordEvents = recording.features.chordEvents;
+
+  if (!chordEvents) {
+    const { array, sampleRate } = await audioArrayFromURL(recording.url);
+    const detector = new PitchDetector();
+    chordEvents = detector.getChordEvents(array, sampleRate, recording.features.tempo);
   }
 
-  // let didDetectionFailed = false;
-  if (noteEvents.length === 0) {
-    // didDetectionFailed = true;
-    noteEvents = generateRandomNoteEvents(recording.duration, recording.features.tempo!);
+  if (chordEvents.length === 0) {
+    chordEvents = noteEventsToChordEvents(generateRandomNoteEvents(recording.duration, recording.features.tempo!));
   }
 
-  return {
-    noteEvents,
-    rms,
-    sampleRate,
-  };
+  return chordEvents;
 }
 
 export function getChords(noteEvents: NoteEvent[], settings: ParsedHarmonizerSettings): ChordEvent[] {

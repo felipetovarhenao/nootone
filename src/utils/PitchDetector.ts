@@ -1,5 +1,4 @@
 import { PitchDetector as Pitchy } from "pitchy";
-import audioArrayFromURL from "./audioArrayFromURL";
 import frequencyToPitch from "./frequencyToPitch";
 import getRMS from "./getRMS";
 import getMedian from "./getMedian";
@@ -134,7 +133,7 @@ export default class PitchDetector {
       lastPitch = pitch;
     }
 
-    if (lastPitch > LOWEST_PITCH) {
+    if (lastPitch !== undefined && lastPitch > LOWEST_PITCH) {
       const noteEnd = pitchArray.length * segmentDuration;
       notes.push({
         onset: noteStart,
@@ -157,9 +156,7 @@ export default class PitchDetector {
     }
   }
 
-  public async getChordEvents(url: string, tempo: number, subdiv: number = 4): Promise<ChordEvent[]> {
-    const { array, sampleRate } = await audioArrayFromURL(url);
-
+  public getChordEvents(array: Float32Array, sampleRate: number, tempo: number, subdiv: number = 4): ChordEvent[] {
     const { pitchArray, clarityArray, rmsArray } = this.getFrequencyContour(array, sampleRate);
 
     const smoothPitchArray = this.applyWeightFilter(pitchArray, clarityArray, 7);

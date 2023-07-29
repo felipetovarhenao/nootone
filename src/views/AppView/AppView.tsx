@@ -19,6 +19,7 @@ import PitchDetector from "../../utils/PitchDetector";
 import AudioRenderer from "../../utils/AudioRenderer";
 import { SymbolicTrack, TrackType } from "../../types/audio";
 import { InstrumentName } from "../../types/music";
+import audioArrayFromURL from "../../utils/audioArrayFromURL";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -92,10 +93,11 @@ const AppView = () => {
       </div>
       <button
         onClick={async () => {
-          const p = new PitchDetector();
+          const detector = new PitchDetector();
           const bpmSamples = [70, 90, 99, 117, 65];
           const bpm = bpmSamples[0];
-          const chordEvents = await p.getChordEvents(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`, bpm);
+          const { array, sampleRate } = await audioArrayFromURL(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`);
+          const chordEvents = detector.getChordEvents(array, sampleRate, bpm);
 
           const track: SymbolicTrack = {
             type: TrackType.SYMBOLIC,
