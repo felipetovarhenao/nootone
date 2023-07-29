@@ -80,7 +80,7 @@ export default class PitchDetector {
     const rmsRange = rmsMax - rmsMin;
     rmsArray.forEach((x, i) => {
       const y = (x - rmsMin) / rmsRange;
-      rmsArray[i] = y * 0.75 + 0.25;
+      rmsArray[i] = y * 0.6 + 0.4;
     });
 
     return {
@@ -117,7 +117,7 @@ export default class PitchDetector {
     let lastPitch = pitchArray[0];
 
     for (let i = 0; i < pitchArray.length; i++) {
-      const pitch = pitchArray[i];
+      const pitch = pitchArray[i] - 12;
       if (pitch !== lastPitch) {
         const nextOnset = i * segmentDuration;
         if (lastPitch > LOWEST_PITCH) {
