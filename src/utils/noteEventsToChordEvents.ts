@@ -4,7 +4,7 @@ import { NoteEventSegment } from "../types/music";
 
 export default function noteEventsToChordEvents(noteEvents: NoteEvent[]): ChordEvent[] {
   // Sort the note events by onset
-  const sortedNoteEvents = noteEvents.sort((a, b) => a.onset - b.onset);
+  const sortedNoteEvents = noteEvents.slice().sort((a, b) => a.onset - b.onset);
 
   // Group note events by onset
   const noteEventSegments: NoteEventSegment[] = [];
