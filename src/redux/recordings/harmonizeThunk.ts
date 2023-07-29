@@ -4,7 +4,15 @@ import randomChoice from "../../utils/randomChoice";
 import AudioRenderer from "../../utils/AudioRenderer";
 import { InstrumentName, SymbolicMusicSequence } from "../../types/music";
 import { TrackSequence, TrackType } from "../../types/audio";
-import { generateArpeggio, generateBass, generatePads, getAudioFeatures, getChords, parseHarmonizerSettings } from "./harmonizeUtils";
+import {
+  generateArpeggio,
+  generateBass,
+  generatePads,
+  getAudioFeatures,
+  getChords,
+  parseHarmonizerSettings,
+  transferVelocity,
+} from "./harmonizeUtils";
 import camelToSpaces from "../../utils/camelToSpaces";
 import { HarmonizerPayload, HarmonizerReturnType } from "./harmonizeTypes";
 import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
@@ -20,6 +28,8 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
     const chords = getChords(chordEventsToNoteEvents(chordEvents), settings);
 
     const arpeggios = generateArpeggio(chords, recording.features.tempo, settings);
+
+    transferVelocity(chordEvents, arpeggios);
 
     const bassLine = generateBass(chords, recording.features.tempo, settings);
     const pads = generatePads(chords, settings);

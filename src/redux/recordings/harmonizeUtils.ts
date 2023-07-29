@@ -6,6 +6,7 @@ import PitchDetector from "../../utils/PitchDetector";
 import applyLegatoToChordEvents from "../../utils/applyLegatoToChordEvents";
 import applyVoiceLeading from "../../utils/applyVoiceLeading";
 import audioArrayFromURL from "../../utils/audioArrayFromURL";
+import findNearestValue from "../../utils/findNearestValue";
 import generateBassLine from "../../utils/generateBassLine";
 import generateRandomNoteEvents from "../../utils/generateRandomNoteEvents";
 import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
@@ -116,4 +117,16 @@ export function generatePads(chords: ChordEvent[], settings: ParsedHarmonizerSet
     })),
   }));
   return pads;
+}
+
+export function transferVelocity(sourceEvents: ChordEvent[], targetEvent: ChordEvent[]): void {
+  const sourceOnsets = sourceEvents.map((x) => x.onset);
+  targetEvent.forEach((e) => {
+    const index = findNearestValue(sourceOnsets, e.onset)[1];
+    const notes = sourceEvents[index].notes;
+    const sourceVelocity = notes.map((x) => x.velocity).reduce((x, sum) => x + sum, 0) / notes.length;
+    e.notes.forEach((note) => {
+      note.velocity = (note.velocity + sourceVelocity) / 2;
+    });
+  });
 }

@@ -150,9 +150,9 @@ export default class PitchDetector {
     for (let i = 0; i < noteEvents.length; i++) {
       const noteEvent = noteEvents[i];
       const startIndex = Math.min(Math.floor(noteEvent.onset * this.hopLength), rmsArray.length - 1);
-      const endIndex = Math.min(Math.floor((noteEvent.onset + noteEvent.duration) * this.hopLength), rmsArray.length);
+      const endIndex = Math.max(startIndex + 1, Math.min(Math.floor((noteEvent.onset + noteEvent.duration) * this.hopLength), rmsArray.length));
       const velocity = getMedian(rmsArray.slice(startIndex, endIndex));
-      noteEvents[i].velocity = velocity;
+      noteEvents[i].velocity = Number.isNaN(velocity) ? 0.5 : velocity;
     }
   }
 
