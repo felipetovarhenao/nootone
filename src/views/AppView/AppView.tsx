@@ -15,6 +15,11 @@ import CONFIG, { DeploymentType } from "../../utils/config";
 import loadTestRecordings from "../../utils/loadTestRecordings";
 import getBrowser from "../../utils/getBrowser";
 import { useNotification } from "../../components/Notification/NotificationProvider";
+import PitchDetector from "../../utils/PitchDetector";
+import AudioRenderer from "../../utils/AudioRenderer";
+import { SymbolicTrack, TrackType } from "../../types/audio";
+import { InstrumentName } from "../../types/music";
+import noteEventsToChordEvents from "../../utils/noteEventsToChordEvents";
 
 const DEFAULT_VIEWNAME = "capture";
 
@@ -86,6 +91,33 @@ const AppView = () => {
       <div className="AppView__content">
         <Outlet />
       </div>
+      <button
+        onClick={async () => {
+          const p = new PitchDetector();
+          const bpmSamples = [70, 90, 99, 117, 65];
+          const bpm = bpmSamples[3];
+          const noteEvents = await p.getNoteEvents(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`, bpm);
+
+          const track: SymbolicTrack = {
+            type: TrackType.SYMBOLIC,
+            data: {
+              name: InstrumentName.PIANO,
+              chordEvents: noteEventsToChordEvents(noteEvents),
+            },
+          };
+          const audioBlob = await AudioRenderer.render([track]);
+          const audio = new Audio(URL.createObjectURL(audioBlob));
+          audio.play();
+        }}
+        style={{
+          padding: "5px",
+          backgroundColor: "var(--secondary-3)",
+          color: "var(--txt-light)",
+          cursor: "pointer",
+        }}
+      >
+        Start
+      </button>
       <MobileNavbar className="AppView__navbar" selected={currentViewIndex} links={navbarLinks} />
     </div>
   );
