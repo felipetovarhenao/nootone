@@ -24,6 +24,9 @@
       @include round;
       font-size: $txt-ml;
       background-color: var(--bg-1);
+      @media (prefers-color-scheme: dark) {
+        background-color: var(--bg-3);
+      }
       resize: none;
       color: var(--txt);
       &:focus {
