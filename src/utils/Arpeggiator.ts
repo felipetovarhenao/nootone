@@ -288,7 +288,7 @@ export default class Arpeggiator {
               const noteIndex = Math.floor(e.index * (currentChord!.notes.length - 1));
               const note = { ...currentChord!.notes[noteIndex] };
               note.duration = note.duration - (event.onset % note.duration);
-              note.duration = Math.min(e.duration, note.duration);
+              note.duration = Math.max(quantumUnit, Math.min(e.duration, note.duration));
               note.velocity = e.velocity;
               return note;
             }),
