@@ -17,6 +17,11 @@ export type NoteEventSegment = {
   notes: NoteEvent[];
 };
 
+export type ChordEventSegment = {
+  onset: number;
+  chords: ChordEvent[];
+};
+
 export enum InstrumentName {
   PIANO = "grandPiano",
   NYLON_GUITAR = "nylonGuitar",
