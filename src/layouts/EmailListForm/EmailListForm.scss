@@ -11,6 +11,9 @@
     font-size: m.$txt-ml;
     background-color: var(--bg-1);
     color: var(--txt);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--bg-4) !important;
+    }
   }
   label {
     @include m.l-pad;
