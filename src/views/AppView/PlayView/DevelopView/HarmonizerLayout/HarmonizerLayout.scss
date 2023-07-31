@@ -11,6 +11,7 @@
     font-size: $txt-ml;
     white-space: nowrap;
     color: var(--txt);
+    font-weight: lighter;
   }
   .HarmonizerLayout__swipe-menu {
     @include stack;

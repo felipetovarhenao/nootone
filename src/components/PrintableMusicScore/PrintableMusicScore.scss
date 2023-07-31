@@ -36,13 +36,13 @@
       align-items: end;
       .PrintableMusicScore__buttons__button {
         &.--danger {
-          @include hyperlink(var(--bg-1), var(--danger-3));
+          @include hyperlink(var(--txt-light), var(--danger-3));
         }
         &.--caution {
-          @include hyperlink(var(--bg-1), var(--caution-4));
+          @include hyperlink(var(--txt-light), var(--caution-4));
         }
         &.--success {
-          @include hyperlink(var(--bg-1), var(--success-4));
+          @include hyperlink(var(--txt-light), var(--success-4));
         }
       }
     }
@@ -53,6 +53,13 @@
       overflow: auto;
       width: 800px;
       max-width: 80vw;
+      background-color: var(--bg-1);
+      @media (prefers-color-scheme: dark) {
+        background-color: var(--bg-3);
+      }
+      * {
+        color: var(--txt);
+      }
       .PrintableMusicScore__score {
         @include pad($gap-lg);
         width: 100%;

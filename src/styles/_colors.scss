@@ -32,11 +32,11 @@
   --primary-5: hsl(var(--primary-hue), 70%, 75%);
 
   // secondary colors
-  --secondary-1: hsl(var(--secondary-hue), 40%, 25%);
-  --secondary-2: hsl(var(--secondary-hue), 40%, 37%);
-  --secondary-3: hsl(var(--secondary-hue), 40%, 50%);
-  --secondary-4: hsl(var(--secondary-hue), 40%, 62%);
-  --secondary-5: hsl(var(--secondary-hue), 40%, 75%);
+  --secondary-1: hsl(var(--secondary-hue), 45%, 25%);
+  --secondary-2: hsl(var(--secondary-hue), 45%, 37%);
+  --secondary-3: hsl(var(--secondary-hue), 45%, 50%);
+  --secondary-4: hsl(var(--secondary-hue), 45%, 62%);
+  --secondary-5: hsl(var(--secondary-hue), 45%, 75%);
 
   --main-gradient: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
   --secondary-gradient: linear-gradient(90deg, var(--secondary-3) 0%, var(--primary-3) 100%);
@@ -71,18 +71,18 @@
   @media (prefers-color-scheme: dark) {
     --saturation: 20%;
     // foreground
-    --fg-1: hsl(var(--primary-hue), var(--saturation), 97%);
-    --fg-2: hsl(var(--primary-hue), var(--saturation), 95%);
-    --fg-3: hsl(var(--primary-hue), var(--saturation), 92%);
+    --fg-1: hsl(var(--primary-hue), var(--saturation), 95%);
+    --fg-2: hsl(var(--primary-hue), var(--saturation), 93%);
+    --fg-3: hsl(var(--primary-hue), var(--saturation), 91%);
     --fg-4: hsl(var(--primary-hue), var(--saturation), 89%);
-    --fg-5: hsl(var(--primary-hue), var(--saturation), 86%);
+    --fg-5: hsl(var(--primary-hue), var(--saturation), 87%);
 
     // background colors
-    --bg-1: hsl(var(--primary-hue), var(--saturation), 6%);
-    --bg-2: hsl(var(--primary-hue), var(--saturation), 9%);
-    --bg-3: hsl(var(--primary-hue), var(--saturation), 12%);
-    --bg-4: hsl(var(--primary-hue), var(--saturation), 15%);
-    --bg-5: hsl(var(--primary-hue), var(--saturation), 18%);
+    --bg-1: hsl(var(--primary-hue), var(--saturation), 9%);
+    --bg-2: hsl(var(--primary-hue), var(--saturation), 12%);
+    --bg-3: hsl(var(--primary-hue), var(--saturation), 15%);
+    --bg-4: hsl(var(--primary-hue), var(--saturation), 18%);
+    --bg-5: hsl(var(--primary-hue), var(--saturation), 21%);
 
     --txt: var(--fg-1);
     --txt-negative: var(--bg-5);

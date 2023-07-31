@@ -10,7 +10,13 @@
     overflow: auto;
     max-height: 250px;
     width: 100%;
-    background-color: var(--txt-light);
+    background-color: var(--bg-1);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--bg-3);
+    }
+    * {
+      color: var(--txt);
+    }
     .MusicScoreDisplay__score {
       @include pad;
       width: 100%;

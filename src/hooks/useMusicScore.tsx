@@ -87,9 +87,9 @@ const defaultCallbackOptions: TimingCallbackOptions = {
     }
     event.elements.forEach((elem) => {
       const g = (elem as unknown as [HTMLElement])[0];
-      g.style.setProperty("fill", "var(--primary-3)");
+      g.style.setProperty("fill", "var(--primary-4)");
       setTimeout(() => {
-        g.style.setProperty("fill", "black");
+        g.style.setProperty("fill", "var(--txt)");
       }, 250);
     });
   },
