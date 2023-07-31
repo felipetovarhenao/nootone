@@ -17,6 +17,7 @@ interface MobileNavbarProps {
 const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected }) => {
   const navigate = useNavigate();
   const isRecording = useAppSelector((state) => state.mic.isRecording);
+  const { isProcessing } = useAppSelector((state) => state.recordings);
   const [width, setWidth] = useState(selected ? 100 : 0);
 
   const handleStartTimer = () => {
@@ -42,7 +43,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({ links, className, selected 
             className={cn("link", { "--selected": selected === index })}
             key={link.icon}
             onClick={() => {
-              if (!isRecording) {
+              if (!isRecording && !isProcessing) {
                 navigate(link.path);
                 handleStartTimer();
               }

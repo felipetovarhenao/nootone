@@ -4,6 +4,7 @@ import Icon from "../Icon/Icon";
 import icons from "../../utils/icons";
 import { useNavigate } from "react-router-dom";
 import { ReactNode } from "react";
+import { useAppSelector } from "../../redux/hooks";
 
 type ViewContainerProps = {
   className?: string;
@@ -13,12 +14,16 @@ type ViewContainerProps = {
 };
 const ViewContainer = ({ onGoBack, className, viewName, children }: ViewContainerProps) => {
   const navigate = useNavigate();
+  const { isProcessing } = useAppSelector((state) => state.recordings);
   return (
     <div className={"ViewContainer"}>
       <div className="ViewContainer__header">
         <Icon
           className="ViewContainer__header__back-button"
           onClick={() => {
+            if (isProcessing) {
+              return;
+            }
             if (onGoBack) {
               onGoBack();
             } else {
