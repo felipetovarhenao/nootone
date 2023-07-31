@@ -27,7 +27,11 @@ export default function segmentChordEvents(chordEvents: ChordEvent[], segmentDur
       if (noteEnd > segmentEnd) {
         const noteDuration = note.duration;
         note.duration = segmentEnd - chordEvent.onset;
-        nextChordEvent.notes.push({ duration: noteDuration - note.duration, pitch: note.pitch, velocity: note.velocity });
+
+        // prevent notes with near-zero duration (i.e., filter out floating point errors)
+        if (noteDuration - note.duration > 1e-4) {
+          nextChordEvent.notes.push({ duration: noteDuration - note.duration, pitch: note.pitch, velocity: note.velocity });
+        }
       }
     });
 
