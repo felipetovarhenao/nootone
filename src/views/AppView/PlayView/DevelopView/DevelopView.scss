@@ -196,6 +196,12 @@
           background-color: var(--danger-4);
         }
       }
+      @media (prefers-color-scheme: dark) {
+        background-color: var(--danger-4) !important;
+        &:hover:not(:disabled) {
+          background-color: var(--danger-5) !important;
+        }
+      }
     }
   }
   .DevelopView__preview__player {
@@ -209,16 +215,5 @@
     font-weight: bold;
     text-transform: uppercase;
     color: var(--disabled-3);
-  }
-}
-
-.dark .DevelopView {
-  .DevelopView__button {
-    &#save {
-      background-color: var(--danger-4);
-      &:hover:not(:disabled) {
-        background-color: var(--danger-5);
-      }
-    }
   }
 }
