@@ -9,6 +9,8 @@
     @include m.round;
     @include m.vh-pad(m.$gap-ms, m.$gap-ml);
     font-size: m.$txt-ml;
+    background-color: var(--bg-1);
+    color: var(--txt);
   }
   label {
     @include m.l-pad;

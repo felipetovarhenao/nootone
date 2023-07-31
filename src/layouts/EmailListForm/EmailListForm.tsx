@@ -60,7 +60,7 @@ export const EmailListForm = ({ className }: EmailListFormProps) => {
   };
 
   return (
-    <Formik initialValues={initialValues} validationSchema={schema} onSubmit={sendEmail}>
+    <Formik initialValues={initialValues} validationSchema={schema} onSubmit={sendEmail} validateOnBlur={false} validateOnChange={false}>
       <Form className={cn(className, "EmailListForm")} ref={form}>
         {success && <p className="EmailListForm__success-message">{success}</p>}
         <Field type="text" name="from_name" placeholder="full name" />

@@ -5,6 +5,9 @@
   align-items: center;
   min-height: 300px;
   background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(180deg, var(--bg-3) 0%, var(--bg-2) 100%);
+  }
   .header {
     @include m.v-pad;
     @include m.b-mar(m.$gap-xxl);

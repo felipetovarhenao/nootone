@@ -195,11 +195,11 @@
         &:hover:not(:disabled) {
           background-color: var(--danger-4);
         }
-      }
-      @media (prefers-color-scheme: dark) {
-        background-color: var(--danger-4) !important;
-        &:hover:not(:disabled) {
-          background-color: var(--danger-5) !important;
+        @media (prefers-color-scheme: dark) {
+          background-color: var(--danger-4);
+          &:hover:not(:disabled) {
+            background-color: var(--danger-5);
+          }
         }
       }
     }

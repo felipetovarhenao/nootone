@@ -21,6 +21,7 @@
       gap: $gap-xxl;
       .ContactAnchor__container__text__p {
         font-size: $txt-lg;
+        color: var(--txt);
         @include mobile-down {
           text-align: center;
         }

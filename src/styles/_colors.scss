@@ -1,27 +1,28 @@
 :root {
   --primary-hue: 200;
   --secondary-hue: 250;
+  --saturation: 25%;
 
   // background colors
-  --bg-1: hsl(var(--primary-hue), 15%, 99%);
-  --bg-2: hsl(var(--primary-hue), 15%, 95%);
-  --bg-3: hsl(var(--primary-hue), 15%, 91%);
-  --bg-4: hsl(var(--primary-hue), 15%, 87%);
-  --bg-5: hsl(var(--primary-hue), 15%, 83%);
+  --bg-1: hsl(var(--primary-hue), var(--saturation), 98%);
+  --bg-2: hsl(var(--primary-hue), var(--saturation), 96%);
+  --bg-3: hsl(var(--primary-hue), var(--saturation), 94%);
+  --bg-4: hsl(var(--primary-hue), var(--saturation), 92%);
+  --bg-5: hsl(var(--primary-hue), var(--saturation), 90%);
 
   // foreground
-  --fg-1: hsl(var(--primary-hue), 15%, 5%);
-  --fg-2: hsl(var(--primary-hue), 15%, 8%);
-  --fg-3: hsl(var(--primary-hue), 15%, 12%);
-  --fg-4: hsl(var(--primary-hue), 15%, 16%);
-  --fg-5: hsl(var(--primary-hue), 15%, 20%);
+  --fg-1: hsl(var(--primary-hue), var(--saturation), 5%);
+  --fg-2: hsl(var(--primary-hue), var(--saturation), 8%);
+  --fg-3: hsl(var(--primary-hue), var(--saturation), 12%);
+  --fg-4: hsl(var(--primary-hue), var(--saturation), 16%);
+  --fg-5: hsl(var(--primary-hue), var(--saturation), 20%);
 
   // disabled
-  --disabled-1: hsl(var(--primary-hue), 15%, 25%);
-  --disabled-2: hsl(var(--primary-hue), 15%, 37%);
-  --disabled-3: hsl(var(--primary-hue), 15%, 50%);
-  --disabled-4: hsl(var(--primary-hue), 15%, 62%);
-  --disabled-5: hsl(var(--primary-hue), 15%, 75%);
+  --disabled-1: hsl(var(--primary-hue), 25%, 42%);
+  --disabled-2: hsl(var(--primary-hue), 25%, 46%);
+  --disabled-3: hsl(var(--primary-hue), 25%, 50%);
+  --disabled-4: hsl(var(--primary-hue), 25%, 54%);
+  --disabled-5: hsl(var(--primary-hue), 25%, 58%);
 
   // primary colors
   --primary-1: hsl(var(--primary-hue), 70%, 25%);
@@ -69,18 +70,18 @@
 
   @media (prefers-color-scheme: dark) {
     // foreground
-    --fg-1: hsl(var(--primary-hue), 15%, 99%);
-    --fg-2: hsl(var(--primary-hue), 15%, 94%);
-    --fg-3: hsl(var(--primary-hue), 15%, 89%);
-    --fg-4: hsl(var(--primary-hue), 15%, 84%);
-    --fg-5: hsl(var(--primary-hue), 15%, 80%);
+    --fg-1: hsl(var(--primary-hue), var(--saturation), 97%);
+    --fg-2: hsl(var(--primary-hue), var(--saturation), 95%);
+    --fg-3: hsl(var(--primary-hue), var(--saturation), 92%);
+    --fg-4: hsl(var(--primary-hue), var(--saturation), 89%);
+    --fg-5: hsl(var(--primary-hue), var(--saturation), 86%);
 
     // background colors
-    --bg-1: hsl(var(--primary-hue), 15%, 8%);
-    --bg-2: hsl(var(--primary-hue), 15%, 12%);
-    --bg-3: hsl(var(--primary-hue), 15%, 16%);
-    --bg-4: hsl(var(--primary-hue), 15%, 20%);
-    --bg-5: hsl(var(--primary-hue), 15%, 24%);
+    --bg-1: hsl(var(--primary-hue), var(--saturation), 6%);
+    --bg-2: hsl(var(--primary-hue), var(--saturation), 9%);
+    --bg-3: hsl(var(--primary-hue), var(--saturation), 12%);
+    --bg-4: hsl(var(--primary-hue), var(--saturation), 15%);
+    --bg-5: hsl(var(--primary-hue), var(--saturation), 18%);
 
     --txt: var(--fg-1);
     --txt-negative: var(--bg-5);
