@@ -29,5 +29,5 @@ export default function segmentChordEvents(chordEvents: ChordEvent[], segmentDur
     }
     chordSegments[segmentIndex].chords.push(chordEvent);
   }
-  return chordSegments.filter((x) => x.chords.length > 0);
+  return chordSegments.filter((x) => x.chords.length > 0).sort((a, b) => a.onset - b.onset);
 }

@@ -2,6 +2,8 @@ import KDTree from "./KDTree";
 import { ChordEvent, NoteEvent, NoteEventSegment } from "../types/music";
 import randomChoice from "./randomChoice";
 import removeDuplicates from "./removeDuplicates";
+import segmentChordEvents from "./segmentChordEvents";
+import chordEventsToNoteEvents from "./chordEventsToNoteEvents";
 
 /**
  * NoteHarmonizer class that harmonizes a given note array based on chord collections and key signatures.
@@ -184,38 +186,6 @@ export default class NoteHarmonizer {
     }
 
     return keySignaturesChromas;
-  }
-
-  /**
-   * Converts a note array into segments of specified size.
-   * @param {NoteEvent[]} noteEvents - The input note array.
-   * @param {number} segSize - The size of segments.
-   * @returns {NoteEventSegment[]} An array of segments.
-   */
-  private noteArrayToSegments(noteEvents: NoteEvent[], segSize: number): NoteEventSegment[] {
-    const segments: NoteEventSegment[] = [];
-    let segment: NoteEvent[] = [];
-    const notes = [...noteEvents].sort((a, b) => a.onset - b.onset);
-    const margin = 0.01;
-    let lastSegmentIndex = Math.floor(notes[0].onset / segSize + margin);
-
-    for (const note of notes) {
-      const segmentIndex = Math.floor(note.onset / segSize + margin);
-
-      if (segmentIndex > lastSegmentIndex) {
-        segments.push({ notes: segment, onset: lastSegmentIndex * segSize });
-        lastSegmentIndex = segmentIndex;
-        segment = [];
-      }
-
-      segment.push(note);
-    }
-
-    if (segment.length > 0) {
-      segments.push({ notes: segment, onset: lastSegmentIndex * segSize });
-    }
-
-    return segments;
   }
 
   /**
@@ -423,7 +393,7 @@ export default class NoteHarmonizer {
    * @returns {NoteEvent[]} The harmonized note array.
    */
   harmonize(
-    noteArray: NoteEvent[],
+    chordEvents: ChordEvent[],
     chordCollection: number[][] | string = "traditional",
     segSize: number = 2,
     harmonicMemory: number = 0.125,
@@ -436,7 +406,11 @@ export default class NoteHarmonizer {
     }
 
     const harmonicArray: ChordEvent[] = [];
-    const chordSegments = this.noteArrayToSegments(noteArray, segSize);
+    const chordSegments: NoteEventSegment[] = segmentChordEvents(chordEvents, segSize).map((seg) => ({
+      onset: seg.onset,
+      notes: chordEventsToNoteEvents(seg.chords),
+    }));
+
     let lastChroma: number[] | null = null;
 
     for (let i = 0; i < chordSegments.length; i++) {

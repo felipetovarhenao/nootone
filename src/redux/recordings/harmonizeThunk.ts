@@ -15,7 +15,6 @@ import {
 } from "./harmonizeUtils";
 import camelToSpaces from "../../utils/camelToSpaces";
 import { HarmonizerPayload, HarmonizerReturnType } from "./harmonizeTypes";
-import chordEventsToNoteEvents from "../../utils/chordEventsToNoteEvents";
 
 async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerReturnType> {
   // destructure payload
@@ -25,7 +24,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
   try {
     // get features
     const chordEvents = await getAudioFeatures(recording);
-    const chords = getChords(chordEventsToNoteEvents(chordEvents), settings);
+    const chords = getChords(chordEvents, settings);
 
     const arpeggios = generateArpeggio(chords, recording.features.tempo, settings);
 

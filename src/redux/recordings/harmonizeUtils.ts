@@ -54,12 +54,8 @@ export async function getAudioFeatures(recording: Recording): Promise<ChordEvent
   return chordEvents;
 }
 
-export function getChords(noteEvents: NoteEvent[], settings: ParsedHarmonizerSettings): ChordEvent[] {
-  const chordPredictions = new NoteHarmonizer().harmonize(
-    noteEvents.map((n) => ({ ...n, velocity: 1 })),
-    settings.style,
-    settings.segSize
-  );
+export function getChords(chordEvents: ChordEvent[], settings: ParsedHarmonizerSettings): ChordEvent[] {
+  const chordPredictions = new NoteHarmonizer().harmonize(chordEvents, settings.style, settings.segSize);
 
   // Generate the individual note events from the harmonic blocks and apply voice leading
   const notes: NoteEvent[] = [];
