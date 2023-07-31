@@ -69,7 +69,7 @@
   --txt-negative: var(--bg-1);
 
   @media (prefers-color-scheme: dark) {
-    --saturation: 30%;
+    --saturation: 20%;
     // foreground
     --fg-1: hsl(var(--primary-hue), var(--saturation), 97%);
     --fg-2: hsl(var(--primary-hue), var(--saturation), 95%);
