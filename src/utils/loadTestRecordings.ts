@@ -1,3 +1,4 @@
+import createUniqueTitle from "./createUniqueTitle";
 import getAudioSpecs from "./getAudioSpecs";
 
 export default function loadTestRecordings(callback: (rec: any) => void): void {
@@ -10,7 +11,7 @@ export default function loadTestRecordings(callback: (rec: any) => void): void {
       const { duration, sampleRate } = await getAudioSpecs(blob);
       const rec = {
         url: url,
-        name: `${bpm}`,
+        name: `${bpm}bpm - ${createUniqueTitle()}`,
         duration: duration,
         sampleRate,
         features: {
