@@ -2,7 +2,7 @@ import createUniqueTitle from "./createUniqueTitle";
 import getAudioSpecs from "./getAudioSpecs";
 
 export default function loadTestRecordings(callback: (rec: any) => void): void {
-  const bpmSamples = [60, 121, 105, 77, 110, 75, 90, 94, 113, 122, 123, 65, 70, 99, 117];
+  const bpmSamples = [53, 57, 60, 64, 65, 70, 75, 77, 89, 90, 92, 93, 94, 99, 105, 110, 113, 113, 117, 121, 122, 123];
   bpmSamples.forEach(async (bpm) => {
     try {
       const res = await fetch(`https://dxbtnxd6vjk30.cloudfront.net/media/tests/${bpm}bpm.mp3`);
