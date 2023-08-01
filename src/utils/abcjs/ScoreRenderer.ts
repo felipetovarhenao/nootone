@@ -65,7 +65,7 @@ export default class ScoreRenderer {
     let accent = false;
     const notes: number[] = [];
     chordEvent.notes.forEach((note) => {
-      if (!accent && note.velocity > 0.5) {
+      if (!accent && note.velocity > 0.7) {
         accent = true;
       }
       notes.push(note.pitch);
