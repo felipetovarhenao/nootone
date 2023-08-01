@@ -5,7 +5,7 @@
   @include m.h-stack-c;
   gap: m.$gap-md;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: m.$bold;
   font-size: m.$txt-ms;
   &.--primary {
     background-color: var(--primary-3);

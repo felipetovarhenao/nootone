@@ -38,7 +38,7 @@
       @include v-stack;
       gap: $gap-lg;
       .UserDashboardView__sections__section__header {
-        font-weight: bold;
+        font-weight: $bold;
         font-size: $txt-md;
         text-transform: uppercase;
         color: var(--fg-5);

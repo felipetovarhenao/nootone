@@ -36,7 +36,7 @@
     background-color: var(--bg-3);
     * {
       color: var(--txt);
-      font-weight: bold;
+      font-weight: $bold;
     }
     .beta-login__footer__link {
       @include hyperlink;

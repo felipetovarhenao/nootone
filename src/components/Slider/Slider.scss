@@ -41,7 +41,7 @@
     @include m.round;
     background-color: var(--bg-5);
     color: var(--fg-5);
-    font-weight: bold;
+    font-weight: m.$bold;
     font-size: m.$txt-sm;
     text-align: center;
   }

@@ -55,7 +55,7 @@
   }
   .FeedbackForm__status {
     text-align: center;
-    font-weight: bold;
+    font-weight: $bold;
     font-size: $txt-ml;
     &.--success {
       color: var(--primary-3);

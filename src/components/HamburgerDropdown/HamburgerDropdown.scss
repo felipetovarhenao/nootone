@@ -6,7 +6,7 @@
   .Icon {
     @include clickable;
     & > * {
-      color: var(--txt) !important;
+      color: var(--txt);
     }
   }
   .children {

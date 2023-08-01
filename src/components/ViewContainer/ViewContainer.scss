@@ -19,7 +19,7 @@
       font-size: $txt-ml;
       text-transform: uppercase;
       color: var(--txt);
-      font-weight: bold;
+      font-weight: $bold;
     }
   }
   .ViewContainer__children {

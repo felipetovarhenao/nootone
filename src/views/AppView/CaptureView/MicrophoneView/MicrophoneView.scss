@@ -66,7 +66,7 @@
       &:hover {
         background-color: var(--danger-4);
       }
-      font-weight: bold;
+      font-weight: $bold;
       font-size: $txt-ms;
     }
     .MicrophoneView__icon {

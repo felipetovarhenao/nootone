@@ -15,7 +15,7 @@
     @include m.hyperlink;
     white-space: nowrap;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: m.$bold;
   }
   .hamburger {
     .navbar-link {

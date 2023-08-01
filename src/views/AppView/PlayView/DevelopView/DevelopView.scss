@@ -39,7 +39,7 @@
         width: 100%;
         text-align: center;
         font-size: $txt-ml;
-        font-weight: bold;
+        font-weight: $bold;
         letter-spacing: $gap-xs;
         color: var(--txt);
       }
@@ -68,7 +68,7 @@
     .DevelopView__kept-variations__label {
       width: 100%;
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: $bold;
       color: var(--disabled-3);
     }
     .DevelopView__kept-variations__container {
@@ -100,7 +100,7 @@
     .DevelopView__algorithms__prompt {
       @include v-pad;
       font-size: $txt-ml;
-      font-weight: bold;
+      font-weight: $bold;
       color: var(--txt);
     }
     .DevelopView__algorithms__options {
@@ -128,7 +128,7 @@
           .DevelopView__algorithms__options__option__header__text,
           .DevelopView__algorithms__options__option__header__icon * {
             vertical-align: middle;
-            font-weight: bold;
+            font-weight: $bold;
             letter-spacing: $gap-xs;
             text-transform: uppercase;
             font-size: $txt-ms;
@@ -151,7 +151,7 @@
             text-align: center;
             font-size: $txt-md;
             text-transform: uppercase;
-            font-weight: bold;
+            font-weight: $bold;
             color: var(--disabled-3);
           }
         }
@@ -212,7 +212,7 @@
     @include v-mar($gap-lg);
     font-size: $txt-md;
     letter-spacing: $gap-xs;
-    font-weight: bold;
+    font-weight: $bold;
     text-transform: uppercase;
     color: var(--disabled-3);
   }

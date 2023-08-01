@@ -30,7 +30,7 @@
       @include v-stack;
       gap: $gap-lg;
       .Dialog__container__header {
-        font-weight: bold;
+        font-weight: $bold;
         font-size: $txt-ml;
         text-transform: uppercase;
         text-align: center;

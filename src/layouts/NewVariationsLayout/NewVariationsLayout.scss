@@ -12,7 +12,7 @@
   .NewVariationsLayout__label {
     width: 100%;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: $bold;
     color: var(--disabled-3);
   }
   .NewVariationsLayout__container {

@@ -7,6 +7,9 @@
   .handle {
     @include l-pad($gap-ml);
     box-sizing: content-box;
+    * {
+      color: var(--fg-5);
+    }
   }
   .children {
     @include on-load-animation(slide-down, 0.125s);
@@ -24,7 +27,7 @@
       letter-spacing: $gap-xxs;
       color: var(--txt);
       font-size: $txt-sm;
-      font-weight: bold;
+      font-weight: $bold;
       text-transform: uppercase;
       &:hover {
         background-color: var(--secondary-4);
