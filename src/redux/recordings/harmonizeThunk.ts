@@ -49,6 +49,13 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
       {
         type: TrackType.SYMBOLIC,
         data: {
+          chordEvents,
+          name: InstrumentName.PAD,
+        },
+      },
+      {
+        type: TrackType.SYMBOLIC,
+        data: {
           chordEvents: arpeggios,
           name: settings.instrumentName,
         },
@@ -80,6 +87,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
       tempo: recording.features.tempo,
       timeSignature: settings.timeSignature,
       instrumentalParts: [
+        { name: InstrumentName.PAD, chordEvents },
         { name: settings.instrumentName, chordEvents: arpeggios },
         { name: InstrumentName.PAD, chordEvents: pads },
         { name: bassName, chordEvents: bassLine },
