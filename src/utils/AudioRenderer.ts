@@ -3,6 +3,20 @@ import { AudioTrack, SymbolicTrack, TrackSequence, TrackType } from "../types/au
 import audioArrayFromURL from "./audioArrayFromURL";
 import audioBufferToBlob from "./audioBufferToBlob";
 import InstrumentSampler from "./InstrumentSampler";
+import randomChoice from "./randomChoice";
+
+const IMPULSE_RESPONSES = [
+  "Five_columns_long",
+  "Scala_milan_opera_hall",
+  "Right_glass_triangle",
+  "Musikvereinsaal",
+  "Large_bottle_hall",
+  "In_the_silo",
+  "Going_home",
+  "Conic_long_echo_hall",
+  "Cement_blocks_2",
+  "Five_columns_long",
+];
 
 export default class AudioRenderer {
   public static async render(tracks: TrackSequence, numChannels: number = 2): Promise<Blob> {
@@ -79,8 +93,10 @@ export default class AudioRenderer {
 
     /* reverb FX */
     const reverbGain = context.createGain();
-    const reverbConvolver = await this.createConvolver(context, "https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/Five+Columns+Long.mp3");
-    reverbGain.gain.value = 0.125;
+
+    const impulseResponse = randomChoice(IMPULSE_RESPONSES);
+    const reverbConvolver = await this.createConvolver(context, `https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/${impulseResponse}.mp3`);
+    reverbGain.gain.value = 0.15;
 
     const compressorNode = this.createCompressorNode(context);
 
