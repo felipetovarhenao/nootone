@@ -156,20 +156,70 @@ export default class PitchDetector {
     }
   }
 
+  private quantizeNoteEvents(noteEvents: NoteEvent[], gridSize: number) {
+    const quantizedNoteEvents: NoteEvent[] = [];
+
+    let lastPitch = null;
+    for (let i = 0; i < noteEvents.length; i++) {
+      const noteEvent = noteEvents[i];
+      if (noteEvent.duration >= gridSize && (lastPitch == null || Math.abs(lastPitch - noteEvent.pitch) <= 12)) {
+        noteEvent.onset = Math.floor(noteEvent.onset / gridSize) * gridSize;
+        quantizedNoteEvents.push(noteEvent);
+        lastPitch = noteEvent.pitch;
+      }
+    }
+
+    return quantizedNoteEvents;
+  }
+
+  private applyMedianFilter(arr: number[], filterSize: number = 3): number[] {
+    const filteredArray: number[] = [];
+    const halfFilterSize = Math.floor(filterSize / 2);
+    for (let i = 0; i < arr.length; i++) {
+      const start = Math.max(0, i - halfFilterSize);
+      const end = Math.min(arr.length, i + halfFilterSize + 1);
+      const median = getMedian(arr.slice(start, end));
+      filteredArray.push(median);
+    }
+    return filteredArray;
+  }
+
+  private applyLegato(noteEvents: NoteEvent[]) {
+    noteEvents
+      .sort((a, b) => a.onset - b.onset)
+      .forEach((noteEvent, i) => {
+        if (i === noteEvents.length - 1) {
+          return;
+        }
+        const legatoDuration = Math.min(noteEvent.duration, noteEvents[i + 1].onset);
+        if (legatoDuration > 1e-5) {
+          noteEvent.duration = legatoDuration;
+        }
+      });
+  }
+
   public getChordEvents(array: Float32Array, sampleRate: number, tempo: number, subdiv: number = 4): ChordEvent[] {
     const { pitchArray, clarityArray, rmsArray } = this.getFrequencyContour(array, sampleRate);
 
-    const smoothPitchArray = this.applyWeightFilter(pitchArray, clarityArray, 7);
+    const segmentSubdiv = subdiv * 2;
 
-    const pitchSegments = this.getPitchSegments(smoothPitchArray, sampleRate, tempo, subdiv);
+    const smoothPitchArray = this.applyWeightFilter(pitchArray, clarityArray, segmentSubdiv - 1);
 
-    const segmentDuration = 60 / (tempo * subdiv);
+    const pitchSegments = this.getPitchSegments(smoothPitchArray, sampleRate, tempo, segmentSubdiv);
 
-    const noteEvents = this.pitchSegmentsToNoteEvents(pitchSegments, segmentDuration);
+    const smoothPitchSegments = this.applyMedianFilter(pitchSegments, subdiv - 1);
+
+    const segmentDuration = 60 / (tempo * segmentSubdiv);
+
+    const noteEvents = this.pitchSegmentsToNoteEvents(smoothPitchSegments, segmentDuration);
 
     this.applyRMStoNoteEvents(noteEvents, rmsArray);
 
-    return noteEvents.map((note) => ({
+    const quantizedNoteEvents = this.quantizeNoteEvents(noteEvents, segmentDuration * 2);
+
+    this.applyLegato(quantizedNoteEvents);
+
+    return quantizedNoteEvents.map((note) => ({
       onset: note.onset,
       notes: [{ pitch: note.pitch, duration: note.duration, velocity: note.velocity }],
     }));

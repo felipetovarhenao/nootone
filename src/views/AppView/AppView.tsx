@@ -36,7 +36,7 @@ const AppView = () => {
   const browserNotificationFlagRef = useRef(false);
 
   useEffect(() => {
-    if (!testsLoaded.current && CONFIG.deploymentType === DeploymentType.DEV) {
+    if (!testsLoaded.current && CONFIG.deploymentType !== DeploymentType.PROD) {
       testsLoaded.current = true;
       loadTestRecordings((rec) => dispatch(recordingActions.create(rec)));
     }
