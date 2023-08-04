@@ -1,6 +1,6 @@
 import "./AppView.scss";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/logo.png";
+import Logo from "../../components/Logo/Logo";
 import { useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import useViewportInfo from "../../hooks/useViewportInfo";
@@ -75,7 +75,7 @@ const AppView = () => {
     <div className={cn("AppView", { dark: darkTheme })}>
       <h1 className="AppView__header">
         {!username ? (
-          <img className="AppView__header__avatar" src={logo} alt="nootone-logo" />
+          <Logo className="AppView__header__avatar" />
         ) : (
           <Avatar size={"32px"} className="AppView__header__avatar --is-authenticated" username={username} />
         )}

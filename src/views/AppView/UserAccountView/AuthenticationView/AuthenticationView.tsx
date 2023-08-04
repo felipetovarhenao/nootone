@@ -5,8 +5,8 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { userActions } from "../../../../redux/user/userSlice";
 import UserAuthForm from "../../../../components/UserAuthForm/UserAuthForm";
 import AppName from "../../../../components/AppName/AppName";
-import logo from "../../../../assets/logo.png";
 import { useNotification } from "../../../../components/Notification/NotificationProvider";
+import Logo from "../../../../components/Logo/Logo";
 
 const AuthenticationView = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +15,7 @@ const AuthenticationView = () => {
   return (
     <div className="AuthenticationView">
       <div className="AuthenticationView__brand">
-        <img className="AuthenticationView__brand__logo" src={logo} alt="nootone-logo" />
+        <Logo className="AuthenticationView__brand__logo" />
         <AppName className="AuthenticationView__brand__name" />
       </div>
       <UserAuthForm

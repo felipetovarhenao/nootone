@@ -1,7 +1,7 @@
 import "./HomeView.scss";
 import AnchorNavbar from "../../components/AnchorNavbar/AnchorNavbar";
-import { useRef, useState } from "react";
-import logo from "../../assets/logo.png";
+import { useRef } from "react";
+import Logo from "../../components/Logo/Logo";
 import AppName from "../../components/AppName/AppName";
 import cn from "classnames";
 
@@ -12,7 +12,6 @@ import ContactAnchor from "./ContactAnchor/ContactAnchor";
 import AboutAnchor from "./AboutAnchor/AboutAnchor";
 
 const HomeView: React.FC = () => {
-  const [darkTheme, setDarkTheme] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
   const teamRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
@@ -35,10 +34,10 @@ const HomeView: React.FC = () => {
   ];
 
   return (
-    <div className={cn("HomeView", { scrolled: scrollPosition.y > 100, dark: darkTheme })}>
+    <div className={cn("HomeView", { scrolled: scrollPosition.y > 100 })}>
       <AnchorNavbar className="navbar" links={sections}>
         <div className="brand">
-          <img className="logo" src={logo} alt="nootone-logo" onClick={() => setDarkTheme((x) => !x)} />
+          <Logo className="logo" />
           <AppName className="name" />
         </div>
       </AnchorNavbar>

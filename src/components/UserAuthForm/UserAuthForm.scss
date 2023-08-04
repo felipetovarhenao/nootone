@@ -2,4 +2,11 @@
   .error {
     color: var(--danger-3);
   }
+  input {
+    background-color: var(--bg-1);
+    color: var(--txt);
+    @media (prefers-color-scheme: dark) {
+      background-color: var(--bg-5);
+    }
+  }
 }

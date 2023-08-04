@@ -15,15 +15,15 @@
     background: linear-gradient(90deg, var(--primary-3) 0%, var(--secondary-3) 100%);
     justify-content: space-between;
     .AppView__header__avatar {
-      @include border(var(--bg-1), $gap-ms);
+      @include border(var(--success-4), $gap-sm);
       @include round(100%);
-      background-color: var(--bg-2);
+      background-color: var(--primary-4);
       box-sizing: content-box;
       &:not(.--is-authenticated) {
-        height: 32px;
+        width: 32px;
+        border-color: var(--txt-light);
       }
       &.--is-authenticated {
-        border-color: var(--success-4);
         box-shadow: 0px 0px 5px var(--success-1);
         svg {
           box-sizing: content-box;
