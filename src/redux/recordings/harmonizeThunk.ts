@@ -46,13 +46,13 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
           gain: 0.707,
         },
       },
-      {
-        type: TrackType.SYMBOLIC,
-        data: {
-          chordEvents,
-          name: InstrumentName.PAD,
-        },
-      },
+      // {
+      //   type: TrackType.SYMBOLIC,
+      //   data: {
+      //     chordEvents,
+      //     name: InstrumentName.PAD,
+      //   },
+      // },
       {
         type: TrackType.SYMBOLIC,
         data: {
@@ -87,7 +87,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
       tempo: recording.features.tempo,
       timeSignature: settings.timeSignature,
       instrumentalParts: [
-        { name: InstrumentName.PAD, chordEvents },
+        // { name: InstrumentName.PAD, chordEvents },
         { name: settings.instrumentName, chordEvents: arpeggios },
         { name: InstrumentName.PAD, chordEvents: pads },
         { name: bassName, chordEvents: bassLine },
