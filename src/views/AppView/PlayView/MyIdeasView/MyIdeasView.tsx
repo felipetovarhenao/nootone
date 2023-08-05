@@ -7,7 +7,7 @@ const MyIdeasView = () => {
 
   return (
     <div className="MyIdeasView">
-      <h1 className="TracksView__header">my ideas ({recordings.length})</h1>
+      <h1 className="TracksView__header">my sketches ({recordings.length})</h1>
       <div className="TracksView__recordings">
         {[...recordings]
           .sort((a, b) => b.date?.localeCompare(a.date || "0"))

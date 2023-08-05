@@ -94,7 +94,7 @@ const MicrophoneView = () => {
             },
           };
           dispatch(recordingActions.create(rec));
-          navigate("/app/ideas/recordings/0/develop");
+          navigate("/app/sketches/0/develop");
         } catch (error) {
           console.log(error);
         } finally {

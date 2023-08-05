@@ -16,10 +16,10 @@ export default function App() {
         <Route path="/" element={<HomeView />} />
         <Route path="/app" element={<AppView />}>
           <Route index element={<CaptureView />} />
-          <Route path="ideas">
+          <Route path="sketches">
             <Route index element={<PlayView />} />
-            <Route path="recordings/:id/develop" element={<DevelopView />} />
-            <Route path="recordings/:id/edit" element={<RecordingSettingsView />} />
+            <Route path=":id/develop" element={<DevelopView />} />
+            <Route path=":id/edit" element={<RecordingSettingsView />} />
           </Route>
           <Route path="dashboard" element={<UserAccountView />} />
           <Route path="feedback" element={<UserFeedbackView />} />
