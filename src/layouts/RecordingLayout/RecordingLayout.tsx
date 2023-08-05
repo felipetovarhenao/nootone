@@ -27,7 +27,7 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
         </div>
       </div>
       <div className="RecordingLayout__buttons">
-        <Button className="RecordingLayout__button" onClick={() => navigate(`/app/ideas/recordings/${recIndex}/develop`)}>
+        <Button className="RecordingLayout__button" onClick={() => navigate(`/app/sketches/${recIndex}/develop`)}>
           <Icon className="icon" icon={icons.waveform} />
           develop
         </Button>

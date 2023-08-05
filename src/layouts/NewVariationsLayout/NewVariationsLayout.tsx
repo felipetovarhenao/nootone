@@ -20,7 +20,7 @@ const NewVariationsLayout = () => {
 
   return keptVariationsBuffer.length > 0 ? (
     <div className="NewVariationsLayout">
-      <h1 className="NewVariationsLayout__label">my new variations ({keptVariationsBuffer.length})</h1>
+      <h1 className="NewVariationsLayout__label">new variations ({keptVariationsBuffer.length})</h1>
       <div ref={containerRef} className="NewVariationsLayout__container">
         {keptVariationsBuffer.map((variation) => (
           <WaveSurferPlayer showDate={true} className="NewVariationsLayout__container__variation" key={variation.name} rec={variation} />

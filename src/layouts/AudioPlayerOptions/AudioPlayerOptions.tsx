@@ -47,7 +47,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
           closeDialog();
           notification({ type: "SUCCESS", icon: icons.check, message: "Recording deleted" });
           dispatch(recordingActions.delete(recording));
-          navigate("/app/ideas/");
+          navigate("/app/sketches/");
         },
       },
       {

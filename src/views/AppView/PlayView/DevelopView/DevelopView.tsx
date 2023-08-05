@@ -78,7 +78,7 @@ const DevelopView = () => {
     if (id !== null && id >= 0 && id < recordings.length) {
       dispatch(recordingActions.selectRecording(id));
     } else {
-      navigate("/app/ideas/");
+      navigate("/app/sketches/");
     }
   }, [location.pathname]);
 
