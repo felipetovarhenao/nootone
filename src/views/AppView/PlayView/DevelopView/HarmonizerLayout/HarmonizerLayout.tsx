@@ -9,7 +9,7 @@ import wrapValue from "../../../../../utils/wrapValue";
 
 const styles = Object.keys(NoteHarmonizer.CHORD_COLLECTIONS);
 
-const applyCurve = (x: number, curve: number = 1.125) => x ** curve;
+const applyCurve = (x: number, curve: number = 1.25) => x ** curve;
 
 const groovinessOptions = [
   {

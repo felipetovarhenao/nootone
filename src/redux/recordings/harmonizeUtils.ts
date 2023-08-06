@@ -122,7 +122,7 @@ export function transferVelocity(sourceEvents: ChordEvent[], targetEvent: ChordE
     const notes = sourceEvents[index].notes;
     const sourceVelocity = notes.map((x) => x.velocity).reduce((x, sum) => x + sum, 0) / notes.length;
     e.notes.forEach((note) => {
-      note.velocity = (note.velocity + sourceVelocity) / 2;
+      note.velocity = note.velocity * sourceVelocity;
     });
   });
 }
