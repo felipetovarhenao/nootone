@@ -126,7 +126,7 @@ export default class Arpeggiator {
     function getNoteEnd(index: number) {
       let stopIndex = maxAttacks;
       if (index < maxAttacks - 1) {
-        const maxIndex = Math.floor((maxAttacks - index) * (1 - grooviness)) + index + 2;
+        const maxIndex = Math.floor((maxAttacks - index) * (1 - grooviness ** 1.25)) + index + 2;
         stopIndex = getRandomNumber(index + 1, maxIndex);
       }
       return stopIndex * quantumUnit;

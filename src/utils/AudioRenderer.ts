@@ -5,17 +5,18 @@ import audioBufferToBlob from "./audioBufferToBlob";
 import InstrumentSampler from "./InstrumentSampler";
 import randomChoice from "./randomChoice";
 
-const IMPULSE_RESPONSES = [
-  "Five_columns_long",
-  "Scala_milan_opera_hall",
-  "Right_glass_triangle",
-  "Musikvereinsaal",
-  "Large_bottle_hall",
-  "In_the_silo",
-  "Going_home",
-  "Conic_long_echo_hall",
-  "Cement_blocks_2",
-  "Five_columns_long",
+type ImpulseResponse = {
+  name: string;
+  gainRange: { min: number; max: number };
+};
+const IMPULSE_RESPONSES: ImpulseResponse[] = [
+  { name: "Five_columns_long", gainRange: { min: 0.25, max: 0.5 } },
+  { name: "Right_glass_triangle", gainRange: { min: 0.1, max: 0.25 } },
+  { name: "Musikvereinsaal", gainRange: { min: 0.3, max: 0.4 } },
+  { name: "Large_bottle_hall", gainRange: { min: 0.1, max: 0.25 } },
+  { name: "In_the_silo", gainRange: { min: 0.25, max: 0.4 } },
+  { name: "Going_home", gainRange: { min: 0.08, max: 0.25 } },
+  { name: "Conic_long_echo_hall", gainRange: { min: 0.1, max: 0.25 } },
 ];
 
 export default class AudioRenderer {
@@ -94,9 +95,11 @@ export default class AudioRenderer {
     /* reverb FX */
     const reverbGain = context.createGain();
 
-    const impulseResponse = randomChoice(IMPULSE_RESPONSES);
-    const reverbConvolver = await this.createConvolver(context, `https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/${impulseResponse}.mp3`);
-    reverbGain.gain.value = 0.15;
+    const impulseResponse = randomChoice(IMPULSE_RESPONSES)!;
+    const reverbConvolver = await this.createConvolver(context, `https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/${impulseResponse.name}.mp3`);
+    const { min: revMin, max: revMax } = impulseResponse.gainRange;
+    const reverbGainValue = Math.random() * (revMax - revMin) + revMin;
+    reverbGain.gain.value = reverbGainValue;
 
     const compressorNode = this.createCompressorNode(context);
 
@@ -115,9 +118,9 @@ export default class AudioRenderer {
 
   private static createCompressorNode(context: OfflineAudioContext) {
     const compressorNode = context.createDynamicsCompressor();
-    compressorNode.threshold.value = -12;
+    compressorNode.threshold.value = -20;
     compressorNode.knee.value = 8;
-    compressorNode.ratio.value = 12;
+    compressorNode.ratio.value = 16;
     compressorNode.attack.value = 0.08;
     compressorNode.release.value = 0.2;
     return compressorNode;
