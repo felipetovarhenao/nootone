@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import CONFIG, { DeploymentType } from "./utils/config";
 
 export default function App() {
-  ReactGA.initialize("UA-000000-01", {
+  ReactGA.initialize("G-4C4JMQH4SM", {
     debug: CONFIG.deploymentType === DeploymentType.DEV,
     titleCase: false,
   });
