@@ -5,9 +5,11 @@ import Button from "../../../components/Button/Button";
 import Icon from "../../../components/Icon/Icon";
 import icons from "../../../utils/icons";
 import CONFIG from "../../../utils/config";
+import useAnalyticsEventTracker from "../../../hooks/useAnalyticsEventTracker";
 
 const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   const [showVideo, setShowVideo] = useState(false);
+  const eventTracker = useAnalyticsEventTracker("UI");
   return (
     <AnchorSection ref={ref} className="AboutAnchor" header="A smart music sketchbook app">
       <h2 className="AboutAnchor__subtitle">
@@ -19,7 +21,13 @@ const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
             <p className="AboutAnchor__container__left__text__p">watch how easy it is to create an accompaniment 🎹</p>
             <p className="AboutAnchor__container__left__text__p">make music to match your melodies! 🎙</p>
           </div>
-          <Button className="AboutAnchor__container__left__button" onClick={() => window.open(`${CONFIG.origin}/#/app`)}>
+          <Button
+            className="AboutAnchor__container__left__button"
+            onClick={() => {
+              eventTracker("click", "start_app_button");
+              window.open(`${CONFIG.origin}/#/app`);
+            }}
+          >
             <Icon icon={icons.lab} />
             try the app
           </Button>

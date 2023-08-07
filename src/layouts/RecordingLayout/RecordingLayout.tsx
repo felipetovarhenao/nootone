@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import WaveSurferPlayer from "../../components/WaveSurferPlayer/WaveSurferPlayer";
 import cn from "classnames";
 import AudioPlayerOptions from "../AudioPlayerOptions/AudioPlayerOptions";
+import useAnalyticsEventTracker from "../../hooks/useAnalyticsEventTracker";
 
 type RecordingLayoutProps = {
   rec: Recording;
@@ -17,6 +18,7 @@ type RecordingLayoutProps = {
 
 const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => {
   const navigate = useNavigate();
+  const eventTracker = useAnalyticsEventTracker("UI");
 
   return (
     <div className={cn(className, "RecordingLayout")}>
@@ -27,7 +29,13 @@ const RecordingLayout = ({ rec, recIndex, className }: RecordingLayoutProps) => 
         </div>
       </div>
       <div className="RecordingLayout__buttons">
-        <Button className="RecordingLayout__button" onClick={() => navigate(`/app/sketches/${recIndex}/develop`)}>
+        <Button
+          className="RecordingLayout__button"
+          onClick={() => {
+            eventTracker("click", "develop_sketch_button");
+            navigate(`/app/sketches/${recIndex}/develop`);
+          }}
+        >
           <Icon className="icon" icon={icons.waveform} />
           develop
         </Button>
