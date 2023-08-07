@@ -12,6 +12,7 @@ import useViewportInfo from "../../hooks/useViewportInfo";
 import CacheAPI from "../../utils/CacheAPI";
 import EmailListForm from "../EmailListForm/EmailListForm";
 import Icon from "../../components/Icon/Icon";
+import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEventTracker";
 
 const BetaLogin = () => {
   useViewportInfo();
@@ -23,6 +24,7 @@ const BetaLogin = () => {
 
   async function handleLogin(formData: LoginForm) {
     const { username: u, password: p } = formData;
+    const eventTracker = useAnalyticsEventTracker();
     return new Promise<void>((resolve, reject) => {
       if (u === "nootone-user" && p === "nootone-password") {
         dispatch(userActions.login(formData)).then(() => {
@@ -33,6 +35,7 @@ const BetaLogin = () => {
           });
           CacheAPI.setLocalItem<LoginForm>("betaLogin", formData);
           resolve();
+          eventTracker(EventName.BETA_LOGIN);
         });
       } else {
         reject("Invalid username and/or password");

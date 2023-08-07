@@ -4,6 +4,7 @@ import emailjs from "@emailjs/browser";
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Button from "../../components/Button/Button";
+import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEventTracker";
 
 // Define the validation schema using Yup
 const bugReportSchema = Yup.object().shape({
@@ -19,6 +20,7 @@ type FeedbackForm = {
 };
 const FeedbackForm: React.FC = () => {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null);
+  const eventTracker = useAnalyticsEventTracker();
 
   const form = useRef<HTMLFormElement>(null);
   const initialValues = {
@@ -34,6 +36,7 @@ const FeedbackForm: React.FC = () => {
     try {
       await emailjs.sendForm("service_1upcmpo", "template_tnmwsnu", form.current!, "LfEBEM1_26WPFsCHp");
       setSubmitStatus("success");
+      eventTracker(EventName.FEEDBACK_FORM_SUBMISSION);
     } catch (error) {
       setSubmitStatus("error");
       console.log(error);

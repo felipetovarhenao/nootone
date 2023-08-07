@@ -5,6 +5,7 @@ import { Formik, Field, Form, ErrorMessage, FormikHelpers } from "formik";
 import * as yup from "yup";
 import Button from "../../components/Button/Button";
 import cn from "classnames";
+import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEventTracker";
 
 const schema = yup.object().shape({
   from_name: yup.string().required("Name is required"),
@@ -39,6 +40,7 @@ export const EmailListForm = ({ className }: EmailListFormProps) => {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [success, setSuccess] = useState("");
+  const eventTracker = useAnalyticsEventTracker();
 
   const sendEmail = async (_: emailForm, { resetForm }: FormikHelpers<emailForm>) => {
     try {
@@ -49,6 +51,7 @@ export const EmailListForm = ({ className }: EmailListFormProps) => {
 
       resetForm();
       setSuccess("Thanks for signing up!🫶");
+      eventTracker(EventName.EMAIL_FORM_SUBMISSION);
       setTimeout(() => {
         setSuccess("");
       }, 5000);

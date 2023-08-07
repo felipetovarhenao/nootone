@@ -14,7 +14,7 @@ import CONFIG, { DeploymentType } from "./utils/config";
 
 export default function App() {
   ReactGA.initialize("G-4C4JMQH4SM", {
-    testMode: CONFIG.deploymentType === DeploymentType.DEV,
+    testMode: CONFIG.deploymentType !== DeploymentType.PROD,
   });
 
   const location = useLocation();
