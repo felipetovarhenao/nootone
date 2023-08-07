@@ -13,6 +13,7 @@ import useDialog, { DialogProps } from "../../components/Dialog/Dialog";
 import { useNotification } from "../../components/Notification/NotificationProvider";
 import { usePrintableMusicScore } from "../../components/PrintableMusicScore/PrintableMusicScore";
 import { useNavigate } from "react-router-dom";
+import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEventTracker";
 
 type AudioPlayerOptionsProps = {
   recording: Recording | RecordingVariation;
@@ -32,6 +33,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
   const notification = useNotification();
   const updateMusicScore = usePrintableMusicScore();
   const navigate = useNavigate();
+  const eventTracker = useAnalyticsEventTracker();
 
   const deleteDialog: DialogProps = {
     header: "WAIT!",
@@ -48,6 +50,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
           notification({ type: "SUCCESS", icon: icons.check, message: "Recording deleted" });
           dispatch(recordingActions.delete(recording));
           navigate("/app/sketches/");
+          eventTracker(EventName.DELETE_RECORDING);
         },
       },
       {
@@ -69,6 +72,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
         props: {
           onClick: () => {
             downloadURL(recording.url, recording.name);
+            eventTracker(EventName.DOWNLOAD_AUDIO);
           },
         },
       },
@@ -94,6 +98,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
           onClick: () => {
             const midi = createMidiFile(recording.features.symbolicTranscription!, recording.features.tempo!);
             downloadMIDI(midi, recording.name);
+            eventTracker(EventName.DOWNLOAD_MIDI);
           },
         },
       });
@@ -104,6 +109,7 @@ const AudioPlayerOptions = ({ recording, className }: AudioPlayerOptionsProps) =
         props: {
           onClick: () => {
             updateMusicScore({ musicSequence: recording.features.symbolicTranscription!, recordingURL: recording.url });
+            eventTracker(EventName.VIEW_MUSIC_SCORE);
           },
         },
       });

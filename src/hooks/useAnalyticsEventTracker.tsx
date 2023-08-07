@@ -17,6 +17,13 @@ export enum EventName {
   BETA_LOGIN = "beta_login",
   EMAIL_FORM_SUBMISSION = "email_form_submission",
   FEEDBACK_FORM_SUBMISSION = "feedback_form_submission",
+  DELETE_RECORDING = "delete_recording",
+  VIEW_MUSIC_SCORE = "view_music_score",
+  DOWNLOAD_MIDI = "download_midi",
+  DOWNLOAD_AUDIO = "download_audio",
+  PLAY_ORIGINAL_RECORDING = "play_original_recording",
+  PLAY_VARIATION_RECORDING = "play_variation_recording",
+  PAUSE_VARIATION_RECORDING = "pause_variation_recording",
 }
 const useAnalyticsEventTracker = () => {
   const eventTracker = (name: EventName, options?: UaEventOptions) => {

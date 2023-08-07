@@ -4,6 +4,7 @@ import { SymbolicMusicSequence } from "../../types/music";
 import useMusicScore from "../../hooks/useMusicScore";
 import WaveSurferPlayer from "../WaveSurferPlayer/WaveSurferPlayer";
 import { RecordingVariation } from "../../types/audio";
+import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEventTracker";
 
 type MusicScoreDisplayProps = {
   musicSequence: SymbolicMusicSequence;
@@ -14,6 +15,7 @@ const defaultStaffWidth = 600;
 
 const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps) => {
   const { scoreRef, setMusicSequence, getTimingCallbacks, setCallbackOptions, setRenderingOptions } = useMusicScore();
+  const eventTracker = useAnalyticsEventTracker();
 
   useEffect(() => {
     setCallbackOptions((prev) => ({
@@ -56,10 +58,12 @@ const MusicScoreDisplay = ({ musicSequence, recording }: MusicScoreDisplayProps)
 
   function onPlay(currentTime: number) {
     getTimingCallbacks().start(currentTime, "seconds");
+    eventTracker(EventName.PLAY_VARIATION_RECORDING);
   }
 
   function onPause() {
     getTimingCallbacks().pause();
+    eventTracker(EventName.PAUSE_VARIATION_RECORDING);
   }
 
   function onSeeking(currentTime: number) {
