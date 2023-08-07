@@ -1,18 +1,27 @@
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
+import { UaEventOptions } from "react-ga4/types/ga4";
 
-type EventCategory = "UI";
-type EventAction = "click";
-type EventLabel =
-  | "start_app_button"
-  | "start_recording_button"
-  | "stop_recording_button"
-  | "develop_sketch_button"
-  | "generate_accompaniment_button"
-  | "keep_variation_button";
-
-const useAnalyticsEventTracker = (category: EventCategory) => {
-  const eventTracker = (action: EventAction, label: EventLabel) => {
-    ReactGA.event({ category, action, label });
+export enum EventAction {
+  CLICK,
+}
+export enum EventCategory {
+  UI,
+}
+export enum EventName {
+  START_APP,
+  START_RECORDING,
+  STOP_RECORDING,
+  DEVELOP_SKETCH,
+  GENERATE_ACCOMPANIMENT,
+  KEEP_VARIATION,
+}
+const useAnalyticsEventTracker = () => {
+  const eventTracker = (name: EventName, options?: UaEventOptions) => {
+    ReactGA.event(String(name).toLowerCase(), {
+      action: String(EventAction.CLICK).toLowerCase(),
+      category: String(EventCategory.UI).toLowerCase(),
+      ...options,
+    });
   };
   return eventTracker;
 };

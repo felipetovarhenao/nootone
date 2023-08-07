@@ -5,11 +5,11 @@ import Button from "../../../components/Button/Button";
 import Icon from "../../../components/Icon/Icon";
 import icons from "../../../utils/icons";
 import CONFIG from "../../../utils/config";
-import useAnalyticsEventTracker from "../../../hooks/useAnalyticsEventTracker";
+import useAnalyticsEventTracker, { EventName } from "../../../hooks/useAnalyticsEventTracker";
 
 const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
   const [showVideo, setShowVideo] = useState(false);
-  const eventTracker = useAnalyticsEventTracker("UI");
+  const eventTracker = useAnalyticsEventTracker();
   return (
     <AnchorSection ref={ref} className="AboutAnchor" header="A smart music sketchbook app">
       <h2 className="AboutAnchor__subtitle">
@@ -24,7 +24,7 @@ const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
           <Button
             className="AboutAnchor__container__left__button"
             onClick={() => {
-              eventTracker("click", "start_app_button");
+              eventTracker(EventName.START_APP);
               window.open(`${CONFIG.origin}/#/app`);
             }}
           >

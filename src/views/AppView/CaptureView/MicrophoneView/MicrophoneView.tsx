@@ -22,7 +22,7 @@ import ReferencePitchSettingLayout from "../../../../layouts/ReferencePitchSetti
 import CONFIG, { DeploymentType } from "../../../../utils/config";
 import MicrophoneSettingsLayout from "../../../../layouts/MicrophoneSettingsLayout/MicrophoneSettingsLayout";
 import CacheAPI from "../../../../utils/CacheAPI";
-import useAnalyticsEventTracker from "../../../../hooks/useAnalyticsEventTracker";
+import useAnalyticsEventTracker, { EventName } from "../../../../hooks/useAnalyticsEventTracker";
 
 const inputSuggestions = ["turn a melody into song", "click to record", "capture your idea", "sing a tune", "hum a melody", "whistle a song"];
 const recordingPrompts = ["recording your idea", "press stop when you're ready"];
@@ -37,7 +37,7 @@ const MicrophoneView = () => {
   const startTime = useRef(0);
   const location = useLocation();
   const [settingIndex, setSettingIndex] = useState(0);
-  const eventTracker = useAnalyticsEventTracker("UI");
+  const eventTracker = useAnalyticsEventTracker();
 
   useEffect(() => {
     setMicSettings(micSettings);
@@ -153,7 +153,7 @@ const MicrophoneView = () => {
                 await startRecording();
                 startTime.current = Date.now();
                 dispatch(micActions.toggle());
-                eventTracker("click", "start_recording_button");
+                eventTracker(EventName.START_RECORDING);
               } else if (!isRecording) {
                 notification({
                   type: "DANGER",
@@ -175,7 +175,7 @@ const MicrophoneView = () => {
                 }
                 dispatch(micActions.toggle());
                 stopRecording();
-                eventTracker("click", "stop_recording_button");
+                eventTracker(EventName.STOP_RECORDING);
               }}
               tempo={tempo}
               canvasDims={{ width: 130, height: 130 }}

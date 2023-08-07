@@ -16,7 +16,7 @@ import MusicScoreDisplay from "../../../../components/MusicScoreDisplay/MusicSco
 import EditableField from "../../../../components/EditableField/EditableField";
 import { HarmonizerSettings } from "../../../../redux/recordings/harmonizeTypes";
 import AudioPlayerOptions from "../../../../layouts/AudioPlayerOptions/AudioPlayerOptions";
-import useAnalyticsEventTracker from "../../../../hooks/useAnalyticsEventTracker";
+import useAnalyticsEventTracker, { EventName } from "../../../../hooks/useAnalyticsEventTracker";
 
 type UpdateSettingsCallbackPayload = HarmonizerSettings;
 type UpdateSettingsCallback = (settings: UpdateSettingsCallbackPayload) => void;
@@ -28,7 +28,7 @@ const DevelopView = () => {
   const { selectedRecordingIndex, recordings, variationBuffer, isProcessing } = useAppSelector((state) => state.recordings);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const eventTracker = useAnalyticsEventTracker("UI");
+  const eventTracker = useAnalyticsEventTracker();
 
   const handleGenerate = () => {
     if (selectedRecordingIndex === null || !settingsRef.current) {
@@ -37,7 +37,7 @@ const DevelopView = () => {
     switch (process) {
       case "harmonizer":
         dispatch(recordingActions.harmonize({ recording: recordings[selectedRecordingIndex], settings: settingsRef.current }));
-        eventTracker("click", "generate_accompaniment_button");
+        eventTracker(EventName.GENERATE_ACCOMPANIMENT);
     }
   };
 
@@ -50,7 +50,7 @@ const DevelopView = () => {
 
   const handleKeepVariation = () => {
     dispatch(recordingActions.keepVariation());
-    eventTracker("click", "keep_variation_button");
+    eventTracker(EventName.KEEP_VARIATION);
   };
 
   const updateSettings: UpdateSettingsCallback = (settings) => {

@@ -8,20 +8,20 @@ import DevelopView from "./views/AppView/PlayView/DevelopView/DevelopView";
 import RecordingSettingsView from "./views/AppView/PlayView/RecordingSettingsView/RecordingSettingsView";
 import UserFeedbackView from "./views/AppView/UserFeedbackView/UserFeedbackView";
 import BetaLogin from "./layouts/BetaLogin/BetaLogin";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import CONFIG, { DeploymentType } from "./utils/config";
 
 export default function App() {
   ReactGA.initialize("G-4C4JMQH4SM", {
-    debug: CONFIG.deploymentType === DeploymentType.DEV,
-    titleCase: false,
+    testMode: CONFIG.deploymentType === DeploymentType.DEV,
   });
 
   const location = useLocation();
 
   useEffect(() => {
-    ReactGA.pageview(location.pathname + location.search + location.hash);
+    const path = location.pathname + location.search + location.hash;
+    ReactGA.send({ hitType: "pageview", page: path, title: path });
   }, [location]);
 
   return (
