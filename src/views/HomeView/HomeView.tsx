@@ -45,7 +45,7 @@ const HomeView: React.FC = () => {
         <AboutAnchor ref={aboutRef} />
         <ContactAnchor ref={contactRef} />
         <TeamAnchor ref={teamRef} />
-        <footer className="footer">Sound icons created by Freepik - Flaticon</footer>
+        <footer className="footer">{new Date().getFullYear()} © nootone.io</footer>
       </div>
     </div>
   );

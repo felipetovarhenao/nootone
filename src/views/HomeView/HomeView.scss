@@ -14,6 +14,7 @@
             font-size: calc(m.$txt-xl * 1.25);
           }
           .logo {
+            width: 90px;
             max-height: m.$navbar-height;
           }
         }
@@ -40,8 +41,9 @@
       }
       .logo {
         @include m.r-pad(m.$gap-ml);
-        width: 40%;
-        max-height: calc(m.$navbar-height * 0.65);
+        width: 64px;
+        height: 100%;
+        // max-height: calc(m.$navbar-height * 0.65);
       }
     }
   }

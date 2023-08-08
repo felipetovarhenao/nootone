@@ -11,11 +11,12 @@ export default function Logo({ className }: LogoProps) {
       viewBox="20 30 150 150"
       xmlSpace="preserve"
       className={className}
+      // width={"100%"}
+      // height={"100%"}
     >
       <defs>
         <linearGradient id="linearGradient148">
           <stop offset="0" stopColor={"var(--primary-4)"} stopOpacity="1"></stop>
-          <stop offset="0.6" stopColor={"var(--primary-4)"} stopOpacity="1"></stop>
           <stop offset="1" stopColor={"var(--secondary-4)"} stopOpacity="1"></stop>
         </linearGradient>
         <linearGradient
