@@ -411,7 +411,8 @@ export default class NoteHarmonizer {
       notes: chordEventsToNoteEvents(seg.chords),
     }));
 
-    let lastChroma: number[] | null = null;
+    // let lastChroma: number[] | null = null;
+    let lastChroma: number[] = this.estimateKeyFromSegments(chordSegments, segSize);
 
     for (let i = 0; i < chordSegments.length; i++) {
       const seg = chordSegments[i];
@@ -420,10 +421,8 @@ export default class NoteHarmonizer {
       const chroma = this.noteArrayToChroma(seg.notes, segSize);
 
       // weighted mix with previous chroma
-      if (lastChroma !== null) {
-        for (let j = 0; j < chroma.length; j++) {
-          chroma[j] = chroma[j] * (1 - harmonicMemory) + lastChroma[j] * harmonicMemory;
-        }
+      for (let j = 0; j < chroma.length; j++) {
+        chroma[j] = chroma[j] * (1 - harmonicMemory) + lastChroma[j] * harmonicMemory;
       }
 
       // estimate running key signature vector

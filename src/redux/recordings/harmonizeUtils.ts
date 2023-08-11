@@ -1,5 +1,5 @@
 import { Recording } from "../../types/audio";
-import { ChordEvent, NoteEvent } from "../../types/music";
+import { ChordEvent } from "../../types/music";
 import Arpeggiator from "../../utils/Arpeggiator";
 import NoteHarmonizer from "../../utils/NoteHarmonizer";
 import PitchDetector from "../../utils/PitchDetector";
@@ -58,15 +58,16 @@ export function getChords(chordEvents: ChordEvent[], settings: ParsedHarmonizerS
   const chordPredictions = new NoteHarmonizer().harmonize(chordEvents, settings.style, settings.segSize);
 
   // Generate the individual note events from the harmonic blocks and apply voice leading
-  const notes: NoteEvent[] = [];
   const chordProgression = applyVoiceLeading(chordPredictions.map((chord) => chord.notes.map((note) => note.pitch)));
 
-  chordProgression.forEach((chord: number[], i) =>
-    chord.sort().forEach((pitch: number) => notes.push({ pitch: pitch, onset: chordPredictions[i].onset, duration: settings.segSize, velocity: 1 }))
-  );
-
-  // Convert the note events into chord events and arpeggiate the chords
-  const chords = noteEventsToChordEvents(notes);
+  const chords = chordProgression.map((chord, i) => ({
+    onset: chordPredictions[i].onset,
+    notes: chord.sort().map((pitch) => ({
+      pitch,
+      duration: settings.segSize,
+      velocity: 1,
+    })),
+  }));
 
   return chords;
 }
