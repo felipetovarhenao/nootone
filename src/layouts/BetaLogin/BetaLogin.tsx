@@ -1,13 +1,11 @@
 import "./BetaLogin.scss";
 import UserAuthForm, { LoginForm } from "../../components/UserAuthForm/UserAuthForm";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { userActions } from "../../redux/user/userSlice";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import AppName from "../../components/AppName/AppName";
 import { useNotification } from "../../components/Notification/NotificationProvider";
 import icons from "../../utils/icons";
-import CONFIG, { DeploymentType } from "../../utils/config";
 import useViewportInfo from "../../hooks/useViewportInfo";
 import CacheAPI from "../../utils/CacheAPI";
 import EmailListForm from "../EmailListForm/EmailListForm";
@@ -17,8 +15,6 @@ import useAnalyticsEventTracker, { EventName } from "../../hooks/useAnalyticsEve
 const BetaLogin = () => {
   useViewportInfo();
   const dispatch = useAppDispatch();
-  const { username } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const notification = useNotification();
 
@@ -42,17 +38,6 @@ const BetaLogin = () => {
       }
     });
   }
-
-  useEffect(() => {
-    if (username || CONFIG.deploymentType !== DeploymentType.PROD) {
-      navigate("/app");
-    } else if (!username && CONFIG.deploymentType === DeploymentType.PROD) {
-      const cache = CacheAPI.getLocalItem<LoginForm>("betaLogin");
-      if (cache) {
-        dispatch(userActions.login(cache));
-      }
-    }
-  }, [username]);
 
   return (
     <div className="beta-login">
