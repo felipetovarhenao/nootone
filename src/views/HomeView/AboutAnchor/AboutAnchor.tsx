@@ -25,7 +25,7 @@ const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
             className="AboutAnchor__container__left__button"
             onClick={() => {
               eventTracker(EventName.START_APP);
-              window.open(`${CONFIG.origin}/#/app`);
+              window.open(`${CONFIG.origin}/app`);
             }}
           >
             <Icon icon={icons.lab} />
