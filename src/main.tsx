@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store.ts";
 import NotificationProvider from "./components/Notification/NotificationProvider.tsx";
@@ -16,9 +16,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         <PrintableMusiScoreProvider>
           <NotificationProvider>
             <DialogProvider>
-              <BrowserRouter>
+              <HashRouter>
                 <App />
-              </BrowserRouter>
+              </HashRouter>
             </DialogProvider>
           </NotificationProvider>
         </PrintableMusiScoreProvider>

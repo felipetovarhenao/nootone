@@ -5,7 +5,7 @@ export enum DeploymentType {
 }
 
 const CONFIG = {
-  origin: window.location.origin,
+  origin: window.location.origin + '/nootone/',
   deploymentType: (() => {
     return DeploymentType.PROD;
     const origin = window.location.origin;
