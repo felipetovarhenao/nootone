@@ -10,13 +10,13 @@ type ImpulseResponse = {
   gainRange: { min: number; max: number };
 };
 const IMPULSE_RESPONSES: ImpulseResponse[] = [
-  { name: "Five_columns_long", gainRange: { min: 0.25, max: 0.5 } },
-  { name: "Right_glass_triangle", gainRange: { min: 0.1, max: 0.25 } },
-  { name: "Musikvereinsaal", gainRange: { min: 0.3, max: 0.4 } },
-  { name: "Large_bottle_hall", gainRange: { min: 0.1, max: 0.25 } },
-  { name: "In_the_silo", gainRange: { min: 0.25, max: 0.4 } },
-  { name: "Going_home", gainRange: { min: 0.08, max: 0.25 } },
-  { name: "Conic_long_echo_hall", gainRange: { min: 0.1, max: 0.25 } },
+  { name: "five_columns_long", gainRange: { min: 0.25, max: 0.5 } },
+  { name: "right_glass_triangle", gainRange: { min: 0.1, max: 0.25 } },
+  { name: "musikvereinsaal", gainRange: { min: 0.3, max: 0.4 } },
+  { name: "large_bottle_hall", gainRange: { min: 0.1, max: 0.25 } },
+  { name: "in_the_silo", gainRange: { min: 0.25, max: 0.4 } },
+  { name: "going_home", gainRange: { min: 0.08, max: 0.25 } },
+  { name: "conic_long_echo_hall", gainRange: { min: 0.1, max: 0.25 } },
 ];
 
 export default class AudioRenderer {
@@ -96,7 +96,10 @@ export default class AudioRenderer {
     const reverbGain = context.createGain();
 
     const impulseResponse = randomChoice(IMPULSE_RESPONSES)!;
-    const reverbConvolver = await this.createConvolver(context, `https://dxbtnxd6vjk30.cloudfront.net/impulseResponses/${impulseResponse.name}.mp3`);
+    const reverbConvolver = await this.createConvolver(
+      context,
+      `https://d2cq0goacowtde.cloudfront.net/nootone/impulseResponses/${impulseResponse.name}.mp3`
+    );
     const { min: revMin, max: revMax } = impulseResponse.gainRange;
     const reverbGainValue = Math.random() * (revMax - revMin) + revMin;
     reverbGain.gain.value = reverbGainValue;
