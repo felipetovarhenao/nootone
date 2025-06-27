@@ -25,15 +25,9 @@ export type ChordEventSegment = {
 export enum InstrumentName {
   PIANO = "grandPiano",
   NYLON_GUITAR = "nylonGuitar",
-  ELECTRIC_GUITAR = "electricGuitar",
-  EPIANO = "electricPiano",
-  MANDOLIN = "mandolin",
+  HARP = "harp",
   PAD = "sineSynth",
-  ELECTRIC_BASS = "electricBass",
-  ACOUSTIC_BASS = "acousticBass",
   UPRIGHT_BASS = "uprightBass",
-  BRASS_SYNTH = "brassSynth",
-  WAVE_SYNTH = "waveSynth",
 }
 
 export type InstrumentalPart = {

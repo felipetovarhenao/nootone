@@ -28,16 +28,10 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
-  [InstrumentName.EPIANO]: {
-    minPitch: 36,
-    maxPitch: 90,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
-  [InstrumentName.MANDOLIN]: {
+  [InstrumentName.HARP]: {
     minPitch: 48,
     maxPitch: 72,
-    pitchIncrement: 12,
+    pitchIncrement: 6,
     dynamics: [DynamicMarking.MEZZOFORTE],
   },
   [InstrumentName.NYLON_GUITAR]: {
@@ -52,39 +46,9 @@ const INSTRUMENT_RECORD: InstrumentRecord = {
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },
-  [InstrumentName.ELECTRIC_BASS]: {
-    minPitch: 36,
-    maxPitch: 66,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
-  [InstrumentName.ACOUSTIC_BASS]: {
-    minPitch: 24,
-    maxPitch: 54,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
   [InstrumentName.UPRIGHT_BASS]: {
     minPitch: 31,
     maxPitch: 49,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
-  [InstrumentName.BRASS_SYNTH]: {
-    minPitch: 36,
-    maxPitch: 78,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
-  [InstrumentName.WAVE_SYNTH]: {
-    minPitch: 36,
-    maxPitch: 84,
-    pitchIncrement: 6,
-    dynamics: ALL_DYNAMICS,
-  },
-  [InstrumentName.ELECTRIC_GUITAR]: {
-    minPitch: 36,
-    maxPitch: 78,
     pitchIncrement: 6,
     dynamics: ALL_DYNAMICS,
   },

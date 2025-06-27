@@ -33,7 +33,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
     const bassLine = generateBass(chords, recording.features.tempo, settings);
     const pads = generatePads(chords, settings);
 
-    const bassName = randomChoice<InstrumentName>([InstrumentName.ACOUSTIC_BASS, InstrumentName.ELECTRIC_BASS, InstrumentName.UPRIGHT_BASS])!;
+    const bassName = randomChoice<InstrumentName>([InstrumentName.UPRIGHT_BASS])!;
 
     const tracks: TrackSequence = [
       {
@@ -89,7 +89,7 @@ async function harmonize(payload: HarmonizerPayload): Promise<void | HarmonizerR
       instrumentalParts: [
         // { name: InstrumentName.PAD, chordEvents },
         { name: settings.instrumentName, chordEvents: arpeggios },
-        { name: InstrumentName.PAD, chordEvents: pads },
+        { name: InstrumentName.PIANO, chordEvents: pads },
         { name: bassName, chordEvents: bassLine },
       ],
     };

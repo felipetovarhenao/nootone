@@ -123,24 +123,12 @@ const instrumentOptions = [
     value: InstrumentName.PIANO,
   },
   {
-    label: "electric piano",
-    value: InstrumentName.EPIANO,
-  },
-  {
     label: "nylon guitar",
     value: InstrumentName.NYLON_GUITAR,
   },
-  // {
-  //   label: "electric guitar",
-  //   value: InstrumentName.ELECTRIC_GUITAR,
-  // },
   {
-    label: "mandolin",
-    value: InstrumentName.MANDOLIN,
-  },
-  {
-    label: "wave synth",
-    value: InstrumentName.WAVE_SYNTH,
+    label: "harp",
+    value: InstrumentName.HARP,
   },
 ];
 

@@ -12,35 +12,17 @@ const generalMidiMap: GeneralMidiMap = {
   [InstrumentName.PIANO]: {
     channel: 1,
   },
-  [InstrumentName.EPIANO]: {
-    channel: 3,
-  },
   [InstrumentName.UPRIGHT_BASS]: {
     channel: 33,
-  },
-  [InstrumentName.ELECTRIC_BASS]: {
-    channel: 34,
-  },
-  [InstrumentName.ACOUSTIC_BASS]: {
-    channel: 36,
   },
   [InstrumentName.NYLON_GUITAR]: {
     channel: 25,
   },
-  [InstrumentName.ELECTRIC_GUITAR]: {
-    channel: 25,
-  },
-  [InstrumentName.MANDOLIN]: {
+  [InstrumentName.HARP]: {
     channel: 106,
   },
   [InstrumentName.PAD]: {
     channel: 95,
-  },
-  [InstrumentName.BRASS_SYNTH]: {
-    channel: 90,
-  },
-  [InstrumentName.WAVE_SYNTH]: {
-    channel: 91,
   },
 };
 
