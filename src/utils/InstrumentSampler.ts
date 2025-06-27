@@ -225,7 +225,7 @@ export default class InstrumentSampler {
 
     while (pitch <= maxPitch) {
       dynamics.forEach((dynamic) => {
-        urls.push(`https://dxbtnxd6vjk30.cloudfront.net/instruments/${instrumentName}/${pitch}-${dynamic}.mp3`);
+        urls.push(`https://d2cq0goacowtde.cloudfront.net/nootone/instruments/${instrumentName}/${pitch}-${dynamic}.mp3`);
       });
       pitch += pitchIncrement;
     }

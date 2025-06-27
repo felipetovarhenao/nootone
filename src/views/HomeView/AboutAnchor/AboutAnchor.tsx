@@ -42,7 +42,7 @@ const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
             >
               <img
                 className="AboutAnchor__container__right__image-container__image"
-                src={"https://dxbtnxd6vjk30.cloudfront.net/images/app-screenshot.png"}
+                src={"https://d2cq0goacowtde.cloudfront.net/nootone/images/app-screenshot.png"}
                 alt="app screenshot"
               />
               <div className="AboutAnchor__container__right__image-container__overlay">
@@ -51,7 +51,7 @@ const AboutAnchor = forwardRef(({}, ref: Ref<HTMLDivElement>) => {
             </div>
           ) : (
             <video autoPlay={showVideo} className="AboutAnchor__container__right__video" controls>
-              <source src={"https://dxbtnxd6vjk30.cloudfront.net/videos/demo-v3.mp4"} type="video/mp4" />
+              <source src={"https://d2cq0goacowtde.cloudfront.net/nootone/videos/demo-v3.mp4"} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           )}

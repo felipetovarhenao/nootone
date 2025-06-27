@@ -9,9 +9,9 @@ export default defineConfig({
   // server: {
   //   proxy: {
   //     "/instruments": {
-  //       target: "https://dxbtnxd6vjk30.cloudfront.net/",
+  //       target: "https://d2cq0goacowtde.cloudfront.net/nootone/",
   //       changeOrigin: true,
-  //       rewrite: (path) => `https://dxbtnxd6vjk30.cloudfront.net/${path}`,
+  //       rewrite: (path) => `https://d2cq0goacowtde.cloudfront.net/nootone/${path}`,
   //     },
   //   },
   // },
